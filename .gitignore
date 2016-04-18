@@ -279,3 +279,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.wad
+*.bak
+*.config
+*.sln
+*.opendb
+*.vcxproj
+*.filters
