@@ -532,7 +532,6 @@ void I_FinishUpdate (void)
 	XSync(X_display, False);*/
 
     }
-	while (window.pollEvent(sf::Event()));
 	sf::Uint8 pixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
 	auto imagePixels = image.getPixelsPtr();
 	for (int i = 0; i < SCREENHEIGHT*SCREENWIDTH; i++)
