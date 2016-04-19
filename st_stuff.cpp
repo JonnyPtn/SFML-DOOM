@@ -515,16 +515,15 @@ void ST_refreshBackground(void)
 // Respond to keyboard input events,
 //  intercept cheats.
 boolean
-ST_Responder (sf::Event ev)
+ST_Responder (sf::Event* ev)
 {
   int		i;
     
-  //JONNY//
   // Filter automap on/off.
- /* if (ev->type == ev_keyup
-      && ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
+  if (ev->type == ev_keyup
+      && ((ev->key.code & 0xffff0000) == AM_MSGHEADER))
   {
-    switch(ev->data1)
+    switch(ev->key.code)
     {
       case AM_MSGENTERED:
 	st_gamestate = AutomapState;
@@ -539,16 +538,15 @@ ST_Responder (sf::Event ev)
   }
 
   // if a user keypress...
-  else*/ if (ev.type == sf::Event::KeyPressed)
+  else if (ev->type == ev_keydown)
   {
-    /*if (!netgame)
+    if (!netgame)
     {
       // b. - enabled for more debug fun.
       // if (gameskill != sk_nightmare) {
       
-		//JONNY// cheat stuff
       // 'dqd' cheat for toggleable god mode
-     /* if (cht_CheckCheat(&cheat_god, ev->data1))
+      if (cht_CheckCheat(&cheat_god, ev->key.code))
       {
 	plyr->cheats ^= CF_GODMODE;
 	if (plyr->cheats & CF_GODMODE)
@@ -563,7 +561,7 @@ ST_Responder (sf::Event ev)
 	  plyr->message = STSTR_DQDOFF;
       }
       // 'fa' cheat for killer fucking arsenal
-      else if (cht_CheckCheat(&cheat_ammonokey, ev->data1))
+      else if (cht_CheckCheat(&cheat_ammonokey, ev->key.code))
       {
 	plyr->armorpoints = 200;
 	plyr->armortype = 2;
@@ -577,7 +575,7 @@ ST_Responder (sf::Event ev)
 	plyr->message = STSTR_FAADDED;
       }
       // 'kfa' cheat for key full ammo
-      else if (cht_CheckCheat(&cheat_ammo, ev->data1))
+      else if (cht_CheckCheat(&cheat_ammo, ev->key.code))
       {
 	plyr->armorpoints = 200;
 	plyr->armortype = 2;
@@ -594,7 +592,7 @@ ST_Responder (sf::Event ev)
 	plyr->message = STSTR_KFAADDED;
       }
       // 'mus' cheat for changing music
-      else if (cht_CheckCheat(&cheat_mus, ev->data1))
+      else if (cht_CheckCheat(&cheat_mus, ev->key.code))
       {
 	
 	char	buf[3];
@@ -624,8 +622,8 @@ ST_Responder (sf::Event ev)
       }
       // Simplified, accepting both "noclip" and "idspispopd".
       // no clipping mode cheat
-      else if ( cht_CheckCheat(&cheat_noclip, ev->data1) 
-		|| cht_CheckCheat(&cheat_commercial_noclip,ev->data1) )
+      else if ( cht_CheckCheat(&cheat_noclip, ev->key.code)
+		|| cht_CheckCheat(&cheat_commercial_noclip,ev->key.code) )
       {	
 	plyr->cheats ^= CF_NOCLIP;
 	
@@ -637,7 +635,7 @@ ST_Responder (sf::Event ev)
       // 'behold?' power-up cheats
       for (i=0;i<6;i++)
       {
-	if (cht_CheckCheat(&cheat_powerup[i], ev->data1))
+	if (cht_CheckCheat(&cheat_powerup[i], ev->key.code))
 	{
 	  if (!plyr->powers[i])
 	    P_GivePower( plyr, i);
@@ -651,22 +649,22 @@ ST_Responder (sf::Event ev)
       }
       
       // 'behold' power-up menu
-      if (cht_CheckCheat(&cheat_powerup[6], ev->data1))
+      if (cht_CheckCheat(&cheat_powerup[6], ev->key.code))
       {
 	plyr->message = STSTR_BEHOLD;
       }
       // 'choppers' invulnerability & chainsaw
-      else if (cht_CheckCheat(&cheat_choppers, ev->data1))
+      else if (cht_CheckCheat(&cheat_choppers, ev->key.code))
       {
 	plyr->weaponowned[wp_chainsaw] = true;
 	plyr->powers[pw_invulnerability] = true;
 	plyr->message = STSTR_CHOPPERS;
       }
       // 'mypos' for player position
-      else if (cht_CheckCheat(&cheat_mypos, ev->data1))
+      else if (cht_CheckCheat(&cheat_mypos, ev->key.code))
       {
 	static char	buf[ST_MSGWIDTH];
-	sprintf_s(buf, "ang=0x%x;x,y=(0x%x,0x%x)",
+	sprintf(buf, "ang=0x%x;x,y=(0x%x,0x%x)",
 		players[consoleplayer].mo->angle,
 		players[consoleplayer].mo->x,
 		players[consoleplayer].mo->y);
@@ -675,7 +673,7 @@ ST_Responder (sf::Event ev)
     }
     
     // 'clev' change-level cheat
-    if (cht_CheckCheat(&cheat_clev, ev->data1))
+    if (cht_CheckCheat(&cheat_clev, ev->key.code))
     {
       char		buf[3];
       int		epsd;
@@ -721,7 +719,7 @@ ST_Responder (sf::Event ev)
       // So be it.
       plyr->message = STSTR_CLEV;
       G_DeferedInitNew(gameskill, epsd, map);
-    }  */  
+    }    
   }
   return false;
 }
@@ -1135,10 +1133,10 @@ void ST_loadGraphics(void)
     // Load the numbers, tall and short
     for (i=0;i<10;i++)
     {
-	sprintf_s(namebuf, "STTNUM%d", i);
+	sprintf(namebuf, "STTNUM%d", i);
 	tallnum[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
 
-	sprintf_s(namebuf, "STYSNUM%d", i);
+	sprintf(namebuf, "STYSNUM%d", i);
 	shortnum[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
     }
 
@@ -1149,7 +1147,7 @@ void ST_loadGraphics(void)
     // key cards
     for (i=0;i<NUMCARDS;i++)
     {
-	sprintf_s(namebuf, "STKEYS%d", i);
+	sprintf(namebuf, "STKEYS%d", i);
 	keys[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
     }
 
@@ -1159,7 +1157,7 @@ void ST_loadGraphics(void)
     // arms ownership widgets
     for (i=0;i<6;i++)
     {
-	sprintf_s(namebuf, "STGNUM%d", i+2);
+	sprintf(namebuf, "STGNUM%d", i+2);
 
 	// gray #
 	arms[i][0] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
@@ -1169,7 +1167,7 @@ void ST_loadGraphics(void)
     }
 
     // face backgrounds for different color players
-    sprintf_s(namebuf, "STFB%d", consoleplayer);
+    sprintf(namebuf, "STFB%d", consoleplayer);
     faceback = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
 
     // status bar background bits
@@ -1181,22 +1179,22 @@ void ST_loadGraphics(void)
     {
 	for (j=0;j<ST_NUMSTRAIGHTFACES;j++)
 	{
-	    sprintf_s(namebuf, "STFST%d%d", i, j);
-			    faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	    sprintf(namebuf, "STFST%d%d", i, j);
+	    faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 	}
-	sprintf_s(namebuf, "STFTR%d0", i);	// turn right
-											faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-	sprintf_s(namebuf, "STFTL%d0", i);	// turn left
-										faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-	sprintf_s(namebuf, "STFOUCH%d", i);	// ouch!
-											faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-	sprintf_s(namebuf, "STFEVL%d", i);	// evil grin ;)
-											faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-	sprintf_s(namebuf, "STFKILL%d", i);	// pissed off
-										faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	sprintf(namebuf, "STFTR%d0", i);	// turn right
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	sprintf(namebuf, "STFTL%d0", i);	// turn left
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	sprintf(namebuf, "STFOUCH%d", i);	// ouch!
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	sprintf(namebuf, "STFEVL%d", i);	// evil grin ;)
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	sprintf(namebuf, "STFKILL%d", i);	// pissed off
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
     }
-	  faces[facenum++] = (patch_t*)W_CacheLumpName("STFGOD0", PU_STATIC);
-	   faces[facenum++] = (patch_t*)W_CacheLumpName("STFDEAD0", PU_STATIC);
+    faces[facenum++] = (patch_t*)W_CacheLumpName("STFGOD0", PU_STATIC);
+    faces[facenum++] = (patch_t*)W_CacheLumpName("STFDEAD0", PU_STATIC);
 
 }
 
@@ -1460,7 +1458,7 @@ void ST_Stop (void)
     if (st_stopped)
 	return;
 
-	    I_SetPalette ((byte*)W_CacheLumpNum (lu_palette, PU_CACHE));
+    I_SetPalette ((byte*)W_CacheLumpNum (lu_palette, PU_CACHE));
 
     st_stopped = true;
 }

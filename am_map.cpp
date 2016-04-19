@@ -560,9 +560,11 @@ void AM_LevelInit(void)
 //
 void AM_Stop (void)
 {
+    //JONNY//static event_t st_notify = { (evtype_t)0, ev_keyup, AM_MSGEXITED };
 
     AM_unloadPics();
     automapactive = false;
+   //JONNY// ST_Responder(&st_notify);
     stopped = true;
 }
 

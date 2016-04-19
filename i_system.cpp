@@ -29,8 +29,7 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <string.h>
 
 #include <stdarg.h>
-#include <chrono>
-//Jonny//#include <sys/time.h>
+//JONNY//#include <sys/time.h>
 #include "unistd.h"
 
 #include "doomdef.hpp"
@@ -46,6 +45,9 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #endif
 #include "i_system.hpp"
 
+//JONNY//
+#include <chrono>
+#include <thread>
 
 
 
@@ -90,25 +92,24 @@ int  I_GetTime (void)
 {
 	auto currentTime(std::chrono::system_clock::now());
 	static int basetime = 0;
-	
+
 	if (!basetime)
 		basetime = std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count();
 
-	int newtics = (std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count() - basetime)*TICRATE + 
-		(std::chrono::duration_cast<std::chrono::microseconds>(currentTime.time_since_epoch()).count() - std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count()*1000000)*TICRATE / 1000000;
-	
+	int newtics = (std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count() - basetime)*TICRATE +
+		(std::chrono::duration_cast<std::chrono::microseconds>(currentTime.time_since_epoch()).count() - std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count() * 1000000)*TICRATE / 1000000;
+
 	//OLD
-	/*struct tm	tp;
-	struct timezone	tzp;
+    /*struct timeval	tp;
+    struct timezone	tzp;
     int			newtics;
     static int		basetime=0;
   
-	gettimeofday(&tp, &tzp);
-	if (!basetime)
-		basetime = tp.tv_sec;
-	newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;
-	*/
-	return newtics;
+    gettimeofday(&tp, &tzp);
+    if (!basetime)
+	basetime = tp.tv_sec;
+    newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;*/
+    return newtics;
 }
 
 
@@ -143,7 +144,8 @@ void I_WaitVBL(int count)
 #ifdef SUN
     sleep(0);
 #else
-	//JONNY//usleep (count * (1000000/70) );                                
+    //JONNY//usleep (count * (1000000/70) );  
+	std::this_thread::sleep_for(std::chrono::microseconds(count*(1000000 / 70)));
 #endif
 #endif
 }
@@ -191,5 +193,5 @@ void I_Error (char *error, ...)
     D_QuitNetGame ();
     I_ShutdownGraphics();
     
-//    exit(-1);
+    exit(-1);
 }

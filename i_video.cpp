@@ -26,7 +26,6 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include <stdlib.h>
 #include "unistd.h"
-#include <SFML\Graphics.hpp>
 //JONNY//#include <sys/ipc.h>
 //JONNY//#include <sys/shm.h>
 
@@ -47,20 +46,20 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 //JONNY//#include <sys/socket.h>
 
 //JONNY//#include <netinet/in.h>
-#include <errno.h>
+//JONNY//#include <errnos.h>
 #include <signal.h>
-#include <array>
 
 #include "doomstat.hpp"
 #include "i_system.hpp"
 #include "v_video.hpp"
 #include "m_argv.hpp"
 #include "d_main.hpp"
-#include "i_video.hpp"
 
 #include "doomdef.hpp"
 
 #define POINTER_WARP_COUNTDOWN	1
+
+//JONNY// SFML stuff for rendering
 #include <SFML\Graphics.hpp>
 
 sf::RenderWindow window;
@@ -105,13 +104,13 @@ static int	multiply=1;
 //  Translates the key currently in X_event
 //
 
-int xlatekey(void)
+//JONNY//	removing this as we'll use SFML events
+/*int xlatekey(void)
 {
 
     int rc;
 
-	//JONNY//
- /*   switch(rc = XKeycodeToKeysym(X_display, X_event.xkey.keycode, 0))
+    switch(rc = XKeycodeToKeysym(X_display, X_event.xkey.keycode, 0))
     {
       case XK_Left:	rc = KEY_LEFTARROW;	break;
       case XK_Right:	rc = KEY_RIGHTARROW;	break;
@@ -135,15 +134,15 @@ int xlatekey(void)
 	
       case XK_BackSpace:
       case XK_Delete:	rc = KEY_BACKSPACE;	break;
-   
+
       case XK_Pause:	rc = KEY_PAUSE;		break;
-   
+
       case XK_KP_Equal:
       case XK_equal:	rc = KEY_EQUALS;	break;
-   
+
       case XK_KP_Subtract:
       case XK_minus:	rc = KEY_MINUS;		break;
-   
+
       case XK_Shift_L:
       case XK_Shift_R:
 	rc = KEY_RSHIFT;
@@ -167,24 +166,24 @@ int xlatekey(void)
 	if (rc >= 'A' && rc <= 'Z')
 	    rc = rc - 'A' + 'a';
 	break;
-    }*/
-   
-	//JONNY//       return rc;
-	return 0;
-}
+    }
+
+    return rc;
+
+}*/
 
 void I_ShutdownGraphics(void)
 {
   // Detach from X server
-  //JONNY//  if (!XShmDetach(X_display, &X_shminfo))
-  //JONNY//	    I_Error("XShmDetach() failed in I_ShutdownGraphics()");
-  
+  //JONNY// (!XShmDetach(X_display, &X_shminfo))
+  //JONNY// I_Error("XShmDetach() failed in I_ShutdownGraphics()");
+
   // Release shared memory.
-  //JONNY// shmdt(X_shminfo.shmaddr);
+  //JONNY//shmdt(X_shminfo.shmaddr);
   //JONNY//shmctl(X_shminfo.shmid, IPC_RMID, 0);
-  
+
   // Paranoia.
-  //JONNY// image->data = NULL;
+  //JONNY//image->data = NULL;
 }
 
 
@@ -206,10 +205,11 @@ boolean		shmFinished;
 void I_GetEvent(void)
 {
 
-    sf::Event event;
-	//JONNY//
+    event_t event;
+
     // put event-grabbing stuff in here
-	/* XNextEvent(X_display, &X_event);
+	//JONNY// will be replacing this with SFML event stuff
+	/*XNextEvent(X_display, &X_event);
     switch (X_event.type)
     {
       case KeyPress:
@@ -261,12 +261,12 @@ void I_GetEvent(void)
 	    | (X_event.xmotion.state & Button3Mask ? 4 : 0);
 	event.data2 = (X_event.xmotion.x - lastmousex) << 2;
 	event.data3 = (lastmousey - X_event.xmotion.y) << 2;
-   
+
 	if (event.data2 || event.data3)
 	{
 	    lastmousex = X_event.xmotion.x;
 	    lastmousey = X_event.xmotion.y;
-		 if (X_event.xmotion.x != X_width/2 &&
+	    if (X_event.xmotion.x != X_width/2 &&
 		X_event.xmotion.y != X_height/2)
 	    {
 		D_PostEvent(&event);
@@ -290,6 +290,7 @@ void I_GetEvent(void)
 
 }
 
+//JONNY// leaving this out for now, would like to add back in later
 /*Cursor
 createnullcursor
 ( Display*	display,
@@ -320,12 +321,12 @@ createnullcursor
 //
 void I_StartTic (void)
 {
+	//JONNY// replace with SFML stuff
+    /*if (!X_display)
+	return;
 
-	//JONNY//	 if (!X_display)
-	
-
-	//JONNY//	  while (XPending(X_display))
-	//JONNY//I_GetEvent();
+    while (XPending(X_display))
+	I_GetEvent();
 
     // Warp the pointer back to the middle of the window
     //  or it will wander off - that is, the game will
@@ -334,19 +335,19 @@ void I_StartTic (void)
     {
 	if (!--doPointerWarp)
 	{
-//JONNY//		XWarpPointer( X_display,
-//JONNY//			  None,
-//JONNY//			  X_mainWindow,
-//JONNY//			  0, 0,
-//JONNY//			  0, 0,
-//JONNY//			  X_width/2, X_height/2);
+	    XWarpPointer( X_display,
+			  None,
+			  X_mainWindow,
+			  0, 0,
+			  0, 0,
+			  X_width/2, X_height/2);
 
 	    doPointerWarp = POINTER_WARP_COUNTDOWN;
 	}
     }
 
     mousemoved = false;
-
+	*/
 }
 
 
@@ -396,8 +397,8 @@ void I_FinishUpdate (void)
 	unsigned int fouripixels;
 
 	ilineptr = (unsigned int *) (screens[0]);
-	for (i = 0; i < 2; i++)
-	   olineptrs[i] = (unsigned int *) &image.getPixelsPtr()[i*X_width];
+	for (i=0 ; i<2 ; i++)
+	    olineptrs[i] = (unsigned int *) &image.getPixelsPtr()[i*X_width];
 
 	y = SCREENHEIGHT;
 	while (y--)
@@ -439,7 +440,7 @@ void I_FinishUpdate (void)
 
 	ilineptr = (unsigned int *) (screens[0]);
 	for (i=0 ; i<3 ; i++)
-		olineptrs[i] = (unsigned int *) &image.getPixelsPtr()[i*X_width];
+	    olineptrs[i] = (unsigned int *) &image.getPixelsPtr()[i*X_width];
 
 	y = SCREENHEIGHT;
 	while (y--)
@@ -489,7 +490,7 @@ void I_FinishUpdate (void)
     {
 	// Broken. Gotta fix this some day.
 	void Expand4(unsigned *, double *);
-		Expand4 ((unsigned *)(screens[0]), (double *) (image.getPixelsPtr()));
+  	Expand4 ((unsigned *)(screens[0]), (double *) (image.getPixelsPtr()));
     }
 
     if (doShm)
@@ -516,20 +517,7 @@ void I_FinishUpdate (void)
     }
     else
     {
-//		while (window.pollEvent(sf::Event()));
-		sf::Uint8 pixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
-		auto imagePixels = image.getPixelsPtr();
-		for (int i = 0; i < SCREENHEIGHT*SCREENWIDTH; i++)
-		{
-			pixels[i * 4] = colors[imagePixels[i]].r;
-			pixels[i * 4+1] = colors[imagePixels[i]].g;
-			pixels[i * 4+2] = colors[imagePixels[i]].b;
-			pixels[i * 4+3] = 255;
-		}
-		texture.update(pixels);
-		window.clear();
-		window.draw(sprite);
-		window.display();
+
 		//JONNY//
 	// draw the image
 	/*XPutImage(	X_display,
@@ -538,13 +526,26 @@ void I_FinishUpdate (void)
 			image,
 			0, 0,
 			0, 0,
-			X_width, X_height );*/
-	
+			X_width, X_height );
+
 	// sync up with server
-	//JONNY//XSync(X_display, False);
+	XSync(X_display, False);*/
 
     }
-
+	while (window.pollEvent(sf::Event()));
+	sf::Uint8 pixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
+	auto imagePixels = image.getPixelsPtr();
+	for (int i = 0; i < SCREENHEIGHT*SCREENWIDTH; i++)
+	{
+		pixels[i * 4] = colors[imagePixels[i]].r;
+		pixels[i * 4 + 1] = colors[imagePixels[i]].g;
+		pixels[i * 4 + 2] = colors[imagePixels[i]].b;
+		pixels[i * 4 + 3] = 255;
+	}
+	texture.update(pixels);
+	window.clear();
+	window.draw(sprite);
+	window.display();
 }
 
 
@@ -560,29 +561,30 @@ void I_ReadScreen (byte* scr)
 //
 // Palette stuff.
 //
+//JONNY//static XColor	colors[256];
 
-void UploadNewPalette( byte *palette)
+void UploadNewPalette(/*JONNY*//*Colormap cmap,*/ byte *palette)
 {
 
     register int	i;
     register int	c;
     static boolean	firstcall = true;
-	/*
+
 #ifdef __cplusplus
-    if (X_sualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
+//JONNY//    if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
 #else
-	   if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
-#endif*/
+    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
+#endif
 	{
 	    // initialize the colormap
 	    if (firstcall)
 	    {
 		firstcall = false;
-		/*for (i=0 ; i<256 ; i++)
+		for (i=0 ; i<256 ; i++)
 		{
-		    colors[i].pixel = i;
-		    colors[i].flags = DoRed|DoGreen|DoBlue;
-		}*/
+		    colors[i] = sf::Color::White;
+		    //JONNY//colors[i].flags = DoRed|DoGreen|DoBlue;
+		}
 	    }
 
 	    // set the X colormap entries
@@ -597,7 +599,7 @@ void UploadNewPalette( byte *palette)
 	    }
 
 	    // store the colors to the current colormap
-		 //XStoreColors(X_display, cmap, colors, 256);
+	   //JONNY// XStoreColors(X_display, cmap, colors, 256);
 
 	}
 }
@@ -607,7 +609,7 @@ void UploadNewPalette( byte *palette)
 //
 void I_SetPalette (byte* palette)
 {
-	  UploadNewPalette(palette);
+    UploadNewPalette(/*JONNY*//*X_cmap,*/ palette);
 }
 
 
@@ -620,76 +622,77 @@ void I_SetPalette (byte* palette)
 //
 void grabsharedmemory(int size)
 {
+	//JONNY//
 
-  int			key = ('d'<<24) | ('o'<<16) | ('o'<<8) | 'm';
-  //JONNY//   struct shmid_ds	shminfo;
+  /*int			key = ('d'<<24) | ('o'<<16) | ('o'<<8) | 'm';
+  struct shmid_ds	shminfo;
   int			minsize = 320*200;
-  int			id(0);
-  int			rc(0);
+  int			id;
+  int			rc;
   // UNUSED int done=0;
   int			pollution=5;
   
   // try to use what was here before
   do
   {
-	  //JONNY//	    id = shmget((key_t) key, minsize, 0777); // just get the id
-	  //JONNY//	      if (id != -1)
+    id = shmget((key_t) key, minsize, 0777); // just get the id
+    if (id != -1)
     {
-		//JONNY//		rc=shmctl(id, IPC_STAT, &shminfo); // get stats on it
-		//JONNY//		      if (!rc) 
+      rc=shmctl(id, IPC_STAT, &shminfo); // get stats on it
+      if (!rc) 
       {
-		  //JONNY//	if (shminfo.shm_nattch)
+	if (shminfo.shm_nattch)
 	{
-		//JONNY//  fprintf(stderr, "User %d appears to be running "
-		//JONNY//	  "DOOM.  Is that wise?\n", shminfo.shm_cpid);
+	  fprintf(stderr, "User %d appears to be running "
+		  "DOOM.  Is that wise?\n", shminfo.shm_cpid);
 	  key++;
 	}
-	//JONNY//else
+	else
 	{
-		//JONNY//if (getuid() == shminfo.shm_perm.cuid)
+	  if (getuid() == shminfo.shm_perm.cuid)
 	  {
-		  //JONNY//    rc = shmctl(id, IPC_RMID, 0);
-		  //JONNY//	    if (!rc)
+	    rc = shmctl(id, IPC_RMID, 0);
+	    if (!rc)
 	      fprintf(stderr,
 		      "Was able to kill my old shared memory\n");
-		  //JONNY//	    else
+	    else
 	      I_Error("Was NOT able to kill my old shared memory");
 	    
-		//JONNY//id = shmget((key_t)key, size, IPC_CREAT|0777);
+	    id = shmget((key_t)key, size, IPC_CREAT|0777);
 	    if (id==-1)
 	      I_Error("Could not get shared memory");
 	    
-		//JONNY//rc=shmctl(id, IPC_STAT, &shminfo);
+	    rc=shmctl(id, IPC_STAT, &shminfo);
 	    
 	    break;
 	    
 	  }
-	  //JONNY//if (size >= shminfo.shm_segsz)
+	  if (size >= shminfo.shm_segsz)
 	  {
-		  //JONNY//fprintf(stderr,
-		  //JONNY//"will use %d's stale shared memory\n",
-		  //JONNY//		  	    shminfo.shm_cpid);
+	    fprintf(stderr,
+		    "will use %d's stale shared memory\n",
+		    shminfo.shm_cpid);
 	    break;
 	  }
-	  //JONNY//else
+	  else
 	  {
-	//JONNY//	  	    fprintf(stderr,
-	//JONNY//	  		    "warning: can't use stale "
-	//JONNY//	  		    "shared memory belonging to id %d, "
-	//JONNY//	  		    "key=0x%x\n",
-					//JONNY//	  	    shminfo.shm_cpid, key);
+	    fprintf(stderr,
+		    "warning: can't use stale "
+		    "shared memory belonging to id %d, "
+		    "key=0x%x\n",
+		    shminfo.shm_cpid, key);
 	    key++;
 	  }
 	}
       }
-	  //JONNY//	        else
+      else
       {
 	I_Error("could not get stats on key=%d", key);
       }
     }
-	//JONNY//    else
+    else
     {
-		//JONNY//		 id = shmget((key_t)key, size, IPC_CREAT|0777);
+      id = shmget((key_t)key, size, IPC_CREAT|0777);
       if (id==-1)
       {
 	extern int errno;
@@ -706,13 +709,13 @@ void grabsharedmemory(int size)
 	    "shared memory segments.\n");
     }	
   
-  //JONNY// X_shminfo.shmid = id;
+  X_shminfo.shmid = id;
   
   // attach to the shared memory segment
-  //JONNY//  image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
+  image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
   
- //JONNY//   fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id,
- //JONNY// (int) (image->data));
+  fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id,
+	  (int) (image->data));*/
 }
 
 void I_InitGraphics(void)
@@ -731,8 +734,8 @@ void I_InitGraphics(void)
     
     int			oktodraw;
     unsigned long	attribmask;
-	//JONNY// XSetWindowAttributes attribs;
-	//JONNY//	XGCValues		xgcvalues;
+//JONNY//    XSetWindowAttributes attribs;
+ //JONNY//   XGCValues		xgcvalues;
     int			valuemask;
     static int		firsttime=1;
 
@@ -751,8 +754,8 @@ void I_InitGraphics(void)
     if (M_CheckParm("-4"))
 	multiply = 4;
 
-    int X_width = SCREENWIDTH * multiply;
-    int X_height = SCREENHEIGHT * multiply;
+    X_width = SCREENWIDTH * multiply;
+    X_height = SCREENHEIGHT * multiply;
 
     // check for command-line display name
     if ( (pnum=M_CheckParm("-disp")) ) // suggest parentheses around assignment
@@ -767,78 +770,73 @@ void I_InitGraphics(void)
     if ( (pnum=M_CheckParm("-geom")) ) // suggest parentheses around assignment
     {
 	// warning: char format, different type arg 3,5
-		n = sscanf(myargv[pnum+1], "%c%d%c%d", &xsign, &x, &ysign, &y);
+	n = sscanf(myargv[pnum+1], "%c%d%c%d", &xsign, &x, &ysign, &y);
 	
-		if (n==2)
+	if (n==2)
 	    x = y = 0;
-			else if (n==6)
+	else if (n==6)
 	{
 	    if (xsign == '-')
 		x = -x;
 	    if (ysign == '-')
 		y = -y;
 	}
-		else
+	else
 	    I_Error("bad -geom parameter");
     }
 
     // open the display
-	window.create(sf::VideoMode(X_width, X_height), displayname);
-	image.create(X_width, X_height);
-	texture.create(X_width, X_height);
-	texture.loadFromImage(image);
-	sprite.setTexture(texture);
-	//JONNY//	X_display = XOpenDisplay(displayname);
-	/*if (!X_display)
+	//JONNY//
+    /*X_display = XOpenDisplay(displayname);
+    if (!X_display)
     {
 	if (displayname)
 	    I_Error("Could not open display [%s]", displayname);
-	else;
-			    I_Error("Could not open display (DISPLAY=[%s])", getenv("DISPLAY"));
-    }*/
+	else
+	    I_Error("Could not open display (DISPLAY=[%s])", getenv("DISPLAY"));
+    }
 
     // use the default visual 
-	//JONNY//	 X_screen = DefaultScreen(X_display);
-	//JONNY//	 if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
-		 //JONNY//	I_Error("xdoom currently only supports 256-color PseudoColor screens");
-		 //JONNY//	X_visual = X_visualinfo.visual;
+    X_screen = DefaultScreen(X_display);
+    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
+	I_Error("xdoom currently only supports 256-color PseudoColor screens");
+    X_visual = X_visualinfo.visual;
 
     // check for the MITSHM extension
-	//JONNY//doShm = XShmQueryExtension(X_display);
+    doShm = XShmQueryExtension(X_display);
 
     // even if it's available, make sure it's a local connection
     if (doShm)
     {
-			if (!displayname) displayname = (char *) getenv("DISPLAY");
+	if (!displayname) displayname = (char *) getenv("DISPLAY");
 	if (displayname)
 	{
 	    d = displayname;
 	    while (*d && (*d != ':')) d++;
 	    if (*d) *d = 0;
-		//JONNY//			    if (!(!strcasecmp(displayname, "unix") || !*displayname)) doShm = false;
+	    if (!(!strcasecmp(displayname, "unix") || !*displayname)) doShm = false;
 	}
     }
 
     fprintf(stderr, "Using MITSHM extension\n");
 
     // create the colormap
-//JONNY//	  X_cmap = XCreateColormap(X_display, RootWindow(X_display,
-//JONNY//				   X_screen), X_visual, AllocAll);
+    X_cmap = XCreateColormap(X_display, RootWindow(X_display,
+						   X_screen), X_visual, AllocAll);
 
     // setup attributes for main window
-	//JONNY//   attribmask = CWEventMask | CWColormap | CWBorderPixel;
-//JONNY//   attribs.event_mask =
-//JONNY//	KeyPressMask
-//JONNY//	| KeyReleaseMask
-//JONNY//	// | PointerMotionMask | ButtonPressMask | ButtonReleaseMask
-//JONNY//	| ExposureMask;
-	
-//JONNY//    attribs.colormap = X_cmap;
-//JONNY//	 attribs.border_pixel = 0;
+    attribmask = CWEventMask | CWColormap | CWBorderPixel;
+    attribs.event_mask =
+	KeyPressMask
+	| KeyReleaseMask
+	// | PointerMotionMask | ButtonPressMask | ButtonReleaseMask
+	| ExposureMask;
 
-//JONNY//
+    attribs.colormap = X_cmap;
+    attribs.border_pixel = 0;
+
     // create the main window
-/*	X_mainWindow = XCreateWindow(	X_display,
+    X_mainWindow = XCreateWindow(	X_display,
 					RootWindow(X_display, X_screen),
 					x, y,
 					X_width, X_height,
@@ -847,57 +845,57 @@ void I_InitGraphics(void)
 					InputOutput,
 					X_visual,
 					attribmask,
-					&attribs );*/
-   
-   /* XDefineCursor(X_display, X_mainWindow,
-		  createnullcursor( X_display, X_mainWindow ) );*/
-   
+					&attribs );
+
+    XDefineCursor(X_display, X_mainWindow,
+		  createnullcursor( X_display, X_mainWindow ) );
+
     // create the GC
-   /* valuemask = GCGraphicsExposures;
+    valuemask = GCGraphicsExposures;
     xgcvalues.graphics_exposures = False;
     X_gc = XCreateGC(	X_display,
   			X_mainWindow,
   			valuemask,
-  			&xgcvalues );*/
-   
+  			&xgcvalues );
+
     // map the window
-	//JONNY//   XMapWindow(X_display, X_mainWindow);
-   
+    XMapWindow(X_display, X_mainWindow);
+
     // wait until it is OK to draw
     oktodraw = 0;
     while (!oktodraw)
     {
-		//JONNY//	XNextEvent(X_display, &X_event);
-		//JONNY//	if (X_event.type == Expose
-		//JONNY//	    && !X_event.xexpose.count)
+	XNextEvent(X_display, &X_event);
+	if (X_event.type == Expose
+	    && !X_event.xexpose.count)
 	{
 	    oktodraw = 1;
 	}
     }
-   
+
     // grabs the pointer so it is restricted to this window
-	//JONNY//   if (grabMouse)
-	//JONNY//	XGrabPointer(X_display, X_mainWindow, True,
-	//JONNY//		     ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
-	//JONNY//GrabModeAsync, GrabModeAsync,
-	//JONNY//	     X_mainWindow, None, CurrentTime);
-   
+    if (grabMouse)
+	XGrabPointer(X_display, X_mainWindow, True,
+		     ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
+		     GrabModeAsync, GrabModeAsync,
+		     X_mainWindow, None, CurrentTime);
+
     if (doShm)
     {
 
-		//JONNY//X_shmeventtype = XShmGetEventBase(X_display) + ShmCompletion;
+	X_shmeventtype = XShmGetEventBase(X_display) + ShmCompletion;
 
 	// create the image
-/*	image = XShmCreateImage(	X_display,
-			X_visual,
-			8,
-			ZPixmap,
-			0,
-			&X_shminfo,
-			X_width,
-			X_height );*/
+	image = XShmCreateImage(	X_display,
+					X_visual,
+					8,
+					ZPixmap,
+					0,
+					&X_shminfo,
+					X_width,
+					X_height );
 
-			//JONNY//	grabsharedmemory(image->bytes_per_line * image->height);
+	grabsharedmemory(image->bytes_per_line * image->height);
 
 
 	// UNUSED
@@ -912,20 +910,22 @@ void I_InitGraphics(void)
 	// fprintf(stderr, "shared memory id=%d\n", X_shminfo.shmid);
 	// attach to the shared memory segment
 	// image->data = X_shminfo.shmaddr = shmat(X_shminfo.shmid, 0, 0);
+	
 
-	//JONNY//	if (!image->data)
+	if (!image->data)
 	{
 	    perror("");
 	    I_Error("shmat() failed in InitGraphics()");
 	}
 
 	// get the X server to attach to it
-	//JONNY//	if (!XShmAttach(X_display, &X_shminfo))
-I_Error("XShmAttach() failed in InitGraphics()");
+	if (!XShmAttach(X_display, &X_shminfo))
+	    I_Error("XShmAttach() failed in InitGraphics()");
+
     }
     else
     {
-/*	image = XCreateImage(	X_display,
+	image = XCreateImage(	X_display,
     				X_visual,
     				8,
     				ZPixmap,
@@ -933,14 +933,20 @@ I_Error("XShmAttach() failed in InitGraphics()");
     				(char*)malloc(X_width * X_height),
     				X_width, X_height,
     				8,
-    				X_width );*/
+    				X_width );
 
-    }
+    }*/
 
-	if (multiply == 1)
-		screens[0] = (unsigned char *) (image.getPixelsPtr());
-	else
-		screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
+window.create(sf::VideoMode(X_width, X_height), displayname);
+image.create(X_width, X_height);
+texture.create(X_width, X_height);
+texture.loadFromImage(image);
+sprite.setTexture(texture);
+
+    if (multiply == 1)
+	screens[0] = (unsigned char *) (image.getPixelsPtr());
+    else
+	screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
 
 }
 

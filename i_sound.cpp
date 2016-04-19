@@ -58,6 +58,9 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 
 #include "doomdef.hpp"
 
+//JONNY//
+#define X_OK 1
+
 // UNIX hack, to be removed.
 #ifdef SNDSERV
 // Separate sound server process.
@@ -165,8 +168,8 @@ myioctl
     int		rc;
     extern int	errno;
     
-	//JONNY//	    rc = ioctl(fd, command, arg);  
-	//JONNY//	    if (rc < 0)
+//JONNY//    rc = ioctl(fd, command, arg);  
+    if (rc < 0)
     {
 	fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
 	fprintf(stderr, "errno=%d\n", errno);
@@ -198,7 +201,7 @@ getsfx
     
     // Get the sound data from the WAD, allocate lump
     //  in zone memory.
-    sprintf_s(name, "ds%s", sfxname);
+    sprintf(name, "ds%s", sfxname);
 
     // Now, there is a severe problem with the
     //  sound handling, in it is not (yet/anymore)
@@ -451,7 +454,7 @@ void I_SetMusicVolume(int volume)
 int I_GetSfxLumpNum(sfxinfo_t* sfx)
 {
     char namebuf[9];
-    sprintf_s(namebuf, "ds%s", sfx->name);
+    sprintf(namebuf, "ds%s", sfx->name);
     return W_GetNumForName(namebuf);
 }
 
@@ -666,7 +669,7 @@ void
 I_SubmitSound(void)
 {
   // Write it to DSP device.
-    _write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
+  write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
 }
 
 
@@ -737,23 +740,25 @@ void I_ShutdownSound(void)
 void
 I_InitSound()
 { 
+	//JONNY// 
+	/*
 #ifdef SNDSERV
   char buffer[256];
   
-    if (getenv("DOOMWADDIR"))
-      sprintf_s(buffer, "%s/%s",
-			    getenv("DOOMWADDIR"),
-			    sndserver_filename);
-	else
-    sprintf_s(buffer, "%s", sndserver_filename);
+  if (getenv("DOOMWADDIR"))
+    sprintf(buffer, "%s/%s",
+	    getenv("DOOMWADDIR"),
+	    sndserver_filename);
+  else
+    sprintf(buffer, "%s", sndserver_filename);
   
   // start sound process
-  //JONNY//   ( !access(buffer, X_OK) )
+  if ( !access(buffer, X_OK) )
   {
-	  strcat_s(buffer, " -quiet");
-	  //JONNY//      sndserver = popen(buffer, "w");
+    strcat(buffer, " -quiet");
+    sndserver = _popen(buffer, "w");
   }
-  //JONNY//  else
+  else
     fprintf(stderr, "Could not start sound server [%s]\n", buffer);
 #else
     
@@ -821,7 +826,7 @@ I_InitSound()
   // Finished initialization.
   fprintf(stderr, "I_InitSound: sound module ready\n");
     
-#endif
+#endif*/
 }
 
 
@@ -924,7 +929,7 @@ void I_HandleSoundTimer( int ignore )
   {
     // See I_SubmitSound().
     // Write it to DSP device.
-	    _write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
+    write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
 
     // Reset flag counter.
     flag = 0;
@@ -940,40 +945,41 @@ void I_HandleSoundTimer( int ignore )
 // Get the interrupt. Set duration in millisecs.
 int I_SoundSetTimer( int duration_of_tick )
 {
+	//JONNY// this will be SFML sound stuff eventually
+	/*
   // Needed for gametick clockwork.
-//JONNY//  struct itimerval    value;
-//JONNY//  struct itimerval    ovalue;
-//JONNY//  struct sigaction    act;
-//JONNY//  struct sigaction    oact;
+  struct itimerval    value;
+  struct itimerval    ovalue;
+  struct sigaction    act;
+  struct sigaction    oact;
 
-  int res;
+  */int res(0);/*
   
   // This sets to SA_ONESHOT and SA_NOMASK, thus we can not use it.
   //     signal( _sig, handle_SIG_TICK );
   
   // Now we have to change this attribute for repeated calls.
-//JONNY//    act.sa_handler = I_HandleSoundTimer;
+  act.sa_handler = I_HandleSoundTimer;
 #ifndef sun    
   //ac	t.sa_mask = _sig;
 #endif
-  //JONNY//  act.sa_flags = SA_RESTART;
+  act.sa_flags = SA_RESTART;
   
-  //JONNY//sigaction( sig, &act, &oact );
+  sigaction( sig, &act, &oact );
 
-  //JONNY// value.it_interval.tv_sec    = 0;
- //JONNY// value.it_interval.tv_usec   = duration_of_tick;
- //JONNY// value.it_value.tv_sec       = 0;
- //JONNY// value.it_value.tv_usec      = duration_of_tick;
+  value.it_interval.tv_sec    = 0;
+  value.it_interval.tv_usec   = duration_of_tick;
+  value.it_value.tv_sec       = 0;
+  value.it_value.tv_usec      = duration_of_tick;
 
   // Error is -1.
-  //JONNY//  res = setitimer( itimer, &value, &ovalue );
+  res = setitimer( itimer, &value, &ovalue );
 
   // Debug.
-  //JONNY//    if ( res == -1 )
+  if ( res == -1 )
     fprintf( stderr, "I_SoundSetTimer: interrupt n.a.\n");
-  
-	//JONNY//	  return res;
-	return 0;
+  */
+  return res;
 }
 
 
