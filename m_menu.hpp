@@ -35,7 +35,7 @@
 // Even when the menu is not displayed,
 // this can resize the view and change game parameters.
 // Does all the real work of the menu interaction.
-boolean M_Responder (sf::Event ev);
+boolean M_Responder (sf::Event *ev);
 
 
 // Called by main loop,

@@ -651,7 +651,7 @@ S_ChangeMusic
 ( int			musicnum,
   int			looping )
 {
-    musicinfo_t*	music(NULL);
+    musicinfo_t*	music;
     char		namebuf[9];
 
     if ( (musicnum <= mus_None)
@@ -662,7 +662,7 @@ S_ChangeMusic
     else
 	music = &S_music[musicnum];
 
-	    if (mus_playing == music)
+    if (mus_playing == music)
 	return;
 
     // shutdown old music
@@ -671,7 +671,7 @@ S_ChangeMusic
     // get lumpnum if neccessary
     if (!music->lumpnum)
     {
-	sprintf_s(namebuf, "d_%s", music->name);
+	sprintf(namebuf, "d_%s", music->name);
 	music->lumpnum = W_GetNumForName(namebuf);
     }
 

@@ -50,7 +50,7 @@
 void HU_Init(void);
 void HU_Start(void);
 
-boolean HU_Responder(sf::Event ev);
+boolean HU_Responder(sf::Event* ev);
 
 void HU_Ticker(void);
 void HU_Drawer(void);

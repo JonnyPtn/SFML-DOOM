@@ -170,8 +170,8 @@ EV_DoPlat
 	
 	// Find lowest & highest floors around sector
 	rtn = 1;
-		plat = (plat_t*)Z_Malloc( sizeof(*plat), PU_LEVSPEC, 0);
-		P_AddThinker(&plat->thinker);
+	plat = (plat_t*)Z_Malloc( sizeof(*plat), PU_LEVSPEC, 0);
+	P_AddThinker(&plat->thinker);
 		
 	plat->type = type;
 	plat->sector = sec;
@@ -207,10 +207,10 @@ EV_DoPlat
 	  case downWaitUpStay:
 	    plat->speed = PLATSPEED * 4;
 	    plat->low = P_FindLowestFloorSurrounding(sec);
-	 
+
 	    if (plat->low > sec->floorheight)
 		plat->low = sec->floorheight;
-	 
+
 	    plat->high = sec->floorheight;
 	    plat->wait = 35*PLATWAIT;
 	    plat->status = down;
@@ -220,10 +220,10 @@ EV_DoPlat
 	  case blazeDWUS:
 	    plat->speed = PLATSPEED * 8;
 	    plat->low = P_FindLowestFloorSurrounding(sec);
-	   
+
 	    if (plat->low > sec->floorheight)
 		plat->low = sec->floorheight;
-	   
+
 	    plat->high = sec->floorheight;
 	    plat->wait = 35*PLATWAIT;
 	    plat->status = down;
@@ -233,22 +233,22 @@ EV_DoPlat
 	  case perpetualRaise:
 	    plat->speed = PLATSPEED;
 	    plat->low = P_FindLowestFloorSurrounding(sec);
-	   
+
 	    if (plat->low > sec->floorheight)
 		plat->low = sec->floorheight;
-	   
+
 	    plat->high = P_FindHighestFloorSurrounding(sec);
-	   
+
 	    if (plat->high < sec->floorheight)
 		plat->high = sec->floorheight;
-	   
-	    plat->wait = 35*PLATWAIT;
-			    plat->status = (plat_e)(P_Random()&1);
 
-		S_StartSound((mobj_t *)&sec->soundorg,sfx_pstart);
+	    plat->wait = 35*PLATWAIT;
+	    plat->status = (plat_e)(P_Random()&1);
+
+	    S_StartSound((mobj_t *)&sec->soundorg,sfx_pstart);
 	    break;
 	}
-		P_AddActivePlat(plat);
+	P_AddActivePlat(plat);
     }
     return rtn;
 }

@@ -240,9 +240,9 @@ void P_PlayerThink (player_t* player)
 	
     // fixme: do this in the cheat code
     if (player->cheats & CF_NOCLIP)
-		player->mo->flags |= MF_NOCLIP;
+	player->mo->flags |= MF_NOCLIP;
     else
-		player->mo->flags &= ~MF_NOCLIP;
+	player->mo->flags &= ~MF_NOCLIP;
     
     // chain saw run forward
     cmd = &player->cmd;
@@ -285,11 +285,11 @@ void P_PlayerThink (player_t* player)
 	// The actual changing of the weapon is done
 	//  when the weapon psprite can do it
 	//  (read: not in the middle of an attack).
-		newweapon = (weapontype_t)((cmd->buttons&BT_WEAPONMASK)>>BT_WEAPONSHIFT);
+	newweapon = weapontype_t((cmd->buttons&BT_WEAPONMASK)>>BT_WEAPONSHIFT);
 	
 	if (newweapon == wp_fist
 	    && player->weaponowned[wp_chainsaw]
-			    && !(player->readyweapon == wp_chainsaw
+	    && !(player->readyweapon == wp_chainsaw
 		 && player->powers[pw_strength]))
 	{
 	    newweapon = wp_chainsaw;

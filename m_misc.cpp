@@ -31,7 +31,7 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/types.h>
 #include <fcntl.h>
 #include <stdlib.h>
-//JONNY//#include <unistd.h>
+#include "unistd.h"
 
 #include <ctype.h>
 
@@ -118,15 +118,15 @@ M_WriteFile
     int		handle;
     int		count;
 	
-	//JONNY//    handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
+    handle = _open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
 
-//JONNY//    if (handle == -1)
+    if (handle == -1)
 	return false;
 
-	//JONNY//    count = write (handle, source, length);
-	//JONNY//    close (handle);
+    count = _write (handle, source, length);
+    _close (handle);
 	
-//JONNY//    if (count < length)
+    if (count < length)
 	return false;
 		
     return true;
@@ -145,22 +145,21 @@ M_ReadFile
     struct stat	fileinfo;
     byte		*buf;
 	
-	//JONNY//    handle = open (name, O_RDONLY | O_BINARY, 0666);
-//JONNY//    if (handle == -1)
+    handle = _open (name, O_RDONLY | O_BINARY, 0666);
+    if (handle == -1)
 	I_Error ("Couldn't read file %s", name);
-//JONNY//    if (fstat (handle,&fileinfo) == -1)
+    if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Couldn't read file %s", name);
-//JONNY//    length = fileinfo.st_size;
-	//JONNY//    buf = Z_Malloc (length, PU_STATIC, NULL);
-	//JONNY//    count = read (handle, buf, length);
-	//JONNY//    close (handle);
+    length = fileinfo.st_size;
+    buf = (byte*)Z_Malloc (length, PU_STATIC, NULL);
+    count = _read (handle, buf, length);
+    _close (handle);
 	
-//JONNY//    if (count < length)
+    if (count < length)
 	I_Error ("Couldn't read file %s", name);
 		
-//JONNY//    *buffer = buf;
-//JONNY//    return length;
-	return 0;
+    *buffer = buf;
+    return length;
 }
 
 
@@ -170,7 +169,7 @@ M_ReadFile
 int		usemouse;
 int		usejoystick;
 
-/*extern int	key_right;
+extern int	key_right;
 extern int	key_left;
 extern int	key_up;
 extern int	key_down;
@@ -190,7 +189,7 @@ extern int	mousebforward;
 extern int	joybfire;
 extern int	joybstrafe;
 extern int	joybuse;
-extern int	joybspeed;*/
+extern int	joybspeed;
 
 extern int	viewwidth;
 extern int	viewheight;
@@ -240,16 +239,16 @@ default_t	defaults[] =
     {"show_messages",&showMessages, 1},
     
 
-#ifdef NORMALUNIX
+//JONNY//#ifdef NORMALUNIX
     {"key_right",&key_right, KEY_RIGHTARROW},
     {"key_left",&key_left, KEY_LEFTARROW},
     {"key_up",&key_up, KEY_UPARROW},
     {"key_down",&key_down, KEY_DOWNARROW},
-    {"key_strafeleft",&key_strafeleft, ','},
-    {"key_straferight",&key_straferight, '.'},
+    {"key_strafeleft",&key_strafeleft, sf::Keyboard::Comma},
+    {"key_straferight",&key_straferight, sf::Keyboard::Period},
 
     {"key_fire",&key_fire, KEY_RCTRL},
-    {"key_use",&key_use, ' '},
+    {"key_use",&key_use, sf::Keyboard::Space},
     {"key_strafe",&key_strafe, KEY_RALT},
     {"key_speed",&key_speed, KEY_RSHIFT},
 
@@ -259,14 +258,14 @@ default_t	defaults[] =
     {"mb_used", &mb_used, 2},
 #endif
     
-#endif
+//JONNY//#endif
 
 #ifdef LINUX
     {"mousedev", (int*)&mousedev, (int)"/dev/ttyS0"},
     {"mousetype", (int*)&mousetype, (int)"microsoft"},
 #endif
 
-  /*  {"use_mouse",&usemouse, 1},
+    {"use_mouse",&usemouse, 1},
     {"mouseb_fire",&mousebfire,0},
     {"mouseb_strafe",&mousebstrafe,1},
     {"mouseb_forward",&mousebforward,2},
@@ -275,7 +274,7 @@ default_t	defaults[] =
     {"joyb_fire",&joybfire,0},
     {"joyb_strafe",&joybstrafe,1},
     {"joyb_use",&joybuse,3},
-    {"joyb_speed",&joybspeed,2},*/
+    {"joyb_speed",&joybspeed,2},
 
     {"screenblocks",&screenblocks, 9},
     {"detaillevel",&detailLevel, 0},
@@ -312,8 +311,8 @@ void M_SaveDefaults (void)
     int		v;
     FILE*	f;
 	
-	//JONNY//    f = fopen (defaultfile, "w");
-	//JONNY//    if (!f)
+    f = fopen (defaultfile, "w");
+    if (!f)
 	return; // can't write the file, but don't complain
 		
     for (i=0 ; i<numdefaults ; i++)
@@ -365,13 +364,13 @@ void M_LoadDefaults (void)
 	defaultfile = basedefault;
     
     // read the file in, overriding any set defaults
-	f = fopen (defaultfile, "r");
-	    if (f)
+    f = fopen (defaultfile, "r");
+    if (f)
     {
 	while (!feof(f))
 	{
 	    isstring = false;
-	    if (fscanf_s (f, "%79s %[^\n]\n", def, strparm) == 2)
+	    if (fscanf (f, "%79s %[^\n]\n", def, strparm) == 2)
 	    {
 		if (strparm[0] == '"')
 		{
@@ -380,12 +379,12 @@ void M_LoadDefaults (void)
 		    len = strlen(strparm);
 		    newstring = (char *) malloc(len);
 		    strparm[len-1] = 0;
-			strcpy_s(newstring,len, strparm+1);
+		    strcpy(newstring, strparm+1);
 		}
 		else if (strparm[0] == '0' && strparm[1] == 'x')
-		    sscanf_s(strparm+2, "%x", &parm);
+		    sscanf(strparm+2, "%x", &parm);
 		else
-		    sscanf_s(strparm, "%i", &parm);
+		    sscanf(strparm, "%i", &parm);
 		for (i=0 ; i<numdefaults ; i++)
 		    if (!strcmp(def, defaults[i].name))
 		    {
@@ -399,7 +398,7 @@ void M_LoadDefaults (void)
 	    }
 	}
 		
-		fclose (f);
+	fclose (f);
     }
 }
 
@@ -452,9 +451,9 @@ WritePCXfile
     pcx_t*	pcx;
     byte*	pack;
 	
-	pcx = (pcx_t*)Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
+    pcx =(pcx_t*) Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
 
-	pcx->manufacturer = 0x0a;		// PCX id
+    pcx->manufacturer = 0x0a;		// PCX id
     pcx->version = 5;			// 256 color
     pcx->encoding = 1;			// uncompressed
     pcx->bits_per_pixel = 8;		// 256 color
@@ -472,29 +471,29 @@ WritePCXfile
 
 
     // pack the image
- //JONNY//   pack = &pcx->data;
+    pack = &pcx->data;
 	
     for (i=0 ; i<width*height ; i++)
     {
-		if ((*data & 0xc0) != 0xc0);
-		//JONNY//	    *pack++ = *data++;
+	if ( (*data & 0xc0) != 0xc0)
+	    *pack++ = *data++;
 	else
 	{
-		//JONNY//	    *pack++ = 0xc1;
-		//JONNY//	    *pack++ = *data++;
+	    *pack++ = 0xc1;
+	    *pack++ = *data++;
 	}
     }
     
     // write the palette
-	//JONNY//    *pack++ = 0x0c;	// palette ID byte
-	for (i = 0; i < 768; i++);
-		//JONNY//	*pack++ = *palette++;
+    *pack++ = 0x0c;	// palette ID byte
+    for (i=0 ; i<768 ; i++)
+	*pack++ = *palette++;
     
     // write output file
-//JONNY//    length = pack - (byte *)pcx;
-//JONNY//   M_WriteFile (filename, pcx, length);
+    length = pack - (byte *)pcx;
+    M_WriteFile (filename, pcx, length);
 
-//JONNY//   Z_Free (pcx);
+    Z_Free (pcx);
 }
 
 
@@ -512,22 +511,22 @@ void M_ScreenShot (void)
     I_ReadScreen (linear);
     
     // find a file name to save it to
-	//JONNY//    strcpy_s(lbmname,"DOOM00.pcx");
+    strcpy(lbmname,"DOOM00.pcx");
 		
     for (i=0 ; i<=99 ; i++)
     {
 	lbmname[4] = i/10 + '0';
 	lbmname[5] = i%10 + '0';
-	//JONNY//	if (access(lbmname,0) == -1)
+	if (access(lbmname,0) == -1)
 	    break;	// file doesn't exist
     }
     if (i==100)
 	I_Error ("M_ScreenShot: Couldn't create a PCX");
     
     // save the pcx file
-//JONNY//   WritePCXfile (lbmname, linear,
-//JONNY//		  SCREENWIDTH, SCREENHEIGHT,
-		//JONNY//		  W_CacheLumpName ("PLAYPAL",PU_CACHE));
+    WritePCXfile (lbmname, linear,
+		  SCREENWIDTH, SCREENHEIGHT,
+		  (byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 	
     players[consoleplayer].message = "screen shot";
 }

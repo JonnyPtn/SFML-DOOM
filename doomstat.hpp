@@ -1,4 +1,28 @@
-#pragma once
+// Emacs style mode select   -*- C++ -*- 
+//-----------------------------------------------------------------------------
+//
+// $Id:$
+//
+// Copyright (C) 1993-1996 by id Software, Inc.
+//
+// This source is available for distribution and/or modification
+// only under the terms of the DOOM Source Code License as
+// published by id Software. All rights reserved.
+//
+// The source is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
+// for more details.
+//
+// DESCRIPTION:
+//   All the global variables that store the internal state.
+//   Theoretically speaking, the internal state of the engine
+//    should be found by looking at the variables collected
+//    here, and every relevant module will have to include
+//    this header file.
+//   In practice, things are a bit messy.
+//
+//-----------------------------------------------------------------------------
 
 
 #ifndef __D_STATE__
@@ -30,9 +54,9 @@ extern  boolean	devparm;	// DEBUG: launched with -devparm
 
 
 
-							// -----------------------------------------------------
-							// Game Mode - identify IWAD as shareware, retail etc.
-							//
+// -----------------------------------------------------
+// Game Mode - identify IWAD as shareware, retail etc.
+//
 extern GameMode_t	gamemode;
 extern GameMission_t	gamemission;
 
@@ -69,8 +93,8 @@ extern  boolean	netgame;
 
 // Flag: true only if started as net deathmatch.
 // An enum might handle altdeath/cooperative better.
-extern  boolean	deathmatch;
-
+extern  boolean	deathmatch;	
+	
 // -------------------------
 // Internal parameters for sound rendering.
 // These have been taken from the DOS version,
@@ -85,10 +109,10 @@ extern  boolean	deathmatch;
 extern int snd_SfxVolume;      // maximum volume for sound
 extern int snd_MusicVolume;    // maximum volume for music
 
-							   // Current music/sfx card - index useless
-							   //  w/o a reference LUT in a sound module.
-							   // Ideally, this would use indices found
-							   //  in: /usr/include/linux/soundcard.h
+// Current music/sfx card - index useless
+//  w/o a reference LUT in a sound module.
+// Ideally, this would use indices found
+//  in: /usr/include/linux/soundcard.h
 extern int snd_MusicDevice;
 extern int snd_SfxDevice;
 // Config file? Same disclaimer as above.
@@ -131,7 +155,7 @@ extern	int		scaledviewwidth;
 extern  int	viewangleoffset;
 
 // Player taking events, and displaying.
-extern  int	consoleplayer;
+extern  int	consoleplayer;	
 extern  int	displayplayer;
 
 
@@ -149,10 +173,10 @@ extern  int	leveltime;	// tics in game play for par
 
 
 
-						// --------------------------------------
-						// DEMO playback/recording related stuff.
-						// No demo, there is a human player in charge?
-						// Disable save/end game?
+// --------------------------------------
+// DEMO playback/recording related stuff.
+// No demo, there is a human player in charge?
+// Disable save/end game?
 extern  boolean	usergame;
 
 //?
@@ -160,7 +184,7 @@ extern  boolean	demoplayback;
 extern  boolean	demorecording;
 
 // Quit after playing a demo from cmdline.
-extern  boolean		singledemo;
+extern  boolean		singledemo;	
 
 
 
@@ -201,7 +225,7 @@ extern  mapthing_t      playerstarts[MAXPLAYERS];
 
 // Intermission stats.
 // Parameters for world map / intermission.
-extern  wbstartstruct_t		wminfo;
+extern  wbstartstruct_t		wminfo;	
 
 
 // LUT of ammunition limits for each kind.
@@ -231,7 +255,7 @@ extern  gamestate_t     wipegamestate;
 extern  int             mouseSensitivity;
 //?
 // debug flag to cancel adaptiveness
-extern  boolean         singletics;
+extern  boolean         singletics;	
 
 extern  int             bodyqueslot;
 
@@ -250,7 +274,7 @@ extern int		skyflatnum;
 extern  doomcom_t*	doomcom;
 
 // This points inside doomcom.
-extern  doomdata_t*	netbuffer;
+extern  doomdata_t*	netbuffer;	
 
 
 extern  ticcmd_t	localcmds[BACKUPTICS];

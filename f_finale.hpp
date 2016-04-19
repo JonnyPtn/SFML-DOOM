@@ -31,7 +31,7 @@
 //
 
 // Called by main loop.
-boolean F_Responder (sf::Event ev);
+boolean F_Responder (sf::Event* ev);
 
 // Called by main loop.
 void F_Ticker (void);
@@ -41,6 +41,7 @@ void F_Drawer (void);
 
 
 void F_StartFinale (void);
+
 
 
 

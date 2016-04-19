@@ -196,7 +196,7 @@ void R_InitSpriteDefs (char** namelist)
     if (!numsprites)
 	return;
 		
-	    sprites = (spritedef_t*)Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
+    sprites = (spritedef_t*)Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -274,8 +274,8 @@ void R_InitSpriteDefs (char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes = 
-			    (spriteframe_t*)Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
-			memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
+	    (spriteframe_t*)Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
     }
 
 }
@@ -405,7 +405,7 @@ R_DrawVisSprite
     patch_t*		patch;
 	
 	
-	    patch = (patch_t*)W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+    patch = (patch_t*)W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
 
     dc_colormap = vis->colormap;
     
@@ -431,12 +431,12 @@ R_DrawVisSprite
     {
 	texturecolumn = frac>>FRACBITS;
 #ifdef RANGECHECK
-		if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
+	if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
 	    I_Error ("R_DrawSpriteRange: bad texturecolumn");
 #endif
-			column = (column_t *) ((byte *)patch +
-		  LONG(patch->columnofs[texturecolumn]));
-			R_DrawMaskedColumn (column);
+	column = (column_t *) ((byte *)patch +
+			       LONG(patch->columnofs[texturecolumn]));
+	R_DrawMaskedColumn (column);
     }
 
     colfunc = basecolfunc;
@@ -789,7 +789,7 @@ void R_SortVisSprites (void)
     int			i;
     int			count;
     vissprite_t*	ds;
-    vissprite_t*	best=NULL;
+    vissprite_t*	best;
     vissprite_t		unsorted;
     fixed_t		bestscale;
 
@@ -825,11 +825,11 @@ void R_SortVisSprites (void)
 		best = ds;
 	    }
 	}
-		best->next->prev = best->prev;
-		best->prev->next = best->next;
-		best->next = &vsprsortedhead;
-		best->prev = vsprsortedhead.prev;
-		vsprsortedhead.prev->next = best;
+	best->next->prev = best->prev;
+	best->prev->next = best->next;
+	best->next = &vsprsortedhead;
+	best->prev = vsprsortedhead.prev;
+	vsprsortedhead.prev->next = best;
 	vsprsortedhead.prev = best;
     }
 }

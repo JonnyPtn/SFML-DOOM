@@ -34,11 +34,11 @@ rcsid[] = "$Id: hu_lib.c,v 1.3 1997/01/26 07:44:58 b1 Exp $";
 #include "r_local.hpp"
 #include "r_draw.hpp"
 
-#include <SFML\Window\Event.hpp>
+//JONNY//
+#include <SFML\Window.hpp>
 
 // boolean : whether the screen is always erased
 #define noterased viewwindowx
-
 
 extern boolean	automapactive;	// in AM_map.c
 

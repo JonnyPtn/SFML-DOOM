@@ -405,7 +405,7 @@ void HU_Init(void)
     j = HU_FONTSTART;
     for (i=0;i<HU_FONTSIZE;i++)
     {
-	sprintf_s(buffer, "STCFN%.3d", j++);
+	sprintf(buffer, "STCFN%.3d", j++);
 	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
     }
 
@@ -614,7 +614,7 @@ char HU_dequeueChatChar(void)
     return c;
 }
 
-boolean HU_Responder(sf::Event ev)
+boolean HU_Responder(sf::Event *ev)
 {
 
     static char		lastmessage[HU_MAXLINELENGTH+1];
@@ -640,29 +640,29 @@ boolean HU_Responder(sf::Event ev)
     for (i=0 ; i<MAXPLAYERS ; i++)
 	numplayers += playeringame[i];
 
-    if (ev.key.code == sf::Keyboard::RShift)
+    if (ev->key.code == KEY_RSHIFT)
     {
-	shiftdown = ev.type == sf::Event::KeyPressed;
+	shiftdown = ev->type == ev_keydown;
 	return false;
     }
-    else if (ev.key.code == sf::Keyboard::RAlt || ev.key.code == sf::Keyboard::LAlt)
+    else if (ev->key.code == KEY_RALT || ev->key.code == KEY_LALT)
     {
-	altdown = ev.type == sf::Event::KeyPressed;
+	altdown = ev->type == ev_keydown;
 	return false;
     }
 
-    if (ev.type != sf::Event::KeyPressed)
+    if (ev->type != ev_keydown)
 	return false;
 
     if (!chat_on)
     {
-	/*if (ev->data1 == HU_MSGREFRESH)
+	if (ev->key.code == HU_MSGREFRESH)
 	{
 	    message_on = true;
 	    message_counter = HU_MSGTIMEOUT;
 	    eatkey = true;
 	}
-	else if (netgame && ev->data1 == HU_INPUTTOGGLE)
+	else if (netgame && ev->key.code == HU_INPUTTOGGLE)
 	{
 	    eatkey = chat_on = true;
 	    HUlib_resetIText(&w_chat);
@@ -672,7 +672,7 @@ boolean HU_Responder(sf::Event ev)
 	{
 	    for (i=0; i<MAXPLAYERS ; i++)
 	    {
-		if (ev->data1 == destination_keys[i])
+		if (ev->key.code == destination_keys[i])
 		{
 		    if (playeringame[i] && i!=consoleplayer)
 		    {
@@ -701,7 +701,7 @@ boolean HU_Responder(sf::Event ev)
     }
     else
     {
-	c = ev->data1;
+	c = ev->key.code;
 	// send a macro
 	if (altdown)
 	{
@@ -721,7 +721,7 @@ boolean HU_Responder(sf::Event ev)
 	    
 	    // leave chat mode and notify that it was sent
 	    chat_on = false;
-			    strcpy_s(lastmessage, chat_macros[c]);
+	    strcpy(lastmessage, chat_macros[c]);
 	    plr->message = lastmessage;
 	    eatkey = true;
 	}
@@ -737,7 +737,7 @@ boolean HU_Responder(sf::Event ev)
 		// static unsigned char buf[20]; // DEBUG
 		HU_queueChatChar(c);
 		
-		// sprintf_s(buf, "KEY: %d => %d", ev->data1, c);
+		// sprintf(buf, "KEY: %d => %d", ev->data1, c);
 		//      plr->message = buf;
 	    }
 	    if (c == KEY_ENTER)
@@ -745,13 +745,13 @@ boolean HU_Responder(sf::Event ev)
 		chat_on = false;
 		if (w_chat.l.len)
 		{
-								    strcpy_s(lastmessage, w_chat.l.l);
+		    strcpy(lastmessage, w_chat.l.l);
 		    plr->message = lastmessage;
 		}
 	    }
 	    else if (c == KEY_ESCAPE)
 		chat_on = false;
-	}*/
+	}
     }
 
     return eatkey;

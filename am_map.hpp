@@ -29,7 +29,7 @@
 
 
 // Called by main loop.
-boolean AM_Responder (sf::Event ev);
+boolean AM_Responder (sf::Event* ev);
 
 // Called by main loop.
 void AM_Ticker (void);

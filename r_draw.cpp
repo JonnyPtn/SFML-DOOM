@@ -460,7 +460,7 @@ void R_InitTranslationTables (void)
 {
     int		i;
 	
-   translationtables = (byte*)Z_Malloc (256*3+255, PU_STATIC, 0);
+    translationtables = (byte*)Z_Malloc (256*3+255, PU_STATIC, 0);
     translationtables = (byte *)(( (int)translationtables + 255 )& ~255);
     
     // translate just the 16 green colors
@@ -752,14 +752,14 @@ void R_FillBackScreen (void)
     else
 	name = name1;
     
-	   src = (byte*)W_CacheLumpName (name, PU_CACHE); 
+    src = (byte*)W_CacheLumpName (name, PU_CACHE); 
     dest = screens[1]; 
 	 
     for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++) 
     { 
 	for (x=0 ; x<SCREENWIDTH/64 ; x++) 
 	{ 
-			    memcpy (dest, src+((y&63)<<6), 64); 
+	    memcpy (dest, src+((y&63)<<6), 64); 
 	    dest += 64; 
 	} 
 
@@ -770,11 +770,11 @@ void R_FillBackScreen (void)
 	} 
     } 
 	
-	    patch = (patch_t*)W_CacheLumpName ("brdr_t",PU_CACHE);
+    patch = (patch_t*)W_CacheLumpName ("brdr_t",PU_CACHE);
 
     for (x=0 ; x<scaledviewwidth ; x+=8)
 	V_DrawPatch (viewwindowx+x,viewwindowy-8,1,patch);
-    patch =(patch_t*) W_CacheLumpName ("brdr_b",PU_CACHE);
+    patch = (patch_t*)W_CacheLumpName ("brdr_b",PU_CACHE);
 
     for (x=0 ; x<scaledviewwidth ; x+=8)
 	V_DrawPatch (viewwindowx+x,viewwindowy+viewheight,1,patch);
@@ -799,15 +799,15 @@ void R_FillBackScreen (void)
 		 1,
 		(patch_t*)W_CacheLumpName ("brdr_tr",PU_CACHE));
     
-   V_DrawPatch (viewwindowx-8,
+    V_DrawPatch (viewwindowx-8,
 		 viewwindowy+viewheight,
 		 1,
-	   (patch_t*)W_CacheLumpName ("brdr_bl",PU_CACHE));
-   
-   V_DrawPatch (viewwindowx+scaledviewwidth,
+		(patch_t*)W_CacheLumpName ("brdr_bl",PU_CACHE));
+    
+    V_DrawPatch (viewwindowx+scaledviewwidth,
 		 viewwindowy+viewheight,
 		 1,
-	   (patch_t*)W_CacheLumpName ("brdr_br",PU_CACHE));
+		(patch_t*)W_CacheLumpName ("brdr_br",PU_CACHE));
 } 
  
 

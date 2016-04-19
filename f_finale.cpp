@@ -87,7 +87,7 @@ char*	finaleflat;
 
 void	F_StartCast (void);
 void	F_CastTicker (void);
-boolean F_CastResponder (sf::Event ev);
+boolean F_CastResponder (sf::Event *ev);
 void	F_CastDrawer (void);
 
 //
@@ -192,7 +192,7 @@ void F_StartFinale (void)
 
 
 
-boolean F_Responder (sf::Event event)
+boolean F_Responder (sf::Event *event)
 {
     if (finalestage == 2)
 	return F_CastResponder (event);
@@ -278,7 +278,7 @@ void F_TextWrite (void)
     {
 	for (x=0 ; x<SCREENWIDTH/64 ; x++)
 	{
-		//JONNY//	    memcpy (dest, src+((y&63)<<6), 64);
+	    memcpy (dest, src+((y&63)<<6), 64);
 	    dest += 64;
 	}
 	if (SCREENWIDTH&63)
@@ -356,7 +356,7 @@ castinfo_t	castorder[] = {
     {CC_CYBER, MT_CYBORG},
     {CC_HERO, MT_PLAYER},
 
-	//JONNY//{NULL,0}
+    {NULL,(mobjtype_t)0}
 };
 
 int		castnum;
@@ -376,7 +376,7 @@ extern	gamestate_t     wipegamestate;
 
 void F_StartCast (void)
 {
-	//JONNY//    wipegamestate = -1;		// force a screen wipe
+    wipegamestate = (gamestate_t)-1;		// force a screen wipe
     castnum = 0;
     caststate = &states[mobjinfo[castorder[castnum].type].seestate];
     casttics = caststate->tics;
@@ -499,9 +499,9 @@ void F_CastTicker (void)
 // F_CastResponder
 //
 
-boolean F_CastResponder (sf::Event ev)
+boolean F_CastResponder (sf::Event* ev)
 {
-    if (ev.type != sf::Event::KeyPressed)
+    if (ev->type != ev_keydown)
 	return false;
 		
     if (castdeath)
@@ -585,7 +585,7 @@ void F_CastDrawer (void)
     patch_t*		patch;
     
     // erase the entire screen to a background
-	//JONNY//   V_DrawPatch (0,0,0, W_CacheLumpName ("BOSSBACK", PU_CACHE));
+    V_DrawPatch (0,0,0, (patch_t*)W_CacheLumpName ("BOSSBACK", PU_CACHE));
 
     F_CastPrint (castorder[castnum].name);
     
@@ -595,11 +595,11 @@ void F_CastDrawer (void)
     lump = sprframe->lump[0];
     flip = (boolean)sprframe->flip[0];
 			
-	//JONNY//    patch = W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
-	if (flip);
-		//JONNY//	V_DrawPatchFlipped (160,170,0,patch);
-		//JONNY//    else
-		//JONNY//V_DrawPatch (160,170,0,patch);
+    patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
+    if (flip)
+	V_DrawPatchFlipped (160,170,0,patch);
+    else
+	V_DrawPatch (160,170,0,patch);
 }
 
 
@@ -651,8 +651,8 @@ void F_BunnyScroll (void)
     int		stage;
     static int	laststage;
 		
-	//JONNY//    p1 = W_CacheLumpName ("PFUB2", PU_LEVEL);
-	//JONNY//    p2 = W_CacheLumpName ("PFUB1", PU_LEVEL);
+    p1 = (patch_t*)W_CacheLumpName ("PFUB2", PU_LEVEL);
+    p2 = (patch_t*)W_CacheLumpName ("PFUB1", PU_LEVEL);
 
     V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
 	
@@ -664,18 +664,18 @@ void F_BunnyScroll (void)
 		
     for ( x=0 ; x<SCREENWIDTH ; x++)
     {
-		if (x + scrolled < 320);
-		//JONNY//	    F_DrawPatchCol (x, p1, x+scrolled);
-		//JONNY//	else
-		//JONNY//	    F_DrawPatchCol (x, p2, x+scrolled - 320);		
+	if (x+scrolled < 320)
+	    F_DrawPatchCol (x, p1, x+scrolled);
+	else
+	    F_DrawPatchCol (x, p2, x+scrolled - 320);		
     }
 	
     if (finalecount < 1130)
 	return;
     if (finalecount < 1180)
     {
-		//JONNY//V_DrawPatch ((SCREENWIDTH-13*8)/2,
-		//JONNY//		     (SCREENHEIGHT-8*8)/2,0, W_CacheLumpName ("END0",PU_CACHE));
+	V_DrawPatch ((SCREENWIDTH-13*8)/2,
+		     (SCREENHEIGHT-8*8)/2,0, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
 	laststage = 0;
 	return;
     }
@@ -689,8 +689,8 @@ void F_BunnyScroll (void)
 	laststage = stage;
     }
 	
-    sprintf_s (name,"END%i",stage);
-	//JONNY//    V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, W_CacheLumpName (name,PU_CACHE));
+    sprintf (name,"END%i",stage);
+    V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, (patch_t*)W_CacheLumpName (name,PU_CACHE));
 }
 
 
@@ -712,26 +712,23 @@ void F_Drawer (void)
 	switch (gameepisode)
 	{
 	  case 1:
-		  if (gamemode == retail)
-		  {
-
-		  }
-			//JONNY//    V_DrawPatch (0,0,0,
-			  //JONNY//			 W_CacheLumpName("CREDIT",PU_CACHE));
+	    if ( gamemode == retail )
+	      V_DrawPatch (0,0,0,
+			  (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
 	    else
-			//JONNY//	      V_DrawPatch (0,0,0,
-			  //JONNY//			 W_CacheLumpName("HELP2",PU_CACHE));
+	      V_DrawPatch (0,0,0,
+			  (patch_t*)("HELP2",PU_CACHE));
 	    break;
 	  case 2:
-		  //JONNY//	    V_DrawPatch(0,0,0,
-			//JONNY//W_CacheLumpName("VICTORY2",PU_CACHE));
+	    V_DrawPatch(0,0,0,
+			(patch_t*)("VICTORY2",PU_CACHE));
 	    break;
 	  case 3:
 	    F_BunnyScroll ();
 	    break;
 	  case 4:
-		  //JONNY//V_DrawPatch (0,0,0,
-			//JONNY//			 W_CacheLumpName("ENDPIC",PU_CACHE));
+	    V_DrawPatch (0,0,0,
+			(patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
 	    break;
 	}
     }

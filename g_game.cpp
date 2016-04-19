@@ -145,7 +145,7 @@ byte*		savebuffer;
 // 
 // controls (have defaults) 
 // 
-/*int             key_right;
+int             key_right;
 int		key_left;
 
 int		key_up;
@@ -164,7 +164,7 @@ int             mousebforward;
 int             joybfire; 
 int             joybstrafe; 
 int             joybuse; 
-int             joybspeed; */
+int             joybspeed; 
  
  
  
@@ -178,9 +178,9 @@ fixed_t		angleturn[3] = {640, 1280, 320};	// + slow turn
 
 #define SLOWTURNTICS	6 
  
-#define NUMKEYS		256 
+#define NUMKEYS		1024
 
-boolean         gamekeydown[1024]; 
+boolean         gamekeydown[NUMKEYS]; 
 int             turnheld;				// for accelerative turning 
  
 boolean		mousearray[4]; 
@@ -253,10 +253,9 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	consistancy[consoleplayer][maketic%BACKUPTICS]; 
 
  
-    strafe = gamekeydown[sf::Keyboard::RAlt] /*|| mousebuttons[mousebstrafe] 
+    strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe] 
 	|| joybuttons[joybstrafe]; 
-    speed = gamekeydown[key_speed] || joybuttons[joybspeed]*/;
-	speed = 0;
+    speed = gamekeydown[key_speed] || joybuttons[joybspeed];
  
     forward = side = 0;
     
@@ -264,8 +263,8 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     // on the keyboard and joystick
     if (joyxmove < 0
 	|| joyxmove > 0  
-	|| gamekeydown[sf::Keyboard::Right]
-	|| gamekeydown[sf::Keyboard::Left]) 
+	|| gamekeydown[key_right]
+	|| gamekeydown[key_left]) 
 	turnheld += ticdup; 
     else 
 	turnheld = 0; 
@@ -278,12 +277,12 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     // let movement keys cancel each other out
     if (strafe) 
     { 
-	if (gamekeydown[sf::Keyboard::Right]) 
+	if (gamekeydown[key_right]) 
 	{
 	    // fprintf(stderr, "strafe right\n");
 	    side += sidemove[speed]; 
 	}
-	if (gamekeydown[sf::Keyboard::Left]) 
+	if (gamekeydown[key_left]) 
 	{
 	    //	fprintf(stderr, "strafe left\n");
 	    side -= sidemove[speed]; 
@@ -296,9 +295,9 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     } 
     else 
     { 
-	if (gamekeydown[sf::Keyboard::Right]) 
+	if (gamekeydown[key_right]) 
 	    cmd->angleturn -= angleturn[tspeed]; 
-	if (gamekeydown[sf::Keyboard::Left]) 
+	if (gamekeydown[key_left]) 
 	    cmd->angleturn += angleturn[tspeed]; 
 	if (joyxmove > 0) 
 	    cmd->angleturn -= angleturn[tspeed]; 
@@ -306,33 +305,33 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	    cmd->angleturn += angleturn[tspeed]; 
     } 
  
-    if (gamekeydown[sf::Keyboard::Up]) 
+    if (gamekeydown[key_up]) 
     {
 	// fprintf(stderr, "up\n");
 	forward += forwardmove[speed]; 
     }
-    if (gamekeydown[sf::Keyboard::Down]) 
+    if (gamekeydown[key_down]) 
     {
 	// fprintf(stderr, "down\n");
 	forward -= forwardmove[speed]; 
     }
     if (joyymove < 0) 
-		forward += forwardmove[speed]; 
+	forward += forwardmove[speed]; 
     if (joyymove > 0) 
-		forward -= forwardmove[speed]; 
-    if (gamekeydown[sf::Keyboard::Period]) 
-		side += sidemove[speed]; 
-    if (gamekeydown[sf::Keyboard::Comma]) 
-		side -= sidemove[speed];
+	forward -= forwardmove[speed]; 
+    if (gamekeydown[key_straferight]) 
+	side += sidemove[speed]; 
+    if (gamekeydown[key_strafeleft]) 
+	side -= sidemove[speed];
     
     // buttons
     cmd->chatchar = HU_dequeueChatChar(); 
  
-    if (gamekeydown[sf::Keyboard::RControl] /*|| mousebuttons[mousebfire] 
-	|| joybuttons[joybfire]*/) 
+    if (gamekeydown[key_fire] || mousebuttons[mousebfire] 
+	|| joybuttons[joybfire]) 
 	cmd->buttons |= BT_ATTACK; 
  
-    if (gamekeydown[sf::Keyboard::Space] /*|| joybuttons[joybuse]*/ ) 
+    if (gamekeydown[key_use] || joybuttons[joybuse] ) 
     { 
 	cmd->buttons |= BT_USE;
 	// clear double clicks if hit use button 
@@ -349,11 +348,11 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	}
     
     // mouse
-   /* if (mousebuttons[mousebforward]) 
-	forward += forwardmove[speed];*/
+    if (mousebuttons[mousebforward]) 
+	forward += forwardmove[speed];
     
     // forward double click
-   /* if (mousebuttons[mousebforward] != dclickstate && dclicktime > 1 ) 
+    if (mousebuttons[mousebforward] != dclickstate && dclicktime > 1 ) 
     { 
 	dclickstate = mousebuttons[mousebforward]; 
 	if (dclickstate) 
@@ -408,7 +407,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	side += mousex*2; 
     else 
 	cmd->angleturn -= mousex*0x8; 
-	*/
+
     mousex = mousey = 0; 
 	 
     if (forward > MAXPLMOVE) 
@@ -479,7 +478,7 @@ void G_DoLoadLevel (void)
     { 
 	if (playeringame[i] && players[i].playerstate == PST_DEAD) 
 	    players[i].playerstate = PST_REBORN; 
-	memset(players[i].frags, 0, sizeof(players[i].frags));
+	memset (players[i].frags,0,sizeof(players[i].frags)); 
     } 
 		 
     P_SetupLevel (gameepisode, gamemap, 0, gameskill);    
@@ -502,11 +501,11 @@ void G_DoLoadLevel (void)
 // G_Responder  
 // Get info needed to make ticcmd_ts for the players.
 // 
-boolean G_Responder (sf::Event ev) 
+boolean G_Responder (sf::Event* ev) 
 { 
     // allow spy mode changes even during the demo
-    if (gamestate == GS_LEVEL && ev.type == sf::Event::KeyPressed 
-	&& ev.key.code == sf::Keyboard::F12 && (singledemo || !deathmatch) )
+    if (gamestate == GS_LEVEL && ev->type == ev_keydown 
+	&& ev->key.code == KEY_F12 && (singledemo || !deathmatch) )
     {
 	// spy mode 
 	do 
@@ -523,9 +522,9 @@ boolean G_Responder (sf::Event ev)
 	(demoplayback || gamestate == GS_DEMOSCREEN) 
 	) 
     { 
-	if (ev.type == sf::Event::KeyPressed //||  
-	   /* (ev->type == ev_mouse && ev->data1) || 
-	    (ev->type == ev_joystick && ev->data1)*/ ) 
+	if (ev->type == ev_keydown ||  
+	    (ev->type == ev_mouse && ev->key.code) || 
+	    (ev->type == ev_joystick && ev->key.code) )
 	{ 
 	    M_StartControlPanel (); 
 	    return true; 
@@ -556,39 +555,43 @@ boolean G_Responder (sf::Event ev)
 	    return true;	// finale ate the event 
     } 
 	 
-    switch (ev.type) 
+    switch (ev->type) 
     { 
-	case sf::Event::KeyPressed: 
-		//JONNY// NEED TO FIND OUT WHAT PAUSE BUTTON IS
-	/*if (ev->key.code == KEY_PAUSE) 
+      case ev_keydown: 
+	if (ev->key.code == KEY_PAUSE)
 	{ 
 	    sendpause = true; 
 	    return true; 
-	} */
-	    gamekeydown[ev.key.code] = true; 
+	} 
+	if (ev->key.code <NUMKEYS)
+	    gamekeydown[ev->key.code] = true;
 	return true;    // eat key down events 
  
-	case sf::Event::KeyReleased: 
-		if(ev.key.code>=0)
-		  gamekeydown[ev.key.code] = false; 
+      case ev_keyup: 
+	if (ev->key.code <NUMKEYS)
+	    gamekeydown[ev->key.code] = false;
 	return false;   // always let key up events filter down 
 		 
-   /*   case ev_mouse: 
-	mousebuttons[0] = ev->data1 & 1; 
-	mousebuttons[1] = ev->data1 & 2; 
-	mousebuttons[2] = ev->data1 & 4; 
+      case ev_mouse: 
+	mousebuttons[0] = ev->key.code & 1;
+	mousebuttons[1] = ev->key.code & 2;
+	mousebuttons[2] = ev->key.code & 4;
+	//JONNY// perhaps data2 and data3 are mouse tings!!!
+	/*
 	mousex = ev->data2*(mouseSensitivity+5)/10; 
-	mousey = ev->data3*(mouseSensitivity+5)/10; 
+	mousey = ev->data3*(mouseSensitivity+5)/10; */
 	return true;    // eat events 
  
       case ev_joystick: 
-	joybuttons[0] = ev->data1 & 1; 
-	joybuttons[1] = ev->data1 & 2; 
-	joybuttons[2] = ev->data1 & 4; 
-	joybuttons[3] = ev->data1 & 8; 
+	joybuttons[0] = ev->key.code & 1; 
+	joybuttons[1] = ev->key.code & 2; 
+	joybuttons[2] = ev->key.code & 4; 
+	joybuttons[3] = ev->key.code & 8; 
+	//JONNY// OR mouse and joystick tings?
+	/*
 	joyxmove = ev->data2; 
-	joyymove = ev->data3; 
-	return true;    // eat events */
+	joyymove = ev->data3*/
+	return true;    // eat events 
  
       default: 
 	break; 
@@ -610,11 +613,9 @@ void G_Ticker (void)
     ticcmd_t*	cmd;
     
     // do player reborns if needed
-	for (i = 0; i < MAXPLAYERS; i++)
-	{
-		if (playeringame[i] && players[i].playerstate == PST_REBORN)
-			G_DoReborn(i);
-	}
+    for (i=0 ; i<MAXPLAYERS ; i++) 
+	if (playeringame[i] && players[i].playerstate == PST_REBORN) 
+	    G_DoReborn (i);
     
     // do things to change the game state
     while (gameaction != ga_nothing) 
@@ -653,6 +654,7 @@ void G_Ticker (void)
 	    break; 
 	} 
     }
+    
     // get commands, check consistancy,
     // and build new consistancy check
     buf = (gametic/ticdup)%BACKUPTICS; 
@@ -676,7 +678,7 @@ void G_Ticker (void)
 	    {
 		static char turbomessage[80];
 		extern char *player_names[4];
-		sprintf_s (turbomessage, "%s is turbo!",player_names[i]);
+		sprintf (turbomessage, "%s is turbo!",player_names[i]);
 		players[consoleplayer].message = turbomessage;
 	    }
 			
@@ -715,7 +717,7 @@ void G_Ticker (void)
 					 
 		  case BTS_SAVEGAME: 
 		    if (!savedescription[0]) 
-			strcpy_s (savedescription, "NET GAME"); 
+			strcpy (savedescription, "NET GAME"); 
 		    savegameslot =  
 			(players[i].cmd.buttons & BTS_SAVEMASK)>>BTS_SAVESHIFT; 
 		    gameaction = ga_savegame; 
@@ -1193,7 +1195,7 @@ char	savename[256];
 
 void G_LoadGame (char* name) 
 { 
-    strcpy_s (savename, name); 
+    strcpy (savename, name); 
     gameaction = ga_loadgame; 
 } 
  
@@ -1214,12 +1216,12 @@ void G_DoLoadGame (void)
     
     // skip the description field 
     memset (vcheck,0,sizeof(vcheck)); 
-    sprintf_s (vcheck,"version %i",VERSION); 
-	 if (strcmp ((char*)save_p, vcheck)) 
+    sprintf (vcheck,"version %i",VERSION); 
+    if (strcmp ((char*)save_p, vcheck)) 
 	return;				// bad version 
     save_p += VERSIONSIZE; 
 			 
-	 gameskill = (skill_t)*save_p++; 
+    gameskill = (skill_t)*save_p++; 
     gameepisode = *save_p++; 
     gamemap = *save_p++; 
     for (i=0 ; i<MAXPLAYERS ; i++) 
@@ -1265,7 +1267,7 @@ G_SaveGame
   char*	description ) 
 { 
     savegameslot = slot; 
-    strcpy_s (savedescription, description); 
+    strcpy (savedescription, description); 
     sendsave = true; 
 } 
  
@@ -1278,9 +1280,9 @@ void G_DoSaveGame (void)
     int		i; 
 	
     if (M_CheckParm("-cdrom"))
-	sprintf_s(name,"c:\\doomdata\\\"SAVEGAMENAME\"%d.dsg",savegameslot);
+	sprintf(name,"c:\\doomdata\\\"SAVEGAMENAME\"%d.dsg",savegameslot);
     else
-	sprintf_s (name,SAVEGAMENAME"%d.dsg",savegameslot); 
+	sprintf (name,SAVEGAMENAME"%d.dsg",savegameslot); 
     description = savedescription; 
 	 
     save_p = savebuffer = screens[1]+0x4000; 
@@ -1288,7 +1290,7 @@ void G_DoSaveGame (void)
     memcpy (save_p, description, SAVESTRINGSIZE); 
     save_p += SAVESTRINGSIZE; 
     memset (name2,0,sizeof(name2)); 
-    sprintf_s (name2,"version %i",VERSION); 
+    sprintf (name2,"version %i",VERSION); 
     memcpy (save_p, name2, VERSIONSIZE); 
     save_p += VERSIONSIZE; 
 	 
@@ -1439,10 +1441,8 @@ G_InitNew
 	 
 			 
     // force players to be initialized upon first level load         
-	for (i = 0; i < MAXPLAYERS; i++)
-	{
-		players[i].playerstate = PST_REBORN;
-	}
+    for (i=0 ; i<MAXPLAYERS ; i++) 
+	players[i].playerstate = PST_REBORN; 
  
     usergame = true;                // will be set false if a demo 
     paused = false; 
@@ -1537,13 +1537,13 @@ void G_RecordDemo (char* name)
     int				maxsize;
 	
     usergame = false; 
-    strcpy_s (demoname, name); 
-    strcat_s (demoname, ".lmp"); 
+    strcpy (demoname, name); 
+    strcat (demoname, ".lmp"); 
     maxsize = 0x20000;
     i = M_CheckParm ("-maxdemo");
     if (i && i<myargc-1)
 	maxsize = atoi(myargv[i+1])*1024;
-	 demobuffer = (byte*)Z_Malloc (maxsize,PU_STATIC,NULL); 
+    demobuffer = (byte*)Z_Malloc (maxsize,PU_STATIC,NULL); 
     demoend = demobuffer + maxsize;
 	
     demorecording = true; 
@@ -1589,7 +1589,7 @@ void G_DoPlayDemo (void)
     int             i, episode, map; 
 	 
     gameaction = ga_nothing; 
-	 demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname, PU_STATIC); 
+    demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname, PU_STATIC); 
     if ( *demo_p++ != VERSION)
     {
       fprintf( stderr, "Demo is from a different game version!\n");
@@ -1597,7 +1597,7 @@ void G_DoPlayDemo (void)
       return;
     }
     
-	 skill = (skill_t)*demo_p++; 
+    skill = (skill_t)*demo_p++; 
     episode = *demo_p++; 
     map = *demo_p++; 
     deathmatch = *demo_p++;
@@ -1616,7 +1616,7 @@ void G_DoPlayDemo (void)
 
     // don't spend a lot of time in loadlevel 
     precache = false;
-	G_InitNew (skill, episode, map); 
+    G_InitNew (skill, episode, map); 
     precache = true; 
 
     usergame = false; 

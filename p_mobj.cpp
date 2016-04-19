@@ -91,7 +91,7 @@ void P_ExplodeMissile (mobj_t* mo)
 {
     mo->momx = mo->momy = mo->momz = 0;
 
-	    P_SetMobjState (mo, (statenum_t)mobjinfo[mo->type].deathstate);
+    P_SetMobjState (mo, (statenum_t)mobjinfo[mo->type].deathstate);
 
     mo->tics -= P_Random()&3;
 
@@ -127,7 +127,7 @@ void P_XYMovement (mobj_t* mo)
 	    mo->flags &= ~MF_SKULLFLY;
 	    mo->momx = mo->momy = mo->momz = 0;
 
-			    P_SetMobjState (mo, (statenum_t)mo->info->spawnstate);
+	    P_SetMobjState (mo, (statenum_t)mo->info->spawnstate);
 	}
 	return;
     }
@@ -487,8 +487,8 @@ P_SpawnMobj
     state_t*	st;
     mobjinfo_t*	info;
 	
-	    mobj = (mobj_t*)Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
-	    memset (mobj, 0, sizeof (*mobj));
+    mobj = (mobj_t*)Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+    memset (mobj, 0, sizeof (*mobj));
     info = &mobjinfo[type];
 	
     mobj->type = type;
@@ -503,7 +503,7 @@ P_SpawnMobj
     if (gameskill != sk_nightmare)
 	mobj->reactiontime = info->reactiontime;
     
-   mobj->lastlook = P_Random () % MAXPLAYERS;
+    mobj->lastlook = P_Random () % MAXPLAYERS;
     // do not set the state with P_SetMobjState,
     // because action routines can not be called yet
     st = &states[info->spawnstate];
@@ -514,12 +514,12 @@ P_SpawnMobj
     mobj->frame = st->frame;
 
     // set subsector and/or block links
-	 P_SetThingPosition (mobj);
+    P_SetThingPosition (mobj);
 	
     mobj->floorz = mobj->subsector->sector->floorheight;
     mobj->ceilingz = mobj->subsector->sector->ceilingheight;
 
-	if (z == ONFLOORZ)
+    if (z == ONFLOORZ)
 	mobj->z = mobj->floorz;
     else if (z == ONCEILINGZ)
 	mobj->z = mobj->ceilingz - mobj->info->height;
@@ -531,7 +531,6 @@ P_SpawnMobj
     P_AddThinker (&mobj->thinker);
 
     return mobj;
-	return NULL;
 }
 
 
@@ -623,7 +622,7 @@ void P_RespawnSpecials (void)
     else
 	z = ONFLOORZ;
 
-	    mo = P_SpawnMobj (x,y,z, (mobjtype_t)i);
+    mo = P_SpawnMobj (x,y,z, (mobjtype_t)i);
     mo->spawnpoint = *mthing;	
     mo->angle = ANG45 * (mthing->angle/45);
 
@@ -635,7 +634,7 @@ void P_RespawnSpecials (void)
 
 
 //
-// player
+// P_SpawnPlayer
 // Called when a player is spawned on the level.
 // Most of the player structure stays unchanged
 //  between levels.
@@ -782,8 +781,8 @@ void P_SpawnMapThing (mapthing_t* mthing)
     else
 	z = ONFLOORZ;
     
-	    mobj = P_SpawnMobj (x,y,z, (mobjtype_t)i);
-	    mobj->spawnpoint = *mthing;
+    mobj = P_SpawnMobj (x,y,z, (mobjtype_t)i);
+    mobj->spawnpoint = *mthing;
 
     if (mobj->tics > 0)
 	mobj->tics = 1 + (P_Random () % mobj->tics);

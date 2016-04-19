@@ -25,33 +25,30 @@
 
 
 #include "doomtype.hpp"
-#include <SFML\Window\Event.hpp>
 
+#include <SFML\Graphics.hpp>
 
 //
 // Event handling.
 //
 
-//JONNY//using sfml's events now
 // Input event types.
-/*typedef enum
+typedef enum
 {
-    ev_keydown,
-    ev_keyup,
+    ev_keydown = sf::Event::KeyPressed,
+    ev_keyup = sf::Event::KeyReleased,
     ev_mouse,
     ev_joystick
-} evtype_t;*/
+} evtype_t;
 
-//JONNY//using sfml's events now
 // Event structure.
-/*
 typedef struct
 {
     evtype_t	type;
     int		data1;		// keys / mouse/joystick buttons
     int		data2;		// mouse/joystick x move
     int		data3;		// mouse/joystick y move
-} event_t;*/
+} event_t;
 
  
 typedef enum

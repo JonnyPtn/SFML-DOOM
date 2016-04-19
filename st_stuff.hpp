@@ -39,7 +39,7 @@
 //
 
 // Called by main loop.
-boolean ST_Responder (sf::Event ev);
+boolean ST_Responder (sf::Event* ev);
 
 // Called by main loop.
 void ST_Ticker (void);
@@ -74,7 +74,7 @@ typedef enum
 } st_chatstateenum_t;
 
 
-boolean ST_Responder(sf::Event ev);
+boolean ST_Responder(sf::Event* ev);
 
 
 

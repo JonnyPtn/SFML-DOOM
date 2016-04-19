@@ -131,24 +131,24 @@ void P_LoadVertexes (int lump)
     numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
 
     // Allocate zone memory for buffer.
-	    vertexes = (vertex_t*)Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,0);	
+    vertexes = (vertex_t*)Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,0);	
 
     // Load data into cache.
-	    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
 	
-	    ml = (mapvertex_t *)data;
+    ml = (mapvertex_t *)data;
     li = vertexes;
 
     // Copy and convert vertex coordinates,
     // internal representation as fixed.
-	    for (i=0 ; i<numvertexes ; i++, li++, ml++)
+    for (i=0 ; i<numvertexes ; i++, li++, ml++)
     {
 	li->x = SHORT(ml->x)<<FRACBITS;
 	li->y = SHORT(ml->y)<<FRACBITS;
     }
 
     // Free buffer memory.
-	    Z_Free (data);
+    Z_Free (data);
 }
 
 
@@ -167,11 +167,11 @@ void P_LoadSegs (int lump)
     int			side;
 	
     numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-	    segs = (seg_t*)Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,0);	
+    segs = (seg_t*)Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,0);	
     memset (segs, 0, numsegs*sizeof(seg_t));
-	    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
 	
-	    ml = (mapseg_t *)data;
+    ml = (mapseg_t *)data;
     li = segs;
     for (i=0 ; i<numsegs ; i++, li++, ml++)
     {
@@ -207,10 +207,10 @@ void P_LoadSubsectors (int lump)
     subsector_t*	ss;
 	
     numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-	    subsectors = (subsector_t*)Z_Malloc (numsubsectors*sizeof(subsector_t),PU_LEVEL,0);	
-	    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+    subsectors = (subsector_t*)Z_Malloc (numsubsectors*sizeof(subsector_t),PU_LEVEL,0);	
+    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
 	
-	    ms = (mapsubsector_t *)data;
+    ms = (mapsubsector_t *)data;
     memset (subsectors,0, numsubsectors*sizeof(subsector_t));
     ss = subsectors;
     
@@ -236,11 +236,11 @@ void P_LoadSectors (int lump)
     sector_t*		ss;
 	
     numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-	    sectors = (sector_t*)Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,0);	
+    sectors = (sector_t*)Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,0);	
     memset (sectors, 0, numsectors*sizeof(sector_t));
-	    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
 	
-	    ms = (mapsector_t *)data;
+    ms = (mapsector_t *)data;
     ss = sectors;
     for (i=0 ; i<numsectors ; i++, ss++, ms++)
     {
@@ -271,10 +271,10 @@ void P_LoadNodes (int lump)
     node_t*	no;
 	
     numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-	    nodes = (node_t*)Z_Malloc (numnodes*sizeof(node_t),PU_LEVEL,0);	
-	    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+    nodes = (node_t*)Z_Malloc (numnodes*sizeof(node_t),PU_LEVEL,0);	
+    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
 	
-	    mn = (mapnode_t *)data;
+    mn = (mapnode_t *)data;
     no = nodes;
     
     for (i=0 ; i<numnodes ; i++, no++, mn++)
@@ -306,10 +306,10 @@ void P_LoadThings (int lump)
     int			numthings;
     boolean		spawn;
 	
-	    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+    data =(byte*) W_CacheLumpNum (lump,PU_STATIC);
     numthings = W_LumpLength (lump) / sizeof(mapthing_t);
 	
-	    mt = (mapthing_t *)data;
+    mt = (mapthing_t *)data;
     for (i=0 ; i<numthings ; i++, mt++)
     {
 	spawn = true;
@@ -331,7 +331,7 @@ void P_LoadThings (int lump)
 	      case 84:	// Wolf SS
 		spawn = false;
 		break;
-   }
+	    }
 	}
 	if (spawn == false)
 	    break;
@@ -364,11 +364,11 @@ void P_LoadLineDefs (int lump)
     vertex_t*		v2;
 	
     numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-	    lines = (line_t*)Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);	
+    lines = (line_t*)Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);	
     memset (lines, 0, numlines*sizeof(line_t));
-	    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
 	
-	    mld = (maplinedef_t *)data;
+    mld = (maplinedef_t *)data;
     ld = lines;
     for (i=0 ; i<numlines ; i++, mld++, ld++)
     {
@@ -443,11 +443,11 @@ void P_LoadSideDefs (int lump)
     side_t*		sd;
 	
     numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-	    sides = (side_t*)Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,0);	
+    sides = (side_t*)Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,0);	
     memset (sides, 0, numsides*sizeof(side_t));
-	    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+    data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
 	
-	    msd = (mapsidedef_t *)data;
+    msd = (mapsidedef_t *)data;
     sd = sides;
     for (i=0 ; i<numsides ; i++, msd++, sd++)
     {
@@ -471,7 +471,7 @@ void P_LoadBlockMap (int lump)
     int		i;
     int		count;
 	
-	    blockmaplump = (short*)W_CacheLumpNum (lump,PU_LEVEL);
+    blockmaplump = (short*)W_CacheLumpNum (lump,PU_LEVEL);
     blockmap = blockmaplump+4;
     count = W_LumpLength (lump)/2;
 
@@ -485,7 +485,7 @@ void P_LoadBlockMap (int lump)
 	
     // clear out mobj chains
     count = sizeof(*blocklinks)* bmapwidth*bmapheight;
-	    blocklinks = (mobj_t**)Z_Malloc (count,PU_LEVEL, 0);
+    blocklinks = (mobj_t**)Z_Malloc (count,PU_LEVEL, 0);
     memset (blocklinks, 0, count);
 }
 
@@ -533,12 +533,12 @@ void P_GroupLines (void)
     }
 	
     // build line tables for each sector	
-	    linebuffer = (line_t**)Z_Malloc (total*4, PU_LEVEL, 0);
+    linebuffer = (line_t**)Z_Malloc (total*4, PU_LEVEL, 0);
     sector = sectors;
     for (i=0 ; i<numsectors ; i++, sector++)
     {
 	M_ClearBox (bbox);
-		sector->lines = linebuffer;
+	sector->lines = linebuffer;
 	li = lines;
 	for (j=0 ; j<numlines ; j++, li++)
 	{
@@ -628,9 +628,9 @@ P_SetupLevel
     if ( gamemode == commercial)
     {
 	if (map<10)
-	    sprintf_s (lumpname,"map0%i", map);
+	    sprintf (lumpname,"map0%i", map);
 	else
-	    sprintf_s (lumpname,"map%i", map);
+	    sprintf (lumpname,"map%i", map);
     }
     else
     {
@@ -656,7 +656,7 @@ P_SetupLevel
     P_LoadNodes (lumpnum+ML_NODES);
     P_LoadSegs (lumpnum+ML_SEGS);
 	
-	    rejectmatrix = (byte*)W_CacheLumpNum (lumpnum+ML_REJECT,PU_LEVEL);
+    rejectmatrix = (byte*)W_CacheLumpNum (lumpnum+ML_REJECT,PU_LEVEL);
     P_GroupLines ();
 
     bodyqueslot = 0;

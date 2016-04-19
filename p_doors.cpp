@@ -281,9 +281,9 @@ EV_DoDoor
 	
 	// new door thinker
 	rtn = 1;
-		door = (vldoor_t*)Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
-		P_AddThinker (&door->thinker);
-		sec->specialdata = door;
+	door = (vldoor_t*)Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
+	P_AddThinker (&door->thinker);
+	sec->specialdata = door;
 
 	door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
 	door->sector = sec;
@@ -303,11 +303,11 @@ EV_DoDoor
 	    break;
 	    
 	  case close:
-		  door->topheight = P_FindLowestCeilingSurrounding(sec);
-		  door->topheight -= 4*FRACUNIT;
-		  door->direction = -1;
-		  S_StartSound((mobj_t *)&door->sector->soundorg,
-		  	 sfx_dorcls);
+	    door->topheight = P_FindLowestCeilingSurrounding(sec);
+	    door->topheight -= 4*FRACUNIT;
+	    door->direction = -1;
+	    S_StartSound((mobj_t *)&door->sector->soundorg,
+			 sfx_dorcls);
 	    break;
 	    
 	  case close30ThenOpen:
@@ -415,7 +415,7 @@ EV_VerticalDoor
 
     if (sec->specialdata)
     {
-			door = (vldoor_t*)sec->specialdata;
+	door = (vldoor_t*)sec->specialdata;
 	switch(line->special)
 	{
 	  case	1: // ONLY FOR "RAISE" DOORS, NOT "OPEN"s
@@ -423,14 +423,14 @@ EV_VerticalDoor
 	  case	27:
 	  case	28:
 	  case	117:
-		  	    if (door->direction == -1)
-		  		door->direction = 1;	// go back up
-									    else
+	    if (door->direction == -1)
+		door->direction = 1;	// go back up
+	    else
 	    {
 		if (!thing->player)
 		    return;		// JDC: bad guys never close doors
 		
-								door->direction = -1;	// start going down immediately
+		door->direction = -1;	// start going down immediately
 	    }
 	    return;
 	}
@@ -456,7 +456,7 @@ EV_VerticalDoor
 	
     
     // new door thinker
-	    door = (vldoor_t*)Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
+    door = (vldoor_t*)Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker (&door->thinker);
     sec->specialdata = door;
     door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
@@ -478,7 +478,7 @@ EV_VerticalDoor
       case 32:
       case 33:
       case 34:
-		  	door->type = open;
+	door->type = open;
 	line->special = 0;
 	break;
 	
@@ -506,9 +506,9 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 {
     vldoor_t*	door;
 	
-	    door = (vldoor_t*)Z_Malloc ( sizeof(*door), PU_LEVSPEC, 0);
+    door = (vldoor_t*)Z_Malloc ( sizeof(*door), PU_LEVSPEC, 0);
 
-	    P_AddThinker (&door->thinker);
+    P_AddThinker (&door->thinker);
 
     sec->specialdata = door;
     sec->special = 0;
@@ -531,9 +531,9 @@ P_SpawnDoorRaiseIn5Mins
 {
     vldoor_t*	door;
 	
-	    door = (vldoor_t*)Z_Malloc ( sizeof(*door), PU_LEVSPEC, 0);
+    door = (vldoor_t*)Z_Malloc ( sizeof(*door), PU_LEVSPEC, 0);
     
-	    P_AddThinker (&door->thinker);
+    P_AddThinker (&door->thinker);
 
     sec->specialdata = door;
     sec->special = 0;
