@@ -937,6 +937,7 @@ void I_InitGraphics(void)
     }*/
 
 window.create(sf::VideoMode(X_width, X_height), displayname);
+window.setVerticalSyncEnabled(true);
 image.create(X_width, X_height);
 texture.create(X_width, X_height);
 texture.loadFromImage(image);
