@@ -177,7 +177,7 @@ void D_ProcessEvents (void)
 	
     while(pollEvent(ev))
     {
-		if (ev.type = sf::Event::Closed)
+		if (ev.type == sf::Event::Closed)
 			I_Error("Window Closed");
 	//ev = &events[eventtail];
 	if (M_Responder (&ev))
