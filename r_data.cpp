@@ -88,6 +88,9 @@ typedef struct
 {
     char		name[8];
     boolean		masked;	
+	boolean		beep;	//padding
+	boolean		bop;	//padding
+	boolean		boop;	//padding
     short		width;
     short		height;
     void		**columndirectory;	// OBSOLETE
