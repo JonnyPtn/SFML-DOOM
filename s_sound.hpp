@@ -23,12 +23,22 @@
 #ifndef __S_SOUND__
 #define __S_SOUND__
 
+#include <SFML\Audio.hpp>
+#include <map>
 
-#ifdef __GNUG__
-#pragma interface
-#endif
+struct sfSound
+{
+	sf::Sound sound;
+	sf::SoundBuffer buffer;
+};
 
+//sounds, sfx, etc.
+static std::map<std::string, sfSound> sfSounds;
 
+//musics. Using sound because they're so tiny it takes no time to load anyway
+//plus there's so much fannying about with memory in the background
+//I'd be worried the buffer disappears
+static std::map<std::string, sfSound> sfMusics;
 
 //
 // Initializes sound stuff, including volume

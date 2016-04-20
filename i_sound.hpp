@@ -24,18 +24,8 @@
 #define __I_SOUND__
 
 #include "doomdef.hpp"
-
-// UNIX hack, to be removed.
-#ifdef SNDSERV
-#include <stdio.h>
-extern FILE* sndserver;
-extern char* sndserver_filename;
-#endif
-
 #include "doomstat.hpp"
 #include "sounds.hpp"
-
-
 
 // Init at program start...
 void I_InitSound();

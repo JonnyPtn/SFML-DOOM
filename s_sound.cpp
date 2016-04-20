@@ -25,7 +25,7 @@ static const char
 rcsid[] = "$Id: s_sound.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 
 
-
+#define SAMPLERATE		11025	// Hz
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -249,8 +249,6 @@ void S_Start(void)
 
 
 
-
-
 void
 S_StartSoundAtVolume
 ( void*		origin_p,
@@ -379,7 +377,25 @@ S_StartSoundAtVolume
     
   }
 #endif
-  
+  if (sfSounds.find(sfx->name) == sfSounds.end())
+  {
+	  //not loaded yet, set it up
+	  auto dataSize(W_LumpLength(sfx->lumpnum));
+	  byte* data((byte*)sfx->data);
+	  sf::Int16 newData[8096];
+	  dataSize = 8096;
+	  while (dataSize--)
+	  {
+		  if(data[dataSize])
+			newData[dataSize] = data[dataSize];
+	  }
+	  
+	  if(!sfSounds[sfx->name].buffer.loadFromSamples(newData, 8096,1,SAMPLERATE))
+		  fprintf(stderr,"Failed to load sound");
+	  sfSounds[sfx->name].sound.setBuffer(sfSounds[sfx->name].buffer);
+  }
+
+  sfSounds[sfx->name].sound.play();
   // increase the usefulness
   if (sfx->usefulness++ < 0)
     sfx->usefulness = 1;
@@ -678,6 +694,26 @@ S_ChangeMusic
     // load & register it
     music->data = (void *) W_CacheLumpNum(music->lumpnum, PU_MUSIC);
     music->handle = I_RegisterSong(music->data);
+
+	//load the data into the music
+	if (sfMusics.find(music->name) == sfMusics.end())
+	{
+		//not loaded yet, set it up
+		auto dataSize(W_LumpLength(music->lumpnum));
+		byte* data((byte*)music->data);
+		sf::Int16 newData[1024];
+		dataSize = 1024;
+		while (dataSize--)
+		{
+			newData[dataSize] = data[dataSize];
+		}
+
+		if (!sfSounds[music->name].buffer.loadFromSamples(newData, 1024, 1, 11000))
+			fprintf(stderr, "Failed to load sound");
+		sfSounds[music->name].sound.setBuffer(sfSounds[music->name].buffer);
+	}
+
+	sfSounds[music->name].sound.play();
 
     // play it
     I_PlaySong(music->handle, looping);
