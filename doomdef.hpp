@@ -274,7 +274,7 @@ typedef enum
 #define KEY_MINUS	sf::Keyboard::Subtract
 
 #define KEY_RSHIFT	sf::Keyboard::RShift
-#define KEY_RCTRL	sf::Keyboard::RControl
+#define KEY_RCTRL	sf::Keyboard::LControl
 #define KEY_RALT	sf::Keyboard::RAlt
 
 #define KEY_LALT	KEY_RALT
