@@ -382,15 +382,16 @@ S_StartSoundAtVolume
 	  //not loaded yet, set it up
 	  auto dataSize(W_LumpLength(sfx->lumpnum));
 	  byte* data((byte*)sfx->data);
-	  sf::Int16 newData[8096];
-	  dataSize = 8096;
-	  while (dataSize--)
+	  std::vector<sf::Int16> newData;
+	  auto lastSample = 0;
+	  int i = 0;
+	  while (i<dataSize)
 	  {
-		  if(data[dataSize])
-			newData[dataSize] = data[dataSize];
+		  newData.push_back (std::pow(data[i], 2));
+		  i++;
 	  }
 	  
-	  if(!sfSounds[sfx->name].buffer.loadFromSamples(newData, 8096,1,SAMPLERATE))
+	  if (!sfSounds[sfx->name].buffer.loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
 		  fprintf(stderr,"Failed to load sound");
 	  sfSounds[sfx->name].sound.setBuffer(sfSounds[sfx->name].buffer);
   }
@@ -701,14 +702,16 @@ S_ChangeMusic
 		//not loaded yet, set it up
 		auto dataSize(W_LumpLength(music->lumpnum));
 		byte* data((byte*)music->data);
-		sf::Int16 newData[1024];
-		dataSize = 1024;
-		while (dataSize--)
+		std::vector<sf::Int16> newData;
+		auto lastSample = 0;
+		int i = 0;
+		while (i<dataSize)
 		{
-			newData[dataSize] = data[dataSize];
+			newData.push_back(std::pow(data[i], 2));
+			i++;
 		}
 
-		if (!sfSounds[music->name].buffer.loadFromSamples(newData, 1024, 1, 11000))
+		if (!sfSounds[music->name].buffer.loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
 			fprintf(stderr, "Failed to load sound");
 		sfSounds[music->name].sound.setBuffer(sfSounds[music->name].buffer);
 	}
