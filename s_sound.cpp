@@ -306,6 +306,8 @@ S_StartSoundAtVolume
 			     &volume,
 			     &sep,
 			     &pitch);
+	sfSounds[sfx->name].sound.setVolume(volume * 6);
+
 	
     if ( origin->x == players[consoleplayer].mo->x
 	 && origin->y == players[consoleplayer].mo->y)
@@ -852,7 +854,6 @@ S_AdjustSoundParams
 		* ((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
 	    / S_ATTENUATOR; 
     }
-    
     return (*vol > 0);
 }
 
