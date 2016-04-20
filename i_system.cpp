@@ -73,12 +73,12 @@ ticcmd_t*	I_BaseTiccmd(void)
 
 int  I_GetHeapSize (void)
 {
-    return mb_used*1024*1024;
+    return mb_used*2048*2048;
 }
 
 byte* I_ZoneBase (int*	size)
 {
-    *size = mb_used*1024*1024;
+    *size = mb_used*2048*2048;
     return (byte *) malloc (*size);
 }
 
