@@ -89,10 +89,10 @@ typedef struct
 typedef struct
 {
     char		name[8];
-    boolean		masked;	
-	boolean		beep;	//padding
-	boolean		bop;	//padding
-	boolean		boop;	//padding
+    bool		masked;	
+	bool		beep;	//padding
+	bool		bop;	//padding
+	bool		boop;	//padding
     short		width;
     short		height;
     void		**columndirectory;	// OBSOLETE
@@ -156,7 +156,7 @@ fixed_t*		textureheight;
 int*			texturecompositesize;
 short**			texturecolumnlump;
 unsigned short**	texturecolumnofs;
-byte**			texturecomposite;
+unsigned char**			texturecomposite;
 
 // for global animation
 int*		flattranslation;
@@ -192,20 +192,20 @@ lighttable_t	*colormaps;
 void
 R_DrawColumnInCache
 ( column_t*	patch,
-  byte*		cache,
+  unsigned char*		cache,
   int		originy,
   int		cacheheight )
 {
     int		count;
     int		position;
-    byte*	source;
-    byte*	dest;
+    unsigned char*	source;
+    unsigned char*	dest;
 	
-    dest = (byte *)cache + 3;
+    dest = (unsigned char *)cache + 3;
 	
     while (patch->topdelta != 0xff)
     {
-	source = (byte *)patch + 3;
+	source = (unsigned char *)patch + 3;
 	count = patch->length;
 	position = originy + patch->topdelta;
 
@@ -221,7 +221,7 @@ R_DrawColumnInCache
 	if (count > 0)
 	    memcpy (cache + position, source, count);
 		
-	patch = (column_t *)(  (byte *)patch + patch->length + 4); 
+	patch = (column_t *)(  (unsigned char *)patch + patch->length + 4); 
     }
 }
 
@@ -235,7 +235,7 @@ R_DrawColumnInCache
 //
 void R_GenerateComposite (int texnum)
 {
-    byte*		block;
+    unsigned char*		block;
     texture_t*		texture;
     texpatch_t*		patch;	
     patch_t*		realpatch;
@@ -249,7 +249,7 @@ void R_GenerateComposite (int texnum)
 	
     texture = textures[texnum];
 
-    block = (byte*)Z_Malloc (texturecompositesize[texnum],
+    block = (unsigned char*)Z_Malloc (texturecompositesize[texnum],
 		      PU_STATIC, 
 		      &texturecomposite[texnum]);	
 
@@ -281,7 +281,7 @@ void R_GenerateComposite (int texnum)
 	    if (collump[x] >= 0)
 		continue;
 	    
-	    patchcol = (column_t *)((byte *)realpatch
+	    patchcol = (column_t *)((unsigned char *)realpatch
 				    + LONG(realpatch->columnofs[x-x1]));
 	    R_DrawColumnInCache (patchcol,
 				 block + colofs[x],
@@ -304,7 +304,7 @@ void R_GenerateComposite (int texnum)
 void R_GenerateLookup (int texnum)
 {
     texture_t*		texture;
-    byte*		patchcount;	// patchcount[texture->width]
+    unsigned char*		patchcount;	// patchcount[texture->width]
     texpatch_t*		patch;	
     patch_t*		realpatch;
     int			x;
@@ -327,7 +327,7 @@ void R_GenerateLookup (int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = (byte *)alloca (texture->width);
+    patchcount = (unsigned char *)alloca (texture->width);
     memset (patchcount, 0, texture->width);
     patch = texture->patches;
 		
@@ -387,7 +387,7 @@ void R_GenerateLookup (int texnum)
 //
 // R_GetColumn
 //
-byte*
+unsigned char*
 R_GetColumn
 ( int		tex,
   int		col )
@@ -400,7 +400,7 @@ R_GetColumn
     ofs = texturecolumnofs[tex][col];
     
     if (lump > 0)
-	return (byte *)W_CacheLumpNum(lump,PU_CACHE)+ofs;
+	return (unsigned char *)W_CacheLumpNum(lump,PU_CACHE)+ofs;
 
     if (!texturecomposite[tex])
 	R_GenerateComposite (tex);
@@ -490,7 +490,7 @@ void R_InitTextures (void)
     textures = (texture_t**)Z_Malloc (numtextures*4, PU_STATIC, 0);
     texturecolumnlump = (short**)Z_Malloc (numtextures*4, PU_STATIC, 0);
     texturecolumnofs = (unsigned short**)Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecomposite = (byte**)Z_Malloc (numtextures*4, PU_STATIC, 0);
+    texturecomposite = (unsigned char**)Z_Malloc (numtextures*4, PU_STATIC, 0);
     texturecompositesize = (int*)Z_Malloc (numtextures*4, PU_STATIC, 0);
     texturewidthmask = (int*)Z_Malloc (numtextures*4, PU_STATIC, 0);
     textureheight = (fixed_t*)Z_Malloc (numtextures*4, PU_STATIC, 0);
@@ -527,7 +527,7 @@ void R_InitTextures (void)
 	if (offset > maxoff)
 	    I_Error ("R_InitTextures: bad texture directory");
 	
-	mtexture = (maptexture_t *) ( (byte *)maptex + offset);
+	mtexture = (maptexture_t *) ( (unsigned char *)maptex + offset);
 
 	texture = textures[i] =
 	    (texture_t*)Z_Malloc (sizeof(texture_t)
@@ -643,11 +643,11 @@ void R_InitColormaps (void)
     int	lump, length;
     
     // Load in the light tables, 
-    //  256 byte align tables.
+    //  256 unsigned char align tables.
     lump = W_GetNumForName("COLORMAP"); 
     length = W_LumpLength (lump) + 255; 
     colormaps = (lighttable_t*)Z_Malloc (length, PU_STATIC, 0); 
-    colormaps = (byte *)( ((int)colormaps + 255)&~0xff); 
+    colormaps = (unsigned char *)( ((int)colormaps + 255)&~0xff); 
     W_ReadLump (lump,colormaps); 
 }
 

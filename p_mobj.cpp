@@ -50,7 +50,7 @@ void P_SpawnMapThing (mapthing_t*	mthing);
 //
 int test;
 
-boolean
+bool
 P_SetMobjState
 ( mobj_t*	mobj,
   statenum_t	state )
@@ -703,7 +703,7 @@ void P_SpawnPlayer (mapthing_t* mthing)
 //
 // P_SpawnMapThing
 // The fields of the mapthing should
-// already be in host byte order.
+// already be in host unsigned char order.
 //
 void P_SpawnMapThing (mapthing_t* mthing)
 {

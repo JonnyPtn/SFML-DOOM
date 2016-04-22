@@ -166,7 +166,7 @@ getsfx
 
     // Debug.
     // fprintf( stderr, "." );
-    //fprintf( stderr, " -loading  %s (lump %d, %d bytes)\n",
+    //fprintf( stderr, " -loading  %s (lump %d, %d unsigned chars)\n",
     //	     sfxname, sfxlump, size );
     //fflush( stderr );
     

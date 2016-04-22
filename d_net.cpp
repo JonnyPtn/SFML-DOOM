@@ -63,8 +63,8 @@ ticcmd_t	localcmds[BACKUPTICS];
 
 ticcmd_t        netcmds[MAXPLAYERS][BACKUPTICS];
 int         	nettics[MAXNETNODES];
-boolean		nodeingame[MAXNETNODES];		// set false as nodes leave game
-boolean		remoteresend[MAXNETNODES];		// set when local needs tics
+bool		nodeingame[MAXNETNODES];		// set false as nodes leave game
+bool		remoteresend[MAXNETNODES];		// set when local needs tics
 int		resendto[MAXNETNODES];			// set when remote needs tics
 int		resendcount[MAXNETNODES];
 
@@ -81,7 +81,7 @@ void D_ProcessEvents(void);
 void G_BuildTiccmd(ticcmd_t *cmd);
 void D_DoAdvanceDemo(void);
 
-boolean		reboundpacket;
+bool		reboundpacket;
 doomdata_t	reboundstore;
 
 
@@ -106,7 +106,7 @@ unsigned NetbufferChecksum(void)
 
 	// FIXME -endianess?
 #ifdef NORMALUNIX
-	return 0;			// byte order problems
+	return 0;			// unsigned char order problems
 #endif
 
 	l = (NetbufferSize() - (int)&(((doomdata_t *)0)->retransmitfrom)) / 4;
@@ -179,7 +179,7 @@ HSendPacket
 			netbuffer->numtics, realretrans, doomcom->datalength);
 
 		for (i = 0; i<doomcom->datalength; i++)
-			fprintf(debugfile, "%i ", ((byte *)netbuffer)[i]);
+			fprintf(debugfile, "%i ", ((unsigned char *)netbuffer)[i]);
 
 		fprintf(debugfile, "\n");
 	}
@@ -191,7 +191,7 @@ HSendPacket
 // HGetPacket
 // Returns false if no packet is waiting
 //
-boolean HGetPacket(void)
+bool HGetPacket(void)
 {
 	if (reboundpacket)
 	{
@@ -247,7 +247,7 @@ boolean HGetPacket(void)
 				netbuffer->numtics, realretrans, doomcom->datalength);
 
 			for (i = 0; i<doomcom->datalength; i++)
-				fprintf(debugfile, "%i ", ((byte *)netbuffer)[i]);
+				fprintf(debugfile, "%i ", ((unsigned char *)netbuffer)[i]);
 			fprintf(debugfile, "\n");
 		}
 	}
@@ -276,8 +276,8 @@ void GetPackets(void)
 		netconsole = netbuffer->player & ~PL_DRONE;
 		netnode = doomcom->remotenode;
 
-		// to save bytes, only the low byte of tic numbers are sent
-		// Figure out what the rest of the bytes are
+		// to save unsigned chars, only the low unsigned char of tic numbers are sent
+		// Figure out what the rest of the unsigned chars are
 		realstart = ExpandTics(netbuffer->starttic);
 		realend = (realstart + netbuffer->numtics);
 
@@ -471,7 +471,7 @@ void CheckAbort(void)
 void D_ArbitrateNetStart(void)
 {
 	int		i;
-	boolean	gotinfo[MAXNETNODES];
+	bool	gotinfo[MAXNETNODES];
 
 	autostart = true;
 	memset(gotinfo, 0, sizeof(gotinfo));
@@ -487,8 +487,8 @@ void D_ArbitrateNetStart(void)
 				continue;
 			if (netbuffer->checksum & NCMD_SETUP)
 			{
-				if (netbuffer->player != VERSION)
-					I_Error("Different DOOM versions cannot play a net game!");
+				/*if (netbuffer->player != VERSION)
+					I_Error("Different DOOM versions cannot play a net game!");*/
 				startskill = (skill_t)(netbuffer->retransmitfrom & 15);
 				deathmatch = (netbuffer->retransmitfrom & 0xc0) >> 6;
 				nomonsters = (netbuffer->retransmitfrom & 0x20) > 0;
@@ -516,7 +516,7 @@ void D_ArbitrateNetStart(void)
 				if (respawnparm)
 					netbuffer->retransmitfrom |= 0x10;
 				netbuffer->starttic = startepisode * 64 + startmap;
-				netbuffer->player = VERSION;
+//				netbuffer->player = VERSION;
 				netbuffer->numtics = 0;
 				HSendPacket(i, NCMD_SETUP);
 			}
@@ -626,7 +626,7 @@ int	frameon;
 int	frameskip[4];
 int	oldnettics;
 
-extern	boolean	advancedemo;
+extern	bool	advancedemo;
 
 void TryRunTics(void)
 {

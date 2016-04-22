@@ -83,7 +83,7 @@ int		X_width;
 int		X_height;
 
 // MIT SHared Memory extension.
-boolean		doShm;
+bool		doShm;
 
 //JONNY//XShmSegmentInfo	X_shminfo;
 int		X_shmeventtype;
@@ -91,7 +91,7 @@ int		X_shmeventtype;
 // Fake mouse handling.
 // This cannot work properly w/o DGA.
 // Needs an invisible mouse cursor at least.
-boolean		grabMouse;
+bool		grabMouse;
 int		doPointerWarp = POINTER_WARP_COUNTDOWN;
 
 // Blocky mode,
@@ -204,8 +204,8 @@ void I_StartFrame (void)
 
 static int	lastmousex = 0;
 static int	lastmousey = 0;
-boolean		mousemoved = false;
-boolean		shmFinished;
+bool		mousemoved = false;
+bool		shmFinished;
 
 void I_GetEvent(void)
 {
@@ -556,7 +556,7 @@ void I_FinishUpdate (void)
 //
 // I_ReadScreen
 //
-void I_ReadScreen (byte* scr)
+void I_ReadScreen (unsigned char* scr)
 {
     memcpy (scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
 }
@@ -567,12 +567,12 @@ void I_ReadScreen (byte* scr)
 //
 //JONNY//static XColor	colors[256];
 
-void UploadNewPalette(/*JONNY*//*Colormap cmap,*/ byte *palette)
+void UploadNewPalette(/*JONNY*//*Colormap cmap,*/ unsigned char *palette)
 {
 
     register int	i;
     register int	c;
-    static boolean	firstcall = true;
+    static bool	firstcall = true;
 
 #ifdef __cplusplus
 //JONNY//    if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
@@ -611,7 +611,7 @@ void UploadNewPalette(/*JONNY*//*Colormap cmap,*/ byte *palette)
 //
 // I_SetPalette
 //
-void I_SetPalette (byte* palette)
+void I_SetPalette (unsigned char* palette)
 {
     UploadNewPalette(/*JONNY*//*X_cmap,*/ palette);
 }
@@ -899,13 +899,13 @@ void I_InitGraphics(void)
 					X_width,
 					X_height );
 
-	grabsharedmemory(image->bytes_per_line * image->height);
+	grabsharedmemory(image->unsigned chars_per_line * image->height);
 
 
 	// UNUSED
 	// create the shared memory segment
 	// X_shminfo.shmid = shmget (IPC_PRIVATE,
-	// image->bytes_per_line * image->height, IPC_CREAT | 0777);
+	// image->unsigned chars_per_line * image->height, IPC_CREAT | 0777);
 	// if (X_shminfo.shmid < 0)
 	// {
 	// perror("");

@@ -118,7 +118,7 @@ int 		snd_MusicVolume = 15;
 
 
 // whether songs are mus_paused
-static boolean		mus_paused;	
+static bool		mus_paused;	
 
 // music currently being played
 static musicinfo_t*	mus_playing=0;
@@ -383,7 +383,7 @@ S_StartSoundAtVolume
   {
 	  //not loaded yet, set it up
 	  auto dataSize(W_LumpLength(sfx->lumpnum));
-	  byte* data((byte*)sfx->data);
+	  unsigned char* data((unsigned char*)sfx->data);
 	  std::vector<sf::Int16> newData;
 	  auto lastSample = 0;
 	  int i = 0;
@@ -703,7 +703,7 @@ S_ChangeMusic
 	{
 		//not loaded yet, set it up
 		auto dataSize(W_LumpLength(music->lumpnum));
-		byte* data((byte*)music->data);
+		unsigned char* data((unsigned char*)music->data);
 		std::vector<sf::Int16> newData;
 		auto lastSample = 0;
 		int i = 0;

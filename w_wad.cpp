@@ -485,7 +485,7 @@ W_CacheLumpNum
 ( int		lump,
   int		tag )
 {
-    byte*	ptr;
+    unsigned char*	ptr;
 
     if ((unsigned)lump >= numlumps)
 	I_Error ("W_CacheLumpNum: %i >= numlumps",lump);
@@ -495,7 +495,7 @@ W_CacheLumpNum
 	// read the lump in
 	
 	//printf ("cache miss on lump %i\n",lump);
-	ptr = (byte*)Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
+	ptr = (unsigned char*)Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
 	W_ReadLump (lump, lumpcache[lump]);
     }
     else
@@ -548,7 +548,7 @@ void W_Profile (void)
 	}
 	else
 	{
-	    block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
+	    block = (memblock_t *) ( (unsigned char *)ptr - sizeof(memblock_t));
 	    if (block->tag < PU_PURGELEVEL)
 		ch = 'S';
 	    else

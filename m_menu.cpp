@@ -68,9 +68,9 @@ rcsid[] = "$Id: m_menu.c,v 1.7 1997/02/03 22:45:10 b1 Exp $";
 #endif
 
 extern patch_t*		hu_font[HU_FONTSIZE];
-extern boolean		message_dontfuckwithme;
+extern bool		message_dontfuckwithme;
 
-extern boolean		chat_on;		// in heads-up code
+extern bool		chat_on;		// in heads-up code
 
 //
 // defaulted values
@@ -102,7 +102,7 @@ int			messy;
 int			messageLastMenuActive;
 
 // timed message = no input from user
-boolean			messageNeedsInput;     
+bool			messageNeedsInput;     
 
 void    (*messageRoutine)(int response);
 
@@ -124,13 +124,13 @@ int			saveCharIndex;	// which char we're editing
 // old save description before edit
 char			saveOldString[SAVESTRINGSIZE];  
 
-boolean			inhelpscreens;
-boolean			menuactive;
+bool			inhelpscreens;
+bool			menuactive;
 
 #define SKULLXOFF		-32
 #define LINEHEIGHT		16
 
-extern boolean		sendpause;
+extern bool		sendpause;
 char			savegamestrings[10][SAVESTRINGSIZE];
 
 char	endstring[160];
@@ -228,7 +228,7 @@ void M_WriteText(int x, int y, char *string);
 int  M_StringWidth(char *string);
 int  M_StringHeight(char *string);
 void M_StartControlPanel(void);
-void M_StartMessage(char *string,void *routine,boolean input);
+void M_StartMessage(char *string,void *routine,bool input);
 void M_StopMessage(void);
 void M_ClearMenus (void);
 
@@ -1230,7 +1230,7 @@ void
 M_StartMessage
 ( char*		string,
   void*		routine,
-  boolean	input )
+  bool	input )
 {
     messageLastMenuActive = menuactive;
     messageToPrint = 1;
@@ -1348,7 +1348,7 @@ M_WriteText
 //
 // M_Responder
 //
-boolean M_Responder (sf::Event* ev)
+bool M_Responder (sf::Event* ev)
 {
     int             ch;
     int             i;
@@ -1609,7 +1609,7 @@ boolean M_Responder (sf::Event* ev)
 	    if (usegamma > 4)
 		usegamma = 0;
 	    players[consoleplayer].message = gammamsg[usegamma];
-	    I_SetPalette ((byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+	    I_SetPalette ((unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 	    return true;
 				
 	}

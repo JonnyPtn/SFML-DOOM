@@ -76,10 +76,10 @@ int  I_GetHeapSize (void)
     return mb_used*2048*2048;
 }
 
-byte* I_ZoneBase (int*	size)
+unsigned char* I_ZoneBase (int*	size)
 {
     *size = mb_used*2048*2048;
-    return (byte *) malloc (*size);
+    return (unsigned char *) malloc (*size);
 }
 
 
@@ -158,11 +158,11 @@ void I_EndRead(void)
 {
 }
 
-byte*	I_AllocLow(int length)
+unsigned char*	I_AllocLow(int length)
 {
-    byte*	mem;
+    unsigned char*	mem;
         
-    mem = (byte *)malloc (length);
+    mem = (unsigned char *)malloc (length);
     memset (mem,0,length);
     return mem;
 }
@@ -171,7 +171,7 @@ byte*	I_AllocLow(int length)
 //
 // I_Error
 //
-extern boolean demorecording;
+extern bool demorecording;
 
 void I_Error (char *error, ...)
 {

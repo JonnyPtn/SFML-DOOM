@@ -76,7 +76,7 @@ rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 
 
 
-boolean	G_CheckDemoStatus (void); 
+bool	G_CheckDemoStatus (void); 
 void	G_ReadDemoTiccmd (ticcmd_t* cmd); 
 void	G_WriteDemoTiccmd (ticcmd_t* cmd); 
 void	G_PlayerReborn (int player); 
@@ -97,25 +97,25 @@ void	G_DoSaveGame (void);
 gameaction_t    gameaction; 
 gamestate_t     gamestate; 
 skill_t         gameskill; 
-boolean		respawnmonsters;
+bool		respawnmonsters;
 int             gameepisode; 
 int             gamemap; 
  
-boolean         paused; 
-boolean         sendpause;             	// send a pause event next tic 
-boolean         sendsave;             	// send a save event next tic 
-boolean         usergame;               // ok to save / end game 
+bool         paused; 
+bool         sendpause;             	// send a pause event next tic 
+bool         sendsave;             	// send a save event next tic 
+bool         usergame;               // ok to save / end game 
  
-boolean         timingdemo;             // if true, exit with report on completion 
-boolean         nodrawers;              // for comparative timing purposes 
-boolean         noblit;                 // for comparative timing purposes 
+bool         timingdemo;             // if true, exit with report on completion 
+bool         nodrawers;              // for comparative timing purposes 
+bool         noblit;                 // for comparative timing purposes 
 int             starttime;          	// for comparative timing purposes  	 
  
-boolean         viewactive; 
+bool         viewactive; 
  
-boolean         deathmatch;           	// only if started as net death 
-boolean         netgame;                // only true if packets are broadcast 
-boolean         playeringame[MAXPLAYERS]; 
+bool         deathmatch;           	// only if started as net death 
+bool         netgame;                // only true if packets are broadcast 
+bool         playeringame[MAXPLAYERS]; 
 player_t        players[MAXPLAYERS]; 
  
 int             consoleplayer;          // player taking events and displaying 
@@ -125,21 +125,21 @@ int             levelstarttic;          // gametic at level start
 int             totalkills, totalitems, totalsecret;    // for intermission 
  
 char            demoname[32]; 
-boolean         demorecording; 
-boolean         demoplayback; 
-boolean		netdemo; 
-byte*		demobuffer;
-byte*		demo_p;
-byte*		demoend; 
-boolean         singledemo;            	// quit after playing a demo from cmdline 
+bool         demorecording; 
+bool         demoplayback; 
+bool		netdemo; 
+unsigned char*		demobuffer;
+unsigned char*		demo_p;
+unsigned char*		demoend; 
+bool         singledemo;            	// quit after playing a demo from cmdline 
  
-boolean         precache = true;        // if true, load all graphics at start 
+bool         precache = true;        // if true, load all graphics at start 
  
 wbstartstruct_t wminfo;               	// parms for world map / intermission 
  
 short		consistancy[MAXPLAYERS][BACKUPTICS]; 
  
-byte*		savebuffer;
+unsigned char*		savebuffer;
  
  
 // 
@@ -180,11 +180,11 @@ fixed_t		angleturn[3] = {640, 1280, 320};	// + slow turn
  
 #define NUMKEYS		1024
 
-boolean         gamekeydown[NUMKEYS]; 
+bool         gamekeydown[NUMKEYS]; 
 int             turnheld;				// for accelerative turning 
  
-boolean		mousearray[4]; 
-boolean*	mousebuttons = &mousearray[1];		// allow [-1]
+bool		mousearray[4]; 
+bool*	mousebuttons = &mousearray[1];		// allow [-1]
 
 // mouse values are used once 
 int             mousex;
@@ -200,8 +200,8 @@ int		dclicks2;
 // joystick values are repeated 
 int             joyxmove;
 int		joyymove;
-boolean         joyarray[5]; 
-boolean*	joybuttons = &joyarray[1];		// allow [-1] 
+bool         joyarray[5]; 
+bool*	joybuttons = &joyarray[1];		// allow [-1] 
  
 int		savegameslot; 
 char		savedescription[32]; 
@@ -237,8 +237,8 @@ int G_CmdChecksum (ticcmd_t* cmd)
 void G_BuildTiccmd (ticcmd_t* cmd) 
 { 
     int		i; 
-    boolean	strafe;
-    boolean	bstrafe; 
+    bool	strafe;
+    bool	bstrafe; 
     int		speed;
     int		tspeed; 
     int		forward;
@@ -501,7 +501,7 @@ void G_DoLoadLevel (void)
 // G_Responder  
 // Get info needed to make ticcmd_ts for the players.
 // 
-boolean G_Responder (sf::Event* ev) 
+bool G_Responder (sf::Event* ev) 
 { 
     // allow spy mode changes even during the demo
     if (gamestate == GS_LEVEL && ev->type == sf::Event::KeyPressed
@@ -844,7 +844,7 @@ void G_PlayerReborn (int player)
 //
 void P_SpawnPlayer (mapthing_t* mthing); 
  
-boolean
+bool
 G_CheckSpot
 ( int		playernum,
   mapthing_t*	mthing ) 
@@ -1000,7 +1000,7 @@ int cpars[32] =
 //
 // G_DoCompleted 
 //
-boolean		secretexit; 
+bool		secretexit; 
 extern char*	pagename; 
  
 void G_ExitLevel (void) 
@@ -1188,7 +1188,7 @@ void G_DoWorldDone (void)
 // G_InitFromSavegame
 // Can be called by the startup code or the menu task. 
 //
-extern boolean setsizeneeded;
+extern bool setsizeneeded;
 void R_ExecuteSetViewSize (void);
 
 char	savename[256];
@@ -1214,9 +1214,7 @@ void G_DoLoadGame (void)
     length = M_ReadFile (savename, &savebuffer); 
     save_p = savebuffer + SAVESTRINGSIZE;
     
-    // skip the description field 
-    memset (vcheck,0,sizeof(vcheck)); 
-    sprintf (vcheck,"version %i",VERSION); 
+    // skip the description field
     if (strcmp ((char*)save_p, vcheck)) 
 	return;				// bad version 
     save_p += VERSIONSIZE; 
@@ -1259,7 +1257,7 @@ void G_DoLoadGame (void)
 //
 // G_SaveGame
 // Called by the menu task.
-// Description is a 24 byte text string 
+// Description is a 24 unsigned char text string 
 //
 void
 G_SaveGame
@@ -1290,7 +1288,6 @@ void G_DoSaveGame (void)
     memcpy (save_p, description, SAVESTRINGSIZE); 
     save_p += SAVESTRINGSIZE; 
     memset (name2,0,sizeof(name2)); 
-    sprintf (name2,"version %i",VERSION); 
     memcpy (save_p, name2, VERSIONSIZE); 
     save_p += VERSIONSIZE; 
 	 
@@ -1543,7 +1540,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParm ("-maxdemo");
     if (i && i<myargc-1)
 	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = (byte*)Z_Malloc (maxsize,PU_STATIC,NULL); 
+    demobuffer = (unsigned char*)Z_Malloc (maxsize,PU_STATIC,NULL); 
     demoend = demobuffer + maxsize;
 	
     demorecording = true; 
@@ -1556,7 +1553,6 @@ void G_BeginRecording (void)
 		
     demo_p = demobuffer;
 	
-    *demo_p++ = VERSION;
     *demo_p++ = gameskill; 
     *demo_p++ = gameepisode; 
     *demo_p++ = gamemap; 
@@ -1569,11 +1565,6 @@ void G_BeginRecording (void)
     for (i=0 ; i<MAXPLAYERS ; i++) 
 	*demo_p++ = playeringame[i]; 		 
 } 
- 
-
-//
-// G_PlayDemo 
-//
 
 char*	defdemoname; 
  
@@ -1589,13 +1580,7 @@ void G_DoPlayDemo (void)
     int             i, episode, map; 
 	 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname, PU_STATIC); 
-    if ( *demo_p++ != VERSION)
-    {
-      fprintf( stderr, "Demo is from a different game version!\n");
-      gameaction = ga_nothing;
-      return;
-    }
+    demobuffer = demo_p = (unsigned char*)W_CacheLumpName (defdemoname, PU_STATIC); 
     
     skill = (skill_t)*demo_p++; 
     episode = *demo_p++; 
@@ -1648,7 +1633,7 @@ void G_TimeDemo (char* name)
 =================== 
 */ 
  
-boolean G_CheckDemoStatus (void) 
+bool G_CheckDemoStatus (void) 
 { 
     int             endtime; 
 	 

@@ -70,7 +70,7 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #define htons(x) ntohs(x)
 
 void	NetSend (void);
-boolean NetListen (void);
+bool NetListen (void);
 
 
 //
@@ -134,7 +134,7 @@ void PacketSend (void)
     int		c;
     doomdata_t	sw;
 				
-    // byte swap
+    // unsigned char swap
     sw.checksum = htonl(netbuffer->checksum);
     sw.player = netbuffer->player;
     sw.retransmitfrom = netbuffer->retransmitfrom;
@@ -204,7 +204,7 @@ void PacketGet (void)
     doomcom->remotenode = i;			// good packet from a game player
     doomcom->datalength = c;
 	
-    // byte swap
+    // unsigned char swap
 //JONNY//	    netbuffer->checksum = ntohl(sw.checksum);
 //JONNY//	    netbuffer->player = sw.player;
 //JONNY//    netbuffer->retransmitfrom = sw.retransmitfrom;
@@ -249,7 +249,7 @@ int GetLocalAddress (void)
 //
 void I_InitNetwork (void)
 {
-    boolean		trueval = true;
+    bool		trueval = true;
     int			i(0);
     int			p(0);
     struct hostent*	hostentry(NULL);	// host information entry

@@ -107,14 +107,14 @@ void D_DoomLoop (void);
 char*		wadfiles[MAXWADFILES];
 
 
-boolean		devparm;	// started game with -devparm
-boolean         nomonsters;	// checkparm of -nomonsters
-boolean         respawnparm;	// checkparm of -respawn
-boolean         fastparm;	// checkparm of -fast
+bool		devparm;	// started game with -devparm
+bool         nomonsters;	// checkparm of -nomonsters
+bool         respawnparm;	// checkparm of -respawn
+bool         fastparm;	// checkparm of -fast
 
-boolean         drone;
+bool         drone;
 
-boolean		singletics = false; // debug flag to cancel adaptiveness
+bool		singletics = false; // debug flag to cancel adaptiveness
 
 
 
@@ -122,16 +122,16 @@ boolean		singletics = false; // debug flag to cancel adaptiveness
 //extern  int	sfxVolume;
 //extern  int	musicVolume;
 
-extern  boolean	inhelpscreens;
+extern  bool	inhelpscreens;
 
 skill_t		startskill;
 int             startepisode;
 int		startmap;
-boolean		autostart;
+bool		autostart;
 
 FILE*		debugfile;
 
-boolean		advancedemo;
+bool		advancedemo;
 
 
 
@@ -180,25 +180,25 @@ void D_ProcessEvents (void)
 
 // wipegamestate can be set to -1 to force a wipe on the next draw
 gamestate_t     wipegamestate = GS_DEMOSCREEN;
-extern  boolean setsizeneeded;
+extern  bool setsizeneeded;
 extern  int             showMessages;
 void R_ExecuteSetViewSize (void);
 
 void D_Display (void)
 {
-    static  boolean		viewactivestate = false;
-    static  boolean		menuactivestate = false;
-    static  boolean		inhelpscreensstate = false;
-    static  boolean		fullscreen = false;
+    static  bool		viewactivestate = false;
+    static  bool		menuactivestate = false;
+    static  bool		inhelpscreensstate = false;
+    static  bool		fullscreen = false;
     static  gamestate_t		oldgamestate = (gamestate_t)-1;
     static  int			borderdrawcount;
     int				nowtime;
     int				tics;
     int				wipestart;
     int				y;
-    boolean			done;
-    boolean			wipe;
-    boolean			redrawsbar;
+    bool			done;
+    bool			wipe;
+    bool			redrawsbar;
 
     if (nodrawers)
 	return;                    // for comparative timing / profiling
@@ -266,7 +266,7 @@ void D_Display (void)
     
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-	I_SetPalette ((byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+	I_SetPalette ((unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -343,7 +343,7 @@ void D_Display (void)
 //
 //  D_DoomLoop
 //
-extern  boolean         demorecording;
+extern  bool         demorecording;
 
 void D_DoomLoop (void)
 {
@@ -815,28 +815,28 @@ void D_DoomMain (void)
 		 "                         "
 		 "The Ultimate DOOM Startup v%i.%i"
 		 "                           ",
-		 VERSION/100,VERSION%100);
+		 0,1);
 	break;
       case shareware:
 	sprintf (title,
 		 "                            "
 		 "DOOM Shareware Startup v%i.%i"
 		 "                           ",
-		 VERSION/100,VERSION%100);
+		 0,1);
 	break;
       case registered:
 	sprintf (title,
 		 "                            "
 		 "DOOM Registered Startup v%i.%i"
 		 "                           ",
-		 VERSION/100,VERSION%100);
+		0, 1);
 	break;
       case commercial:
 	sprintf (title,
 		 "                         "
 		 "DOOM 2: Hell on Earth v%i.%i"
 		 "                           ",
-		 VERSION/100,VERSION%100);
+		0, 1);
 	break;
 /*FIXME
        case pack_plut:
@@ -859,7 +859,7 @@ void D_DoomMain (void)
 		 "                     "
 		 "Public DOOM - v%i.%i"
 		 "                           ",
-		 VERSION/100,VERSION%100);
+		0, 1);
 	break;
     }
     

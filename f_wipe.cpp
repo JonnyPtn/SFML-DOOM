@@ -40,11 +40,11 @@ static const char rcsid[] = "$Id: f_wipe.c,v 1.2 1997/02/03 22:45:09 b1 Exp $";
 //
 
 // when zero, stop the wipe
-static boolean	go = 0;
+static bool	go = 0;
 
-static byte*	wipe_scr_start;
-static byte*	wipe_scr_end;
-static byte*	wipe_scr;
+static unsigned char*	wipe_scr_start;
+static unsigned char*	wipe_scr_end;
+static unsigned char*	wipe_scr;
 
 
 void
@@ -85,9 +85,9 @@ wipe_doColorXForm
   int	height,
   int	ticks )
 {
-    boolean	changed;
-    byte*	w;
-    byte*	e;
+    bool	changed;
+    unsigned char*	w;
+    unsigned char*	e;
     int		newval;
 
     changed = false;
@@ -181,7 +181,7 @@ wipe_doMelt
     
     short*	s;
     short*	d;
-    boolean	done = true;
+    bool	done = true;
 
     width/=2;
 
@@ -280,7 +280,7 @@ wipe_ScreenWipe
     if (!go)
     {
 	go = 1;
-	// wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, 0); // DEBUG
+	// wipe_scr = (unsigned char *) Z_Malloc(width*height, PU_STATIC, 0); // DEBUG
 	wipe_scr = screens[0];
 	(*wipes[wipeno*3])(width, height, ticks);
     }

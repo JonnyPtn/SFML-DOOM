@@ -1,36 +1,10 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//  all external data is defined here
-//  most of the data is loaded into different structures at run time
-//  some internal structures shared by many modules are here
-//
-//-----------------------------------------------------------------------------
-
-#ifndef __DOOMDATA__
-#define __DOOMDATA__
+#pragma once
 
 // The most basic types we use, portability.
 #include "doomtype.hpp"
 
 // Some global defines, that configure the game.
 #include "doomdef.hpp"
-
-
 
 //
 // Map level types.
@@ -208,15 +182,3 @@ typedef struct
     short		type;
     short		options;
 } mapthing_t;
-
-
-
-
-
-#endif			// __DOOMDATA__
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------
-

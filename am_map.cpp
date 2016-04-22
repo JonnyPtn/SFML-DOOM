@@ -218,7 +218,7 @@ static int 	grid = 0;
 
 static int 	leveljuststarted = 1; 	// kluge until AM_LevelInit() is called
 
-boolean    	automapactive = false;
+bool    	automapactive = false;
 static int 	finit_width = SCREENWIDTH;
 static int 	finit_height = SCREENHEIGHT - 32;
 
@@ -231,7 +231,7 @@ static int 	f_w;
 static int	f_h;
 
 static int 	lightlev; 		// used for funky strobing effect
-static byte*	fb; 			// pseudo-frame buffer
+static unsigned char*	fb; 			// pseudo-frame buffer
 static int 	amclock;
 
 static mpoint_t m_paninc; // how far the window pans each tic (map coords)
@@ -287,10 +287,10 @@ static int followplayer = 1; // specifies whether to follow the player around
 static unsigned char cheat_amap_seq[] = { 0xb2, 0x26, 0x26, 0x2e, 0xff };
 static cheatseq_t cheat_amap = { cheat_amap_seq, 0 };
 
-static boolean stopped = true;
+static bool stopped = true;
 
-extern boolean viewactive;
-//extern byte screens[][SCREENWIDTH*SCREENHEIGHT];
+extern bool viewactive;
+//extern unsigned char screens[][SCREENWIDTH*SCREENHEIGHT];
 
 
 
@@ -611,7 +611,7 @@ void AM_maxOutWindowScale(void)
 //
 // Handle events (user inputs) in automap mode
 //
-boolean
+bool
 AM_Responder
 ( sf::Event*	ev )
 {
@@ -844,7 +844,7 @@ void AM_clearFB(int color)
 // faster reject and precalculated slopes.  If the speed is needed,
 // use a hash algorithm to handle  the common cases.
 //
-boolean
+bool
 AM_clipMline
 ( mline_t*	ml,
   fline_t*	fl )

@@ -70,7 +70,7 @@ int
 M_DrawText
 ( int		x,
   int		y,
-  boolean	direct,
+  bool	direct,
   char*		string )
 {
     int 	c;
@@ -109,7 +109,7 @@ M_DrawText
 #define O_BINARY 0
 #endif
 
-boolean
+bool
 M_WriteFile
 ( char const*	name,
   void*		source,
@@ -139,11 +139,11 @@ M_WriteFile
 int
 M_ReadFile
 ( char const*	name,
-  byte**	buffer )
+  unsigned char**	buffer )
 {
     int	handle, count, length;
     struct stat	fileinfo;
-    byte		*buf;
+    unsigned char		*buf;
 	
     handle = open (name, O_RDONLY | O_BINARY, 0666);
     if (handle == -1)
@@ -151,7 +151,7 @@ M_ReadFile
     if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Couldn't read file %s", name);
     length = fileinfo.st_size;
-    buf = (byte*)Z_Malloc (length, PU_STATIC, NULL);
+    buf = (unsigned char*)Z_Malloc (length, PU_STATIC, NULL);
     count = read (handle, buf, length);
     close (handle);
 	
@@ -335,7 +335,7 @@ void M_SaveDefaults (void)
 //
 // M_LoadDefaults
 //
-extern byte	scantokey[128];
+extern unsigned char	scantokey[128];
 
 void M_LoadDefaults (void)
 {
@@ -346,7 +346,7 @@ void M_LoadDefaults (void)
     char	strparm[100];
     char*	newstring;
     int		parm;
-    boolean	isstring;
+    bool	isstring;
     
     // set everything to base values
     numdefaults = sizeof(defaults)/sizeof(defaults[0]);
@@ -441,15 +441,15 @@ typedef struct
 void
 WritePCXfile
 ( char*		filename,
-  byte*		data,
+  unsigned char*		data,
   int		width,
   int		height,
-  byte*		palette )
+  unsigned char*		palette )
 {
     int		i;
     int		length;
     pcx_t*	pcx;
-    byte*	pack;
+    unsigned char*	pack;
 	
     pcx =(pcx_t*) Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
 
@@ -485,12 +485,12 @@ WritePCXfile
     }
     
     // write the palette
-    *pack++ = 0x0c;	// palette ID byte
+    *pack++ = 0x0c;	// palette ID unsigned char
     for (i=0 ; i<768 ; i++)
 	*pack++ = *palette++;
     
     // write output file
-    length = pack - (byte *)pcx;
+    length = pack - (unsigned char *)pcx;
     M_WriteFile (filename, pcx, length);
 
     Z_Free (pcx);
@@ -503,7 +503,7 @@ WritePCXfile
 void M_ScreenShot (void)
 {
     int		i;
-    byte*	linear;
+    unsigned char*	linear;
     char	lbmname[12];
     
     // munge planar buffer to linear
@@ -526,7 +526,7 @@ void M_ScreenShot (void)
     // save the pcx file
     WritePCXfile (lbmname, linear,
 		  SCREENWIDTH, SCREENHEIGHT,
-		  (byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+		  (unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 	
     players[consoleplayer].message = "screen shot";
 }

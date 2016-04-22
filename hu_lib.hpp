@@ -1,25 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:  none
-//
-//-----------------------------------------------------------------------------
-
-#ifndef __HULIB__
-#define __HULIB__
+#pragma once
 
 // We are referring to patches.
 #include "r_defs.hpp"
@@ -68,9 +47,9 @@ typedef struct
     int			h;		// height in lines
     int			cl;		// current line number
 
-    // pointer to boolean stating whether to update window
-    boolean*		on;
-    boolean		laston;		// last value of *->on.
+    // pointer to bool stating whether to update window
+    bool*		on;
+    bool		laston;		// last value of *->on.
 
 } hu_stext_t;
 
@@ -85,9 +64,9 @@ typedef struct
      // left margin past which I am not to delete characters
     int			lm;
 
-    // pointer to boolean stating whether to update window
-    boolean*		on; 
-    boolean		laston; // last value of *->on;
+    // pointer to bool stating whether to update window
+    bool*		on; 
+    bool		laston; // last value of *->on;
 
 } hu_itext_t;
 
@@ -109,13 +88,13 @@ void	HUlib_clearTextLine(hu_textline_t *t);
 void	HUlib_initTextLine(hu_textline_t *t, int x, int y, patch_t **f, int sc);
 
 // returns success
-boolean HUlib_addCharToTextLine(hu_textline_t *t, char ch);
+bool HUlib_addCharToTextLine(hu_textline_t *t, char ch);
 
 // returns success
-boolean HUlib_delCharFromTextLine(hu_textline_t *t);
+bool HUlib_delCharFromTextLine(hu_textline_t *t);
 
 // draws tline
-void	HUlib_drawTextLine(hu_textline_t *l, boolean drawcursor);
+void	HUlib_drawTextLine(hu_textline_t *l, bool drawcursor);
 
 // erases text line
 void	HUlib_eraseTextLine(hu_textline_t *l); 
@@ -134,7 +113,7 @@ HUlib_initSText
   int		h,
   patch_t**	font,
   int		startchar,
-  boolean*	on );
+  bool*	on );
 
 // add a new line
 void HUlib_addLineToSText(hu_stext_t* s);  
@@ -160,7 +139,7 @@ HUlib_initIText
   int		y,
   patch_t**	font,
   int		startchar,
-  boolean*	on );
+  bool*	on );
 
 // enforces left margin
 void HUlib_delCharFromIText(hu_itext_t* it);
@@ -178,7 +157,7 @@ HUlib_addPrefixToIText
   char*		str );
 
 // whether eaten
-boolean
+bool
 HUlib_keyInIText
 ( hu_itext_t*	it,
   unsigned char ch );
@@ -187,10 +166,3 @@ void HUlib_drawIText(hu_itext_t* it);
 
 // erases all itext lines
 void HUlib_eraseIText(hu_itext_t* it); 
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

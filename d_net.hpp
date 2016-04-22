@@ -1,37 +1,6 @@
 #pragma once
 
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//	Networking stuff.
-//
-//-----------------------------------------------------------------------------
-
-
-#ifndef __D_NET__
-#define __D_NET__
-
 #include "d_player.hpp"
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 //
 // Network play related stuff.
@@ -66,11 +35,11 @@ typedef struct
 	// High bit is retransmit request.
 	unsigned		checksum;
 	// Only valid if NCMD_RETRANSMIT.
-	byte		retransmitfrom;
+	unsigned char		retransmitfrom;
 
-	byte		starttic;
-	byte		player;
-	byte		numtics;
+	unsigned char		starttic;
+	unsigned char		player;
+	unsigned char		numtics;
 	ticcmd_t		cmds[BACKUPTICS];
 
 } doomdata_t;
@@ -91,7 +60,7 @@ typedef struct
 	// Is dest for send, set by get (-1 = no packet).
 	short		remotenode;
 
-	// Number of bytes in doomdata to be sent
+	// Number of unsigned chars in doomdata to be sent
 	short		datalength;
 
 	// Info common to all nodes.
@@ -139,13 +108,3 @@ void D_QuitNetGame(void);
 
 //? how many ticks to run?
 void TryRunTics(void);
-
-
-#endif
-
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------
-

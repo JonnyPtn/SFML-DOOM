@@ -34,7 +34,7 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 // Not needed with big endian.
 #ifndef __BIG_ENDIAN__
 
-// Swap 16bit, that is, MSB and LSB byte.
+// Swap 16bit, that is, MSB and LSB unsigned char.
 unsigned short SwapSHORT(unsigned short x)
 {
     // No masking with 0xFF should be necessary. 

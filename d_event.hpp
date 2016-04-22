@@ -47,7 +47,7 @@ typedef enum
     BTS_SAVEGAME	= 2,
 
     // Savegame slot numbers
-    //  occupy the second byte of buttons.    
+    //  occupy the second unsigned char of buttons.    
     BTS_SAVEMASK	= (4+8+16),
     BTS_SAVESHIFT 	= 2,
   

@@ -65,7 +65,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #ifdef __USE_MISC
 /* Some systems define this name instead of CHAR_BIT or CHARBITS.  */
-# define BITSPERBYTE	CHAR_BIT
+# define BITSPERunsigned char	CHAR_BIT
 #endif
 
 #endif	/* values.h */

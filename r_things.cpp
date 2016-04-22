@@ -107,7 +107,7 @@ R_InstallSpriteLump
 ( int		lump,
   unsigned	frame,
   unsigned	rotation,
-  boolean	flipped )
+  bool	flipped )
 {
     int		r;
 	
@@ -133,7 +133,7 @@ R_InstallSpriteLump
 	for (r=0 ; r<8 ; r++)
 	{
 	    sprtemp[frame].lump[r] = lump - firstspritelump;
-	    sprtemp[frame].flip[r] = (byte)flipped;
+	    sprtemp[frame].flip[r] = (unsigned char)flipped;
 	}
 	return;
     }
@@ -153,7 +153,7 @@ R_InstallSpriteLump
 		 spritename, 'A'+frame, '1'+rotation);
 		
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
-    sprtemp[frame].flip[rotation] = (byte)flipped;
+    sprtemp[frame].flip[rotation] = (unsigned char)flipped;
 }
 
 
@@ -373,15 +373,15 @@ void R_DrawMaskedColumn (column_t* column)
 
 	if (dc_yl <= dc_yh)
 	{
-	    dc_source = (byte *)column + 3;
+	    dc_source = (unsigned char *)column + 3;
 	    dc_texturemid = basetexturemid - (column->topdelta<<FRACBITS);
-	    // dc_source = (byte *)column + 3 - column->topdelta;
+	    // dc_source = (unsigned char *)column + 3 - column->topdelta;
 
 	    // Drawn by either R_DrawColumn
 	    //  or (SHADOW) R_DrawFuzzColumn.
 	    colfunc ();	
 	}
-	column = (column_t *)(  (byte *)column + column->length + 4);
+	column = (column_t *)(  (unsigned char *)column + column->length + 4);
     }
 	
     dc_texturemid = basetexturemid;
@@ -434,7 +434,7 @@ R_DrawVisSprite
 	if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
 	    I_Error ("R_DrawSpriteRange: bad texturecolumn");
 #endif
-	column = (column_t *) ((byte *)patch +
+	column = (column_t *) ((unsigned char *)patch +
 			       LONG(patch->columnofs[texturecolumn]));
 	R_DrawMaskedColumn (column);
     }
@@ -470,7 +470,7 @@ void R_ProjectSprite (mobj_t* thing)
     int			lump;
     
     unsigned		rot;
-    boolean		flip;
+    bool		flip;
     
     int			index;
 
@@ -522,13 +522,13 @@ void R_ProjectSprite (mobj_t* thing)
 	ang = R_PointToAngle (thing->x, thing->y);
 	rot = (ang-thing->angle+(unsigned)(ANG45/2)*9)>>29;
 	lump = sprframe->lump[rot];
-	flip = (boolean)sprframe->flip[rot];
+	flip = (bool)sprframe->flip[rot];
     }
     else
     {
 	// use single rotation for all views
 	lump = sprframe->lump[0];
-	flip = (boolean)sprframe->flip[0];
+	flip = (bool)sprframe->flip[0];
     }
     
     // calculate edges of the shape
@@ -651,7 +651,7 @@ void R_DrawPSprite (pspdef_t* psp)
     spritedef_t*	sprdef;
     spriteframe_t*	sprframe;
     int			lump;
-    boolean		flip;
+    bool		flip;
     vissprite_t*	vis;
     vissprite_t		avis;
     
@@ -670,7 +670,7 @@ void R_DrawPSprite (pspdef_t* psp)
     sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
 
     lump = sprframe->lump[0];
-    flip = (boolean)sprframe->flip[0];
+    flip = (bool)sprframe->flip[0];
     
     // calculate edges of the shape
     tx = psp->sx-160*FRACUNIT;

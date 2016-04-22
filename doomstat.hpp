@@ -1,32 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//   All the global variables that store the internal state.
-//   Theoretically speaking, the internal state of the engine
-//    should be found by looking at the variables collected
-//    here, and every relevant module will have to include
-//    this header file.
-//   In practice, things are a bit messy.
-//
-//-----------------------------------------------------------------------------
-
-
-#ifndef __D_STATE__
-#define __D_STATE__
+#pragma once
 
 // We need globally shared data structures,
 //  for defining the global state variables.
@@ -36,23 +8,14 @@
 // We need the playr data structure as well.
 #include "d_player.hpp"
 
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
-
 // ------------------------
 // Command line parameters.
 //
-extern  boolean	nomonsters;	// checkparm of -nomonsters
-extern  boolean	respawnparm;	// checkparm of -respawn
-extern  boolean	fastparm;	// checkparm of -fast
+extern  bool	nomonsters;	// checkparm of -nomonsters
+extern  bool	respawnparm;	// checkparm of -respawn
+extern  bool	fastparm;	// checkparm of -fast
 
-extern  boolean	devparm;	// DEBUG: launched with -devparm
-
-
+extern  bool	devparm;	// DEBUG: launched with -devparm
 
 // -----------------------------------------------------
 // Game Mode - identify IWAD as shareware, retail etc.
@@ -61,7 +24,7 @@ extern GameMode_t	gamemode;
 extern GameMission_t	gamemission;
 
 // Set if homebrew PWAD stuff has been added.
-extern  boolean	modifiedgame;
+extern  bool	modifiedgame;
 
 
 // -------------------------------------------
@@ -78,7 +41,7 @@ extern  skill_t		startskill;
 extern  int             startepisode;
 extern	int		startmap;
 
-extern  boolean		autostart;
+extern  bool		autostart;
 
 // Selected by user. 
 extern  skill_t         gameskill;
@@ -86,14 +49,14 @@ extern  int		gameepisode;
 extern  int		gamemap;
 
 // Nightmare mode flag, single player.
-extern  boolean         respawnmonsters;
+extern  bool         respawnmonsters;
 
 // Netgame? Only true if >1 player.
-extern  boolean	netgame;
+extern  bool	netgame;
 
 // Flag: true only if started as net deathmatch.
 // An enum might handle altdeath/cooperative better.
-extern  boolean	deathmatch;	
+extern  bool	deathmatch;	
 	
 // -------------------------
 // Internal parameters for sound rendering.
@@ -127,17 +90,17 @@ extern int snd_DesiredSfxDevice;
 // Depending on view size - no status bar?
 // Note that there is no way to disable the
 //  status bar explicitely.
-extern  boolean statusbaractive;
+extern  bool statusbaractive;
 
-extern  boolean automapactive;	// In AutoMap mode?
-extern  boolean	menuactive;	// Menu overlayed?
-extern  boolean	paused;		// Game Pause?
+extern  bool automapactive;	// In AutoMap mode?
+extern  bool	menuactive;	// Menu overlayed?
+extern  bool	paused;		// Game Pause?
 
 
-extern  boolean		viewactive;
+extern  bool		viewactive;
 
-extern  boolean		nodrawers;
-extern  boolean		noblit;
+extern  bool		nodrawers;
+extern  bool		noblit;
 
 extern	int		viewwindowx;
 extern	int		viewwindowy;
@@ -177,14 +140,14 @@ extern  int	leveltime;	// tics in game play for par
 // DEMO playback/recording related stuff.
 // No demo, there is a human player in charge?
 // Disable save/end game?
-extern  boolean	usergame;
+extern  bool	usergame;
 
 //?
-extern  boolean	demoplayback;
-extern  boolean	demorecording;
+extern  bool	demoplayback;
+extern  bool	demorecording;
 
 // Quit after playing a demo from cmdline.
-extern  boolean		singledemo;	
+extern  bool		singledemo;	
 
 
 
@@ -212,7 +175,7 @@ extern	int		gametic;
 extern	player_t	players[MAXPLAYERS];
 
 // Alive? Disconnected?
-extern  boolean		playeringame[MAXPLAYERS];
+extern  bool		playeringame[MAXPLAYERS];
 
 
 // Player spawn spots for deathmatch.
@@ -245,7 +208,7 @@ extern	char		basedefault[1024];
 extern  FILE*		debugfile;
 
 // if true, load all graphics at level load
-extern  boolean         precache;
+extern  bool         precache;
 
 
 // wipegamestate can be set to -1
@@ -255,7 +218,7 @@ extern  gamestate_t     wipegamestate;
 extern  int             mouseSensitivity;
 //?
 // debug flag to cancel adaptiveness
-extern  boolean         singletics;	
+extern  bool         singletics;	
 
 extern  int             bodyqueslot;
 
@@ -285,12 +248,3 @@ extern  int             nettics[MAXNETNODES];
 
 extern  ticcmd_t        netcmds[MAXPLAYERS][BACKUPTICS];
 extern	int		ticdup;
-
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

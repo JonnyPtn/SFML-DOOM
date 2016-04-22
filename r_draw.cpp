@@ -60,20 +60,20 @@ rcsid[] = "$Id: r_draw.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 //
 
 
-byte*		viewimage; 
+unsigned char*		viewimage; 
 int		viewwidth;
 int		scaledviewwidth;
 int		viewheight;
 int		viewwindowx;
 int		viewwindowy; 
-byte*		ylookup[MAXHEIGHT]; 
+unsigned char*		ylookup[MAXHEIGHT]; 
 int		columnofs[MAXWIDTH]; 
 
 // Color tables for different players,
 //  translate a limited part to another
 //  (color ramps used for  suit colors).
 //
-byte		translations[3][256];	
+unsigned char		translations[3][256];	
  
  
 
@@ -90,7 +90,7 @@ fixed_t			dc_iscale;
 fixed_t			dc_texturemid;
 
 // first pixel in a column (possibly virtual) 
-byte*			dc_source;		
+unsigned char*			dc_source;		
 
 // just for profiling 
 int			dccount;
@@ -105,7 +105,7 @@ int			dccount;
 void R_DrawColumn (void) 
 { 
     int			count; 
-    byte*		dest; 
+    unsigned char*		dest; 
     fixed_t		frac;
     fixed_t		fracstep;	 
  
@@ -155,9 +155,9 @@ void R_DrawColumn (void)
 void R_DrawColumn (void) 
 { 
     int			count; 
-    byte*		source;
-    byte*		dest;
-    byte*		colormap;
+    unsigned char*		source;
+    unsigned char*		dest;
+    unsigned char*		colormap;
     
     unsigned		frac;
     unsigned		fracstep;
@@ -211,8 +211,8 @@ void R_DrawColumn (void)
 void R_DrawColumnLow (void) 
 { 
     int			count; 
-    byte*		dest; 
-    byte*		dest2;
+    unsigned char*		dest; 
+    unsigned char*		dest2;
     fixed_t		frac;
     fixed_t		fracstep;	 
  
@@ -285,7 +285,7 @@ int	fuzzpos = 0;
 void R_DrawFuzzColumn (void) 
 { 
     int			count; 
-    byte*		dest; 
+    unsigned char*		dest; 
     fixed_t		frac;
     fixed_t		fracstep;	 
 
@@ -379,13 +379,13 @@ void R_DrawFuzzColumn (void)
 //  of the BaronOfHell, the HellKnight, uses
 //  identical sprites, kinda brightened up.
 //
-byte*	dc_translation;
-byte*	translationtables;
+unsigned char*	dc_translation;
+unsigned char*	translationtables;
 
 void R_DrawTranslatedColumn (void) 
 { 
     int			count; 
-    byte*		dest; 
+    unsigned char*		dest; 
     fixed_t		frac;
     fixed_t		fracstep;	 
  
@@ -460,8 +460,8 @@ void R_InitTranslationTables (void)
 {
     int		i;
 	
-    translationtables = (byte*)Z_Malloc (256*3+255, PU_STATIC, 0);
-    translationtables = (byte *)(( (int)translationtables + 255 )& ~255);
+    translationtables = (unsigned char*)Z_Malloc (256*3+255, PU_STATIC, 0);
+    translationtables = (unsigned char *)(( (int)translationtables + 255 )& ~255);
     
     // translate just the 16 green colors
     for (i=0 ; i<256 ; i++)
@@ -509,7 +509,7 @@ fixed_t			ds_xstep;
 fixed_t			ds_ystep;
 
 // start of a 64*64 tile image 
-byte*			ds_source;	
+unsigned char*			ds_source;	
 
 // just for profiling
 int			dscount;
@@ -521,7 +521,7 @@ void R_DrawSpan (void)
 { 
     fixed_t		xfrac;
     fixed_t		yfrac; 
-    byte*		dest; 
+    unsigned char*		dest; 
     int			count;
     int			spot; 
 	 
@@ -571,9 +571,9 @@ void R_DrawSpan (void)
 { 
     unsigned	position, step;
 
-    byte*	source;
-    byte*	colormap;
-    byte*	dest;
+    unsigned char*	source;
+    unsigned char*	colormap;
+    unsigned char*	dest;
     
     unsigned	count;
     usingned	spot; 
@@ -644,7 +644,7 @@ void R_DrawSpanLow (void)
 { 
     fixed_t		xfrac;
     fixed_t		yfrac; 
-    byte*		dest; 
+    unsigned char*		dest; 
     int			count;
     int			spot; 
 	 
@@ -730,8 +730,8 @@ R_InitBuffer
 //
 void R_FillBackScreen (void) 
 { 
-    byte*	src;
-    byte*	dest; 
+    unsigned char*	src;
+    unsigned char*	dest; 
     int		x;
     int		y; 
     patch_t*	patch;
@@ -752,7 +752,7 @@ void R_FillBackScreen (void)
     else
 	name = name1;
     
-    src = (byte*)W_CacheLumpName (name, PU_CACHE); 
+    src = (unsigned char*)W_CacheLumpName (name, PU_CACHE); 
     dest = screens[1]; 
 	 
     for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++) 
@@ -821,7 +821,7 @@ R_VideoErase
 { 
   // LFB copy.
   // This might not be a good idea if memcpy
-  //  is not optiomal, e.g. byte by byte on
+  //  is not optiomal, e.g. unsigned char by unsigned char on
   //  a 32bit CPU, as GNU GCC/Linux libc did
   //  at one point.
     memcpy (screens[0]+ofs, screens[1]+ofs, count); 

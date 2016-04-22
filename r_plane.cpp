@@ -420,7 +420,7 @@ void R_DrawPlanes (void)
 	}
 	
 	// regular flat
-	ds_source = (byte*)W_CacheLumpNum(firstflat +
+	ds_source = (unsigned char*)W_CacheLumpNum(firstflat +
 				   flattranslation[pl->picnum],
 				   PU_STATIC);
 	

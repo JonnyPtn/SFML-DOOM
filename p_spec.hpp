@@ -30,7 +30,7 @@
 //
 // End-level timer (-TIMER option)
 //
-extern	boolean levelTimer;
+extern	bool levelTimer;
 extern	int	levelTimeCount;
 
 
@@ -48,7 +48,7 @@ void    P_SpawnSpecials (void);
 void    P_UpdateSpecials (void);
 
 // when needed
-boolean
+bool
 P_UseSpecialLine
 ( mobj_t*	thing,
   line_t*	line,
@@ -293,7 +293,7 @@ typedef struct
     int		count;
     plat_e	status;
     plat_e	oldstatus;
-    boolean	crush;
+    bool	crush;
     int		tag;
     plattype_e	type;
     
@@ -498,7 +498,7 @@ typedef struct
     fixed_t	bottomheight;
     fixed_t	topheight;
     fixed_t	speed;
-    boolean	crush;
+    bool	crush;
 
     // 1 = up, 0 = waiting, -1 = down
     int		direction;
@@ -585,7 +585,7 @@ typedef struct
 {
     thinker_t	thinker;
     floor_e	type;
-    boolean	crush;
+    bool	crush;
     sector_t*	sector;
     int		direction;
     int		newspecial;
@@ -612,7 +612,7 @@ T_MovePlane
 ( sector_t*	sector,
   fixed_t	speed,
   fixed_t	dest,
-  boolean	crush,
+  bool	crush,
   int		floorOrCeiling,
   int		direction );
 
