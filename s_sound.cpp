@@ -279,7 +279,7 @@ S_StartSoundAtVolume
 			     &volume,
 			     &sep,
 			     &pitch);
-	sfSounds[sfx->name].sound.setVolume(volume * 6);
+	sfSounds[sfx->name].sound.setVolume(static_cast<float>(volume * 6));
 
 	
     if ( origin->x == players[consoleplayer].mo->x
@@ -362,7 +362,7 @@ S_StartSoundAtVolume
 	  int i = 0;
 	  while (i<dataSize)
 	  {
-		  newData.push_back (std::pow(data[i], 2));
+		  newData.push_back (static_cast<sf::Int16>(std::pow(data[i], 2)));
 		  i++;
 	  }
 	  
@@ -682,7 +682,7 @@ S_ChangeMusic
 		int i = 0;
 		while (i<dataSize)
 		{
-			newData.push_back(std::pow(data[i], 2));
+			newData.push_back(static_cast<sf::Int16>(std::pow(data[i], 2)));
 			i++;
 		}
 
