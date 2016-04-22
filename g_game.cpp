@@ -359,7 +359,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     bstrafe =
 	mousebuttons[mousebstrafe] 
 	|| joybuttons[joybstrafe]; 
-    if (bstrafe != static_cast<bool>(dclickstate2) && dclicktime2 > 1 ) 
+    if (bstrafe != (dclickstate2!=0) && dclicktime2 > 1 ) 
     { 
 	dclickstate2 = bstrafe; 
 	if (dclickstate2) 
@@ -553,9 +553,9 @@ bool G_Responder (sf::Event* ev)
 	return false;   // always let key up events filter down 
 		 
 	  case sf::Event::MouseMoved:
-	mousebuttons[0] = ev->key.code & 1;
-	mousebuttons[1] = ev->key.code & 2;
-	mousebuttons[2] = ev->key.code & 4;
+	mousebuttons[0] = (ev->key.code & 1)!=0;
+	mousebuttons[1] = (ev->key.code & 2)!=0;
+	mousebuttons[2] = (ev->key.code & 4)!=0;
 	//JONNY// perhaps data2 and data3 are mouse tings!!!
 	/*
 	mousex = ev->data2*(mouseSensitivity+5)/10; 
@@ -563,10 +563,10 @@ bool G_Responder (sf::Event* ev)
 	return true;    // eat events 
  
 	  case sf::Event::JoystickMoved:
-	joybuttons[0] = ev->key.code & 1; 
-	joybuttons[1] = ev->key.code & 2; 
-	joybuttons[2] = ev->key.code & 4; 
-	joybuttons[3] = ev->key.code & 8; 
+	joybuttons[0] = (ev->key.code & 1)!=0; 
+	joybuttons[1] = (ev->key.code & 2)!=0; 
+	joybuttons[2] = (ev->key.code & 4)!=0; 
+	joybuttons[3] = (ev->key.code & 8)!=0; 
 	//JONNY// OR mouse and joystick tings?
 	/*
 	joyxmove = ev->data2; 
@@ -1203,7 +1203,7 @@ void G_DoLoadGame (void)
     gameepisode = *save_p++; 
     gamemap = *save_p++; 
     for (i=0 ; i<MAXPLAYERS ; i++) 
-	playeringame[i] = *save_p++; 
+	playeringame[i] = (*save_p++)!=0; 
 
     // load a base level 
     G_InitNew (gameskill, gameepisode, gamemap); 
@@ -1565,14 +1565,14 @@ void G_DoPlayDemo (void)
     skill = (skill_t)*demo_p++; 
     episode = *demo_p++; 
     map = *demo_p++; 
-    deathmatch = *demo_p++;
-    respawnparm = *demo_p++;
-    fastparm = *demo_p++;
-    nomonsters = *demo_p++;
+    deathmatch = (*demo_p++)!=0;
+    respawnparm = (*demo_p++)!=0;
+    fastparm = (*demo_p++)!=0;
+    nomonsters = (*demo_p++)!=0;
     consoleplayer = *demo_p++;
 	
     for (i=0 ; i<MAXPLAYERS ; i++) 
-	playeringame[i] = *demo_p++; 
+	playeringame[i] = (*demo_p++)!=0; 
     if (playeringame[1]) 
     { 
 	netgame = true; 
@@ -1593,8 +1593,8 @@ void G_DoPlayDemo (void)
 //
 void G_TimeDemo (char* name) 
 { 	 
-    nodrawers = M_CheckParm ("-nodraw"); 
-    noblit = M_CheckParm ("-noblit"); 
+    nodrawers = M_CheckParm ("-nodraw")!=0; 
+    noblit = M_CheckParm ("-noblit")!=0; 
     timingdemo = true; 
     singletics = true; 
 

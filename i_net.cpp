@@ -99,8 +99,8 @@ BindToLocalPort
    //JONNY// address.sin_port = port;
 			
    //JONNY// v = bind (s, (void *)&address, sizeof(address));
-	if (v == -1);
-			I_Error ("BindToPort: bind: %s", strerror(errno));
+	/*if (v == -1)
+			I_Error ("BindToPort: bind: %s", strerror(errno));*/
 }
 
 
@@ -146,7 +146,7 @@ void PacketGet (void)
     int			i(0);
     int			c(0);
 //JONNY//	    struct sockaddr_in	fromaddress;
-    int			fromlen;
+//    int			fromlen;
 	//JONNY// doomdata_t		sw;
 				
 	//JONNY//	  fromlen = sizeof(fromaddress);
@@ -204,7 +204,7 @@ void PacketGet (void)
 
 int GetLocalAddress (void)
 {
-    char		hostname[1024];
+//    char		hostname[1024];
     struct hostent*	hostentry(NULL);	// host information entry
     int			v(0);
 

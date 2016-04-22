@@ -476,7 +476,7 @@ void R_ProjectSprite (mobj_t* thing)
     
     // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-    if ((unsigned)thing->sprite >= numsprites)
+    if (static_cast<int>(thing->sprite) >= numsprites)
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 thing->sprite);
 #endif
@@ -494,13 +494,13 @@ void R_ProjectSprite (mobj_t* thing)
 	ang = R_PointToAngle (thing->x, thing->y);
 	rot = (ang-thing->angle+(unsigned)(ANG45/2)*9)>>29;
 	lump = sprframe->lump[rot];
-	flip = (bool)sprframe->flip[rot];
+	flip = sprframe->flip[rot]==1;
     }
     else
     {
 	// use single rotation for all views
 	lump = sprframe->lump[0];
-	flip = (bool)sprframe->flip[0];
+	flip = sprframe->flip[0]==1;
     }
     
     // calculate edges of the shape
@@ -629,7 +629,7 @@ void R_DrawPSprite (pspdef_t* psp)
     
     // decide which patch to use
 #ifdef RANGECHECK
-    if ( (unsigned)psp->state->sprite >= numsprites)
+    if ( static_cast<int>(psp->state->sprite) >= numsprites)
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 psp->state->sprite);
 #endif
@@ -642,7 +642,7 @@ void R_DrawPSprite (pspdef_t* psp)
     sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
 
     lump = sprframe->lump[0];
-    flip = (bool)sprframe->flip[0];
+    flip = sprframe->flip[0]==1;
     
     // calculate edges of the shape
     tx = psp->sx-160*FRACUNIT;

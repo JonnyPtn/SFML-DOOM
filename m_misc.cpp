@@ -92,13 +92,13 @@ M_WriteFile
     int		handle;
     int		count;
 	
-    handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
+    handle = _open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
 
     if (handle == -1)
 	return false;
 
-    count = write (handle, source, length);
-    close (handle);
+    count = _write (handle, source, length);
+    _close (handle);
 	
     if (count < length)
 	return false;
@@ -119,15 +119,15 @@ M_ReadFile
     struct stat	fileinfo;
     unsigned char		*buf;
 	
-    handle = open (name, O_RDONLY | O_BINARY, 0666);
+    handle = _open (name, O_RDONLY | O_BINARY, 0666);
     if (handle == -1)
 	I_Error ("Couldn't read file %s", name);
     if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Couldn't read file %s", name);
     length = fileinfo.st_size;
     buf = (unsigned char*)Z_Malloc (length, PU_STATIC, NULL);
-    count = read (handle, buf, length);
-    close (handle);
+    count = _read (handle, buf, length);
+    _close (handle);
 	
     if (count < length)
 	I_Error ("Couldn't read file %s", name);

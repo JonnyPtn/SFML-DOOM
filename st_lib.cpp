@@ -152,7 +152,7 @@ STlib_initPercent
 void
 STlib_updatePercent
 ( st_percent_t*		per,
-  int			refresh )
+  bool			refresh )
 {
     if (refresh && *per->n.on)
 	V_DrawPatch(per->n.x, per->n.y, FG, per->p);
@@ -244,7 +244,7 @@ STlib_updateBinIcon
     int			h;
 
     if (*bi->on
-	&& (static_cast<bool>(bi->oldval) != *bi->val || refresh))
+	&& ((bi->oldval==1) != *bi->val || refresh))
     {
 	x = bi->x - SHORT(bi->p->leftoffset);
 	y = bi->y - SHORT(bi->p->topoffset);

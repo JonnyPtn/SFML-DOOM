@@ -303,7 +303,7 @@ bool PIT_CheckThing (mobj_t* thing)
     // check for special pickup
     if (thing->flags & MF_SPECIAL)
     {
-	solid = thing->flags&MF_SOLID;
+	solid = (thing->flags&MF_SOLID)!=0;
 	if (tmflags&MF_PICKUP)
 	{
 	    // can remove thing

@@ -502,15 +502,15 @@ void M_ReadSaveStrings(void)
 	else
 	    sprintf(name,SAVEGAMENAME"%d.dsg",i);
 
-	handle = open (name, O_RDONLY | 0, 0666);
+	handle = _open (name, O_RDONLY | 0, 0666);
 	if (handle == -1)
 	{
 	    strcpy(&savegamestrings[i][0],EMPTYSTRING);
 	    LoadMenu[i].status = 0;
 	    continue;
 	}
-	count = read (handle, &savegamestrings[i], SAVESTRINGSIZE);
-	close (handle);
+	count = _read (handle, &savegamestrings[i], SAVESTRINGSIZE);
+	_close (handle);
 	LoadMenu[i].status = 1;
     }
 }
@@ -1223,7 +1223,7 @@ M_StartMessage
 
 void M_StopMessage(void)
 {
-    menuactive = messageLastMenuActive;
+    menuactive = messageLastMenuActive!=0;
     messageToPrint = 0;
 }
 
@@ -1234,7 +1234,7 @@ void M_StopMessage(void)
 //
 int M_StringWidth(char* string)
 {
-    int             i;
+    unsigned int             i;
     int             w = 0;
     int             c;
 	
@@ -1257,7 +1257,7 @@ int M_StringWidth(char* string)
 //
 int M_StringHeight(char* string)
 {
-    int             i;
+    unsigned int             i;
     int             h;
     int             height = SHORT(hu_font[0]->height);
 	
@@ -1486,7 +1486,7 @@ bool M_Responder (sf::Event* ev)
 	    !(ch == ' ' || ch == 'n' || ch == 'y' || ch == KEY_ESCAPE))
 	    return false;
 		
-	menuactive = messageLastMenuActive;
+	menuactive = messageLastMenuActive!=0;
 	messageToPrint = 0;
 	if (messageRoutine)
 	    messageRoutine(ch);
@@ -1729,7 +1729,7 @@ void M_Drawer (void)
 {
     static short	x;
     static short	y;
-    short		i;
+    unsigned short		i;
     short		max;
     char		string[40];
     int			start;

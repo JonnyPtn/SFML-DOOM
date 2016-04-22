@@ -217,7 +217,7 @@ void F_Ticker (void)
     if ( gamemode == commercial)
 	return;
 		
-    if (!finalestage && finalecount>strlen (finaletext)*TEXTSPEED + TEXTWAIT)
+    if (!finalestage && static_cast<unsigned int>(finalecount)>strlen (finaletext)*TEXTSPEED + TEXTWAIT)
     {
 	finalecount = 0;
 	finalestage = 1;
@@ -572,7 +572,7 @@ void F_CastDrawer (void)
     sprdef = &sprites[caststate->sprite];
     sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
     lump = sprframe->lump[0];
-    flip = (bool)sprframe->flip[0];
+    flip = (sprframe->flip[0])!=0;
 			
     patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
     if (flip)

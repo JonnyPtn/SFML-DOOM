@@ -305,8 +305,8 @@ void D_Display (void)
 	    tics = nowtime - wipestart;
 	} while (!tics);
 	wipestart = nowtime;
-	done = wipe_ScreenWipe(wipe_Melt
-			       , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
+	done = (wipe_ScreenWipe(wipe_Melt
+			       , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics))!=0;
 	I_UpdateNoBlit ();
 	M_Drawer ();                            // menu is drawn even on top of wipes
 	I_FinishUpdate ();                      // page flip or blit buffer
@@ -541,7 +541,6 @@ void IdentifyVersion (void)
     char*	plutoniawad;
     char*	tntwad;
 
-    char *home;
     char *doomwaddir;
     doomwaddir = getenv("DOOMWADDIR");
     if (!doomwaddir)
@@ -624,7 +623,7 @@ void IdentifyVersion (void)
 	return;
     }
 
-    if ( !access (doom2fwad,R_OK) )
+    if ( !_access (doom2fwad,R_OK) )
     {
 	gamemode = commercial;
 	// C'est ridicule!
@@ -635,42 +634,42 @@ void IdentifyVersion (void)
 	return;
     }
 
-    if ( !access (doom2wad,R_OK) )
+    if ( !_access (doom2wad,R_OK) )
     {
 	gamemode = commercial;
 	D_AddFile (doom2wad);
 	return;
     }
 
-    if ( !access (plutoniawad, R_OK ) )
+    if ( !_access (plutoniawad, R_OK ) )
     {
       gamemode = commercial;
       D_AddFile (plutoniawad);
       return;
     }
 
-    if ( !access ( tntwad, R_OK ) )
+    if ( !_access ( tntwad, R_OK ) )
     {
       gamemode = commercial;
       D_AddFile (tntwad);
       return;
     }
 
-    if ( !access (doomuwad,R_OK) )
+    if ( !_access (doomuwad,R_OK) )
     {
       gamemode = retail;
       D_AddFile (doomuwad);
       return;
     }
 
-    if ( !access (doomwad,R_OK) )
+    if ( !_access (doomwad,R_OK) )
     {
       gamemode = registered;
       D_AddFile (doomwad);
       return;
     }
 
-    if ( !access (doom1wad,R_OK) )
+    if ( !_access (doom1wad,R_OK) )
     {
       gamemode = shareware;
       D_AddFile (doom1wad);
@@ -774,10 +773,10 @@ void D_DoomMain (void)
     setbuf (stdout, NULL);
     modifiedgame = false;
 	
-    nomonsters = M_CheckParm ("-nomonsters");
-    respawnparm = M_CheckParm ("-respawn");
-    fastparm = M_CheckParm ("-fast");
-    devparm = M_CheckParm ("-devparm");
+    nomonsters = M_CheckParm ("-nomonsters")!=0;
+    respawnparm = M_CheckParm ("-respawn")!=0;
+    fastparm = M_CheckParm ("-fast")!=0;
+    devparm = M_CheckParm ("-devparm")!=0;
     if (M_CheckParm ("-altdeath"))
 	deathmatch = true;
     else if (M_CheckParm ("-deathmatch"))

@@ -431,7 +431,6 @@ listen:
 //
 void CheckAbort(void)
 {
-	sf::Event *ev;
 	int		stoptic;
 
 	stoptic = I_GetTime() + 2;
@@ -467,7 +466,7 @@ void D_ArbitrateNetStart(void)
 				/*if (netbuffer->player != VERSION)
 					I_Error("Different DOOM versions cannot play a net game!");*/
 				startskill = (skill_t)(netbuffer->retransmitfrom & 15);
-				deathmatch = (netbuffer->retransmitfrom & 0xc0) >> 6;
+				deathmatch = ((netbuffer->retransmitfrom & 0xc0) >> 6)!=0;
 				nomonsters = (netbuffer->retransmitfrom & 0x20) > 0;
 				respawnparm = (netbuffer->retransmitfrom & 0x10) > 0;
 				startmap = netbuffer->starttic & 0x3f;

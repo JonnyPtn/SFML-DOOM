@@ -706,7 +706,7 @@ AM_Responder
 	}
     }
 
-    return rc;
+    return rc!=0;
 
 }
 

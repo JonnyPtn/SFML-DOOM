@@ -160,7 +160,7 @@ STlib_initPercent
 void
 STlib_updatePercent
 ( st_percent_t*		per,
-  int			refresh );
+  bool			refresh );
 
 
 // Multiple Icon widget routines

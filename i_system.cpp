@@ -70,13 +70,13 @@ unsigned char* I_ZoneBase (int*	size)
 int  I_GetTime (void)
 {
 	auto currentTime(std::chrono::system_clock::now());
-	static int basetime = 0;
+	static long basetime = 0;
 
 	if (!basetime)
-		basetime = std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count();
+		basetime = static_cast<int>(std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count());
 
-	int newtics = (std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count() - basetime)*TICRATE +
-		(std::chrono::duration_cast<std::chrono::microseconds>(currentTime.time_since_epoch()).count() - std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count() * 1000000)*TICRATE / 1000000;
+	int newtics = static_cast<int>((std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count() - basetime)*TICRATE +
+		(std::chrono::duration_cast<std::chrono::microseconds>(currentTime.time_since_epoch()).count() - std::chrono::duration_cast<std::chrono::seconds>(currentTime.time_since_epoch()).count() * 1000000)*TICRATE / 1000000);
 
 	//OLD
     /*struct timeval	tp;

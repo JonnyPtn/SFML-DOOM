@@ -170,7 +170,7 @@ bool		shmFinished;
 void I_GetEvent(void)
 {
 
-    sf::Event event;
+//    sf::Event event;
 
     // put event-grabbing stuff in here
 	//JONNY// will be replacing this with SFML event stuff
@@ -686,7 +686,6 @@ void I_InitGraphics(void)
 {
 
     char*		displayname;
-    char*		d;
     int			n;
     int			pnum;
     int			x=0;
@@ -695,13 +694,7 @@ void I_InitGraphics(void)
     // warning: char format, different type arg
     char		xsign=' ';
     char		ysign=' ';
-    
-    int			oktodraw;
-    unsigned long	attribmask;
-//JONNY//    XSetWindowAttributes attribs;
- //JONNY//   XGCValues		xgcvalues;
-    int			valuemask;
-    static int		firsttime=1;
+       static int		firsttime=1;
 
     if (!firsttime)
 	return;
