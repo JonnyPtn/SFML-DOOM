@@ -1,52 +1,12 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// $Log:$
-//
-// DESCRIPTION:
-//	DOOM graphics stuff for X11, UNIX.
-//
-//-----------------------------------------------------------------------------
 
 static const char
 rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include <stdlib.h>
 #include "unistd.h"
-//JONNY//#include <sys/ipc.h>
-//JONNY//#include <sys/shm.h>
-
-//JONNY//#include <X11/Xlib.h>
-//JONNY//#include <X11/Xutil.h>
-//JONNY//#include <X11/keysym.h>
-
-//JONNY//#include <X11/extensions/XShm.h>
-// Had to dig up XShm.c for this one.
-// It is in the libXext, but not in the XFree86 headers.
-#ifdef LINUX
-int XShmGetEventBase( Display* dpy ); // problems with g++?
-#endif
 
 #include <stdarg.h>
-//JONNY//#include <sys/time.h>
 #include <sys/types.h>
-//JONNY//#include <sys/socket.h>
-
-//JONNY//#include <netinet/in.h>
-//JONNY//#include <errnos.h>
 #include <signal.h>
 
 #include "doomstat.hpp"
