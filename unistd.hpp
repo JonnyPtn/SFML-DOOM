@@ -6,14 +6,18 @@
 *  Please add functionality as neeeded
 */
 
+#ifdef _WIN32
 #include <stdlib.h>
 #include <io.h>
 //#include <getopt.h> /* getopt at: https://gist.github.com/ashelly/7776712 */
 #include <process.h> /* for getpid() and the exec..() family */
 #include <direct.h> /* for _getcwd() and _chdir() */
+#else
+//linux stuff
+#endif
 
-#define srandom srand
-#define random rand
+//#define srandom srand
+//#define random rand
 
 /* Values for the second argument to access.
 These may be OR'd together.  */
@@ -34,7 +38,7 @@ These may be OR'd together.  */
 #define lseek _lseek
 /* read, write, and close are NOT being #defined here, because while there are file handle specific versions for Windows, they probably don't work for sockets. You need to look at your app and consider whether to call e.g. closesocket(). */
 
-#define ssize_t int
+//#define ssize_t int
 
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1

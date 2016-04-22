@@ -59,7 +59,9 @@ rcsid[] = "$Id: r_data.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 // a patch or sprite is composed of zero or more columns.
 // 
 
-
+#ifndef _WIN32
+#define _strnicmp strncasecmp
+#endif
 
 //
 // Texture definition.
@@ -544,7 +546,7 @@ void R_InitTextures (void)
 	{
 	    patch->originx = SHORT(mpatch->originx);
 	    patch->originy = SHORT(mpatch->originy);
-	    patch->patch = patchlookup[SHORT(mpatch->patch)];
+	    patch->patch = patchlookup[short(mpatch->patch)];
 	    if (patch->patch == -1)
 	    {
 		I_Error ("R_InitTextures: Missing patch in texture %s",

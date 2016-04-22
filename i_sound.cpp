@@ -33,8 +33,8 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 //JONNY//#include <sys/time.h>
 #include <sys/types.h>
 
-#ifndef LINUX
-//JONNY//#include <sys/filio.h>
+#ifndef _WIN32
+#include <unistd.h>
 #endif
 
 #include <fcntl.h>

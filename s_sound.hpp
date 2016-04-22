@@ -23,7 +23,7 @@
 #ifndef __S_SOUND__
 #define __S_SOUND__
 
-#include <SFML\Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <map>
 
 struct sfSound

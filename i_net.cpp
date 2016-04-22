@@ -42,6 +42,10 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 #include "doomstat.hpp"
 
+#ifndef _WIN32
+#include <errno.h>
+#endif
+
 #ifdef __GNUG__
 #pragma implementation "i_net.hpp"
 #endif

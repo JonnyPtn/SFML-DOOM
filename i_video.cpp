@@ -60,7 +60,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 #define POINTER_WARP_COUNTDOWN	1
 
 //JONNY// SFML stuff for rendering
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 sf::RenderWindow window;
 

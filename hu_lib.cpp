@@ -35,7 +35,7 @@ rcsid[] = "$Id: hu_lib.c,v 1.3 1997/01/26 07:44:58 b1 Exp $";
 #include "r_draw.hpp"
 
 //JONNY//
-#include <SFML\Window.hpp>
+#include <SFML/Window.hpp>
 
 // boolean : whether the screen is always erased
 #define noterased viewwindowx

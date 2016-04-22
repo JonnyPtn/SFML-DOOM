@@ -215,6 +215,14 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
+#Visual Studio Code files
+*.db-shm
+*.db-wal
+launch.json
+tasks.json
+*.out
+DOOM
+
 # Visual Studio LightSwitch build output
 **/*.HTMLClient/GeneratedArtifacts
 **/*.DesktopClient/GeneratedArtifacts

@@ -63,7 +63,9 @@ rcsid[] = "$Id: m_menu.c,v 1.7 1997/02/03 22:45:10 b1 Exp $";
 
 #include "m_menu.hpp"
 
-
+#ifndef _WIN32
+#include <unistd.h>
+#endif
 
 extern patch_t*		hu_font[HU_FONTSIZE];
 extern boolean		message_dontfuckwithme;
@@ -522,15 +524,15 @@ void M_ReadSaveStrings(void)
 	else
 	    sprintf(name,SAVEGAMENAME"%d.dsg",i);
 
-	handle = _open (name, O_RDONLY | 0, 0666);
+	handle = open (name, O_RDONLY | 0, 0666);
 	if (handle == -1)
 	{
 	    strcpy(&savegamestrings[i][0],EMPTYSTRING);
 	    LoadMenu[i].status = 0;
 	    continue;
 	}
-	count = _read (handle, &savegamestrings[i], SAVESTRINGSIZE);
-	_close (handle);
+	count = read (handle, &savegamestrings[i], SAVESTRINGSIZE);
+	close (handle);
 	LoadMenu[i].status = 1;
     }
 }

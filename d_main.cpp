@@ -79,12 +79,19 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 
 //JONNY//
 #include <malloc.h>
-#include <io.h>
-#include <direct.h>
+//Windows specific // #include <io.h>
+//Windows specific // #include <direct.h>
 #include <stdlib.h>
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #define R_OK 4
 
+#ifdef _WIN32
+#include <io.h>
+#include <direct.h>
+#else
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
 //
 // D-DoomLoop()
 // Not a globally visible function,
@@ -884,12 +891,13 @@ void D_DoomMain (void)
     if (devparm)
 	printf(D_DEVSTR);
     
-    if (M_CheckParm("-cdrom"))
-    {
-	printf(D_CDROM);
-	mkdir("c:\\doomdata");
-	strcpy (basedefault,"c:/doomdata/default.cfg");
-    }	
+//CDROM bullshit
+//    if (M_CheckParm("-cdrom"))
+//    {
+//	printf(D_CDROM);
+//	mkdir("c:\\doomdata");
+//	strcpy (basedefault,"c:/doomdata/default.cfg");
+//    }	
     
     // turbo option
     if ( (p=M_CheckParm ("-turbo")) )

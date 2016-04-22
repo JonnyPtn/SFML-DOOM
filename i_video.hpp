@@ -25,7 +25,7 @@
 
 
 #include "doomtype.hpp"
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #ifdef __GNUG__
 #pragma interface
