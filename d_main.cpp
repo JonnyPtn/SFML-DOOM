@@ -779,7 +779,7 @@ void D_DoomMain (void)
     fastparm = M_CheckParm ("-fast");
     devparm = M_CheckParm ("-devparm");
     if (M_CheckParm ("-altdeath"))
-	deathmatch = 2;
+	deathmatch = true;
     else if (M_CheckParm ("-deathmatch"))
 	deathmatch = 1;
 

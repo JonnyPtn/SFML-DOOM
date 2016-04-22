@@ -145,7 +145,7 @@ P_GiveWeapon
     bool	gaveammo;
     bool	gaveweapon;
 	
-    if (netgame
+   /* if (netgame
 	&& (deathmatch!=2)
 	 && !dropped )
     {
@@ -165,7 +165,7 @@ P_GiveWeapon
 	if (player == &players[consoleplayer])
 	    S_StartSound (NULL, sfx_wpnup);
 	return false;
-    }
+    }*/
 	
     if (weaponinfo[weapon].ammo != am_noammo)
     {

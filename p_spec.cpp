@@ -97,8 +97,6 @@ animdef_t		animdefs[] =
     {true,	"SFALL4",	"SFALL1",	8},
     {true,	"WFALL4",	"WFALL1",	8},
     {true,	"DBRAIN4",	"DBRAIN1",	8},
-	
-    {-1}
 };
 
 anim_t		anims[MAXANIMS];
@@ -1154,9 +1152,10 @@ int EV_DoDonut(line_t*	line)
 	s2 = getNextSector(s1->lines[0],s1);
 	for (i = 0;i < s2->linecount;i++)
 	{
-	    if ((!s2->lines[i]->flags & ML_TWOSIDED) ||
+		//isn't this always false?
+	    /*if ((!s2->lines[i]->flags & ML_TWOSIDED) ||
 		(s2->lines[i]->backsector == s1))
-		continue;
+		continue;*/
 	    s3 = s2->lines[i]->backsector;
 	    
 	    //	Spawn rising slime

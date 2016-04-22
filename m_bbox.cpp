@@ -1,13 +1,10 @@
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
-
 #include "m_bbox.hpp"
-
+#include <limits>
 void M_ClearBox (fixed_t *box)
 {
-    box[BOXTOP] = box[BOXRIGHT] = MININT;
-    box[BOXBOTTOM] = box[BOXLEFT] = MAXINT;
+    box[BOXTOP] = box[BOXRIGHT] = std::numeric_limits<int>::min();
+	box[BOXBOTTOM] = box[BOXLEFT] = std::numeric_limits<int>::max();
 }
 
 void

@@ -563,8 +563,8 @@ void P_RespawnSpecials (void)
     int			i;
 
     // only respawn items in deathmatch
-    if (deathmatch != 2)
-	return;	// 
+/*    if (deathmatch != 2)	why would a bool ever equal 2?
+	return;	// */
 
     // nothing left to respawn?
     if (iquehead == iquetail)

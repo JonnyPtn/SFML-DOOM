@@ -244,7 +244,7 @@ STlib_updateBinIcon
     int			h;
 
     if (*bi->on
-	&& (bi->oldval != *bi->val || refresh))
+	&& (static_cast<bool>(bi->oldval) != *bi->val || refresh))
     {
 	x = bi->x - SHORT(bi->p->leftoffset);
 	y = bi->y - SHORT(bi->p->topoffset);

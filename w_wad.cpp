@@ -8,7 +8,6 @@
 #include <sys/stat.h>
 #include <alloca.h>
 #endif
-#define O_BINARY		0
 
 #include "doomtype.hpp"
 #include "m_swap.hpp"

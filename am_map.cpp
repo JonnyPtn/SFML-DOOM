@@ -1,7 +1,3 @@
-
-
-static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
-
 #include <stdio.h>
 
 
@@ -173,18 +169,18 @@ mline_t cheat_player_arrow[] = {
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
-    { { -.867*R, -.5*R }, { .867*R, -.5*R } },
-    { { .867*R, -.5*R } , { 0, R } },
-    { { 0, R }, { -.867*R, -.5*R } }
+    { { fixed_t(-.867*R), fixed_t(-.5*R) }, { fixed_t(.867*R), fixed_t (-.5*R) } },
+    { { fixed_t(.867*R), fixed_t(-.5*R) } , { 0, R } },
+    { { 0, R }, { fixed_t(-.867*R), fixed_t (-.5*R) } }
 };
 #undef R
 #define NUMTRIANGLEGUYLINES (sizeof(triangle_guy)/sizeof(mline_t))
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
-    { { -.5*R, -.7*R }, { R, 0 } },
-    { { R, 0 }, { -.5*R, .7*R } },
-    { { -.5*R, .7*R }, { -.5*R, -.7*R } }
+    { { fixed_t (-.5*R), fixed_t(-.7*R) }, { R, 0 } },
+    { { R, 0 }, { fixed_t (-.5*R), fixed_t(.7*R) } },
+    { { fixed_t (-.5*R), fixed_t(.7*R) }, { fixed_t(-.5*R), fixed_t (-.7*R) } }
 };
 #undef R
 #define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))
