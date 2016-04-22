@@ -61,12 +61,13 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 //JONNY// SFML stuff for rendering
 #include <SFML/Graphics.hpp>
+#include <memory>
 
-sf::RenderWindow window;
+std::unique_ptr<sf::RenderWindow> window;
 
 sf::Image			image;
-sf::Texture			texture;
-sf::Sprite			sprite;
+std::unique_ptr<sf::Texture>			texture;
+std::unique_ptr<sf::Sprite>			sprite;
 static sf::Color	colors[256];
 
 //JONNY//Display*	X_display=0;
@@ -184,6 +185,10 @@ void I_ShutdownGraphics(void)
 
   // Paranoia.
   //JONNY//image->data = NULL;
+
+  sprite.release();
+  texture.release();
+  window.release();
 }
 
 
@@ -541,10 +546,10 @@ void I_FinishUpdate (void)
 		pixels[i * 4 + 2] = colors[imagePixels[i]].b;
 		pixels[i * 4 + 3] = 255;
 	}
-	texture.update(pixels);
-	window.clear();
-	window.draw(sprite);
-	window.display();
+	texture->update(pixels);
+	window->clear();
+	window->draw(*sprite);
+	window->display();
 }
 
 
@@ -936,12 +941,15 @@ void I_InitGraphics(void)
 
     }*/
 
-window.create(sf::VideoMode(X_width, X_height), displayname);
-window.setVerticalSyncEnabled(true);
+window.reset(new sf::RenderWindow());
+window->create(sf::VideoMode(X_width, X_height), displayname);
+window->setVerticalSyncEnabled(true);
 image.create(X_width, X_height);
-texture.create(X_width, X_height);
-texture.loadFromImage(image);
-sprite.setTexture(texture);
+texture.reset(new sf::Texture);
+texture->create(X_width, X_height);
+texture->loadFromImage(image);
+sprite.reset(new sf::Sprite());
+sprite->setTexture(*texture);
 
     if (multiply == 1)
 	screens[0] = (unsigned char *) (image.getPixelsPtr());
@@ -1085,5 +1093,5 @@ Expand4
 
 bool pollEvent(sf::Event& ev)
 {
-	return window.pollEvent(ev);
+	return window->pollEvent(ev);
 }
