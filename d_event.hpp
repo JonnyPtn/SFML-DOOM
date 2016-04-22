@@ -1,55 +1,8 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//
-//    
-//-----------------------------------------------------------------------------
-
-
-#ifndef __D_EVENT__
-#define __D_EVENT__
-
+#pragma once
 
 #include "doomtype.hpp"
 
 #include <SFML/Graphics.hpp>
-
-//
-// Event handling.
-//
-
-// Input event types.
-typedef enum
-{
-    ev_keydown = sf::Event::KeyPressed,
-    ev_keyup = sf::Event::KeyReleased,
-    ev_mouse,
-    ev_joystick
-} evtype_t;
-
-// Event structure.
-typedef struct
-{
-    evtype_t	type;
-    int		data1;		// keys / mouse/joystick buttons
-    int		data2;		// mouse/joystick x move
-    int		data3;		// mouse/joystick y move
-} event_t;
-
  
 typedef enum
 {
@@ -100,24 +53,4 @@ typedef enum
   
 } buttoncode_t;
 
-
-
-
-//
-// GLOBAL VARIABLES
-//
-#define MAXEVENTS		64
-
-extern  sf::Event		events[MAXEVENTS];
-extern  int             eventhead;
-extern	int		eventtail;
-
 extern  gameaction_t    gameaction;
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

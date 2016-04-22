@@ -1367,7 +1367,7 @@ boolean M_Responder (sf::Event* ev)
 	else
 		ch = ev->key.code;
 
-    if (ev->type == ev_joystick && joywait < I_GetTime())
+    if (ev->type == sf::Event::JoystickMoved && joywait < I_GetTime())
     {
 		//JONNY//what's data3 and data2?!?!
 	/*if (ev->data3 == -1)
@@ -1405,7 +1405,7 @@ boolean M_Responder (sf::Event* ev)
     }
     else
     {
-	if (ev->type == ev_mouse && mousewait < I_GetTime())
+	if (ev->type == sf::Event::MouseMoved && mousewait < I_GetTime())
 	{
 		//JONNY////no idea what data3 is?!?!
 	   /* mousey += ev->data3;
@@ -1449,7 +1449,7 @@ boolean M_Responder (sf::Event* ev)
 	    }
 	}
 	else
-	    if (ev->type == ev_keydown)
+	    if (ev->type == sf::Event::KeyPressed)
 	    {
 		ch = ev->key.code;
 	    }

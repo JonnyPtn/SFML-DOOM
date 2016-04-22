@@ -210,7 +210,7 @@ boolean		shmFinished;
 void I_GetEvent(void)
 {
 
-    event_t event;
+    sf::Event event;
 
     // put event-grabbing stuff in here
 	//JONNY// will be replacing this with SFML event stuff

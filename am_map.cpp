@@ -625,7 +625,7 @@ AM_Responder
 
     if (!automapactive)
     {
-	if (ev->type == ev_keydown && ev->key.code == AM_STARTKEY)
+	if (ev->type == sf::Event::KeyPressed && ev->key.code == AM_STARTKEY)
 	{
 	    AM_Start ();
 	    viewactive = false;
@@ -633,7 +633,7 @@ AM_Responder
 	}
     }
 
-    else if (ev->type == ev_keydown)
+    else if (ev->type == sf::Event::KeyPressed)
     {
 
 	rc = true;
@@ -706,7 +706,7 @@ AM_Responder
 	}
     }
 
-    else if (ev->type == ev_keyup)
+    else if (ev->type == sf::Event::KeyReleased)
     {
 	rc = false;
 	switch (ev->key.code)

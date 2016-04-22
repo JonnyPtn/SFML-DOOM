@@ -504,7 +504,7 @@ void G_DoLoadLevel (void)
 boolean G_Responder (sf::Event* ev) 
 { 
     // allow spy mode changes even during the demo
-    if (gamestate == GS_LEVEL && ev->type == ev_keydown 
+    if (gamestate == GS_LEVEL && ev->type == sf::Event::KeyPressed
 	&& ev->key.code == KEY_F12 && (singledemo || !deathmatch) )
     {
 	// spy mode 
@@ -522,9 +522,9 @@ boolean G_Responder (sf::Event* ev)
 	(demoplayback || gamestate == GS_DEMOSCREEN) 
 	) 
     { 
-	if (ev->type == ev_keydown ||  
-	    (ev->type == ev_mouse && ev->key.code) || 
-	    (ev->type == ev_joystick && ev->key.code) )
+	if (ev->type == sf::Event::KeyPressed ||
+	    (ev->type == sf::Event::MouseMoved && ev->key.code) ||
+	    (ev->type == sf::Event::JoystickMoved && ev->key.code) )
 	{ 
 	    M_StartControlPanel (); 
 	    return true; 
@@ -557,7 +557,7 @@ boolean G_Responder (sf::Event* ev)
 	 
     switch (ev->type) 
     { 
-      case ev_keydown: 
+      case sf::Event::KeyPressed:
 	if (ev->key.code == KEY_PAUSE)
 	{ 
 	    sendpause = true; 
@@ -567,12 +567,12 @@ boolean G_Responder (sf::Event* ev)
 	    gamekeydown[ev->key.code] = true;
 	return true;    // eat key down events 
  
-      case ev_keyup: 
+      case sf::Event::KeyReleased:
 	if (ev->key.code <NUMKEYS)
 	    gamekeydown[ev->key.code] = false;
 	return false;   // always let key up events filter down 
 		 
-      case ev_mouse: 
+	  case sf::Event::MouseMoved:
 	mousebuttons[0] = ev->key.code & 1;
 	mousebuttons[1] = ev->key.code & 2;
 	mousebuttons[2] = ev->key.code & 4;
@@ -582,7 +582,7 @@ boolean G_Responder (sf::Event* ev)
 	mousey = ev->data3*(mouseSensitivity+5)/10; */
 	return true;    // eat events 
  
-      case ev_joystick: 
+	  case sf::Event::JoystickMoved:
 	joybuttons[0] = ev->key.code & 1; 
 	joybuttons[1] = ev->key.code & 2; 
 	joybuttons[2] = ev->key.code & 4; 

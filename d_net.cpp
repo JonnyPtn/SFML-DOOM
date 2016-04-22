@@ -462,13 +462,6 @@ void CheckAbort(void)
 		I_StartTic();
 
 	I_StartTic();
-	for (; eventtail != eventhead
-		; eventtail = (++eventtail)&(MAXEVENTS - 1))
-	{
-		ev = &events[eventtail];
-		if (ev->type == sf::Event::KeyPressed && ev->key.code == sf::Keyboard::Escape)
-			I_Error("Network game synchronization aborted.");
-	}
 }
 
 
