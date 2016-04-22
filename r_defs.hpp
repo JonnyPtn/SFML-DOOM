@@ -1,28 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//      Refresh/rendering module, shared data struct definitions.
-//
-//-----------------------------------------------------------------------------
-
-
-#ifndef __R_DEFS__
-#define __R_DEFS__
-
+#pragma once
 
 // Screenwidth.
 #include "doomdef.hpp"
@@ -37,14 +13,6 @@
 // SECTORS do store MObjs anyway.
 #include "p_mobj.hpp"
 
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
-
 // Silhouette, needed for clipping Segs (mainly)
 // and sprites representing things.
 #define SIL_NONE		0
@@ -53,10 +21,6 @@
 #define SIL_BOTH		3
 
 #define MAXDRAWSEGS		256
-
-
-
-
 
 //
 // INTERNAL MAP TYPES
@@ -478,13 +442,3 @@ typedef struct
   unsigned char		pad4;
 
 } visplane_t;
-
-
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

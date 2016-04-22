@@ -1,36 +1,7 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//	System specific interface stuff.
-//
-//-----------------------------------------------------------------------------
-
-
-#ifndef __R_MAIN__
-#define __R_MAIN__
+#pragma once
 
 #include "d_player.hpp"
 #include "r_data.hpp"
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 //
 // POV related.
@@ -163,10 +134,3 @@ void R_Init (void);
 
 // Called by M_Responder.
 void R_SetViewSize (int blocks, int detail);
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

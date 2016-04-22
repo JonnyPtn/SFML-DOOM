@@ -1,27 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//  Sprite animation.
-//
-//-----------------------------------------------------------------------------
-
-
-#ifndef __P_PSPR__
-#define __P_PSPR__
+#pragma once
 
 // Basic data types.
 // Needs fixed point, and BAM angles.
@@ -37,11 +14,6 @@
 // i.e. the Thing Atrributes table
 // and the Frame Sequence table.
 #include "info.hpp"
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 //
 // Frame flags:
@@ -73,10 +45,3 @@ typedef struct
     fixed_t	sy;
 
 } pspdef_t;
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

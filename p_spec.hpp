@@ -1,31 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:  none
-//	Implements special effects:
-//	Texture animation, height or lighting changes
-//	 according to adjacent sectors, respective
-//	 utility functions, etc.
-//
-//-----------------------------------------------------------------------------
-
-
-#ifndef __P_SPEC__
-#define __P_SPEC__
-
+#pragma once
 
 //
 // End-level timer (-TIMER option)
@@ -388,92 +361,6 @@ P_SpawnDoorRaiseIn5Mins
 ( sector_t*	sec,
   int		secnum );
 
-
-
-#if 0 // UNUSED
-//
-//      Sliding doors...
-//
-typedef enum
-{
-    sd_opening,
-    sd_waiting,
-    sd_closing
-
-} sd_e;
-
-
-
-typedef enum
-{
-    sdt_openOnly,
-    sdt_closeOnly,
-    sdt_openAndClose
-
-} sdt_e;
-
-
-
-
-typedef struct
-{
-    thinker_t	thinker;
-    sdt_e	type;
-    line_t*	line;
-    int		frame;
-    int		whichDoorIndex;
-    int		timer;
-    sector_t*	frontsector;
-    sector_t*	backsector;
-    sd_e	 status;
-
-} slidedoor_t;
-
-
-
-typedef struct
-{
-    char	frontFrame1[9];
-    char	frontFrame2[9];
-    char	frontFrame3[9];
-    char	frontFrame4[9];
-    char	backFrame1[9];
-    char	backFrame2[9];
-    char	backFrame3[9];
-    char	backFrame4[9];
-    
-} slidename_t;
-
-
-
-typedef struct
-{
-    int             frontFrames[4];
-    int             backFrames[4];
-
-} slideframe_t;
-
-
-
-// how many frames of animation
-#define SNUMFRAMES		4
-
-#define SDOORWAIT		35*3
-#define SWAITTICS		4
-
-// how many diff. types of anims
-#define MAXSLIDEDOORS	5                            
-
-void P_InitSlidingDoorFrames(void);
-
-void
-EV_SlidingDoor
-( line_t*	line,
-  mobj_t*	thing );
-#endif
-
-
-
 //
 // P_CEILNG
 //
@@ -636,10 +523,3 @@ EV_Teleport
 ( line_t*	line,
   int		side,
   mobj_t*	thing );
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

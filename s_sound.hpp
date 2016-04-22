@@ -1,27 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//	The not so system specific sound interface.
-//
-//-----------------------------------------------------------------------------
-
-
-#ifndef __S_SOUND__
-#define __S_SOUND__
+#pragma once
 
 #include <SFML/Audio.hpp>
 #include <map>
@@ -109,11 +86,3 @@ void S_UpdateSounds(void* listener);
 
 void S_SetMusicVolume(int volume);
 void S_SetSfxVolume(int volume);
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------
