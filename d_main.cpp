@@ -138,10 +138,9 @@ void D_ProcessEvents (void)
     {
 		if (ev.type == sf::Event::Closed)
 			I_Error("Window Closed");
-	//ev = &events[eventtail];
-	if (M_Responder (&ev))
-	    continue;               // menu ate the event
-	G_Responder (&ev);
+		if (M_Responder (&ev))
+		    continue;               // menu ate the event
+		G_Responder (&ev);
     }
 }
 

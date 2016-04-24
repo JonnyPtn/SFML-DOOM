@@ -553,9 +553,9 @@ bool G_Responder (sf::Event* ev)
 	return false;   // always let key up events filter down 
 		 
 	  case sf::Event::MouseMoved:
-	mousebuttons[0] = (ev->key.code & 1)!=0;
+	/*mousebuttons[0] = (ev->but & 1)!=0;
 	mousebuttons[1] = (ev->key.code & 2)!=0;
-	mousebuttons[2] = (ev->key.code & 4)!=0;
+	mousebuttons[2] = (ev->key.code & 4)!=0;*/
 	//JONNY// perhaps data2 and data3 are mouse tings!!!
 	/*
 	mousex = ev->data2*(mouseSensitivity+5)/10; 
