@@ -543,12 +543,12 @@ bool G_Responder (sf::Event* ev)
 	    sendpause = true; 
 	    return true; 
 	} 
-	if (ev->key.code <NUMKEYS)
+	if (ev->key.code <NUMKEYS && ev->key.code >= 0)
 	    gamekeydown[ev->key.code] = true;
 	return true;    // eat key down events 
  
       case sf::Event::KeyReleased:
-	if (ev->key.code <NUMKEYS)
+	if (ev->key.code <NUMKEYS && ev->key.code>=0)
 	    gamekeydown[ev->key.code] = false;
 	return false;   // always let key up events filter down 
 		 

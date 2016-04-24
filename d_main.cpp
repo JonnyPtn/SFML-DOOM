@@ -229,9 +229,6 @@ void D_Display (void)
 	break;
     }
     
-    // draw buffered stuff to screen
-    I_UpdateNoBlit ();
-    
     // draw the view directly
     if (gamestate == GS_LEVEL && !automapactive && gametic)
 	R_RenderPlayerView (&players[displayplayer]);
@@ -307,7 +304,6 @@ void D_Display (void)
 	wipestart = nowtime;
 	done = (wipe_ScreenWipe(wipe_Melt
 			       , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics))!=0;
-	I_UpdateNoBlit ();
 	M_Drawer ();                            // menu is drawn even on top of wipes
 	I_FinishUpdate ();                      // page flip or blit buffer
     } while (!done);
@@ -322,6 +318,7 @@ extern  bool         demorecording;
 
 void D_DoomLoop (void)
 {
+
     if (demorecording)
 	G_BeginRecording ();
 		
@@ -336,14 +333,11 @@ void D_DoomLoop (void)
     I_InitGraphics ();
 
     while (1)
-    {
-	// frame syncronous IO operations
-	I_StartFrame ();                
+    {          
 	
 	// process one or more tics
 	if (singletics)
 	{
-	    I_StartTic ();
 	    D_ProcessEvents ();
 	    G_BuildTiccmd (&netcmds[consoleplayer][maketic%BACKUPTICS]);
 	    if (advancedemo)

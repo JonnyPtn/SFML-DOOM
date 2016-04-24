@@ -27,14 +27,6 @@ int I_GetTime (void);
 //
 void I_StartFrame (void);
 
-
-//
-// Called by D_DoomLoop,
-// called before processing each tic in a frame.
-// Quick syncronous operations are performed here.
-// Can call D_PostEvent.
-void I_StartTic (void);
-
 // Asynchronous interrupt functions should maintain private queues
 // that are read by the synchronous functions
 // to be converted into events.
