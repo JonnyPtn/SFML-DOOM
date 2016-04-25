@@ -1,9 +1,3 @@
-
-
-
-static const char
-rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
-
 #include <string.h>
 #include <stdlib.h>
 
@@ -1540,9 +1534,16 @@ void G_DoPlayDemo (void)
 { 
     skill_t skill; 
     int             i, episode, map; 
-	 
+
+
     gameaction = ga_nothing; 
     demobuffer = demo_p = (unsigned char*)W_CacheLumpName (defdemoname, PU_STATIC); 
+	if (*demo_p++ != 110)	//magic number, I know, but was a define
+	{
+		fprintf(stderr, "Demo is from a different game version!\n");
+		gameaction = ga_nothing;
+		return;
+	}
     
     skill = (skill_t)*demo_p++; 
     episode = *demo_p++; 

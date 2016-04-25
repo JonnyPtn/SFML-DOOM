@@ -16,11 +16,6 @@
 
 #include "doomstat.hpp"
 
-
-// Purpose?
-const char snd_prefixen[]
-= { 'P', 'P', 'A', 'S', 'S', 'S', 'M', 'M', 'M', 'S', 'S', 'S' };
-
 #define S_MAX_VOLUME		127
 
 // when to clip out sounds

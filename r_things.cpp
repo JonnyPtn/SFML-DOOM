@@ -218,23 +218,23 @@ void R_InitSpriteDefs (char** namelist)
 	    switch ((int)sprtemp[frame].rotate)
 	    {
 	      case -1:
-		// no rotations were found for that frame at all
-		I_Error ("R_InitSprites: No patches found "
-			 "for %s frame %c", namelist[i], frame+'A');
-		break;
+			// no rotations were found for that frame at all
+			I_Error ("R_InitSprites: No patches found "
+				 "for %s frame %c", namelist[i], frame+'A');
+			break;
 		
 	      case 0:
-		// only the first rotation is needed
-		break;
+			// only the first rotation is needed
+			break;
 			
 	      case 1:
-		// must have all 8 frames
-		for (rotation=0 ; rotation<8 ; rotation++)
-		    if (sprtemp[frame].lump[rotation] == -1)
-			I_Error ("R_InitSprites: Sprite %s frame %c "
-				 "is missing rotations",
-				 namelist[i], frame+'A');
-		break;
+			// must have all 8 frames
+			for (rotation=0 ; rotation<8 ; rotation++)
+			    if (sprtemp[frame].lump[rotation] == -1)
+				I_Error ("R_InitSprites: Sprite %s frame %c "
+					 "is missing rotations",
+					 namelist[i], frame+'A');
+			break;
 	    }
 	}
 	
@@ -246,9 +246,6 @@ void R_InitSpriteDefs (char** namelist)
     }
 
 }
-
-
-
 
 //
 // GAME FUNCTIONS
@@ -325,30 +322,30 @@ void R_DrawMaskedColumn (column_t* column)
 	
     for ( ; column->topdelta != 0xff ; ) 
     {
-	// calculate unclipped screen coordinates
-	//  for post
-	topscreen = sprtopscreen + spryscale*column->topdelta;
-	bottomscreen = topscreen + spryscale*column->length;
+		// calculate unclipped screen coordinates
+		//  for post
+		topscreen = sprtopscreen + spryscale*column->topdelta;
+		bottomscreen = topscreen + spryscale*column->length;
 
-	dc_yl = (topscreen+FRACUNIT-1)>>FRACBITS;
-	dc_yh = (bottomscreen-1)>>FRACBITS;
-		
-	if (dc_yh >= mfloorclip[dc_x])
-	    dc_yh = mfloorclip[dc_x]-1;
-	if (dc_yl <= mceilingclip[dc_x])
-	    dc_yl = mceilingclip[dc_x]+1;
+		dc_yl = (topscreen+FRACUNIT-1)>>FRACBITS;
+		dc_yh = (bottomscreen-1)>>FRACBITS;
+			
+		if (dc_yh >= mfloorclip[dc_x])
+		    dc_yh = mfloorclip[dc_x]-1;
+		if (dc_yl <= mceilingclip[dc_x])
+		    dc_yl = mceilingclip[dc_x]+1;
 
-	if (dc_yl <= dc_yh)
-	{
-	    dc_source = (unsigned char *)column + 3;
-	    dc_texturemid = basetexturemid - (column->topdelta<<FRACBITS);
-	    // dc_source = (unsigned char *)column + 3 - column->topdelta;
+		if (dc_yl <= dc_yh)
+		{
+		    dc_source = (unsigned char *)column + 3;
+		    dc_texturemid = basetexturemid - (column->topdelta<<FRACBITS);
+		    // dc_source = (unsigned char *)column + 3 - column->topdelta;
 
-	    // Drawn by either R_DrawColumn
-	    //  or (SHADOW) R_DrawFuzzColumn.
-	    colfunc ();	
-	}
-	column = (column_t *)(  (unsigned char *)column + column->length + 4);
+		    // Drawn by either R_DrawColumn
+		    //  or (SHADOW) R_DrawFuzzColumn.
+		    colfunc ();	
+		}
+		column = (column_t *)(  (unsigned char *)column + column->length + 4);
     }
 	
     dc_texturemid = basetexturemid;
