@@ -5,7 +5,11 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/types.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#ifdef _WIN32
+#include "unistd.hpp"
+#else
 #include "unistd.h"
+#endif
 
 #include <ctype.h>
 

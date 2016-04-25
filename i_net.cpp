@@ -5,13 +5,11 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <string.h>
 #include <stdio.h>
 
-//JONNY//#include <sys/socket.h>
-//JONNY//#include <netinet/in.h>
-//JONNY//#include <arpa/inet.h>
-//JONNY//#include <errno.h>
+#ifdef _WIN32
+#include "unistd.hpp"
+#else
 #include "unistd.h"
-//JONNY//#include <netdb.h>
-//JONNY//#include <sys/ioctl.h>
+#endif
 
 #include "i_system.hpp"
 #include "d_event.hpp"

@@ -8,8 +8,11 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <string.h>
 
 #include <stdarg.h>
-//JONNY//#include <sys/time.h>
+#ifdef _WIN32
+#include "unistd.hpp"
+#else
 #include "unistd.h"
+#endif
 
 #include "doomdef.hpp"
 #include "m_misc.hpp"

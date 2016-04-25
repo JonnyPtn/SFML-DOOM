@@ -1,6 +1,10 @@
 
 #include <stdlib.h>
+#ifdef _WIN32
+#include "unistd.hpp"
+#else
 #include "unistd.h"
+#endif
 
 #include <stdarg.h>
 #include <sys/types.h>

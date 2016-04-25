@@ -17,11 +17,11 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 #endif
 
 #include <fcntl.h>
+#ifdef _WIN32
+#include "unistd.hpp"
+#else
 #include "unistd.h"
-//JONNY//#include <sys/ioctl.h>
-
-// Linux voxware output.
-//JONNY//#include <linux/soundcard.h>
+#endif
 
 // Timer stuff. Experimental.
 #include <time.h>
