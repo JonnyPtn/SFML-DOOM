@@ -1498,7 +1498,7 @@ bool M_Responder (sf::Event* ev)
 	
     if (devparm && ch == KEY_F1)
     {
-	G_ScreenShot ();
+	//take screenshot
 	return true;
     }
 		

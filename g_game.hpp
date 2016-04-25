@@ -41,5 +41,3 @@ void G_WorldDone ();
 
 void G_Ticker ();
 bool G_Responder (sf::Event*	ev);
-
-void G_ScreenShot ();
