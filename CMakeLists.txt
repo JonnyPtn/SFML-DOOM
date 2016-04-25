@@ -2,10 +2,13 @@ cmake_minimum_required(VERSION 3.0)
 
 project(doom)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
+
 find_package(SFML 2.3 COMPONENTS graphics audio window system)
 
 file(GLOB SOURCE "*.h" "*.hpp" "*.cpp")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -fpermissive -std=c++11 -m32")
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${SFML_INCLUDE_DIR})
 add_executable(doom ${SOURCE})
 target_link_libraries(doom ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

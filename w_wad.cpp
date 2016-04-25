@@ -25,6 +25,8 @@
 #include <io.h>
 #else
 #include <unistd.h>
+#define O_BINARY 0
+#define _strcmpi strcasecmp
 #endif
 #include <sys/stat.h>
 #include <malloc.h>
@@ -139,7 +141,7 @@ void W_AddFile (char *filename)
 	reloadlump = numlumps;
     }
 		
-    if ( (handle = _open (filename,O_RDONLY | O_BINARY)) == -1)
+    if ( (handle = open (filename,O_RDONLY | O_BINARY)) == -1)
     {
 	printf (" couldn't open %s\n",filename);
 	return;
@@ -160,7 +162,7 @@ void W_AddFile (char *filename)
     else 
     {
 	// WAD file
-	_read (handle, &header, sizeof(header));
+	read (handle, &header, sizeof(header));
 	if (strncmp(header.identification,"IWAD",4))
 	{
 	    // Homebrew levels?
@@ -176,8 +178,8 @@ void W_AddFile (char *filename)
 	header.infotableofs = LONG(header.infotableofs);
 	length = header.numlumps*sizeof(filelump_t);
 	fileinfo = (filelump_t*)alloca (length);
-	_lseek (handle, header.infotableofs, SEEK_SET);
-	_read (handle, fileinfo, length);
+	lseek (handle, header.infotableofs, SEEK_SET);
+	read (handle, fileinfo, length);
 	numlumps += header.numlumps;
     }
 
@@ -201,7 +203,7 @@ void W_AddFile (char *filename)
     }
 	
     if (reloadname)
-	_close (handle);
+	close (handle);
 }
 
 
@@ -225,16 +227,16 @@ void W_Reload (void)
     if (!reloadname)
 	return;
 		
-    if ( (handle = _open (reloadname,O_RDONLY | O_BINARY)) == -1)
+    if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
 	I_Error ("W_Reload: couldn't open %s",reloadname);
 
-    _read (handle, &header, sizeof(header));
+    read (handle, &header, sizeof(header));
     lumpcount = LONG(header.numlumps);
     header.infotableofs = LONG(header.infotableofs);
     length = lumpcount*sizeof(filelump_t);
     fileinfo = (filelump_t*)alloca (length);
-    _lseek (handle, header.infotableofs, SEEK_SET);
-    _read (handle, fileinfo, length);
+    lseek (handle, header.infotableofs, SEEK_SET);
+    read (handle, fileinfo, length);
     
     // Fill in lumpinfo
     lump_p = &lumpinfo[reloadlump];
@@ -250,7 +252,7 @@ void W_Reload (void)
 	lump_p->size = LONG(fileinfo->size);
     }
 	
-    _close (handle);
+    close (handle);
 }
 
 
@@ -426,21 +428,21 @@ W_ReadLump
     if (l->handle == -1)
     {
 	// reloadable file, so use open / read / close
-	if ( (handle = _open (reloadname,O_RDONLY | O_BINARY)) == -1)
+	if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
 	    I_Error ("W_ReadLump: couldn't open %s",reloadname);
     }
     else
 	handle = l->handle;
 		
-    _lseek (handle, l->position, SEEK_SET);
-    c = _read (handle, dest, l->size);
+    lseek (handle, l->position, SEEK_SET);
+    c = read (handle, dest, l->size);
 
     if (c < l->size)
 	I_Error ("W_ReadLump: only read %i of %i on lump %i",
 		 c,l->size,lump);	
 
     if (l->handle == -1)
-	_close (handle);
+	close (handle);
 		
     // ??? I_EndRead ();
 }
