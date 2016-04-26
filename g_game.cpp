@@ -162,7 +162,8 @@ bool*	mousebuttons = &mousearray[1];		// allow [-1]
 
 // mouse values are used once 
 int             mousex;
-int		mousey;         
+int		mousey;   
+sf::Vector2i lastMousePos{ 0,0 };
 
 int             dclicktime;
 int		dclickstate;
@@ -538,15 +539,39 @@ bool G_Responder (sf::Event* ev)
 			gamekeydown[ev->key.code] = false;
 		return false;   // always let key up events filter down 
 		 
+	  case sf::Event::MouseButtonPressed:
+		  switch (ev->mouseButton.button)
+		  {
+		  case sf::Mouse::Left:
+			  mousebuttons[0] = true;
+			  break;
+		  case sf::Mouse::Right:
+			  mousebuttons[1] = true;
+			  break;
+		  case sf::Mouse::Middle:
+			  mousebuttons[2] = true;
+			  break;
+		  }
+		  break;
+	  case sf::Event::MouseButtonReleased:
+		  switch (ev->mouseButton.button)
+		  {
+		  case sf::Mouse::Left:
+			  mousebuttons[0] = false;
+			  break;
+		  case sf::Mouse::Right:
+			  mousebuttons[1] = false;
+			  break;
+		  case sf::Mouse::Middle:
+			  mousebuttons[2] = false;
+			  break;
+		  }
+		  break;
 	  case sf::Event::MouseMoved:
-		mousebuttons[0] = ev->mouseButton.button == sf::Mouse::Left;
-		mousebuttons[1] = ev->mouseButton.button == sf::Mouse::Right;
-		mousebuttons[2] = ev->mouseButton.button == sf::Mouse::Middle;
-
-		/*mousex = ev->data2*(mouseSensitivity+5)/10; 
-		mousey = ev->data3*(mouseSensitivity+5)/10;*/
-		mousex = ev->mouseMove.x;
-		mousey = ev->mouseMove.y;
+		mousex = (ev->mouseMove.x - lastMousePos.x)*(mouseSensitivity+5)/10;
+		mousey = (lastMousePos.y - ev->mouseMove.y)*(mouseSensitivity+5)/10;
+		lastMousePos = { ev->mouseMove.x,ev->mouseMove.y };
+		
 		return true;    // eat events 
  
 	  case sf::Event::JoystickMoved:
