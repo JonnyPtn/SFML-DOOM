@@ -515,28 +515,6 @@ void S_UpdateSounds(void* listener_p)
     
     mobj_t*	listener = (mobj_t*)listener_p;
 
-
-    
-    // Clean up unused data.
-    // This is currently not done for 16bit (sounds cached static).
-    // DOS 8bit remains. 
-    /*if (gametic > nextcleanup)
-    {
-	for (i=1 ; i<NUMSFX ; i++)
-	{
-	    if (S_sfx[i].usefulness < 1
-		&& S_sfx[i].usefulness > -1)
-	    {
-		if (--S_sfx[i].usefulness == -1)
-		{
-		    Z_ChangeTag(S_sfx[i].data, PU_CACHE);
-		    S_sfx[i].data = 0;
-		}
-	    }
-	}
-	nextcleanup = gametic + 15;
-    }*/
-    
     for (cnum=0 ; cnum<numChannels ; cnum++)
     {
 	c = &channels[cnum];
@@ -704,7 +682,6 @@ void S_StopMusic(void)
 
 	I_StopSong(mus_playing->handle);
 	I_UnRegisterSong(mus_playing->handle);
-	Z_ChangeTag(mus_playing->data, PU_CACHE);
 	
 	mus_playing->data = 0;
 	mus_playing = 0;

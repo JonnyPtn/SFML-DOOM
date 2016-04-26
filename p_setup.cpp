@@ -575,20 +575,8 @@ P_SetupLevel
     // will be set by player think.
     players[consoleplayer].viewz = 1; 
 
-    // Make sure all sounds are stopped before Z_FreeTags.
+    // Make sure all sounds are stopped
     S_Start ();			
-
-    
-#if 0 // UNUSED
-    if (debugfile)
-    {
-	Z_FreeTags (PU_LEVEL, MAXINT);
-	Z_FileDumpHeap (debugfile);
-    }
-    else
-#endif
-	Z_FreeTags (PU_LEVEL, PU_PURGELEVEL-1);
-
 
     // UNUSED W_Profile ();
     P_InitThinkers ();

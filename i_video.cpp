@@ -37,8 +37,6 @@ int		X_height;
 int multiply = 1;
 void I_ShutdownGraphics(void)
 {
-	window->close();
-	window.release();
 	sprite.release();
 	texture.release();
 	window.release();

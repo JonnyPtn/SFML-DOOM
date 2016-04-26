@@ -459,7 +459,6 @@ void G_DoLoadLevel (void)
     displayplayer = consoleplayer;		// view the guy you are playing    
     starttime = I_GetTime (); 
     gameaction = ga_nothing; 
-    Z_CheckHeap ();
     
     // clear cmd building stuff
     memset (gamekeydown, 0, sizeof(gamekeydown)); 
@@ -1612,7 +1611,6 @@ bool G_CheckDemoStatus (void)
 		if (singledemo) 
 		    I_Quit (); 
 			 
-		Z_ChangeTag (demobuffer, PU_CACHE); 
 		demoplayback = false; 
 		netdemo = false;
 		netgame = false;

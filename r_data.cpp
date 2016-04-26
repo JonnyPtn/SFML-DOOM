@@ -220,7 +220,7 @@ void R_GenerateComposite (int texnum)
 	
     texture = textures[texnum];
 
-    block = (unsigned char*)Z_Malloc (texturecompositesize[texnum],
+    texturecomposite[texnum] = (unsigned char*)Z_Malloc (texturecompositesize[texnum],
 		      PU_STATIC, 
 		      &texturecomposite[texnum]);	
 
@@ -255,16 +255,12 @@ void R_GenerateComposite (int texnum)
 	    patchcol = (column_t *)((unsigned char *)realpatch
 				    + LONG(realpatch->columnofs[x-x1]));
 	    R_DrawColumnInCache (patchcol,
-				 block + colofs[x],
+			texturecomposite[texnum] + colofs[x],
 				 patch->originy,
 				 texture->height);
 	}
 						
     }
-
-    // Now that the texture has been built in column cache,
-    //  it is purgable from zone memory.
-    Z_ChangeTag (block, PU_CACHE);
 }
 
 
