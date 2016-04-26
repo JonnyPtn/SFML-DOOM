@@ -168,8 +168,8 @@ STlib_initMultIcon
   int			x,
   int			y,
   patch_t**		il,
-  int*			inum,
-  bool*		on )
+  int			inum,
+  bool		on )
 {
     i->x	= x;
     i->y	= y;
@@ -191,9 +191,9 @@ STlib_updateMultIcon
     int			x;
     int			y;
 
-    if (*mi->on
-	&& (mi->oldinum != *mi->inum || refresh)
-	&& (*mi->inum!=-1))
+    if (mi->on
+	&& (mi->oldinum != mi->inum || refresh)
+	&& (mi->inum!=-1))
     {
 	if (mi->oldinum != -1)
 	{
@@ -207,8 +207,8 @@ STlib_updateMultIcon
 
 	    V_CopyRect(x, y-ST_Y, BG, w, h, x, y, FG);
 	}
-	V_DrawPatch(mi->x, mi->y, FG, mi->p[*mi->inum]);
-	mi->oldinum = *mi->inum;
+	V_DrawPatch(mi->x, mi->y, FG, mi->p[mi->inum]);
+	mi->oldinum = mi->inum;
     }
 }
 

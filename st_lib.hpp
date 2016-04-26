@@ -73,11 +73,11 @@ typedef struct
     int			oldinum;
 
     // pointer to current icon
-    int*		inum;
+    int		inum;
 
     // pointer to bool stating
     //  whether to update icon
-    bool*		on;
+    bool		on;
 
     // list of icons
     patch_t**		p;
@@ -170,8 +170,8 @@ STlib_initMultIcon
   int			x,
   int			y,
   patch_t**		il,
-  int*			inum,
-  bool*		on );
+  int			inum,
+  bool		on );
 
 
 void

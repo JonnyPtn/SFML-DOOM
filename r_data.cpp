@@ -735,7 +735,7 @@ void R_PrecacheLevel (void)
 	return;
     
     // Precache flats.
-    flatpresent = (char*)alloca(numflats);
+    flatpresent = (char*)malloc(numflats);
     memset (flatpresent,0,numflats);	
 
     for (i=0 ; i<numsectors ; i++)
@@ -757,7 +757,7 @@ void R_PrecacheLevel (void)
     }
     
     // Precache textures.
-    texturepresent = (char*)alloca(numtextures);
+    texturepresent = (char*)malloc(numtextures);
     memset (texturepresent,0, numtextures);
 	
     for (i=0 ; i<numsides ; i++)
@@ -792,7 +792,7 @@ void R_PrecacheLevel (void)
     }
     
     // Precache sprites.
-    spritepresent = (char*)alloca(numsprites);
+    spritepresent = (char*)malloc(numsprites);
     memset (spritepresent,0, numsprites);
 	
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)

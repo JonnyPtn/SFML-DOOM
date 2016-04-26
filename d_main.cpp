@@ -929,13 +929,13 @@ void D_DoomMain (void)
     p = M_CheckParm ("-warp");
     if (p && p < myargc-1)
     {
-		if (gamemode == commercial)
+		//if (gamemode == commercial)
 		    startmap = atoi (myargv[p+1]);
-		else
+		/*else
 		{
 		    startepisode = myargv[p+1][0]-'0';
 		    startmap = myargv[p+2][0]-'0';
-		}
+		}*/
 		autostart = true;
     }
     
@@ -966,9 +966,9 @@ void D_DoomMain (void)
 		};
 		int i;
 		
-		if ( gamemode == shareware)
+		/*if ( gamemode == shareware)
 		    I_Error("\nYou cannot -file with the shareware "
-			    "version. Register!");
+			    "version. Register!");*/
 
 		// Check for fake IWAD with right name,
 		// but w/o all the lumps of the registered version. 

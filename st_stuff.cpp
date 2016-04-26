@@ -1261,7 +1261,7 @@ void ST_createWidgets(void)
 	STlib_initMultIcon(&w_arms[i],
 			   ST_ARMSX+(i%3)*ST_ARMSXSPACE,
 			   ST_ARMSY+(i/3)*ST_ARMSYSPACE,
-			   arms[i], (int *) &plyr->weaponowned[i+1],
+			   arms[i],plyr->weaponowned[i+1],
 			   &st_armson);
     }
 
@@ -1279,7 +1279,7 @@ void ST_createWidgets(void)
 		       ST_FACESX,
 		       ST_FACESY,
 		       faces,
-		       &st_faceindex,
+		       st_faceindex,
 		       &st_statusbaron);
 
     // armor percentage - should be colored later
@@ -1295,22 +1295,22 @@ void ST_createWidgets(void)
 		       ST_KEY0X,
 		       ST_KEY0Y,
 		       keys,
-		       &keyboxes[0],
+		       keyboxes[0],
 		       &st_statusbaron);
     
     STlib_initMultIcon(&w_keyboxes[1],
 		       ST_KEY1X,
 		       ST_KEY1Y,
 		       keys,
-		       &keyboxes[1],
+		       keyboxes[1],
 		       &st_statusbaron);
 
     STlib_initMultIcon(&w_keyboxes[2],
 		       ST_KEY2X,
 		       ST_KEY2Y,
 		       keys,
-		       &keyboxes[2],
-		       &st_statusbaron);
+		       keyboxes[2],
+		       st_statusbaron);
 
     // ammo count (all four kinds)
     STlib_initNum(&w_ammo[0],
