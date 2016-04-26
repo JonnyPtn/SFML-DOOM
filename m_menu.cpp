@@ -550,7 +550,7 @@ void M_DrawSaveLoadBorder(int x,int y)
 	x += 8;
     }
 
-    V_DrawPatchDirect (x,y+7,0, (patch_t*)("M_LSRGHT",PU_CACHE));
+    V_DrawPatchDirect (x,y+7,0, (patch_t*)W_CacheLumpName("M_LSRGHT",PU_CACHE));
 }
 
 
