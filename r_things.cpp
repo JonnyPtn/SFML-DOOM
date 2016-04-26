@@ -93,13 +93,13 @@ R_InstallSpriteLump
     if (rotation == 0)
     {
 	// the lump should be used for all rotations
-	if (sprtemp[frame].rotate == false)
+	/*if (sprtemp[frame].rotate == false)
 	    I_Error ("R_InitSprites: Sprite %s frame %c has "
-		     "multip rot=0 lump", spritename, 'A'+frame);
+		     "multip rot=0 lump", spritename, 'A'+frame);*/
 
-	if (sprtemp[frame].rotate == true)
+	/*if (sprtemp[frame].rotate == true)
 	    I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
-		     "and a rot=0 lump", spritename, 'A'+frame);
+		     "and a rot=0 lump", spritename, 'A'+frame);*/
 			
 	sprtemp[frame].rotate = false;
 	for (r=0 ; r<8 ; r++)
@@ -111,18 +111,18 @@ R_InstallSpriteLump
     }
 	
     // the lump is only used for one rotation
-    if (sprtemp[frame].rotate == false)
+   /* if (sprtemp[frame].rotate == false)
 	I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
-		 "and a rot=0 lump", spritename, 'A'+frame);
+		 "and a rot=0 lump", spritename, 'A'+frame);*/
 		
     sprtemp[frame].rotate = true;
 
     // make 0 based
     rotation--;		
-    if (sprtemp[frame].lump[rotation] != -1)
+    /*if (sprtemp[frame].lump[rotation] != -1)
 	I_Error ("R_InitSprites: Sprite %s : %c : %c "
 		 "has two lumps mapped to it",
-		 spritename, 'A'+frame, '1'+rotation);
+		 spritename, 'A'+frame, '1'+rotation);*/
 		
     sprtemp[frame].lump[rotation] = lump - firstspritelump;
     sprtemp[frame].flip[rotation] = (unsigned char)flipped;
