@@ -16,25 +16,15 @@ bool	cht_CheckCheat(cheatseq_t& sequence, sf::Event* ev)
 {
 	//first append the new char to the sequence so far
 	sequence.soFar += ev->text.unicode;
+	auto sequenceLength(sequence.sequence.length());
+	if (sequence.soFar.getSize() > sequenceLength)
+		sequence.soFar.erase(0);
 
-	//typed enough characters?
-	if (sequence.soFar.getSize() >= sequence.sequence.length())
-	{
-		//do they match?
-		if (std::string(sequence.soFar) == sequence.sequence)
-		{
-			//match
-			sequence.soFar.clear();
-			return true;
-		}
-		else
-		{
-			//no match
-			sequence.soFar.clear();
-			return false;
-		}
-	}
-	return false;
+	//do they match?
+	if (std::string(sequence.soFar) == sequence.sequence)
+		return true;
+	else
+		return false;
 }
 
 void
