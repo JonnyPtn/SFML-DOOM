@@ -1,6 +1,3 @@
-static const char
-rcsid[] = "$Id: m_cheat.c,v 1.1 1997/02/03 21:24:34 b1 Exp $";
-
 #include "m_cheat.hpp"
 
 //
@@ -15,39 +12,29 @@ static unsigned char	cheat_xlate_table[256];
 // Called in st_stuff module, which handles the input.
 // Returns a 1 if the cheat was successful, 0 if failed.
 //
-int
-cht_CheckCheat
-( cheatseq_t*	cht,
-  char		key )
+bool	cht_CheckCheat(cheatseq_t& sequence, sf::Event* ev)
 {
-    int i;
-    int rc = 0;
+	//first append the new char to the sequence so far
+	sequence.soFar += ev->text.unicode;
 
-    if (firsttime)
-    {
-	firsttime = 0;
-	for (i=0;i<256;i++) cheat_xlate_table[i] = SCRAMBLE(i);
-    }
-
-    if (!cht->p)
-	cht->p = cht->sequence; // initialize if first time
-
-    if (*cht->p == 0)
-	*(cht->p++) = key;
-    else if
-	(cheat_xlate_table[(unsigned char)key] == *cht->p) cht->p++;
-    else
-	cht->p = cht->sequence;
-
-    if (*cht->p == 1)
-	cht->p++;
-    else if (*cht->p == 0xff) // end of sequence character
-    {
-	cht->p = cht->sequence;
-	rc = 1;
-    }
-
-    return rc;
+	//typed enough characters?
+	if (sequence.soFar.getSize() >= sequence.sequence.length())
+	{
+		//do they match?
+		if (std::string(sequence.soFar) == sequence.sequence)
+		{
+			//match
+			sequence.soFar.clear();
+			return true;
+		}
+		else
+		{
+			//no match
+			sequence.soFar.clear();
+			return false;
+		}
+	}
+	return false;
 }
 
 void
@@ -56,7 +43,8 @@ cht_GetParam
   char*		buffer )
 {
 
-    unsigned char *p, c;
+	//JONNY// TODO
+  /*  unsigned char *p, c;
 
     p = cht->sequence;
     while (*(p++) != 1);
@@ -71,7 +59,7 @@ cht_GetParam
 
     if (*p==0xff)
 	*buffer = 0;
-
+	*/
 }
 
 

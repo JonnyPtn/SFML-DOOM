@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <SFML/Window/Event.hpp>
+
 //
 // CHEAT SEQUENCE PACKAGE
 //
@@ -10,15 +13,12 @@
 
 typedef struct
 {
-    unsigned char*	sequence;
-    unsigned char*	p;
+   std::string	sequence;
+   sf::String	soFar;
     
 } cheatseq_t;
 
-int
-cht_CheckCheat
-( cheatseq_t*		cht,
-  char			key );
+bool cht_CheckCheat(cheatseq_t& sequence, sf::Event* ev);
 
 
 void

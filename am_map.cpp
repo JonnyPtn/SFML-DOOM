@@ -259,8 +259,9 @@ static int markpointnum = 0; // next point to be assigned
 
 static int followplayer = 1; // specifies whether to follow the player around
 
-static unsigned char cheat_amap_seq[] = { 0xb2, 0x26, 0x26, 0x2e, 0xff };
-static cheatseq_t cheat_amap = { cheat_amap_seq, 0 };
+//JONNY// TODO
+/*static unsigned char cheat_amap_seq[] = { 0xb2, 0x26, 0x26, 0x2e, 0xff };
+static cheatseq_t cheat_amap = { cheat_amap_seq, 0 };*/
 
 static bool stopped = true;
 
@@ -670,11 +671,11 @@ AM_Responder
 	    cheatstate=0;
 	    rc = false;
 	}
-	if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->key.code))
+	/*if (!deathmatch && cht_CheckCheat(cheat_amap, ev))
 	{
 	    rc = false;
 	    cheating = (cheating+1) % 3;
-	}
+	}*/
     }
 
     else if (ev->type == sf::Event::KeyReleased)
