@@ -278,14 +278,7 @@ void P_PlayerThink (player_t* player)
 	if (player->weaponowned[newweapon]
 	    && newweapon != player->readyweapon)
 	{
-	    // Do not go to plasma or BFG in shareware,
-	    //  even if cheated.
-	    if ((newweapon != wp_plasma
-		 && newweapon != wp_bfg)
-		|| (gamemode != shareware) )
-	    {
 		player->pendingweapon = newweapon;
-	    }
 	}
     }
     

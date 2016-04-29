@@ -313,13 +313,28 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	dclicks = 0;                   
     } 
 
+	static std::vector<sf::Keyboard::Key> weaponButtons =
+	{
+		sf::Keyboard::Num0,
+		sf::Keyboard::Num1,
+		sf::Keyboard::Num2,
+		sf::Keyboard::Num3,
+		sf::Keyboard::Num4,
+		sf::Keyboard::Num5,
+		sf::Keyboard::Num6,
+		sf::Keyboard::Num7,
+		sf::Keyboard::Num8,
+		sf::Keyboard::Num9
+	};
     // chainsaw overrides 
-    for (i=0 ; i<NUMWEAPONS-1 ; i++)        
-	if (gamekeydown['1'+i]) 
-	{ 
-	    cmd->buttons |= BT_CHANGE; 
-	    cmd->buttons |= i<<BT_WEAPONSHIFT; 
-	    break; 
+	for (i = 0; i < NUMWEAPONS - 1; i++)
+	{
+		if (gamekeydown[weaponButtons[i]])
+		{
+			cmd->buttons |= BT_CHANGE;
+			cmd->buttons |= i << BT_WEAPONSHIFT;
+			break;
+		}
 	}
     
     // mouse
