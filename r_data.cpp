@@ -1,6 +1,6 @@
 #include "i_system.hpp"
 #include "z_zone.hpp"
-
+#include "i_video.hpp"
 #include "m_swap.hpp"
 
 #include "w_wad.hpp"
@@ -436,6 +436,7 @@ void R_InitTextures (void)
     // The data is contained in one or two lumps,
     //  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
     maptex = maptex1 = (int*)W_CacheLumpName ("TEXTURE1", PU_STATIC);
+
     numtextures1 = LONG(*maptex);
     maxoff = W_LumpLength (W_GetNumForName ("TEXTURE1"));
     directory = maptex+1;
@@ -519,6 +520,7 @@ void R_InitTextures (void)
 		I_Error ("R_InitTextures: Missing patch in texture %s",
 			 texture->name);
 	    }
+
 	}		
 	texturecolumnlump[i] = (short*)Z_Malloc (texture->width*2, PU_STATIC,0);
 	texturecolumnofs[i] = (unsigned short*)Z_Malloc (texture->width*2, PU_STATIC,0);
@@ -787,7 +789,43 @@ void R_PrecacheLevel (void)
 	{
 	    lump = texture->patches[j].patch;
 	    texturememory += lumpinfo[lump].size;
-	    W_CacheLumpNum(lump , PU_CACHE);
+	    auto data = W_CacheLumpNum(lump , PU_CACHE);
+
+		//JONNY//	extracts and saves texture
+		/*unsigned short* header = (unsigned short*)data;
+		//get the patch header data
+		unsigned short width = *header++;
+		unsigned short height = *header++;
+		//ignore offset for now
+		header += 2;
+
+		sf::Image image;
+		image.create(width, height);
+		unsigned int* columns = (unsigned int*)header;
+		std::vector<unsigned int*> columnVector;
+		auto tempWidth = width;
+		while (tempWidth--)
+			columnVector.push_back(columns++);
+		//now we need to get the columns
+		for (int x = 0; x < width;x++)
+		{
+			unsigned char* column = ((unsigned char*)data)+*columnVector[x];
+
+			//read the header
+			auto rowStart = *column++;
+			auto pixelCount = *column+=2; //+=2 because dummy value
+			for (int y = rowStart; y < rowStart + pixelCount; y++)
+			{
+				auto thisPixel = colors[*column++];
+				if (x < width && y < height)
+					image.setPixel(x, y, thisPixel);
+			}
+			//dummy value?
+			column++;
+		}
+		std::string spriteName = texture->name;
+		spriteName.append(".png");
+		image.saveToFile(spriteName);*/
 	}
     }
     
@@ -810,12 +848,50 @@ void R_PrecacheLevel (void)
 	for (j=0 ; j<sprites[i].numframes ; j++)
 	{
 	    sf = &sprites[i].spriteframes[j];
-	    for (k=0 ; k<8 ; k++)
-	    {
-		lump = firstspritelump + sf->lump[k];
-		spritememory += lumpinfo[lump].size;
-		W_CacheLumpNum(lump , PU_CACHE);
-	    }
+		for (k = 0; k < 8; k++)
+		{
+			lump = firstspritelump + sf->lump[k];
+			spritememory += lumpinfo[lump].size;
+			auto data = W_CacheLumpNum(lump, PU_CACHE);
+			
+			//JONNY//	this extracts the texture data
+			/*
+			//adapt pixels to 32bit colour
+			unsigned short* header = (unsigned short*)data;
+			//get the patch header data
+			unsigned short width = *header++;
+			unsigned short height = *header++;
+			//ignore offset for now
+			header += 2;
+
+			sf::Image image;
+			image.create(width, height);
+			unsigned int* columns = (unsigned int*)header;
+			std::vector<unsigned int*> columnVector;
+			auto tempWidth = width;
+			while (tempWidth--)
+				columnVector.push_back(columns++);
+			//now we need to get the columns
+			for (int x = 0; x < width; x++)
+			{
+				unsigned char* column = ((unsigned char*)data) + *columnVector[x];
+
+				//read the header
+				auto rowStart = *column++;
+				auto pixelCount = *column += 2; //+=2 because dummy value
+				for (int y = rowStart; y < rowStart + pixelCount; y++)
+				{
+					auto thisPixel = colors[*column++];
+					if (x < width && y < height)
+						image.setPixel(x, y, thisPixel);
+				}
+				//dummy value?
+				column++;
+			}
+			std::string spriteName = sprnames[i];
+			spriteName.append(std::to_string(k) +".png");
+			image.saveToFile(spriteName);*/
+		}
 	}
     }
 }

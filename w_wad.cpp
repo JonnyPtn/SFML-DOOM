@@ -1,18 +1,9 @@
-#ifdef NORMALUNIX
-#include <ctype.h>
-#include <sys/types.h>
-#include <string.h>
-#include <unistd.h>
-#include <malloc.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <alloca.h>
-#endif
-
+#include "doomdef.hpp"
 #include "doomtype.hpp"
 #include "m_swap.hpp"
 #include "i_system.hpp"
 #include "z_zone.hpp"
+#include "i_video.hpp"
 
 #ifdef __GNUG__
 #pragma implementation "w_wad.hpp"
@@ -463,13 +454,13 @@ W_CacheLumpNum
     if (static_cast<int>(lump) >= numlumps)
 	I_Error ("W_CacheLumpNum: %i >= numlumps",lump);
 		
-    if (!lumpcache[lump])
-    {
-	// read the lump in
-	
-	//printf ("cache miss on lump %i\n",lump);
-	lumpcache[lump] = (unsigned char*)Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
-	W_ReadLump (lump, lumpcache[lump]);
+	if (!lumpcache[lump])
+	{
+		// read the lump in
+
+		//printf ("cache miss on lump %i\n",lump);
+		lumpcache[lump] = (unsigned char*)Z_Malloc(W_LumpLength(lump), tag, &lumpcache[lump]);
+		W_ReadLump(lump, lumpcache[lump]);
     }
     else
     {

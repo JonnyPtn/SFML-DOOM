@@ -26,3 +26,5 @@ void I_BeginRead (void);
 void I_EndRead (void);
 
 bool pollEvent(sf::Event& ev);
+
+extern sf::Color	colors[256];

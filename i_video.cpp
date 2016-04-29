@@ -29,7 +29,7 @@ std::unique_ptr<sf::RenderWindow> window;
 sf::Image			image;
 std::unique_ptr<sf::Texture>			texture;
 std::unique_ptr<sf::Sprite>			sprite;
-static sf::Color	colors[256];
+sf::Color	colors[256];
 int		X_screen;
 int		X_width;
 int		X_height;

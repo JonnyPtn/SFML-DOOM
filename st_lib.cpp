@@ -65,6 +65,8 @@ STlib_drawNum
 ( st_number_t*	n,
   bool	refresh )
 {
+	//JONNY// Could we do something with sf::Font for this?
+	// Might need to create/find a matching font though
 
     int		numdigits = n->width;
     int		num = *n->num;
