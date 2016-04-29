@@ -274,7 +274,6 @@ S_StartSoundAtVolume
 			     &volume,
 			     &sep,
 			     &pitch);
-	sfSounds[sfx->name].sound.setVolume(static_cast<float>(volume * 6));
 
 	
     if ( origin->x == players[consoleplayer].mo->x
@@ -347,7 +346,7 @@ S_StartSoundAtVolume
     
   }
 #endif
-  if (sfSounds.find(sfx->name) == sfSounds.end())
+  if (soundBuffers.find(sfx->name) == soundBuffers.end())
   {
 	  //not loaded yet, set it up
 	  auto dataSize(W_LumpLength(sfx->lumpnum));
@@ -361,12 +360,12 @@ S_StartSoundAtVolume
 		  i++;
 	  }
 	  
-	  if (!sfSounds[sfx->name].buffer.loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
+	  if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
 		  fprintf(stderr,"Failed to load sound");
-	  sfSounds[sfx->name].sound.setBuffer(sfSounds[sfx->name].buffer);
   }
 
-  sfSounds[sfx->name].sound.play();
+  sounds.push_back(sf::Sound(soundBuffers[sfx->name]));
+  sounds.back().play();
   // increase the usefulness
   if (sfx->usefulness++ < 0)
     sfx->usefulness = 1;
@@ -515,6 +514,15 @@ void S_UpdateSounds(void* listener_p)
     
     mobj_t*	listener = (mobj_t*)listener_p;
 
+	for (auto sound = sounds.begin();sound != sounds.end();sound++)
+	{
+		if (sound->getStatus() == sf::Sound::Stopped)
+		{
+			sounds.erase(sound);
+			break;
+		}
+
+	}
     for (cnum=0 ; cnum<numChannels ; cnum++)
     {
 	c = &channels[cnum];
@@ -645,7 +653,7 @@ S_ChangeMusic
     music->handle = I_RegisterSong(music->data);
 
 	//load the data into the music
-	if (sfMusics.find(music->name) == sfMusics.end())
+	/*if (sfMusics.find(music->name) == sfMusics.end())
 	{
 		//not loaded yet, set it up
 		auto dataSize(W_LumpLength(music->lumpnum));
@@ -664,7 +672,7 @@ S_ChangeMusic
 		sfSounds[music->name].sound.setBuffer(sfSounds[music->name].buffer);
 	}
 
-	sfSounds[music->name].sound.play();
+	sfSounds[music->name].sound.play();*/
 
     // play it
     I_PlaySong(music->handle, looping);

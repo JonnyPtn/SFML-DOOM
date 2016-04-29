@@ -1082,9 +1082,9 @@ void M_QuitDOOM(int choice)
   // We pick index 0 which is language sensitive,
   //  or one at random, between 1 and maximum number.
   if (language != english )
-    sprintf(endstring,"%s\n\n"/*JONNY*//*DOSY*/, endmsg[0] );
+    sprintf(endstring,"%s\n\n" DOSY, endmsg[0] );
   else
-    sprintf(endstring,"%s\n\n"/*JONNY*//*DOSY*/, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
+    sprintf(endstring,"%s\n\n" DOSY, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
   
   M_StartMessage(endstring,M_QuitResponse,true);
 }
@@ -1215,7 +1215,7 @@ M_StartMessage
     messageLastMenuActive = menuactive;
     messageToPrint = 1;
     messageString = string;
-    messageRoutine = (void(*)(int))routine;
+	messageRoutine = (void(*)(int))routine;
     messageNeedsInput = input;
     menuactive = true;
     return;
@@ -1342,10 +1342,10 @@ bool M_Responder (sf::Event* ev)
     ch = -1;
 	
 	//JONNY//
-	if (ev->type != sf::Event::KeyPressed)
+	if (ev->type != sf::Event::KeyPressed && ev->type != sf::Event::TextEntered)
 		return false;
-	else
-		ch = ev->key.code;
+	else if (ev->type == sf::Event::TextEntered)
+		ch = ev->text.unicode;
 
     if (ev->type == sf::Event::JoystickMoved && joywait < I_GetTime())
     {
@@ -1442,7 +1442,7 @@ bool M_Responder (sf::Event* ev)
     // Save Game string input
     if (saveStringEnter)
     {
-	switch(ch)
+	switch(ev->key.code)
 	{
 	  case KEY_BACKSPACE:
 	    if (saveCharIndex > 0)
