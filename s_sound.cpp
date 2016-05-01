@@ -219,154 +219,162 @@ void S_Start(void)
 
 void
 S_StartSoundAtVolume
-( void*		origin_p,
-  int		sfx_id,
-  int		volume )
+(void*		origin_p,
+	int		sfx_id,
+	int		volume)
 {
 
-  int		rc;
-  int		sep;
-  int		pitch;
-  int		priority;
-  sfxinfo_t*	sfx;
-  int		cnum;
-  
-  mobj_t*	origin = (mobj_t *) origin_p;
-  
-  
-  // Debug.
-  /*fprintf( stderr,
-  	   "S_StartSoundAtVolume: playing sound %d (%s)\n",
-  	   sfx_id, S_sfx[sfx_id].name );*/
-  
-  // check for bogus sound #
-  if (sfx_id < 1 || sfx_id > NUMSFX)
-    I_Error("Bad sfx #: %d", sfx_id);
-  
-  sfx = &S_sfx[sfx_id];
-  
-  // Initialize sound parameters
-  if (sfx->link)
-  {
-    pitch = sfx->pitch;
-    priority = sfx->priority;
-    volume += sfx->volume;
-    
-    if (volume < 1)
-      return;
-    
-    if (volume > snd_SfxVolume)
-      volume = snd_SfxVolume;
-  }	
-  else
-  {
-    pitch = NORM_PITCH;
-    priority = NORM_PRIORITY;
-  }
+	int		rc;
+	int		sep;
+	int		pitch;
+	int		priority;
+	sfxinfo_t*	sfx;
+	int		cnum;
+
+	mobj_t*	origin = (mobj_t *)origin_p;
 
 
-  // Check to see if it is audible,
-  //  and if not, modify the params
-  if (origin && origin != players[consoleplayer].mo)
-  {
-    rc = S_AdjustSoundParams(players[consoleplayer].mo,
-			     origin,
-			     &volume,
-			     &sep,
-			     &pitch);
+	// Debug.
+	/*fprintf( stderr,
+		 "S_StartSoundAtVolume: playing sound %d (%s)\n",
+		 sfx_id, S_sfx[sfx_id].name );*/
 
-	
-    if ( origin->x == players[consoleplayer].mo->x
-	 && origin->y == players[consoleplayer].mo->y)
-    {	
-      sep 	= NORM_SEP;
-    }
-    
-    if (!rc)
-      return;
-  }	
-  else
-  {
-    sep = NORM_SEP;
-  }
-  
-  // hacks to vary the sfx pitches
-  if (sfx_id >= sfx_sawup
-      && sfx_id <= sfx_sawhit)
-  {	
-    pitch += 8 - (M_Random()&15);
-    
-    if (pitch<0)
-      pitch = 0;
-    else if (pitch>255)
-      pitch = 255;
-  }
-  else if (sfx_id != sfx_itemup
-	   && sfx_id != sfx_tink)
-  {
-    pitch += 16 - (M_Random()&31);
-    
-    if (pitch<0)
-      pitch = 0;
-    else if (pitch>255)
-      pitch = 255;
-  }
+		 // check for bogus sound #
+	if (sfx_id < 1 || sfx_id > NUMSFX)
+		I_Error("Bad sfx #: %d", sfx_id);
 
-  // kill old sound
-  S_StopSound(origin);
+	sfx = &S_sfx[sfx_id];
 
-  // try to find a channel
-  cnum = S_getChannel(origin, sfx);
-  
-  if (cnum<0)
-    return;
+	// Initialize sound parameters
+	if (sfx->link)
+	{
+		pitch = sfx->pitch;
+		priority = sfx->priority;
+		volume += sfx->volume;
 
-  //
-  // This is supposed to handle the loading/caching.
-  // For some odd reason, the caching is done nearly
-  //  each time the sound is needed?
-  //
-  
-  // get lumpnum if necessary
-  if (sfx->lumpnum < 0)
-    sfx->lumpnum = I_GetSfxLumpNum(sfx);
+		if (volume < 1)
+			return;
+
+		if (volume > snd_SfxVolume)
+			volume = snd_SfxVolume;
+	}
+	else
+	{
+		pitch = NORM_PITCH;
+		priority = NORM_PRIORITY;
+	}
+
+
+	// Check to see if it is audible,
+	//  and if not, modify the params
+	if (origin && origin != players[consoleplayer].mo)
+	{
+		rc = S_AdjustSoundParams(players[consoleplayer].mo,
+			origin,
+			&volume,
+			&sep,
+			&pitch);
+
+
+		if (origin->x == players[consoleplayer].mo->x
+			&& origin->y == players[consoleplayer].mo->y)
+		{
+			sep = NORM_SEP;
+		}
+
+		if (!rc)
+			return;
+	}
+	else
+	{
+		sep = NORM_SEP;
+	}
+
+	// hacks to vary the sfx pitches
+	if (sfx_id >= sfx_sawup
+		&& sfx_id <= sfx_sawhit)
+	{
+		pitch += 8 - (M_Random() & 15);
+
+		if (pitch < 0)
+			pitch = 0;
+		else if (pitch > 255)
+			pitch = 255;
+	}
+	else if (sfx_id != sfx_itemup
+		&& sfx_id != sfx_tink)
+	{
+		pitch += 16 - (M_Random() & 31);
+
+		if (pitch < 0)
+			pitch = 0;
+		else if (pitch > 255)
+			pitch = 255;
+	}
+
+	// kill old sound
+	S_StopSound(origin);
+
+	// try to find a channel
+	cnum = S_getChannel(origin, sfx);
+
+	if (cnum < 0)
+		return;
+
+	//
+	// This is supposed to handle the loading/caching.
+	// For some odd reason, the caching is done nearly
+	//  each time the sound is needed?
+	//
+
+	// get lumpnum if necessary
+	if (sfx->lumpnum < 0)
+		sfx->lumpnum = I_GetSfxLumpNum(sfx);
 
 #ifndef SNDSRV
-  // cache data if necessary
-  if (!sfx->data)
-  {
-    fprintf( stderr,
-	     "S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
+	// cache data if necessary
+	if (!sfx->data)
+	{
+		fprintf(stderr,
+			"S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
 
-    // DOS remains, 8bit handling
-    //sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
-    // fprintf( stderr,
-    //	     "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
-    //       sfx_id, sfx->lumpnum, (int)sfx->data );
-    
-  }
+		// DOS remains, 8bit handling
+		//sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
+		// fprintf( stderr,
+		//	     "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
+		//       sfx_id, sfx->lumpnum, (int)sfx->data );
+
+	}
 #endif
-  if (soundBuffers.find(sfx->name) == soundBuffers.end())
-  {
-	  //not loaded yet, set it up
-	  auto dataSize(W_LumpLength(sfx->lumpnum));
-	  unsigned char* data((unsigned char*)sfx->data);
-	  std::vector<sf::Int16> newData;
-	  auto lastSample = 0;
-	  int i = 0;
-	  while (i<dataSize)
-	  {
-		  newData.push_back (static_cast<sf::Int16>(std::pow(data[i], 2)));
-		  i++;
-	  }
-	  
-	  if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
-		  fprintf(stderr,"Failed to load sound");
-  }
+	if (soundBuffers.find(sfx->name) == soundBuffers.end())
+	{
+		//not loaded yet, set it up
+		auto dataSize(W_LumpLength(sfx->lumpnum));
+		unsigned char* data((unsigned char*)sfx->data);
+		std::vector<sf::Int16> newData;
+		auto lastSample = 0;
+		int i = 0;
+		while (i < dataSize)
+		{
+			newData.push_back(static_cast<sf::Int16>(std::pow(data[i], 2)));
+			i++;
+		}
 
-  sounds.push_back(sf::Sound(soundBuffers[sfx->name]));
-  sounds.back().play();
-  // increase the usefulness
+		if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
+			fprintf(stderr, "Failed to load sound");
+	}
+
+	sounds.emplace_back(soundBuffers[sfx->name]);
+	sounds.back().play();
+	if (origin)
+	{
+		sounds.back().setPosition(origin->x, origin->y, origin->z);
+
+		//some numbers to frig it a little
+		sounds.back().setMinDistance(S_CLOSE_DIST);
+		sounds.back().setAttenuation(S_ATTENUATOR);
+	}
+	 // increase the usefulness
   if (sfx->usefulness++ < 0)
     sfx->usefulness = 1;
   
@@ -513,6 +521,11 @@ void S_UpdateSounds(void* listener_p)
     channel_t*	c;
     
     mobj_t*	listener = (mobj_t*)listener_p;
+
+	if (listener)
+	{
+		sf::Listener::setPosition(listener->x, listener->y, listener->z);
+	}
 
 	for (auto sound = sounds.begin();sound != sounds.end();sound++)
 	{
