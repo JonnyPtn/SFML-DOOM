@@ -356,7 +356,7 @@ S_StartSoundAtVolume
 		int i = 0;
 		while (i < dataSize)
 		{
-			newData.push_back(static_cast<sf::Int16>(std::pow(data[i], 2)));
+			newData.push_back(static_cast<sf::Int16>(data[i])<<7));
 			i++;
 		}
 
