@@ -10,13 +10,13 @@
 //
 
 // needed for texture pegging
-extern fixed_t*		textureheight;
+extern int*		textureheight;
 
 // needed for pre rendering (fracs)
-extern fixed_t*		spritewidth;
+extern int*		spritewidth;
 
-extern fixed_t*		spriteoffset;
-extern fixed_t*		spritetopoffset;
+extern int*		spriteoffset;
+extern int*		spritetopoffset;
 
 extern lighttable_t*	colormaps;
 
@@ -69,9 +69,9 @@ extern side_t*		sides;
 //
 // POV data.
 //
-extern fixed_t		viewx;
-extern fixed_t		viewy;
-extern fixed_t		viewz;
+extern int		viewx;
+extern int		viewy;
+extern int		viewz;
 
 extern angle_t		viewangle;
 extern player_t*	viewplayer;
@@ -82,9 +82,9 @@ extern angle_t		clipangle;
 
 extern int		viewangletox[FINEANGLES/2];
 extern angle_t		xtoviewangle[SCREENWIDTH+1];
-//extern fixed_t		finetangent[FINEANGLES/2];
+//extern int		finetangent[FINEANGLES/2];
 
-extern fixed_t		rw_distance;
+extern int		rw_distance;
 extern angle_t		rw_normalangle;
 
 

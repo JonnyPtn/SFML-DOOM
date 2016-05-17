@@ -314,7 +314,7 @@ P_TouchSpecialThing
 {
     player_t*	player;
     int		i;
-    fixed_t	delta;
+    int	delta;
     int		sound;
 		
     delta = special->z - toucher->z;
@@ -753,7 +753,7 @@ P_DamageMobj
     unsigned	ang;
     int		saved;
     player_t*	player;
-    fixed_t	thrust;
+    int	thrust;
     int		temp;
 	
     if ( !(target->flags & MF_SHOOTABLE) )

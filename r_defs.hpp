@@ -34,8 +34,8 @@
 //
 typedef struct
 {
-    fixed_t	x;
-    fixed_t	y;
+    int	x;
+    int	y;
     
 } vertex_t;
 
@@ -52,9 +52,9 @@ struct line_s;
 typedef struct
 {
     thinker_t		thinker;	// not used for anything
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
+    int		x;
+    int		y;
+    int		z;
 
 } degenmobj_t;
 
@@ -64,8 +64,8 @@ typedef struct
 //
 typedef	struct
 {
-    fixed_t	floorheight;
-    fixed_t	ceilingheight;
+    int	floorheight;
+    int	ceilingheight;
     short	floorpic;
     short	ceilingpic;
     short	lightlevel;
@@ -108,10 +108,10 @@ typedef	struct
 typedef struct
 {
     // add this to the calculated texture column
-    fixed_t	textureoffset;
+    int	textureoffset;
     
     // add this to the calculated texture top
-    fixed_t	rowoffset;
+    int	rowoffset;
 
     // Texture indices.
     // We do not maintain names here. 
@@ -147,8 +147,8 @@ typedef struct line_s
     vertex_t*	v2;
 
     // Precalculated v2 - v1 for side checking.
-    fixed_t	dx;
-    fixed_t	dy;
+    int	dx;
+    int	dy;
 
     // Animation related.
     short	flags;
@@ -161,7 +161,7 @@ typedef struct line_s
 
     // Neat. Another bounding box, for the extent
     //  of the LineDef.
-    fixed_t	bbox[4];
+    int	bbox[4];
 
     // To aid move clipping.
     slopetype_t	slopetype;
@@ -206,7 +206,7 @@ typedef struct
     vertex_t*	v1;
     vertex_t*	v2;
     
-    fixed_t	offset;
+    int	offset;
 
     angle_t	angle;
 
@@ -229,13 +229,13 @@ typedef struct
 typedef struct
 {
     // Partition line.
-    fixed_t	x;
-    fixed_t	y;
-    fixed_t	dx;
-    fixed_t	dy;
+    int	x;
+    int	y;
+    int	dx;
+    int	dy;
 
     // Bounding box for each child.
-    fixed_t	bbox[2][4];
+    int	bbox[2][4];
 
     // If NF_SUBSECTOR its a subsector.
     unsigned short children[2];
@@ -289,18 +289,18 @@ typedef struct drawseg_s
     int			x1;
     int			x2;
 
-    fixed_t		scale1;
-    fixed_t		scale2;
-    fixed_t		scalestep;
+    int		scale1;
+    int		scale2;
+    int		scalestep;
 
     // 0=none, 1=bottom, 2=top, 3=both
     int			silhouette;
 
     // do not clip sprites above this
-    fixed_t		bsilheight;
+    int		bsilheight;
 
     // do not clip sprites below this
-    fixed_t		tsilheight;
+    int		tsilheight;
     
     // Pointers to lists for sprite clipping,
     //  all three adjusted so [x1] is first value.
@@ -346,22 +346,22 @@ typedef struct vissprite_s
     int			x2;
 
     // for line side calculation
-    fixed_t		gx;
-    fixed_t		gy;		
+    int		gx;
+    int		gy;		
 
     // global bottom / top for silhouette clipping
-    fixed_t		gz;
-    fixed_t		gzt;
+    int		gz;
+    int		gzt;
 
     // horizontal position of x1
-    fixed_t		startfrac;
+    int		startfrac;
     
-    fixed_t		scale;
+    int		scale;
     
     // negative if flipped
-    fixed_t		xiscale;	
+    int		xiscale;	
 
-    fixed_t		texturemid;
+    int		texturemid;
     int			patch;
 
     // for color translation and shadow draw,
@@ -423,7 +423,7 @@ typedef struct
 // 
 typedef struct
 {
-  fixed_t		height;
+  int		height;
   int			picnum;
   int			lightlevel;
   int			minx;

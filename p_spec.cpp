@@ -235,12 +235,12 @@ getNextSector
 // P_FindLowestFloorSurrounding()
 // FIND LOWEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
-fixed_t	P_FindLowestFloorSurrounding(sector_t* sec)
+int	P_FindLowestFloorSurrounding(sector_t* sec)
 {
     int			i;
     line_t*		check;
     sector_t*		other;
-    fixed_t		floor = sec->floorheight;
+    int		floor = sec->floorheight;
 	
     for (i=0 ;i < sec->linecount ; i++)
     {
@@ -262,12 +262,12 @@ fixed_t	P_FindLowestFloorSurrounding(sector_t* sec)
 // P_FindHighestFloorSurrounding()
 // FIND HIGHEST FLOOR HEIGHT IN SURROUNDING SECTORS
 //
-fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
+int	P_FindHighestFloorSurrounding(sector_t *sec)
 {
     int			i;
     line_t*		check;
     sector_t*		other;
-    fixed_t		floor = -500*FRACUNIT;
+    int		floor = -500*FRACUNIT;
 	
     for (i=0 ;i < sec->linecount ; i++)
     {
@@ -293,7 +293,7 @@ fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
 // 20 adjoining sectors max!
 #define MAX_ADJOINING_SECTORS    	20
 
-fixed_t
+int
 P_FindNextHighestFloor
 ( sector_t*	sec,
   int		currentheight )
@@ -303,10 +303,10 @@ P_FindNextHighestFloor
     int			min;
     line_t*		check;
     sector_t*		other;
-    fixed_t		height = currentheight;
+    int		height = currentheight;
 
     
-    fixed_t		heightlist[MAX_ADJOINING_SECTORS];		
+    int		heightlist[MAX_ADJOINING_SECTORS];		
 
     for (i=0, h=0 ;i < sec->linecount ; i++)
     {
@@ -346,13 +346,13 @@ P_FindNextHighestFloor
 //
 // FIND LOWEST CEILING IN THE SURROUNDING SECTORS
 //
-fixed_t
+int
 P_FindLowestCeilingSurrounding(sector_t* sec)
 {
     int			i;
     line_t*		check;
     sector_t*		other;
-    fixed_t		height = MAXINT;
+    int		height = MAXINT;
 	
     for (i=0 ;i < sec->linecount ; i++)
     {
@@ -372,12 +372,12 @@ P_FindLowestCeilingSurrounding(sector_t* sec)
 //
 // FIND HIGHEST CEILING IN THE SURROUNDING SECTORS
 //
-fixed_t	P_FindHighestCeilingSurrounding(sector_t* sec)
+int	P_FindHighestCeilingSurrounding(sector_t* sec)
 {
     int		i;
     line_t*	check;
     sector_t*	other;
-    fixed_t	height = 0;
+    int	height = 0;
 	
     for (i=0 ;i < sec->linecount ; i++)
     {

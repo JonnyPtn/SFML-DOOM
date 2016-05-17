@@ -30,7 +30,7 @@ void
 P_Thrust
 ( player_t*	player,
   angle_t	angle,
-  fixed_t	move ) 
+  int	move ) 
 {
     angle >>= ANGLETOFINESHIFT;
     
@@ -48,7 +48,7 @@ P_Thrust
 void P_CalcHeight (player_t* player) 
 {
     int		angle;
-    fixed_t	bob;
+    int	bob;
     
     // Regular movement bobbing
     // (needs to be calculated for gun swing

@@ -43,8 +43,8 @@ typedef struct
 //  which increases counter clockwise (protractor).
 // There was a lot of stuff grabbed wrong, so I changed it...
 //
-fixed_t		pspritescale;
-fixed_t		pspriteiscale;
+int		pspritescale;
+int		pspriteiscale;
 
 lighttable_t**	spritelights;
 
@@ -309,14 +309,14 @@ vissprite_t* R_NewVisSprite (void)
 short*		mfloorclip;
 short*		mceilingclip;
 
-fixed_t		spryscale;
-fixed_t		sprtopscreen;
+int		spryscale;
+int		sprtopscreen;
 
 void R_DrawMaskedColumn (column_t* column)
 {
     int		topscreen;
     int 	bottomscreen;
-    fixed_t	basetexturemid;
+    int	basetexturemid;
 	
     basetexturemid = dc_texturemid;
 	
@@ -365,7 +365,7 @@ R_DrawVisSprite
 {
     column_t*		column;
     int			texturecolumn;
-    fixed_t		frac;
+    int		frac;
     patch_t*		patch;
 	
 	
@@ -415,16 +415,16 @@ R_DrawVisSprite
 //
 void R_ProjectSprite (mobj_t* thing)
 {
-    fixed_t		tr_x;
-    fixed_t		tr_y;
+    int		tr_x;
+    int		tr_y;
     
-    fixed_t		gxt;
-    fixed_t		gyt;
+    int		gxt;
+    int		gyt;
     
-    fixed_t		tx;
-    fixed_t		tz;
+    int		tx;
+    int		tz;
 
-    fixed_t		xscale;
+    int		xscale;
     
     int			x1;
     int			x2;
@@ -441,7 +441,7 @@ void R_ProjectSprite (mobj_t* thing)
     vissprite_t*	vis;
     
     angle_t		ang;
-    fixed_t		iscale;
+    int		iscale;
     
     // transform the origin point
     tr_x = thing->x - viewx;
@@ -609,7 +609,7 @@ void R_AddSprites (sector_t* sec)
 //
 void R_DrawPSprite (pspdef_t* psp)
 {
-    fixed_t		tx;
+    int		tx;
     int			x1;
     int			x2;
     spritedef_t*	sprdef;
@@ -755,7 +755,7 @@ void R_SortVisSprites (void)
     vissprite_t*	ds;
     vissprite_t*	best;
     vissprite_t		unsorted;
-    fixed_t		bestscale;
+    int		bestscale;
 
     count = vissprite_p - vissprites;
 	
@@ -811,8 +811,8 @@ void R_DrawSprite (vissprite_t* spr)
     int			x;
     int			r1;
     int			r2;
-    fixed_t		scale;
-    fixed_t		lowscale;
+    int		scale;
+    int		lowscale;
     int			silhouette;
 		
     for (x = spr->x1 ; x<=spr->x2 ; x++)

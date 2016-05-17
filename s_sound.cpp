@@ -764,9 +764,9 @@ S_AdjustSoundParams
   int*		sep,
   int*		pitch )
 {
-    fixed_t	approx_dist;
-    fixed_t	adx;
-    fixed_t	ady;
+    int	approx_dist;
+    int	adx;
+    int	ady;
     angle_t	angle;
 
     // calculate the distance to sound origin

@@ -146,9 +146,9 @@ int             joybspeed;
  
 #define TURBOTHRESHOLD	0x32
 
-fixed_t		forwardmove[2] = {0x19, 0x32}; 
-fixed_t		sidemove[2] = {0x18, 0x28}; 
-fixed_t		angleturn[3] = {640, 1280, 320};	// + slow turn 
+int		forwardmove[2] = {0x19, 0x32}; 
+int		sidemove[2] = {0x18, 0x28}; 
+int		angleturn[3] = {640, 1280, 320};	// + slow turn 
 
 #define SLOWTURNTICS	6 
  
@@ -854,8 +854,8 @@ G_CheckSpot
 ( int		playernum,
   mapthing_t*	mthing ) 
 { 
-    fixed_t		x;
-    fixed_t		y; 
+    int		x;
+    int		y; 
     subsector_t*	ss; 
     unsigned		an; 
     mobj_t*		mo; 

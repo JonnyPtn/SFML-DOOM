@@ -41,7 +41,7 @@ typedef struct
 {
     state_t*	state;	// a NULL state means not active
     int		tics;
-    fixed_t	sx;
-    fixed_t	sy;
+    int	sx;
+    int	sy;
 
 } pspdef_t;

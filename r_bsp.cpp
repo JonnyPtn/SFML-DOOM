@@ -351,16 +351,16 @@ int	checkcoord[12][4] =
 };
 
 
-bool R_CheckBBox (fixed_t*	bspcoord)
+bool R_CheckBBox (int*	bspcoord)
 {
     int			boxx;
     int			boxy;
     int			boxpos;
 
-    fixed_t		x1;
-    fixed_t		y1;
-    fixed_t		x2;
-    fixed_t		y2;
+    int		x1;
+    int		y1;
+    int		x2;
+    int		y2;
     
     angle_t		angle1;
     angle_t		angle2;

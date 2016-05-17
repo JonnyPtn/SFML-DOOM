@@ -61,8 +61,8 @@ short*		blockmap;	// int for larger maps
 // offsets in blockmap are from here
 short*		blockmaplump;		
 // origin of block map
-fixed_t		bmaporgx;
-fixed_t		bmaporgy;
+int		bmaporgx;
+int		bmaporgy;
 // for thing chains
 mobj_t**	blocklinks;		
 
@@ -478,7 +478,7 @@ void P_GroupLines (void)
     sector_t*		sector;
     subsector_t*	ss;
     seg_t*		seg;
-    fixed_t		bbox[4];
+    int		bbox[4];
     int			block;
 	
     // look up sector number for each subsector

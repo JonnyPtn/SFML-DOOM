@@ -149,7 +149,7 @@ P_NoiseAlert
 bool P_CheckMeleeRange (mobj_t*	actor)
 {
     mobj_t*	pl;
-    fixed_t	dist;
+    int	dist;
 	
     if (!actor->target)
 	return false;
@@ -171,7 +171,7 @@ bool P_CheckMeleeRange (mobj_t*	actor)
 //
 bool P_CheckMissileRange (mobj_t* actor)
 {
-    fixed_t	dist;
+    int	dist;
 	
     if (! P_CheckSight (actor, actor->target) )
 	return false;
@@ -236,8 +236,8 @@ bool P_CheckMissileRange (mobj_t* actor)
 // Move in the current direction,
 // returns false if the move is blocked.
 //
-fixed_t	xspeed[8] = {FRACUNIT,47000,0,-47000,-FRACUNIT,-47000,0,47000};
-fixed_t yspeed[8] = {0,47000,FRACUNIT,47000,0,-47000,-FRACUNIT,-47000};
+int	xspeed[8] = {FRACUNIT,47000,0,-47000,-FRACUNIT,-47000,0,47000};
+int yspeed[8] = {0,47000,FRACUNIT,47000,0,-47000,-FRACUNIT,-47000};
 
 #define MAXSPECIALCROSS	8
 
@@ -246,8 +246,8 @@ extern	int	numspechit;
 
 bool P_Move (mobj_t*	actor)
 {
-    fixed_t	tryx;
-    fixed_t	tryy;
+    int	tryx;
+    int	tryy;
     
     line_t*	ld;
     
@@ -337,8 +337,8 @@ bool P_TryWalk (mobj_t* actor)
 
 void P_NewChaseDir (mobj_t*	actor)
 {
-    fixed_t	deltax;
-    fixed_t	deltay;
+    int	deltax;
+    int	deltay;
     
     dirtype_t	d[3];
     
@@ -480,7 +480,7 @@ P_LookForPlayers
     player_t*	player;
     sector_t*	sector;
     angle_t	an;
-    fixed_t	dist;
+    int	dist;
 		
     sector = actor->subsector->sector;
 	
@@ -996,8 +996,8 @@ int	TRACEANGLE = 0xc000000;
 void A_Tracer (mobj_t* actor)
 {
     angle_t	exact;
-    fixed_t	dist;
-    fixed_t	slope;
+    int	dist;
+    int	slope;
     mobj_t*	dest;
     mobj_t*	th;
 		
@@ -1098,8 +1098,8 @@ void A_SkelFist (mobj_t*	actor)
 //
 mobj_t*		corpsehit;
 mobj_t*		vileobj;
-fixed_t		viletryx;
-fixed_t		viletryy;
+int		viletryx;
+int		viletryy;
 
 bool PIT_VileCheck (mobj_t*	thing)
 {
@@ -1426,9 +1426,9 @@ A_PainShootSkull
 ( mobj_t*	actor,
   angle_t	angle )
 {
-    fixed_t	x;
-    fixed_t	y;
-    fixed_t	z;
+    int	x;
+    int	y;
+    int	z;
     
     mobj_t*	newmobj;
     angle_t	an;

@@ -6,8 +6,8 @@
 //
 // POV related.
 //
-extern fixed_t		viewcos;
-extern fixed_t		viewsin;
+extern int		viewcos;
+extern int		viewsin;
 
 extern int		viewwidth;
 extern int		viewheight;
@@ -19,9 +19,9 @@ extern int		viewwindowy;
 extern int		centerx;
 extern int		centery;
 
-extern fixed_t		centerxfrac;
-extern fixed_t		centeryfrac;
-extern fixed_t		projection;
+extern int		centerxfrac;
+extern int		centeryfrac;
+extern int		projection;
 
 extern int		validcount;
 
@@ -79,46 +79,46 @@ extern void		(*spanfunc) (void);
 // Utility functions.
 int
 R_PointOnSide
-( fixed_t	x,
-  fixed_t	y,
+( int	x,
+  int	y,
   node_t*	node );
 
 int
 R_PointOnSegSide
-( fixed_t	x,
-  fixed_t	y,
+( int	x,
+  int	y,
   seg_t*	line );
 
 angle_t
 R_PointToAngle
-( fixed_t	x,
-  fixed_t	y );
+( int	x,
+  int	y );
 
 angle_t
 R_PointToAngle2
-( fixed_t	x1,
-  fixed_t	y1,
-  fixed_t	x2,
-  fixed_t	y2 );
+( int	x1,
+  int	y1,
+  int	x2,
+  int	y2 );
 
-fixed_t
+int
 R_PointToDist
-( fixed_t	x,
-  fixed_t	y );
+( int	x,
+  int	y );
 
 
-fixed_t R_ScaleFromGlobalAngle (angle_t visangle);
+int R_ScaleFromGlobalAngle (angle_t visangle);
 
 subsector_t*
 R_PointInSubsector
-( fixed_t	x,
-  fixed_t	y );
+( int	x,
+  int	y );
 
 void
 R_AddPointToBox
 ( int		x,
   int		y,
-  fixed_t*	box );
+  int*	box );
 
 
 

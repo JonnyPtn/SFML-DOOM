@@ -80,12 +80,15 @@
 
 // scale on entry
 #define INITSCALEMTOF (.2*FRACUNIT)
+
 // how much the automap moves window per tic in frame-buffer coordinates
 // moves 140 pixels in 1 second
 #define F_PANINC	4
+
 // how much zoom-in per tic
 // goes to 2x in 1 second
 #define M_ZOOMIN        ((int) (1.02*FRACUNIT))
+
 // how much zoom-out per tic
 // pulls out to 0.5x in 1 second
 #define M_ZOOMOUT       ((int) (FRACUNIT/1.02))
@@ -93,6 +96,7 @@
 // translates between frame-buffer and map distances
 #define FTOM(x) FixedMul(((x)<<16),scale_ftom)
 #define MTOF(x) (FixedMul((x),scale_mtof)>>16)
+
 // translates between frame-buffer and map coordinates
 #define CXMTOF(x)  (f_x + MTOF((x)-m_x))
 #define CYMTOF(y)  (f_y + (f_h - MTOF((y)-m_y)))
@@ -102,17 +106,12 @@
 
 typedef struct
 {
-    int x, y;
-} fpoint_t;
-
-typedef struct
-{
-    fpoint_t a, b;
+    sf::Vector2i a, b;
 } fline_t;
 
 typedef struct
 {
-    fixed_t		x,y;
+    int		x,y;
 } mpoint_t;
 
 typedef struct
@@ -122,7 +121,7 @@ typedef struct
 
 typedef struct
 {
-    fixed_t slp, islp;
+   int slp, islp;
 } islope_t;
 
 
@@ -169,18 +168,18 @@ mline_t cheat_player_arrow[] = {
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
-    { { fixed_t(-.867*R), fixed_t(-.5*R) }, { fixed_t(.867*R), fixed_t (-.5*R) } },
-    { { fixed_t(.867*R), fixed_t(-.5*R) } , { 0, R } },
-    { { 0, R }, { fixed_t(-.867*R), fixed_t (-.5*R) } }
+    { { int(-.867*R), int(-.5*R) }, { int(.867*R), int (-.5*R) } },
+    { { int(.867*R), int(-.5*R) } , { 0, R } },
+    { { 0, R }, { int(-.867*R), int (-.5*R) } }
 };
 #undef R
 #define NUMTRIANGLEGUYLINES (sizeof(triangle_guy)/sizeof(mline_t))
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
-    { { fixed_t (-.5*R), fixed_t(-.7*R) }, { R, 0 } },
-    { { R, 0 }, { fixed_t (-.5*R), fixed_t(.7*R) } },
-    { { fixed_t (-.5*R), fixed_t(.7*R) }, { fixed_t(-.5*R), fixed_t (-.7*R) } }
+    { { int (-.5*R), int(-.7*R) }, { R, 0 } },
+    { { R, 0 }, { int (-.5*R), int(.7*R) } },
+    { { int (-.5*R), int(.7*R) }, { int(-.5*R), int (-.7*R) } }
 };
 #undef R
 #define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))
@@ -210,46 +209,46 @@ static unsigned char*	fb; 			// pseudo-frame buffer
 static int 	amclock;
 
 static mpoint_t m_paninc; // how far the window pans each tic (map coords)
-static fixed_t 	mtof_zoommul; // how far the window zooms in each tic (map coords)
-static fixed_t 	ftom_zoommul; // how far the window zooms in each tic (fb coords)
+static int 	mtof_zoommul; // how far the window zooms in each tic (map coords)
+static int 	ftom_zoommul; // how far the window zooms in each tic (fb coords)
 
-static fixed_t 	m_x, m_y;   // LL x,y where the window is on the map (map coords)
-static fixed_t 	m_x2, m_y2; // UR x,y where the window is on the map (map coords)
+static int 	m_x, m_y;   // LL x,y where the window is on the map (map coords)
+static int 	m_x2, m_y2; // UR x,y where the window is on the map (map coords)
 
 //
 // width/height of window on map (map coords)
 //
-static fixed_t 	m_w;
-static fixed_t	m_h;
+static int 	m_w;
+static int	m_h;
 
 // based on level size
-static fixed_t 	min_x;
-static fixed_t	min_y; 
-static fixed_t 	max_x;
-static fixed_t  max_y;
+static int 	min_x;
+static int	min_y; 
+static int 	max_x;
+static int  max_y;
 
-static fixed_t 	max_w; // max_x-min_x,
-static fixed_t  max_h; // max_y-min_y
+static int 	max_w; // max_x-min_x,
+static int  max_h; // max_y-min_y
 
 // based on player size
-static fixed_t 	min_w;
-static fixed_t  min_h;
+static int 	min_w;
+static int  min_h;
 
 
-static fixed_t 	min_scale_mtof; // used to tell when to stop zooming out
-static fixed_t 	max_scale_mtof; // used to tell when to stop zooming in
+static int 	min_scale_mtof; // used to tell when to stop zooming out
+static int 	max_scale_mtof; // used to tell when to stop zooming in
 
 // old stuff for recovery later
-static fixed_t old_m_w, old_m_h;
-static fixed_t old_m_x, old_m_y;
+static int old_m_w, old_m_h;
+static int old_m_x, old_m_y;
 
 // old location used by the Follower routine
 static mpoint_t f_oldloc;
 
 // used by MTOF to scale from map-to-frame-buffer coords
-static fixed_t scale_mtof = static_cast<fixed_t>(INITSCALEMTOF);
+static int scale_mtof = static_cast<int>(INITSCALEMTOF);
 // used by FTOM to scale from frame-buffer-to-map coords (=1/scale_mtof)
-static fixed_t scale_ftom;
+static int scale_ftom;
 
 static player_t *plr; // the player represented by an arrow
 
@@ -365,8 +364,8 @@ void AM_addMark(void)
 void AM_findMinMaxBoundaries(void)
 {
     int i;
-    fixed_t a;
-    fixed_t b;
+   int a;
+   int b;
 
     min_x = min_y =  MAXINT;
     max_x = max_y = -MAXINT;
@@ -833,7 +832,7 @@ AM_clipMline
     register	int outcode2 = 0;
     register	int outside;
     
-    fpoint_t	tmp;
+    sf::Vector2i	tmp;
     int		dx;
     int		dy;
 
@@ -1043,8 +1042,8 @@ AM_drawMline
 //
 void AM_drawGrid(int color)
 {
-    fixed_t x, y;
-    fixed_t start, end;
+   int x, y;
+   int start, end;
     mline_t ml;
 
     // Figure out start of vertical gridlines
@@ -1144,11 +1143,11 @@ void AM_drawWalls(void)
 //
 void
 AM_rotate
-( fixed_t*	x,
-  fixed_t*	y,
+( int*	x,
+  int*	y,
   angle_t	a )
 {
-    fixed_t tmpx;
+   int tmpx;
 
     tmpx =
 	FixedMul(*x,finecosine[a>>ANGLETOFINESHIFT])
@@ -1165,11 +1164,11 @@ void
 AM_drawLineCharacter
 ( mline_t*	lineguy,
   int		lineguylines,
-  fixed_t	scale,
+  int	scale,
   angle_t	angle,
   int		color,
-  fixed_t	x,
-  fixed_t	y )
+  int	x,
+  int	y )
 {
     int		i;
     mline_t	l;

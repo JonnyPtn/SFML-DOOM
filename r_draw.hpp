@@ -4,8 +4,8 @@ extern lighttable_t*	dc_colormap;
 extern int		dc_x;
 extern int		dc_yl;
 extern int		dc_yh;
-extern fixed_t		dc_iscale;
-extern fixed_t		dc_texturemid;
+extern int		dc_iscale;
+extern int		dc_texturemid;
 
 // first pixel in a column
 extern unsigned char*		dc_source;		
@@ -38,10 +38,10 @@ extern int		ds_x2;
 
 extern lighttable_t*	ds_colormap;
 
-extern fixed_t		ds_xfrac;
-extern fixed_t		ds_yfrac;
-extern fixed_t		ds_xstep;
-extern fixed_t		ds_ystep;
+extern int		ds_xfrac;
+extern int		ds_yfrac;
+extern int		ds_xstep;
+extern int		ds_ystep;
 
 // start of a 64*64 tile image
 extern unsigned char*		ds_source;		

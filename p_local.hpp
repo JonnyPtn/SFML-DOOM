@@ -85,17 +85,17 @@ void P_RespawnSpecials (void);
 
 mobj_t*
 P_SpawnMobj
-( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z,
+( int	x,
+  int	y,
+  int	z,
   mobjtype_t	type );
 
 void 	P_RemoveMobj (mobj_t* th);
 bool	P_SetMobjState (mobj_t* mobj, statenum_t state);
 void 	P_MobjThinker (mobj_t* mobj);
 
-void	P_SpawnPuff (fixed_t x, fixed_t y, fixed_t z);
-void 	P_SpawnBlood (fixed_t x, fixed_t y, fixed_t z, int damage);
+void	P_SpawnPuff (int x, int y, int z);
+void 	P_SpawnBlood (int x, int y, int z, int damage);
 mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);
 void	P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);
 
@@ -111,16 +111,16 @@ void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);
 //
 typedef struct
 {
-    fixed_t	x;
-    fixed_t	y;
-    fixed_t	dx;
-    fixed_t	dy;
+    int	x;
+    int	y;
+    int	dx;
+    int	dy;
     
 } divline_t;
 
 typedef struct
 {
-    fixed_t	frac;		// along trace line
+    int	frac;		// along trace line
     bool	isaline;
     union {
 	mobj_t*	thing;
@@ -135,17 +135,17 @@ extern intercept_t*	intercept_p;
 
 typedef bool (*traverser_t) (intercept_t *in);
 
-fixed_t P_AproxDistance (fixed_t dx, fixed_t dy);
-int 	P_PointOnLineSide (fixed_t x, fixed_t y, line_t* line);
-int 	P_PointOnDivlineSide (fixed_t x, fixed_t y, divline_t* line);
+int P_AproxDistance (int dx, int dy);
+int 	P_PointOnLineSide (int x, int y, line_t* line);
+int 	P_PointOnDivlineSide (int x, int y, divline_t* line);
 void 	P_MakeDivline (line_t* li, divline_t* dl);
-fixed_t P_InterceptVector (divline_t* v2, divline_t* v1);
-int 	P_BoxOnLineSide (fixed_t* tmbox, line_t* ld);
+int P_InterceptVector (divline_t* v2, divline_t* v1);
+int 	P_BoxOnLineSide (int* tmbox, line_t* ld);
 
-extern fixed_t		opentop;
-extern fixed_t 		openbottom;
-extern fixed_t		openrange;
-extern fixed_t		lowfloor;
+extern int		opentop;
+extern int 		openbottom;
+extern int		openrange;
+extern int		lowfloor;
 
 void 	P_LineOpening (line_t* linedef);
 
@@ -160,10 +160,10 @@ extern divline_t	trace;
 
 bool
 P_PathTraverse
-( fixed_t	x1,
-  fixed_t	y1,
-  fixed_t	x2,
-  fixed_t	y2,
+( int	x1,
+  int	y1,
+  int	x2,
+  int	y2,
   int		flags,
   bool	(*trav) (intercept_t *));
 
@@ -178,15 +178,15 @@ void P_SetThingPosition (mobj_t* thing);
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
 extern bool		floatok;
-extern fixed_t		tmfloorz;
-extern fixed_t		tmceilingz;
+extern int		tmfloorz;
+extern int		tmceilingz;
 
 
 extern	line_t*		ceilingline;
 
-bool P_CheckPosition (mobj_t *thing, fixed_t x, fixed_t y);
-bool P_TryMove (mobj_t* thing, fixed_t x, fixed_t y);
-bool P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y);
+bool P_CheckPosition (mobj_t *thing, int x, int y);
+bool P_TryMove (mobj_t* thing, int x, int y);
+bool P_TeleportMove (mobj_t* thing, int x, int y);
 void	P_SlideMove (mobj_t* mo);
 bool P_CheckSight (mobj_t* t1, mobj_t* t2);
 void 	P_UseLines (player_t* player);
@@ -195,18 +195,18 @@ bool P_ChangeSector (sector_t* sector, bool crunch);
 
 extern mobj_t*	linetarget;	// who got hit (or NULL)
 
-fixed_t
+int
 P_AimLineAttack
 ( mobj_t*	t1,
   angle_t	angle,
-  fixed_t	distance );
+  int	distance );
 
 void
 P_LineAttack
 ( mobj_t*	t1,
   angle_t	angle,
-  fixed_t	distance,
-  fixed_t	slope,
+  int	distance,
+  int	slope,
   int		damage );
 
 void
@@ -225,8 +225,8 @@ extern short*		blockmaplump;	// offsets in blockmap are from here
 extern short*		blockmap;
 extern int		bmapwidth;
 extern int		bmapheight;	// in mapblocks
-extern fixed_t		bmaporgx;
-extern fixed_t		bmaporgy;	// origin of block map
+extern int		bmaporgx;
+extern int		bmaporgy;	// origin of block map
 extern mobj_t**		blocklinks;	// for thing chains
 
 

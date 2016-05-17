@@ -179,9 +179,9 @@ typedef struct mobj_s
     thinker_t		thinker;
 
     // Info for drawing: position.
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
+    int		x;
+    int		y;
+    int		z;
 
     // More list: links in sector (if needed)
     struct mobj_s*	snext;
@@ -200,17 +200,17 @@ typedef struct mobj_s
     struct subsector_s*	subsector;
 
     // The closest interval over all contacted Sectors.
-    fixed_t		floorz;
-    fixed_t		ceilingz;
+    int		floorz;
+    int		ceilingz;
 
     // For movement checking.
-    fixed_t		radius;
-    fixed_t		height;	
+    int		radius;
+    int		height;	
 
     // Momentums, used to update position.
-    fixed_t		momx;
-    fixed_t		momy;
-    fixed_t		momz;
+    int		momx;
+    int		momy;
+    int		momz;
 
     // If == validcount, already checked.
     int			validcount;

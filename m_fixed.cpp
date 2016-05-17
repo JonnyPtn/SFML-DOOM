@@ -17,10 +17,10 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 // Fixme. __USE_C_FIXED__ or something.
 
-fixed_t
+int
 FixedMul
-( fixed_t	a,
-  fixed_t	b )
+( int	a,
+  int	b )
 {
     return ((long long) a * (long long) b) >> FRACBITS;
 }
@@ -31,10 +31,10 @@ FixedMul
 // FixedDiv, C version.
 //
 
-fixed_t
+int
 FixedDiv
-( fixed_t	a,
-  fixed_t	b )
+( int	a,
+  int	b )
 {
     if ( (abs(a)>>14) >= abs(b))
 	return (a^b)<0 ? MININT : MAXINT;
@@ -43,15 +43,15 @@ FixedDiv
 
 
 
-fixed_t
+int
 FixedDiv2
-( fixed_t	a,
-  fixed_t	b )
+( int	a,
+  int	b )
 {
 #if 0
     long long c;
     c = ((long long)a<<16) / ((long long)b);
-    return (fixed_t) c;
+    return (int) c;
 #endif
 
     double c;
@@ -60,5 +60,5 @@ FixedDiv2
 
     if (c >= 2147483648.0 || c < -2147483648.0)
 	I_Error("FixedDiv: divide by zero");
-    return (fixed_t) c;
+    return (int) c;
 }

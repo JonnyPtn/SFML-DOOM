@@ -88,11 +88,11 @@ void P_ExplodeMissile (mobj_t* mo)
 
 void P_XYMovement (mobj_t* mo) 
 { 	
-    fixed_t 	ptryx;
-    fixed_t	ptryy;
+   int 	ptryx;
+    int	ptryy;
     player_t*	player;
-    fixed_t	xmove;
-    fixed_t	ymove;
+    int	xmove;
+    int	ymove;
 			
     if (!mo->momx && !mo->momy)
     {
@@ -220,8 +220,8 @@ void P_XYMovement (mobj_t* mo)
 //
 void P_ZMovement (mobj_t* mo)
 {
-    fixed_t	dist;
-    fixed_t	delta;
+    int	dist;
+    int	delta;
     
     // check for smooth step up
     if (mo->player && mo->z < mo->floorz)
@@ -331,9 +331,9 @@ void P_ZMovement (mobj_t* mo)
 void
 P_NightmareRespawn (mobj_t* mobj)
 {
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z; 
+    int		x;
+    int		y;
+    int		z; 
     subsector_t*	ss; 
     mobj_t*		mo;
     mapthing_t*		mthing;
@@ -453,9 +453,9 @@ void P_MobjThinker (mobj_t* mobj)
 //
 mobj_t*
 P_SpawnMobj
-( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z,
+( int	x,
+  int	y,
+  int	z,
   mobjtype_t	type )
 {
     mobj_t*	mobj;
@@ -552,9 +552,9 @@ void P_RemoveMobj (mobj_t* mobj)
 //
 void P_RespawnSpecials (void)
 {
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
+    int		x;
+    int		y;
+    int		z;
     
     subsector_t*	ss; 
     mobj_t*		mo;
@@ -617,9 +617,9 @@ void P_RespawnSpecials (void)
 void P_SpawnPlayer (mapthing_t* mthing)
 {
     player_t*		p;
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
+    int		x;
+    int		y;
+    int		z;
 
     mobj_t*		mobj;
 
@@ -685,9 +685,9 @@ void P_SpawnMapThing (mapthing_t* mthing)
     int			i;
     int			bit;
     mobj_t*		mobj;
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
+    int		x;
+    int		y;
+    int		z;
 		
     // count deathmatch start positions
     if (mthing->type == 11)
@@ -781,13 +781,13 @@ void P_SpawnMapThing (mapthing_t* mthing)
 //
 // P_SpawnPuff
 //
-extern fixed_t attackrange;
+extern int attackrange;
 
 void
 P_SpawnPuff
-( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z )
+( int	x,
+  int	y,
+  int	z )
 {
     mobj_t*	th;
 	
@@ -812,9 +812,9 @@ P_SpawnPuff
 // 
 void
 P_SpawnBlood
-( fixed_t	x,
-  fixed_t	y,
-  fixed_t	z,
+( int	x,
+  int	y,
+  int	z,
   int		damage )
 {
     mobj_t*	th;
@@ -914,10 +914,10 @@ P_SpawnPlayerMissile
     mobj_t*	th;
     angle_t	an;
     
-    fixed_t	x;
-    fixed_t	y;
-    fixed_t	z;
-    fixed_t	slope;
+    int	x;
+    int	y;
+    int	z;
+    int	slope;
     
     // see which target is to be aimed at
     an = source->angle;

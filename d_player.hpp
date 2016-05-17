@@ -58,13 +58,13 @@ typedef struct player_s
     // Determine POV,
     //  including viewpoint bobbing during movement.
     // Focal origin above r.z
-    fixed_t		viewz;
+    int		viewz;
     // Base height above floor for viewz.
-    fixed_t		viewheight;
+    int		viewheight;
     // Bob/squat speed.
-    fixed_t         	deltaviewheight;
+   int         	deltaviewheight;
     // bounded/scaled total momentum.
-    fixed_t         	bob;	
+   int         	bob;	
 
     // This is only used between levels,
     // mo->health is used during levels.

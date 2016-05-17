@@ -57,16 +57,16 @@ getSide
   int		line,
   int		side );
 
-fixed_t P_FindLowestFloorSurrounding(sector_t* sec);
-fixed_t P_FindHighestFloorSurrounding(sector_t* sec);
+int P_FindLowestFloorSurrounding(sector_t* sec);
+int P_FindHighestFloorSurrounding(sector_t* sec);
 
-fixed_t
+int
 P_FindNextHighestFloor
 ( sector_t*	sec,
   int		currentheight );
 
-fixed_t P_FindLowestCeilingSurrounding(sector_t* sec);
-fixed_t P_FindHighestCeilingSurrounding(sector_t* sec);
+int P_FindLowestCeilingSurrounding(sector_t* sec);
+int P_FindHighestCeilingSurrounding(sector_t* sec);
 
 int
 P_FindSectorFromLineTag
@@ -259,9 +259,9 @@ typedef struct
 {
     thinker_t	thinker;
     sector_t*	sector;
-    fixed_t	speed;
-    fixed_t	low;
-    fixed_t	high;
+    int	speed;
+    int	low;
+    int	high;
     int		wait;
     int		count;
     plat_e	status;
@@ -318,8 +318,8 @@ typedef struct
     thinker_t	thinker;
     vldoor_e	type;
     sector_t*	sector;
-    fixed_t	topheight;
-    fixed_t	speed;
+    int	topheight;
+    int	speed;
 
     // 1 = up, 0 = waiting at top, -1 = down
     int             direction;
@@ -382,9 +382,9 @@ typedef struct
     thinker_t	thinker;
     ceiling_e	type;
     sector_t*	sector;
-    fixed_t	bottomheight;
-    fixed_t	topheight;
-    fixed_t	speed;
+    int	bottomheight;
+    int	topheight;
+    int	speed;
     bool	crush;
 
     // 1 = up, 0 = waiting, -1 = down
@@ -477,8 +477,8 @@ typedef struct
     int		direction;
     int		newspecial;
     short	texture;
-    fixed_t	floordestheight;
-    fixed_t	speed;
+    int	floordestheight;
+    int	speed;
 
 } floormove_t;
 
@@ -497,8 +497,8 @@ typedef enum
 result_e
 T_MovePlane
 ( sector_t*	sector,
-  fixed_t	speed,
-  fixed_t	dest,
+  int	speed,
+  int	dest,
   bool	crush,
   int		floorOrCeiling,
   int		direction );

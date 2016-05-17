@@ -14,11 +14,11 @@ extern short		screenheightarray[SCREENWIDTH];
 // vars for R_DrawMaskedColumn
 extern short*		mfloorclip;
 extern short*		mceilingclip;
-extern fixed_t		spryscale;
-extern fixed_t		sprtopscreen;
+extern int		spryscale;
+extern int		sprtopscreen;
 
-extern fixed_t		pspritescale;
-extern fixed_t		pspriteiscale;
+extern int		pspritescale;
+extern int		pspriteiscale;
 
 
 void R_DrawMaskedColumn (column_t* column);

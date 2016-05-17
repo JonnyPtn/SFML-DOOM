@@ -123,7 +123,7 @@ texture_t**	textures;
 
 int*			texturewidthmask;
 // needed for texture pegging
-fixed_t*		textureheight;		
+int*		textureheight;		
 int*			texturecompositesize;
 short**			texturecolumnlump;
 unsigned short**	texturecolumnofs;
@@ -134,9 +134,9 @@ int*		flattranslation;
 int*		texturetranslation;
 
 // needed for pre rendering
-fixed_t*	spritewidth;	
-fixed_t*	spriteoffset;
-fixed_t*	spritetopoffset;
+int*	spritewidth;	
+int*	spriteoffset;
+int*	spritetopoffset;
 
 lighttable_t	*colormaps;
 
@@ -461,7 +461,7 @@ void R_InitTextures (void)
     texturecomposite = (unsigned char**)Z_Malloc (numtextures*4, PU_STATIC, 0);
     texturecompositesize = (int*)Z_Malloc (numtextures*4, PU_STATIC, 0);
     texturewidthmask = (int*)Z_Malloc (numtextures*4, PU_STATIC, 0);
-    textureheight = (fixed_t*)Z_Malloc (numtextures*4, PU_STATIC, 0);
+    textureheight = (int*)Z_Malloc (numtextures*4, PU_STATIC, 0);
 
     totalwidth = 0;
     
@@ -586,9 +586,9 @@ void R_InitSpriteLumps (void)
     lastspritelump = W_GetNumForName ("S_END") - 1;
     
     numspritelumps = lastspritelump - firstspritelump + 1;
-    spritewidth = (fixed_t*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
-    spriteoffset = (fixed_t*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
-    spritetopoffset = (fixed_t*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
+    spritewidth = (int*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
+    spriteoffset = (int*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
+    spritetopoffset = (int*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
 	
     for (i=0 ; i< numspritelumps ; i++)
     {

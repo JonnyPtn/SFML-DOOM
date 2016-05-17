@@ -16,20 +16,20 @@
 #include "sounds.hpp"
 
 
-fixed_t		tmbbox[4];
+int		tmbbox[4];
 mobj_t*		tmthing;
 int		tmflags;
-fixed_t		tmx;
-fixed_t		tmy;
+int		tmx;
+int		tmy;
 
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
 bool		floatok;
 
-fixed_t		tmfloorz;
-fixed_t		tmceilingz;
-fixed_t		tmdropoffz;
+int		tmfloorz;
+int		tmceilingz;
+int		tmdropoffz;
 
 // keep track of the line that lowers the ceiling,
 // so missiles don't explode against sky hack walls
@@ -53,7 +53,7 @@ int		numspechit;
 //
 bool PIT_StompThing (mobj_t* thing)
 {
-    fixed_t	blockdist;
+    int	blockdist;
 		
     if (!(thing->flags & MF_SHOOTABLE) )
 	return true;
@@ -87,8 +87,8 @@ bool PIT_StompThing (mobj_t* thing)
 bool
 P_TeleportMove
 ( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )
+  int	x,
+  int	y )
 {
     int			xl;
     int			xh;
@@ -224,7 +224,7 @@ bool PIT_CheckLine (line_t* ld)
 //
 bool PIT_CheckThing (mobj_t* thing)
 {
-    fixed_t		blockdist;
+    int		blockdist;
     bool		solid;
     int			damage;
 		
@@ -347,8 +347,8 @@ bool PIT_CheckThing (mobj_t* thing)
 bool
 P_CheckPosition
 ( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )
+  int	x,
+  int	y )
 {
     int			xl;
     int			xh;
@@ -423,11 +423,11 @@ P_CheckPosition
 bool
 P_TryMove
 ( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )
+  int	x,
+  int	y )
 {
-    fixed_t	oldx;
-    fixed_t	oldy;
+    int	oldx;
+    int	oldy;
     int		side;
     int		oldside;
     line_t*	ld;
@@ -536,16 +536,16 @@ bool P_ThingHeightClip (mobj_t* thing)
 // SLIDE MOVE
 // Allows the player to slide along any angled walls.
 //
-fixed_t		bestslidefrac;
-fixed_t		secondslidefrac;
+int		bestslidefrac;
+int		secondslidefrac;
 
 line_t*		bestslideline;
 line_t*		secondslideline;
 
 mobj_t*		slidemo;
 
-fixed_t		tmxmove;
-fixed_t		tmymove;
+int		tmxmove;
+int		tmymove;
 
 
 
@@ -562,8 +562,8 @@ void P_HitSlideLine (line_t* ld)
     angle_t		moveangle;
     angle_t		deltaangle;
     
-    fixed_t		movelen;
-    fixed_t		newlen;
+    int		movelen;
+    int		newlen;
 	
 	
     if (ld->slopetype == ST_HORIZONTAL)
@@ -667,12 +667,12 @@ bool PTR_SlideTraverse (intercept_t* in)
 //
 void P_SlideMove (mobj_t* mo)
 {
-    fixed_t		leadx;
-    fixed_t		leady;
-    fixed_t		trailx;
-    fixed_t		traily;
-    fixed_t		newx;
-    fixed_t		newy;
+    int		leadx;
+    int		leady;
+    int		trailx;
+    int		traily;
+    int		newx;
+    int		newy;
     int			hitcount;
 		
     slidemo = mo;
@@ -769,16 +769,16 @@ mobj_t*		shootthing;
 
 // Height if not aiming up or down
 // ???: use slope for monsters?
-fixed_t		shootz;	
+int		shootz;	
 
 int		la_damage;
-fixed_t		attackrange;
+int		attackrange;
 
-fixed_t		aimslope;
+int		aimslope;
 
 // slopes to top and bottom of target
-extern fixed_t	topslope;
-extern fixed_t	bottomslope;	
+extern int	topslope;
+extern int	bottomslope;	
 
 
 //
@@ -790,10 +790,10 @@ PTR_AimTraverse (intercept_t* in)
 {
     line_t*		li;
     mobj_t*		th;
-    fixed_t		slope;
-    fixed_t		thingtopslope;
-    fixed_t		thingbottomslope;
-    fixed_t		dist;
+    int		slope;
+    int		thingtopslope;
+    int		thingbottomslope;
+    int		dist;
 		
     if (in->isaline)
     {
@@ -871,19 +871,19 @@ PTR_AimTraverse (intercept_t* in)
 //
 bool PTR_ShootTraverse (intercept_t* in)
 {
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
-    fixed_t		frac;
+    int		x;
+    int		y;
+    int		z;
+    int		frac;
     
     line_t*		li;
     
     mobj_t*		th;
 
-    fixed_t		slope;
-    fixed_t		dist;
-    fixed_t		thingtopslope;
-    fixed_t		thingbottomslope;
+    int		slope;
+    int		dist;
+    int		thingtopslope;
+    int		thingbottomslope;
 		
     if (in->isaline)
     {
@@ -992,14 +992,14 @@ bool PTR_ShootTraverse (intercept_t* in)
 //
 // P_AimLineAttack
 //
-fixed_t
+int
 P_AimLineAttack
 ( mobj_t*	t1,
   angle_t	angle,
-  fixed_t	distance )
+  int	distance )
 {
-    fixed_t	x2;
-    fixed_t	y2;
+    int	x2;
+    int	y2;
 	
     angle >>= ANGLETOFINESHIFT;
     shootthing = t1;
@@ -1036,12 +1036,12 @@ void
 P_LineAttack
 ( mobj_t*	t1,
   angle_t	angle,
-  fixed_t	distance,
-  fixed_t	slope,
+  int	distance,
+  int	slope,
   int		damage )
 {
-    fixed_t	x2;
-    fixed_t	y2;
+    int	x2;
+    int	y2;
 	
     angle >>= ANGLETOFINESHIFT;
     shootthing = t1;
@@ -1103,10 +1103,10 @@ bool	PTR_UseTraverse (intercept_t* in)
 void P_UseLines (player_t*	player) 
 {
     int		angle;
-    fixed_t	x1;
-    fixed_t	y1;
-    fixed_t	x2;
-    fixed_t	y2;
+    int	x1;
+    int	y1;
+    int	x2;
+    int	y2;
 	
     usething = player->mo;
 		
@@ -1136,9 +1136,9 @@ int		bombdamage;
 //
 bool PIT_RadiusAttack (mobj_t* thing)
 {
-    fixed_t	dx;
-    fixed_t	dy;
-    fixed_t	dist;
+    int	dx;
+    int	dy;
+    int	dist;
 	
     if (!(thing->flags & MF_SHOOTABLE) )
 	return true;
@@ -1189,7 +1189,7 @@ P_RadiusAttack
     int		yl;
     int		yh;
     
-    fixed_t	dist;
+    int	dist;
 	
     dist = (damage+MAXRADIUS)<<FRACBITS;
     yh = (spot->y + dist - bmaporgy)>>MAPBLOCKSHIFT;

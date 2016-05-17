@@ -56,8 +56,8 @@ lighttable_t*		dc_colormap;
 int			dc_x; 
 int			dc_yl; 
 int			dc_yh; 
-fixed_t			dc_iscale; 
-fixed_t			dc_texturemid;
+int			dc_iscale; 
+int			dc_texturemid;
 
 // first pixel in a column (possibly virtual) 
 unsigned char*			dc_source;		
@@ -76,8 +76,8 @@ void R_DrawColumn (void)
 { 
     int			count; 
     unsigned char*		dest; 
-    fixed_t		frac;
-    fixed_t		fracstep;	 
+    int		frac;
+    int		fracstep;	 
  
     count = dc_yh - dc_yl; 
 
@@ -183,8 +183,8 @@ void R_DrawColumnLow (void)
     int			count; 
     unsigned char*		dest; 
     unsigned char*		dest2;
-    fixed_t		frac;
-    fixed_t		fracstep;	 
+    int		frac;
+    int		fracstep;	 
  
     count = dc_yh - dc_yl; 
 
@@ -256,8 +256,8 @@ void R_DrawFuzzColumn (void)
 { 
     int			count; 
     unsigned char*		dest; 
-    fixed_t		frac;
-    fixed_t		fracstep;	 
+    int		frac;
+    int		fracstep;	 
 
     // Adjust borders. Low... 
     if (!dc_yl) 
@@ -356,8 +356,8 @@ void R_DrawTranslatedColumn (void)
 { 
     int			count; 
     unsigned char*		dest; 
-    fixed_t		frac;
-    fixed_t		fracstep;	 
+    int		frac;
+    int		fracstep;	 
  
     count = dc_yh - dc_yl; 
     if (count < 0) 
@@ -473,10 +473,10 @@ int			ds_x2;
 
 lighttable_t*		ds_colormap; 
 
-fixed_t			ds_xfrac; 
-fixed_t			ds_yfrac; 
-fixed_t			ds_xstep; 
-fixed_t			ds_ystep;
+int			ds_xfrac; 
+int			ds_yfrac; 
+int			ds_xstep; 
+int			ds_ystep;
 
 // start of a 64*64 tile image 
 unsigned char*			ds_source;	
@@ -489,8 +489,8 @@ int			dscount;
 // Draws the actual span.
 void R_DrawSpan (void) 
 { 
-    fixed_t		xfrac;
-    fixed_t		yfrac; 
+    int		xfrac;
+    int		yfrac; 
     unsigned char*		dest; 
     int			count;
     int			spot; 
@@ -612,8 +612,8 @@ void R_DrawSpan (void)
 //
 void R_DrawSpanLow (void) 
 { 
-    fixed_t		xfrac;
-    fixed_t		yfrac; 
+    int		xfrac;
+    int		yfrac; 
     unsigned char*		dest; 
     int			count;
     int			spot; 

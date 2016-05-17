@@ -79,12 +79,12 @@ P_SetPsprite
 //
 // P_CalcSwing
 //	
-fixed_t		swingx;
-fixed_t		swingy;
+int		swingx;
+int		swingy;
 
 void P_CalcSwing (player_t*	player)
 {
-    fixed_t	swing;
+    int	swing;
     int		angle;
 	
     // OPTIMIZE: tablify this.
@@ -568,7 +568,7 @@ A_FirePlasma
 // Sets a slope so a near miss is at aproximately
 // the height of the intended target
 //
-fixed_t		bulletslope;
+int		bulletslope;
 
 
 void P_BulletSlope (mobj_t*	mo)

@@ -19,8 +19,8 @@ extern planefunction_t	ceilingfunc_t;
 extern short		floorclip[SCREENWIDTH];
 extern short		ceilingclip[SCREENWIDTH];
 
-extern fixed_t		yslope[SCREENHEIGHT];
-extern fixed_t		distscale[SCREENWIDTH];
+extern int		yslope[SCREENHEIGHT];
+extern int		distscale[SCREENWIDTH];
 
 void R_InitPlanes (void);
 void R_ClearPlanes (void);
@@ -43,7 +43,7 @@ void R_DrawPlanes (void);
 
 visplane_t*
 R_FindPlane
-( fixed_t	height,
+( int	height,
   int		picnum,
   int		lightlevel );
 

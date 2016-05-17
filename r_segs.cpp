@@ -34,29 +34,29 @@ int		rw_angle1;
 int		rw_x;
 int		rw_stopx;
 angle_t		rw_centerangle;
-fixed_t		rw_offset;
-fixed_t		rw_distance;
-fixed_t		rw_scale;
-fixed_t		rw_scalestep;
-fixed_t		rw_midtexturemid;
-fixed_t		rw_toptexturemid;
-fixed_t		rw_bottomtexturemid;
+int		rw_offset;
+int		rw_distance;
+int		rw_scale;
+int		rw_scalestep;
+int		rw_midtexturemid;
+int		rw_toptexturemid;
+int		rw_bottomtexturemid;
 
 int		worldtop;
 int		worldbottom;
 int		worldhigh;
 int		worldlow;
 
-fixed_t		pixhigh;
-fixed_t		pixlow;
-fixed_t		pixhighstep;
-fixed_t		pixlowstep;
+int		pixhigh;
+int		pixlow;
+int		pixhighstep;
+int		pixlowstep;
 
-fixed_t		topfrac;
-fixed_t		topstep;
+int		topfrac;
+int		topstep;
 
-fixed_t		bottomfrac;
-fixed_t		bottomstep;
+int		bottomfrac;
+int		bottomstep;
 
 
 lighttable_t**	walllights;
@@ -179,7 +179,7 @@ void R_RenderSegLoop (void)
     int			yl;
     int			yh;
     int			mid;
-    fixed_t		texturecolumn;
+    int		texturecolumn;
     int			top;
     int			bottom;
 
@@ -345,10 +345,10 @@ R_StoreWallRange
 ( int	start,
   int	stop )
 {
-    fixed_t		hyp;
-    fixed_t		sineval;
+    int		hyp;
+    int		sineval;
     angle_t		distangle, offsetangle;
-    fixed_t		vtop;
+    int		vtop;
     int			lightnum;
 
     // don't overflow and crash
@@ -400,8 +400,8 @@ R_StoreWallRange
 #if 0
 	if (rw_distance < FRACUNIT/2)
 	{
-	    fixed_t		trx,try;
-	    fixed_t		gxt,gyt;
+	    int		trx,try;
+	    int		gxt,gyt;
 
 	    trx = curline->v1->x - viewx;
 	    try = curline->v1->y - viewy;

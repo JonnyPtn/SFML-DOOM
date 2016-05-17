@@ -29,9 +29,9 @@ EV_Teleport
     unsigned	an;
     thinker_t*	thinker;
     sector_t*	sector;
-    fixed_t	oldx;
-    fixed_t	oldy;
-    fixed_t	oldz;
+    int	oldx;
+    int	oldy;
+    int	oldz;
 
     // don't teleport missiles
     if (thing->flags & MF_MISSILE)

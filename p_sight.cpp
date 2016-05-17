@@ -9,13 +9,13 @@
 //
 // P_CheckSight
 //
-fixed_t		sightzstart;		// eye z of looker
-fixed_t		topslope;
-fixed_t		bottomslope;		// slopes to top and bottom of target
+int		sightzstart;		// eye z of looker
+int		topslope;
+int		bottomslope;		// slopes to top and bottom of target
 
 divline_t	strace;			// from t1 to t2
-fixed_t		t2x;
-fixed_t		t2y;
+int		t2x;
+int		t2y;
 
 int		sightcounts[2];
 
@@ -26,14 +26,14 @@ int		sightcounts[2];
 //
 int
 P_DivlineSide
-( fixed_t	x,
-  fixed_t	y,
+( int	x,
+  int	y,
   divline_t*	node )
 {
-    fixed_t	dx;
-    fixed_t	dy;
-    fixed_t	left;
-    fixed_t	right;
+    int	dx;
+    int	dy;
+    int	left;
+    int	right;
 
     if (!node->dx)
     {
@@ -78,14 +78,14 @@ P_DivlineSide
 // along the first divline.
 // This is only called by the addthings and addlines traversers.
 //
-fixed_t
+int
 P_InterceptVector2
 ( divline_t*	v2,
   divline_t*	v1 )
 {
-    fixed_t	frac;
-    fixed_t	num;
-    fixed_t	den;
+    int	frac;
+    int	num;
+    int	den;
 	
     den = FixedMul (v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
 
@@ -115,13 +115,13 @@ bool P_CrossSubsector (int num)
     subsector_t*	sub;
     sector_t*		front;
     sector_t*		back;
-    fixed_t		opentop;
-    fixed_t		openbottom;
+    int		opentop;
+    int		openbottom;
     divline_t		divl;
     vertex_t*		v1;
     vertex_t*		v2;
-    fixed_t		frac;
-    fixed_t		slope;
+    int		frac;
+    int		slope;
 	
 #ifdef RANGECHECK
     if (num>=numsubsectors)

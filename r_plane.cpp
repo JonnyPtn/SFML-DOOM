@@ -51,17 +51,17 @@ int			spanstop[SCREENHEIGHT];
 // texture mapping
 //
 lighttable_t**		planezlight;
-fixed_t			planeheight;
+int			planeheight;
 
-fixed_t			yslope[SCREENHEIGHT];
-fixed_t			distscale[SCREENWIDTH];
-fixed_t			basexscale;
-fixed_t			baseyscale;
+int			yslope[SCREENHEIGHT];
+int			distscale[SCREENWIDTH];
+int			basexscale;
+int			baseyscale;
 
-fixed_t			cachedheight[SCREENHEIGHT];
-fixed_t			cacheddistance[SCREENHEIGHT];
-fixed_t			cachedxstep[SCREENHEIGHT];
-fixed_t			cachedystep[SCREENHEIGHT];
+int			cachedheight[SCREENHEIGHT];
+int			cacheddistance[SCREENHEIGHT];
+int			cachedxstep[SCREENHEIGHT];
+int			cachedystep[SCREENHEIGHT];
 
 
 
@@ -95,8 +95,8 @@ R_MapPlane
   int		x2 )
 {
     angle_t	angle;
-    fixed_t	distance;
-    fixed_t	length;
+    int	distance;
+    int	length;
     unsigned	index;
 	
 #ifdef RANGECHECK
@@ -187,7 +187,7 @@ void R_ClearPlanes (void)
 //
 visplane_t*
 R_FindPlane
-( fixed_t	height,
+( int	height,
   int		picnum,
   int		lightlevel )
 {

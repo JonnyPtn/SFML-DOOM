@@ -16,10 +16,10 @@
 // Gives an estimation of distance (not exact)
 //
 
-fixed_t
+int
 P_AproxDistance
-( fixed_t	dx,
-  fixed_t	dy )
+( int	dx,
+  int	dy )
 {
     dx = abs(dx);
     dy = abs(dy);
@@ -35,14 +35,14 @@ P_AproxDistance
 //
 int
 P_PointOnLineSide
-( fixed_t	x,
-  fixed_t	y,
+( int	x,
+  int	y,
   line_t*	line )
 {
-    fixed_t	dx;
-    fixed_t	dy;
-    fixed_t	left;
-    fixed_t	right;
+    int	dx;
+    int	dy;
+    int	left;
+    int	right;
 	
     if (!line->dx)
     {
@@ -79,7 +79,7 @@ P_PointOnLineSide
 //
 int
 P_BoxOnLineSide
-( fixed_t*	tmbox,
+( int*	tmbox,
   line_t*	ld )
 {
     int		p1;
@@ -130,14 +130,14 @@ P_BoxOnLineSide
 //
 int
 P_PointOnDivlineSide
-( fixed_t	x,
-  fixed_t	y,
+( int	x,
+  int	y,
   divline_t*	line )
 {
-    fixed_t	dx;
-    fixed_t	dy;
-    fixed_t	left;
-    fixed_t	right;
+    int	dx;
+    int	dy;
+    int	left;
+    int	right;
 	
     if (!line->dx)
     {
@@ -198,15 +198,15 @@ P_MakeDivline
 // This is only called by the addthings
 // and addlines traversers.
 //
-fixed_t
+int
 P_InterceptVector
 ( divline_t*	v2,
   divline_t*	v1 )
 {
 #if 1
-    fixed_t	frac;
-    fixed_t	num;
-    fixed_t	den;
+    int	frac;
+    int	num;
+    int	den;
 	
     den = FixedMul (v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
 
@@ -262,10 +262,10 @@ P_InterceptVector
 // through a two sided line.
 // OPTIMIZE: keep this precalculated
 //
-fixed_t opentop;
-fixed_t openbottom;
-fixed_t openrange;
-fixed_t	lowfloor;
+int opentop;
+int openbottom;
+int openrange;
+int	lowfloor;
 
 
 void P_LineOpening (line_t* linedef)
@@ -534,7 +534,7 @@ PIT_AddLineIntercepts (line_t* ld)
 {
     int			s1;
     int			s2;
-    fixed_t		frac;
+    int		frac;
     divline_t		dl;
 	
     // avoid precision problems with two routines
@@ -586,10 +586,10 @@ PIT_AddLineIntercepts (line_t* ld)
 //
 bool PIT_AddThingIntercepts (mobj_t* thing)
 {
-    fixed_t		x1;
-    fixed_t		y1;
-    fixed_t		x2;
-    fixed_t		y2;
+    int		x1;
+    int		y1;
+    int		x2;
+    int		y2;
     
     int			s1;
     int			s2;
@@ -598,7 +598,7 @@ bool PIT_AddThingIntercepts (mobj_t* thing)
 
     divline_t		dl;
     
-    fixed_t		frac;
+    int		frac;
 	
     tracepositive = (trace.dx ^ trace.dy)>0;
 		
@@ -653,10 +653,10 @@ bool PIT_AddThingIntercepts (mobj_t* thing)
 bool
 P_TraverseIntercepts
 ( traverser_t	func,
-  fixed_t	maxfrac )
+  int	maxfrac )
 {
     int			count;
-    fixed_t		dist;
+    int		dist;
     intercept_t*	scan;
     intercept_t*	in;
 	
@@ -712,25 +712,25 @@ P_TraverseIntercepts
 //
 bool
 P_PathTraverse
-( fixed_t		x1,
-  fixed_t		y1,
-  fixed_t		x2,
-  fixed_t		y2,
+( int		x1,
+  int		y1,
+  int		x2,
+  int		y2,
   int			flags,
   bool (*trav) (intercept_t *))
 {
-    fixed_t	xt1;
-    fixed_t	yt1;
-    fixed_t	xt2;
-    fixed_t	yt2;
+    int	xt1;
+    int	yt1;
+    int	xt2;
+    int	yt2;
     
-    fixed_t	xstep;
-    fixed_t	ystep;
+    int	xstep;
+    int	ystep;
     
-    fixed_t	partial;
+    int	partial;
     
-    fixed_t	xintercept;
-    fixed_t	yintercept;
+    int	xintercept;
+    int	yintercept;
     
     int		mapx;
     int		mapy;
