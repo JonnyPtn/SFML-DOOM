@@ -288,41 +288,33 @@ void D_DoomLoop (void)
     while (1)
     {          
 	
-	// process one or more tics
-	if (singletics)
-	{
-	    D_ProcessEvents ();
-	    G_BuildTiccmd (&netcmds[consoleplayer][maketic%BACKUPTICS]);
-	    if (advancedemo)
-		D_DoAdvanceDemo ();
-	    M_Ticker ();
-	    G_Ticker ();
-	    gametic++;
-	    maketic++;
-	}
-	else
-	{
-	    TryRunTics (); // will run at least one tic
-	}
+		// process one or more tics
+		if (singletics)
+		{
+		    D_ProcessEvents ();
+		    G_BuildTiccmd (&netcmds[consoleplayer][maketic%BACKUPTICS]);
+		    
+			if (advancedemo)
+				D_DoAdvanceDemo ();
+		    
+			M_Ticker ();
+		    G_Ticker ();
+		    gametic++;
+		    maketic++;
+		}
+		else
+		{
+		    TryRunTics (); // will run at least one tic
+		}
 		
-	S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
+		S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
 
-	// Update display, next frame, with current state.
-	D_Display ();
+		// Update display, next frame, with current state.
+		D_Display ();
 
-#ifndef SNDSERV
-	// Sound mixing for the buffer is snychronous.
-	I_UpdateSound();
-#endif	
-	// Synchronous sound output is explicitly called.
-#ifndef SNDINTR
-	// Update sound output.
-	I_SubmitSound();
-#endif
+		I_UpdateSound();
     }
 }
-
-
 
 //
 //  DEMO LOOP
@@ -331,7 +323,6 @@ int             demosequence;
 int             pagetic;
 char                    *pagename;
 
-
 //
 // D_PageTicker
 // Handles timing for warped projection
@@ -339,7 +330,7 @@ char                    *pagename;
 void D_PageTicker (void)
 {
     if (--pagetic < 0)
-	D_AdvanceDemo ();
+		D_AdvanceDemo ();
 }
 
 
@@ -352,7 +343,6 @@ void D_PageDrawer (void)
     V_DrawPatch (0,0, 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
 }
 
-
 //
 // D_AdvanceDemo
 // Called after each demo or intro demosequence finishes
@@ -361,7 +351,6 @@ void D_AdvanceDemo (void)
 {
     advancedemo = true;
 }
-
 
 //
 // This cycles through the demo sequences.
@@ -376,64 +365,62 @@ void D_AdvanceDemo (void)
     gameaction = ga_nothing;
 
     if ( gamemode == retail )
-      demosequence = (demosequence+1)%7;
+		demosequence = (demosequence+1)%7;
     else
-      demosequence = (demosequence+1)%6;
+		demosequence = (demosequence+1)%6;
     
     switch (demosequence)
     {
-      case 0:
-	if ( gamemode == commercial )
-	    pagetic = 35 * 11;
-	else
-	    pagetic = 170;
-	gamestate = GS_DEMOSCREEN;
-	pagename = "TITLEPIC";
-	if ( gamemode == commercial )
-	  S_StartMusic(mus_dm2ttl);
-	else
-	  S_StartMusic (mus_intro);
-	break;
-      case 1:
-	G_DeferedPlayDemo ("demo1");
-	break;
-      case 2:
-	pagetic = 200;
-	gamestate = GS_DEMOSCREEN;
-	pagename = "CREDIT";
-	break;
-      case 3:
-	G_DeferedPlayDemo ("demo2");
-	break;
-      case 4:
-	gamestate = GS_DEMOSCREEN;
-	if ( gamemode == commercial)
-	{
-	    pagetic = 35 * 11;
-	    pagename = "TITLEPIC";
-	    S_StartMusic(mus_dm2ttl);
-	}
-	else
-	{
-	    pagetic = 200;
+    case 0:
+		if ( gamemode == commercial )
+		    pagetic = 35 * 11;
+		else
+		    pagetic = 170;
+		gamestate = GS_DEMOSCREEN;
+		pagename = "TITLEPIC";
+		if ( gamemode == commercial )
+		  S_StartMusic(mus_dm2ttl);
+		else
+		  S_StartMusic (mus_intro);
+		break;
+    case 1:
+		G_DeferedPlayDemo ("demo1");
+		break;
+    case 2:
+		pagetic = 200;
+		gamestate = GS_DEMOSCREEN;
+		pagename = "CREDIT";
+		break;
+    case 3:
+		G_DeferedPlayDemo ("demo2");
+		break;
+    case 4:
+		gamestate = GS_DEMOSCREEN;
+		if ( gamemode == commercial)
+		{
+		    pagetic = 35 * 11;
+		    pagename = "TITLEPIC";
+		    S_StartMusic(mus_dm2ttl);
+		}
+		else
+		{
+		    pagetic = 200;
 
-	    if ( gamemode == retail )
-	      pagename = "CREDIT";
-	    else
-	      pagename = "HELP2";
-	}
-	break;
-      case 5:
-	G_DeferedPlayDemo ("demo3");
-	break;
-        // THE DEFINITIVE DOOM Special Edition demo
-      case 6:
-	G_DeferedPlayDemo ("demo4");
-	break;
+		    if ( gamemode == retail )
+		      pagename = "CREDIT";
+		    else
+		      pagename = "HELP2";
+		}
+		break;
+    case 5:
+		G_DeferedPlayDemo ("demo3");
+		break;
+    // THE DEFINITIVE DOOM Special Edition demo
+    case 6:
+		G_DeferedPlayDemo ("demo4");
+		break;
     }
 }
-
-
 
 //
 // D_StartTitle
@@ -445,13 +432,8 @@ void D_StartTitle (void)
     D_AdvanceDemo ();
 }
 
-
-
-
 //      print title for every printed line
 char            title[128];
-
-
 
 //
 // D_AddFile
@@ -478,7 +460,6 @@ void D_AddFile (char *file)
 //
 void IdentifyVersion (void)
 {
-
     char*	doom1wad;
     char*	doomwad;
     char*	doomuwad;
@@ -517,69 +498,61 @@ void IdentifyVersion (void)
     tntwad = (char*)malloc(strlen(doomwaddir)+1+9+1);
     sprintf(tntwad, "%s/tnt.wad", doomwaddir);
 
-
-    // French stuff.
+	// French stuff.
     doom2fwad = (char*)malloc(strlen(doomwaddir)+1+10+1);
     sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
 
-	//JONNY// no idea what this is meant to do...
-	/*
-    home = getenv("HOME");
-    if (!home)
-      I_Error("Please set $HOME to your home directory");
-    sprintf(basedefault, "%s/.doomrc", home);*/
-
     if ( !access (doom2fwad,R_OK) )
     {
-	gamemode = commercial;
-	// C'est ridicule!
-	// Let's handle languages in config files, okay?
-	language = french;
-	printf("French version\n");
-	D_AddFile (doom2fwad);
-	return;
+		gamemode = commercial;
+		// C'est ridicule!
+		// Let's handle languages in config files, okay?
+		language = french;
+		printf("French version\n");
+		D_AddFile (doom2fwad);
+		return;
     }
 
     if ( !access (doom2wad,R_OK) )
     {
-	gamemode = commercial;
-	D_AddFile (doom2wad);
-	return;
+		gamemode = commercial;
+		D_AddFile (doom2wad);
+		return;
     }
 
     if ( !access (plutoniawad, R_OK ) )
     {
-      gamemode = commercial;
-      D_AddFile (plutoniawad);
-      return;
+		gamemode = commercial;
+		D_AddFile (plutoniawad);
+		return;
     }
 
     if ( !access ( tntwad, R_OK ) )
     {
-      gamemode = commercial;
-      D_AddFile (tntwad);
-      return;
+		gamemode = commercial;
+		D_AddFile (tntwad);
+		return;
     }
 
     if ( !access (doomuwad,R_OK) )
     {
-      gamemode = retail;
-      D_AddFile (doomuwad);
-      return;
+		gamemode = retail;
+		D_AddFile (doomuwad);
+		return;
     }
 
     if ( !access (doomwad,R_OK) )
     {
-      gamemode = registered;
-      D_AddFile (doomwad);
-      return;
+		gamemode = registered;
+		D_AddFile (doomwad);
+		return;
     }
 
     if ( !access (doom1wad,R_OK) )
     {
-      gamemode = shareware;
-      D_AddFile (doom1wad);
-      return;
+		gamemode = shareware;
+		D_AddFile (doom1wad);
+		return;
     }
 
     printf("Game mode indeterminate.\n");
@@ -596,73 +569,74 @@ void IdentifyVersion (void)
 void FindResponseFile (void)
 {
     int             i;
-#define MAXARGVS        100
+	#define MAXARGVS        100
 	
-    for (i = 1;i < myargc;i++)
-	if (myargv[i][0] == '@')
+	for (i = 1; i < myargc; i++)
 	{
-	    FILE *          handle;
-	    int             size;
-	    int             k;
-	    int             index;
-	    int             indexinfile;
-	    char    *infile;
-	    char    *file;
-	    char    *moreargs[20];
-	    char    *firstargv;
-			
-	    // READ THE RESPONSE FILE INTO MEMORY
-	    handle = fopen (&myargv[i][1],"rb");
-	    if (!handle)
-	    {
-		printf ("\nNo such response file!");
-		exit(1);
-	    }
-	    printf("Found response file %s!\n",&myargv[i][1]);
-	    fseek (handle,0,SEEK_END);
-	    size = ftell(handle);
-	    fseek (handle,0,SEEK_SET);
-	    file = (char*)malloc (size);
-	    fread (file,size,1,handle);
-	    fclose (handle);
-			
-	    // KEEP ALL CMDLINE ARGS FOLLOWING @RESPONSEFILE ARG
-	    for (index = 0,k = i+1; k < myargc; k++)
-		moreargs[index++] = myargv[k];
-			
-	    firstargv = myargv[0];
-	    myargv = (char**)malloc(sizeof(char *)*MAXARGVS);
-	    memset(myargv,0,sizeof(char *)*MAXARGVS);
-	    myargv[0] = firstargv;
-			
-	    infile = file;
-	    indexinfile = k = 0;
-	    indexinfile++;  // SKIP PAST ARGV[0] (KEEP IT)
-	    do
-	    {
-		myargv[indexinfile++] = infile+k;
-		while(k < size &&
-		      ((*(infile+k)>= ' '+1) && (*(infile+k)<='z')))
-		    k++;
-		*(infile+k) = 0;
-		while(k < size &&
-		      ((*(infile+k)<= ' ') || (*(infile+k)>'z')))
-		    k++;
-	    } while(k < size);
-			
-	    for (k = 0;k < index;k++)
-		myargv[indexinfile++] = moreargs[k];
-	    myargc = indexinfile;
-	
-	    // DISPLAY ARGS
-	    printf("%d command-line args:\n",myargc);
-	    for (k=1;k<myargc;k++)
-		printf("%s\n",myargv[k]);
+		if (myargv[i][0] == '@')
+		{
+			FILE *          handle;
+			int             size;
+			int             k;
+			int             index;
+			int             indexinfile;
+			char    *infile;
+			char    *file;
+			char    *moreargs[20];
+			char    *firstargv;
 
-	    break;
+			// READ THE RESPONSE FILE INTO MEMORY
+			handle = fopen(&myargv[i][1], "rb");
+			if (!handle)
+			{
+				printf("\nNo such response file!");
+				exit(1);
+			}
+			printf("Found response file %s!\n", &myargv[i][1]);
+			fseek(handle, 0, SEEK_END);
+			size = ftell(handle);
+			fseek(handle, 0, SEEK_SET);
+			file = (char*)malloc(size);
+			fread(file, size, 1, handle);
+			fclose(handle);
+
+			// KEEP ALL CMDLINE ARGS FOLLOWING @RESPONSEFILE ARG
+			for (index = 0, k = i + 1; k < myargc; k++)
+				moreargs[index++] = myargv[k];
+
+			firstargv = myargv[0];
+			myargv = (char**)malloc(sizeof(char *)*MAXARGVS);
+			memset(myargv, 0, sizeof(char *)*MAXARGVS);
+			myargv[0] = firstargv;
+
+			infile = file;
+			indexinfile = k = 0;
+			indexinfile++;  // SKIP PAST ARGV[0] (KEEP IT)
+			do
+			{
+				myargv[indexinfile++] = infile + k;
+				while (k < size &&
+					((*(infile + k) >= ' ' + 1) && (*(infile + k) <= 'z')))
+					k++;
+				*(infile + k) = 0;
+				while (k < size &&
+					((*(infile + k) <= ' ') || (*(infile + k) > 'z')))
+					k++;
+			} while (k < size);
+
+			for (k = 0; k < index; k++)
+				myargv[indexinfile++] = moreargs[k];
+			myargc = indexinfile;
+
+			// DISPLAY ARGS
+			printf("%d command-line args:\n", myargc);
+			for (k = 1; k < myargc; k++)
+				printf("%s\n", myargv[k]);
+
+			break;
+		}
 	}
 }
-
 
 //
 // D_DoomMain
@@ -670,7 +644,7 @@ void FindResponseFile (void)
 void D_DoomMain (void)
 {
     int             p;
-    char                    file[256];
+    char            file[256];
 
     FindResponseFile ();
 	
@@ -687,35 +661,35 @@ void D_DoomMain (void)
 
     switch ( gamemode )
     {
-      case retail:
+    case retail:
 		sprintf (title,
 			 "                         "
 			 "The Ultimate DOOM Startup v%i.%i"
 			 "                           ",
 			 0,1);
 		break;
-      case shareware:
+    case shareware:
 		sprintf (title,
 			 "                            "
 			 "DOOM Shareware Startup v%i.%i"
 			 "                           ",
 			 0,1);
 		break;
-      case registered:
+    case registered:
 		sprintf (title,
 			 "                            "
 			 "DOOM Registered Startup v%i.%i"
 			 "                           ",
 			0, 1);
 		break;
-      case commercial:
+    case commercial:
 		sprintf (title,
 			 "                         "
 			 "DOOM 2: Hell on Earth v%i.%i"
 			 "                           ",
 			0, 1);
 		break;
-      default:
+     default:
 		sprintf (title,
 			 "                     "
 			 "Public DOOM - v%i.%i"
@@ -759,22 +733,22 @@ void D_DoomMain (void)
 		// Map name handling.
 		switch (gamemode )
 		{
-		  case shareware:
-		  case retail:
-		  case registered:
+		case shareware:
+		case retail:
+		case registered:
 		    sprintf (file,"~\"DEVMAPS\"E%cM%c.wad",
 			     myargv[p+1][0], myargv[p+2][0]);
 		    printf("Warping to Episode %s, Map %s.\n",
 			   myargv[p+1],myargv[p+2]);
 		    break;
 		    
-		  case commercial:
-		  default:
+		case commercial:
+		default:
 		    p = atoi (myargv[p+1]);
 		    if (p<10)
-		      sprintf (file,"~\"DEVMAPS\"cdata/map0%i.wad", p);
+				sprintf (file,"~\"DEVMAPS\"cdata/map0%i.wad", p);
 		    else
-		      sprintf (file,"~\"DEVMAPS\"cdata/map%i.wad", p);
+				sprintf (file,"~\"DEVMAPS\"cdata/map%i.wad", p);
 		    break;
 		}
 		D_AddFile (file);
@@ -808,7 +782,6 @@ void D_DoomMain (void)
     startmap = 1;
     autostart = false;
 
-		
     p = M_CheckParm ("-skill");
     if (p && p < myargc-1)
     {
@@ -838,13 +811,9 @@ void D_DoomMain (void)
     p = M_CheckParm ("-warp");
     if (p && p < myargc-1)
     {
-		//if (gamemode == commercial)
-		    startmap = atoi (myargv[p+1]);
-		/*else
-		{
-		    startepisode = myargv[p+1][0]-'0';
-		    startmap = myargv[p+2][0]-'0';
-		}*/
+
+		startepisode = myargv[p+1][0]-'0';
+		startmap = myargv[p+2][0]-'0';
 		autostart = true;
     }
     
@@ -875,10 +844,6 @@ void D_DoomMain (void)
 		};
 		int i;
 		
-		/*if ( gamemode == shareware)
-		    I_Error("\nYou cannot -file with the shareware "
-			    "version. Register!");*/
-
 		// Check for fake IWAD with right name,
 		// but w/o all the lumps of the registered version. 
 		if (gamemode == registered)
