@@ -1,7 +1,7 @@
 #pragma once
 
 // Called by main loop.
-bool AM_Responder (sf::Event* ev);
+bool AM_Responder (sf::Event& ev);
 
 // Called by main loop.
 void AM_Ticker ();

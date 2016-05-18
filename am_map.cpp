@@ -949,15 +949,16 @@ void AM_drawMline( mline_t*	ml, int color )
 //
 void AM_drawGrid(int color)
 {
-   int x, y;
-   int start, end;
+	int x, y;
+	int start, end;
     mline_t ml;
 
     // Figure out start of vertical gridlines
     start = m_x;
+
     if ((start-bmaporgx)%(MAPBLOCKUNITS<<FRACBITS))
-	start += (MAPBLOCKUNITS<<FRACBITS)
-	    - ((start-bmaporgx)%(MAPBLOCKUNITS<<FRACBITS));
+		start += (MAPBLOCKUNITS<<FRACBITS) - ((start-bmaporgx)%(MAPBLOCKUNITS<<FRACBITS));
+
     end = m_x + m_w;
 
     // draw vertical gridlines
@@ -965,28 +966,28 @@ void AM_drawGrid(int color)
     ml.b.y = m_y+m_h;
     for (x=start; x<end; x+=(MAPBLOCKUNITS<<FRACBITS))
     {
-	ml.a.x = x;
-	ml.b.x = x;
-	AM_drawMline(&ml, color);
+		ml.a.x = x;
+		ml.b.x = x;
+		AM_drawMline(&ml, color);
     }
 
     // Figure out start of horizontal gridlines
     start = m_y;
+
     if ((start-bmaporgy)%(MAPBLOCKUNITS<<FRACBITS))
-	start += (MAPBLOCKUNITS<<FRACBITS)
-	    - ((start-bmaporgy)%(MAPBLOCKUNITS<<FRACBITS));
-    end = m_y + m_h;
+		start += (MAPBLOCKUNITS<<FRACBITS) - ((start-bmaporgy)%(MAPBLOCKUNITS<<FRACBITS));
+    
+	end = m_y + m_h;
 
     // draw horizontal gridlines
     ml.a.x = m_x;
     ml.b.x = m_x + m_w;
     for (y=start; y<end; y+=(MAPBLOCKUNITS<<FRACBITS))
     {
-	ml.a.y = y;
-	ml.b.y = y;
-	AM_drawMline(&ml, color);
+		ml.a.y = y;
+		ml.b.y = y;
+		AM_drawMline(&ml, color);
     }
-
 }
 
 //
@@ -1000,46 +1001,51 @@ void AM_drawWalls(void)
 
     for (i=0;i<numlines;i++)
     {
-	l.a.x = lines[i].v1->x;
-	l.a.y = lines[i].v1->y;
-	l.b.x = lines[i].v2->x;
-	l.b.y = lines[i].v2->y;
-	if (cheating || (lines[i].flags & ML_MAPPED))
-	{
-	    if ((lines[i].flags & LINE_NEVERSEE) && !cheating)
-		continue;
-	    if (!lines[i].backsector)
-	    {
-		AM_drawMline(&l, WALLCOLORS+lightlev);
-	    }
-	    else
-	    {
-		if (lines[i].special == 39)
-		{ // teleporters
-		    AM_drawMline(&l, WALLCOLORS+WALLRANGE/2);
-		}
-		else if (lines[i].flags & ML_SECRET) // secret door
+		l.a.x = lines[i].v1->x;
+		l.a.y = lines[i].v1->y;
+		l.b.x = lines[i].v2->x;
+		l.b.y = lines[i].v2->y;
+		if (cheating || (lines[i].flags & ML_MAPPED))
 		{
-		    if (cheating) AM_drawMline(&l, SECRETWALLCOLORS + lightlev);
-		    else AM_drawMline(&l, WALLCOLORS+lightlev);
+		    if ((lines[i].flags & LINE_NEVERSEE) && !cheating)
+				continue;
+		    
+			if (!lines[i].backsector)
+		    {
+				AM_drawMline(&l, WALLCOLORS+lightlev);
+		    }
+		    else
+		    {
+				if (lines[i].special == 39)
+				{ // teleporters
+				    AM_drawMline(&l, WALLCOLORS+WALLRANGE/2);
+				}
+				else if (lines[i].flags & ML_SECRET) // secret door
+				{
+				    if (cheating) 
+						AM_drawMline(&l, SECRETWALLCOLORS + lightlev);
+				    else 
+						AM_drawMline(&l, WALLCOLORS+lightlev);
+				}
+				else if (lines[i].backsector->floorheight != lines[i].frontsector->floorheight) 
+				{
+				    AM_drawMline(&l, FDWALLCOLORS + lightlev); // floor level change
+				}
+				else if (lines[i].backsector->ceilingheight != lines[i].frontsector->ceilingheight) 
+				{
+				    AM_drawMline(&l, CDWALLCOLORS+lightlev); // ceiling level change
+				}
+				else if (cheating) 
+				{
+				    AM_drawMline(&l, TSWALLCOLORS+lightlev);
+				}
+			}
 		}
-		else if (lines[i].backsector->floorheight
-			   != lines[i].frontsector->floorheight) {
-		    AM_drawMline(&l, FDWALLCOLORS + lightlev); // floor level change
+		else if (plr->powers[pw_allmap])
+		{
+		    if (!(lines[i].flags & LINE_NEVERSEE)) 
+				AM_drawMline(&l, GRAYS+3);
 		}
-		else if (lines[i].backsector->ceilingheight
-			   != lines[i].frontsector->ceilingheight) {
-		    AM_drawMline(&l, CDWALLCOLORS+lightlev); // ceiling level change
-		}
-		else if (cheating) {
-		    AM_drawMline(&l, TSWALLCOLORS+lightlev);
-		}
-	    }
-	}
-	else if (plr->powers[pw_allmap])
-	{
-	    if (!(lines[i].flags & LINE_NEVERSEE)) AM_drawMline(&l, GRAYS+3);
-	}
     }
 }
 
@@ -1048,28 +1054,18 @@ void AM_drawWalls(void)
 // Rotation in 2D.
 // Used to rotate player arrow line character.
 //
-void
-AM_rotate
-( int*	x,
-  int*	y,
-  angle_t	a )
+void AM_rotate( int* x, int* y, angle_t a )
 {
    int tmpx;
 
-    tmpx =
-	FixedMul(*x,finecosine[a>>ANGLETOFINESHIFT])
-	- FixedMul(*y,finesine[a>>ANGLETOFINESHIFT]);
+    tmpx = FixedMul(*x,finecosine[a>>ANGLETOFINESHIFT]) - FixedMul(*y,finesine[a>>ANGLETOFINESHIFT]);
     
-    *y   =
-	FixedMul(*x,finesine[a>>ANGLETOFINESHIFT])
-	+ FixedMul(*y,finecosine[a>>ANGLETOFINESHIFT]);
+    *y = FixedMul(*x,finesine[a>>ANGLETOFINESHIFT]) + FixedMul(*y,finecosine[a>>ANGLETOFINESHIFT]);
 
     *x = tmpx;
 }
 
-void
-AM_drawLineCharacter
-( mline_t*	lineguy,
+void AM_drawLineCharacter( mline_t*	lineguy,
   int		lineguylines,
   int	scale,
   angle_t	angle,
@@ -1082,37 +1078,37 @@ AM_drawLineCharacter
 
     for (i=0;i<lineguylines;i++)
     {
-	l.a.x = lineguy[i].a.x;
-	l.a.y = lineguy[i].a.y;
+		l.a.x = lineguy[i].a.x;
+		l.a.y = lineguy[i].a.y;
 
-	if (scale)
-	{
-	    l.a.x = FixedMul(scale, l.a.x);
-	    l.a.y = FixedMul(scale, l.a.y);
-	}
+		if (scale)
+		{
+		    l.a.x = FixedMul(scale, l.a.x);
+		    l.a.y = FixedMul(scale, l.a.y);
+		}
 
-	if (angle)
-	    AM_rotate(&l.a.x, &l.a.y, angle);
+		if (angle)
+		    AM_rotate(&l.a.x, &l.a.y, angle);
 
-	l.a.x += x;
-	l.a.y += y;
+		l.a.x += x;
+		l.a.y += y;
 
-	l.b.x = lineguy[i].b.x;
-	l.b.y = lineguy[i].b.y;
+		l.b.x = lineguy[i].b.x;
+		l.b.y = lineguy[i].b.y;
 
-	if (scale)
-	{
-	    l.b.x = FixedMul(scale, l.b.x);
-	    l.b.y = FixedMul(scale, l.b.y);
-	}
+		if (scale)
+		{
+		    l.b.x = FixedMul(scale, l.b.x);
+		    l.b.y = FixedMul(scale, l.b.y);
+		}
 
-	if (angle)
-	    AM_rotate(&l.b.x, &l.b.y, angle);
-	
-	l.b.x += x;
-	l.b.y += y;
+		if (angle)
+		    AM_rotate(&l.b.x, &l.b.y, angle);
+		
+		l.b.x += x;
+		l.b.y += y;
 
-	AM_drawMline(&l, color);
+		AM_drawMline(&l, color);
     }
 }
 
@@ -1126,58 +1122,50 @@ void AM_drawPlayers(void)
 
     if (!netgame)
     {
-	if (cheating)
-	    AM_drawLineCharacter
-		(cheat_player_arrow, NUMCHEATPLYRLINES, 0,
-		 plr->mo->angle, WHITE, plr->mo->x, plr->mo->y);
-	else
-	    AM_drawLineCharacter
-		(player_arrow, NUMPLYRLINES, 0, plr->mo->angle,
-		 WHITE, plr->mo->x, plr->mo->y);
-	return;
+		if (cheating)
+		    AM_drawLineCharacter(cheat_player_arrow, NUMCHEATPLYRLINES, 0,
+			 plr->mo->angle, WHITE, plr->mo->x, plr->mo->y);
+		else
+		    AM_drawLineCharacter(player_arrow, NUMPLYRLINES, 0, plr->mo->angle,
+			 WHITE, plr->mo->x, plr->mo->y);
+		return;
     }
 
     for (i=0;i<MAXPLAYERS;i++)
     {
-	their_color++;
-	p = &players[i];
+		their_color++;
+		p = &players[i];
 
-	if ( (deathmatch && !singledemo) && p != plr)
-	    continue;
+		if ( (deathmatch && !singledemo) && p != plr)
+		    continue;
 
-	if (!playeringame[i])
-	    continue;
+		if (!playeringame[i])
+		    continue;
 
-	if (p->powers[pw_invisibility])
-	    color = 246; // *close* to black
-	else
-	    color = their_colors[their_color];
-	
-	AM_drawLineCharacter
-	    (player_arrow, NUMPLYRLINES, 0, p->mo->angle,
-	     color, p->mo->x, p->mo->y);
+		if (p->powers[pw_invisibility])
+		    color = 246; // *close* to black
+		else
+		    color = their_colors[their_color];
+		
+		AM_drawLineCharacter(player_arrow, NUMPLYRLINES, 0, p->mo->angle,
+		     color, p->mo->x, p->mo->y);
     }
-
 }
 
-void
-AM_drawThings
-( int	colors,
-  int 	colorrange)
+void AM_drawThings( int	colors, int colorrange)
 {
     int		i;
     mobj_t*	t;
 
     for (i=0;i<numsectors;i++)
     {
-	t = sectors[i].thinglist;
-	while (t)
-	{
-	    AM_drawLineCharacter
-		(thintriangle_guy, NUMTHINTRIANGLEGUYLINES,
-		 16<<FRACBITS, t->angle, colors+lightlev, t->x, t->y);
-	    t = t->snext;
-	}
+		t = sectors[i].thinglist;
+		while (t)
+		{
+		    AM_drawLineCharacter(thintriangle_guy, NUMTHINTRIANGLEGUYLINES,
+			 16<<FRACBITS, t->angle, colors+lightlev, t->x, t->y);
+		    t = t->snext;
+		}
     }
 }
 
@@ -1187,42 +1175,44 @@ void AM_drawMarks(void)
 
     for (i=0;i<AM_NUMMARKPOINTS;i++)
     {
-	if (markpoints[i].x != -1)
-	{
-	    //      w = SHORT(marknums[i]->width);
-	    //      h = SHORT(marknums[i]->height);
-	    w = 5; // because something's wrong with the wad, i guess
-	    h = 6; // because something's wrong with the wad, i guess
-	    fx = CXMTOF(markpoints[i].x);
-	    fy = CYMTOF(markpoints[i].y);
-	    if (fx >= f_x && fx <= f_w - w && fy >= f_y && fy <= f_h - h)
-		V_DrawPatch(fx, fy, FB, marknums[i]);
-	}
+		if (markpoints[i].x != -1)
+		{
+		    //      w = SHORT(marknums[i]->width);
+		    //      h = SHORT(marknums[i]->height);
+		    w = 5; // because something's wrong with the wad, i guess
+		    h = 6; // because something's wrong with the wad, i guess
+		    fx = CXMTOF(markpoints[i].x);
+		    fy = CYMTOF(markpoints[i].y);
+		    if (fx >= f_x && fx <= f_w - w && fy >= f_y && fy <= f_h - h)
+				V_DrawPatch(fx, fy, FB, marknums[i]);
+		}
     }
-
 }
 
 void AM_drawCrosshair(int color)
 {
     fb[(f_w*(f_h+1))/2] = color; // single point for now
-
 }
 
 void AM_Drawer (void)
 {
-    if (!automapactive) return;
+    if (!automapactive) 
+		return;
 
     AM_clearFB(BACKGROUND);
-    if (grid)
-	AM_drawGrid(GRIDCOLORS);
-    AM_drawWalls();
+    
+	if (grid)
+		AM_drawGrid(GRIDCOLORS);
+    
+	AM_drawWalls();
     AM_drawPlayers();
-    if (cheating==2)
-	AM_drawThings(THINGCOLORS, THINGRANGE);
-    AM_drawCrosshair(XHAIRCOLORS);
+    
+	if (cheating==2)
+		AM_drawThings(THINGCOLORS, THINGRANGE);
+    
+	AM_drawCrosshair(XHAIRCOLORS);
 
     AM_drawMarks();
 
     V_MarkRect(f_x, f_y, f_w, f_h);
-
 }
