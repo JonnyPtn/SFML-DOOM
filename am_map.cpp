@@ -1,27 +1,14 @@
-#include <stdio.h>
+#include <SFML\System\Vector2.hpp>
+#include <SFML\Window\Event.hpp>
 
 
-#include "z_zone.hpp"
-#include "doomdef.hpp"
-#include "st_stuff.hpp"
-#include "p_local.hpp"
-#include "w_wad.hpp"
-
-#include "m_cheat.hpp"
-#include "i_system.hpp"
-
-// Needs access to LFB.
 #include "v_video.hpp"
-
-// State.
+#include "p_local.hpp"
 #include "doomstat.hpp"
-#include "r_state.hpp"
-
-// Data.
-#include "dstrings.hpp"
-
-#include "am_map.hpp"
-
+#include "st_stuff.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
+#include "d_englsh.hpp"
 
 // For use if I do walls with outsides/insides
 #define REDS		(256-5*16)

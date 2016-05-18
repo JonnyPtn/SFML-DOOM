@@ -1,27 +1,11 @@
-
-
-static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
-
 #define	BGCOLOR		7
 #define	FGCOLOR		8
-
-
-#ifdef NORMALUNIX
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#endif
-
 
 #include "doomdef.hpp"
 #include "doomstat.hpp"
 
 #include "dstrings.hpp"
 #include "sounds.hpp"
-
 
 #include "z_zone.hpp"
 #include "w_wad.hpp"
@@ -52,10 +36,7 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 
 #include "d_main.hpp"
 
-//JONNY//
 #include <malloc.h>
-//Windows specific // #include <io.h>
-//Windows specific // #include <direct.h>
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
 #define R_OK 4
@@ -67,6 +48,7 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 #include <sys/stat.h>
 #include <unistd.h>
 #endif
+
 //
 // D-DoomLoop()
 // Not a globally visible function,
@@ -78,43 +60,29 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 //
 void D_DoomLoop (void);
 
+char*		 wadfiles[MAXWADFILES];
 
-char*		wadfiles[MAXWADFILES];
-
-
-bool		devparm;	// started game with -devparm
 bool         nomonsters;	// checkparm of -nomonsters
 bool         respawnparm;	// checkparm of -respawn
-bool         fastparm;	// checkparm of -fast
+bool         fastparm;		// checkparm of -fast
 
 bool         drone;
 
-bool		singletics = false; // debug flag to cancel adaptiveness
+bool		 singletics = false; // debug flag to cancel adaptiveness
 
+extern  bool inhelpscreens;
 
+skill_t		 startskill;
+int          startepisode;
+int			 startmap;
+bool		 autostart;
 
-//extern int soundVolume;
-//extern  int	sfxVolume;
-//extern  int	musicVolume;
+std::ofstream		 debugfile;
 
-extern  bool	inhelpscreens;
-
-skill_t		startskill;
-int             startepisode;
-int		startmap;
-bool		autostart;
-
-FILE*		debugfile;
-
-bool		advancedemo;
-
-
-
+bool		 advancedemo;
 
 char		wadfile[1024];		// primary wad file
-char		mapdir[1024];           // directory of development maps
 char		basedefault[1024];      // default file
-
 
 void D_CheckNetGame (void);
 void D_ProcessEvents (void);
@@ -129,23 +97,17 @@ void D_ProcessEvents (void)
 {
     sf::Event	ev;
 	
-    // IF STORE DEMO, DO NOT ACCEPT INPUT
-    if ( ( gamemode == commercial )
-	 && (W_CheckNumForName("map01")<0) )
-      return;
-	
     while(pollEvent(ev))
     {
 		if (ev.type == sf::Event::Closed)
 			I_Error("Window Closed");
+
 		if (M_Responder (&ev))
 		    continue;               // menu ate the event
+		
 		G_Responder (&ev);
     }
 }
-
-
-
 
 //
 // D_Display
@@ -154,8 +116,8 @@ void D_ProcessEvents (void)
 
 // wipegamestate can be set to -1 to force a wipe on the next draw
 gamestate_t     wipegamestate = GS_DEMOSCREEN;
-extern  bool setsizeneeded;
-extern  int             showMessages;
+extern  bool	setsizeneeded;
+extern  int     showMessages;
 void R_ExecuteSetViewSize (void);
 
 void D_Display (void)
@@ -164,99 +126,95 @@ void D_Display (void)
     static  bool		menuactivestate = false;
     static  bool		inhelpscreensstate = false;
     static  bool		fullscreen = false;
-    static  gamestate_t		oldgamestate = (gamestate_t)-1;
+    static  gamestate_t	oldgamestate = (gamestate_t)-1;
     static  int			borderdrawcount;
-    int				nowtime;
-    int				tics;
-    int				wipestart;
-    int				y;
-    bool			done;
-    bool			wipe;
-    bool			redrawsbar;
-
-    if (nodrawers)
-	return;                    // for comparative timing / profiling
+    int					nowtime;
+    int					tics;
+    int					wipestart;
+    int					y;
+    bool				done;
+    bool				wipe;
+    bool				redrawsbar;
 		
     redrawsbar = false;
     
     // change the view size if needed
     if (setsizeneeded)
     {
-	R_ExecuteSetViewSize ();
-	oldgamestate = (gamestate_t)-1;                      // force background redraw
-	borderdrawcount = 3;
+		R_ExecuteSetViewSize ();
+		oldgamestate = (gamestate_t)-1;                      // force background redraw
+		borderdrawcount = 3;
     }
 
     // save the current screen if about to wipe
     if (gamestate != wipegamestate)
     {
-	wipe = true;
-	wipe_StartScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
+		wipe = true;
+		wipe_StartScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
     }
     else
-	wipe = false;
+		wipe = false;
 
     if (gamestate == GS_LEVEL && gametic)
-	HU_Erase();
+		HU_Erase();
     
     // do buffered drawing
     switch (gamestate)
     {
-      case GS_LEVEL:
-	if (!gametic)
-	    break;
-	if (automapactive)
-	    AM_Drawer ();
-	if (wipe || (viewheight != 200 && fullscreen) )
-	    redrawsbar = true;
-	if (inhelpscreensstate && !inhelpscreens)
-	    redrawsbar = true;              // just put away the help screen
-	ST_Drawer (viewheight == 200, redrawsbar );
-	fullscreen = viewheight == 200;
-	break;
+	case GS_LEVEL:
+		if (!gametic)
+			break;
+		if (automapactive)
+		    AM_Drawer ();
+		if (wipe || (viewheight != 200 && fullscreen) )
+		    redrawsbar = true;
+		if (inhelpscreensstate && !inhelpscreens)
+		    redrawsbar = true;              // just put away the help screen
+		ST_Drawer (viewheight == 200, redrawsbar );
+		fullscreen = viewheight == 200;
+		break;
 
-      case GS_INTERMISSION:
-	WI_Drawer ();
-	break;
+    case GS_INTERMISSION:
+		WI_Drawer ();
+			break;
 
-      case GS_FINALE:
-	F_Drawer ();
-	break;
+    case GS_FINALE:
+		F_Drawer ();
+			break;
 
-      case GS_DEMOSCREEN:
-	D_PageDrawer ();
-	break;
+    case GS_DEMOSCREEN:
+		D_PageDrawer ();
+			break;
     }
     
     // draw the view directly
     if (gamestate == GS_LEVEL && !automapactive && gametic)
-	R_RenderPlayerView (&players[displayplayer]);
+		R_RenderPlayerView (&players[displayplayer]);
 
     if (gamestate == GS_LEVEL && gametic)
-	HU_Drawer ();
+		HU_Drawer ();
     
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-	I_SetPalette ((unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+		I_SetPalette ((unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
     {
-	viewactivestate = false;        // view was not active
-	R_FillBackScreen ();    // draw the pattern into the back screen
+		viewactivestate = false;        // view was not active
+		R_FillBackScreen ();    // draw the pattern into the back screen
     }
 
     // see if the border needs to be updated to the screen
     if (gamestate == GS_LEVEL && !automapactive && scaledviewwidth != 320)
     {
-	if (menuactive || menuactivestate || !viewactivestate)
-	    borderdrawcount = 3;
-	if (borderdrawcount)
-	{
-	    R_DrawViewBorder ();    // erase old menu stuff
-	    borderdrawcount--;
-	}
-
+		if (menuactive || menuactivestate || !viewactivestate)
+		    borderdrawcount = 3;
+		if (borderdrawcount)
+		{
+		    R_DrawViewBorder ();    // erase old menu stuff
+		    borderdrawcount--;
+		}
     }
 
     menuactivestate = menuactive;
@@ -267,25 +225,23 @@ void D_Display (void)
     // draw pause pic
     if (paused)
     {
-	if (automapactive)
-	    y = 4;
-	else
-	    y = viewwindowy+4;
-	V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68)/2,
-			  y,0, (patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
+		if (automapactive)
+		    y = 4;
+		else
+		    y = viewwindowy+4;
+		V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68)/2,
+				  y,0, (patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
     }
-
 
     // menus go directly to the screen
     M_Drawer ();          // menu is drawn even on top of everything
     NetUpdate ();         // send out any new accumulation
 
-
     // normal update
     if (!wipe)
     {
-	I_FinishUpdate ();              // page flip or blit buffer
-	return;
+		I_FinishUpdate ();              // page flip or blit buffer
+		return;
     }
     
     // wipe update
@@ -295,20 +251,18 @@ void D_Display (void)
 
     do
     {
-	do
-	{
-	    nowtime = I_GetTime ();
-	    tics = nowtime - wipestart;
-	} while (!tics);
-	wipestart = nowtime;
-	done = (wipe_ScreenWipe(wipe_Melt
-			       , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics))!=0;
-	M_Drawer ();                            // menu is drawn even on top of wipes
-	I_FinishUpdate ();                      // page flip or blit buffer
+		do
+		{
+		    nowtime = I_GetTime ();
+		    tics = nowtime - wipestart;
+		} while (!tics);
+		wipestart = nowtime;
+		done = (wipe_ScreenWipe(wipe_Melt
+				       , 0, 0, SCREENWIDTH, SCREENHEIGHT, tics))!=0;
+		M_Drawer ();                            // menu is drawn even on top of wipes
+		I_FinishUpdate ();                      // page flip or blit buffer
     } while (!done);
 }
-
-
 
 //
 //  D_DoomLoop
@@ -319,14 +273,14 @@ void D_DoomLoop (void)
 {
 
     if (demorecording)
-	G_BeginRecording ();
+		G_BeginRecording ();
 		
     if (M_CheckParm ("-debugfile"))
     {
-	char    filename[20];
-	sprintf (filename,"debug%i.txt",consoleplayer);
-	printf ("debug output to: %s\n",filename);
-	debugfile = fopen (filename,"w");
+		char    filename[20];
+		sprintf (filename,"debug%i.txt",consoleplayer);
+		printf ("debug output to: %s\n",filename);
+		debugfile.open (filename);
     }
 	
     I_InitGraphics ();
@@ -575,47 +529,6 @@ void IdentifyVersion (void)
       I_Error("Please set $HOME to your home directory");
     sprintf(basedefault, "%s/.doomrc", home);*/
 
-    if (M_CheckParm ("-shdev"))
-    {
-	gamemode = shareware;
-	devparm = true;
-	D_AddFile (DEVDATA"doom1.wad");
-	D_AddFile (DEVMAPS"data_se/texture1.lmp");
-	D_AddFile (DEVMAPS"data_se/pnames.lmp");
-	strcpy (basedefault,DEVDATA"default.cfg");
-	return;
-    }
-
-    if (M_CheckParm ("-regdev"))
-    {
-	gamemode = registered;
-	devparm = true;
-	D_AddFile (DEVDATA"doom.wad");
-	D_AddFile (DEVMAPS"data_se/texture1.lmp");
-	D_AddFile (DEVMAPS"data_se/texture2.lmp");
-	D_AddFile (DEVMAPS"data_se/pnames.lmp");
-	strcpy (basedefault,DEVDATA"default.cfg");
-	return;
-    }
-
-    if (M_CheckParm ("-comdev"))
-    {
-	gamemode = commercial;
-	devparm = true;
-	/* I don't bother
-	if(plutonia)
-	    D_AddFile (DEVDATA"plutonia.wad");
-	else if(tnt)
-	    D_AddFile (DEVDATA"tnt.wad");
-	else*/
-	    D_AddFile (DEVDATA"doom2.wad");
-	    
-	D_AddFile (DEVMAPS"cdata/texture1.lmp");
-	D_AddFile (DEVMAPS"cdata/pnames.lmp");
-	strcpy (basedefault,DEVDATA"default.cfg");
-	return;
-    }
-
     if ( !access (doom2fwad,R_OK) )
     {
 	gamemode = commercial;
@@ -769,7 +682,6 @@ void D_DoomMain (void)
     nomonsters = M_CheckParm ("-nomonsters")!=0;
     respawnparm = M_CheckParm ("-respawn")!=0;
     fastparm = M_CheckParm ("-fast")!=0;
-    devparm = M_CheckParm ("-devparm")!=0;
     if (M_CheckParm ("-altdeath") || M_CheckParm("-deathmatch")	)
 		deathmatch = true;
 
@@ -813,9 +725,6 @@ void D_DoomMain (void)
     }
     
     printf ("%s\n",title);
-
-    if (devparm)
-		printf(D_DEVSTR);
     
     // turbo option
     if ( (p=M_CheckParm ("-turbo")) )

@@ -151,16 +151,21 @@ HSendPacket
 		else
 			realretrans = -1;
 
-		fprintf(debugfile, "send (%i + %i, R %i) [%i] ",
-			ExpandTics(netbuffer->starttic),
-			netbuffer->numtics, realretrans, doomcom->datalength);
+		debugfile << "send ("
+			<< std::to_string(ExpandTics(netbuffer->starttic))
+			<< " + "
+			<< netbuffer->numtics
+			<< ", R "
+			<< realretrans
+			<< ") ["
+			<< doomcom->datalength
+			<< "] ";
 
-		for (i = 0; i<doomcom->datalength; i++)
-			fprintf(debugfile, "%i ", ((unsigned char *)netbuffer)[i]);
+		for (i = 0; i < doomcom->datalength; i++)
+			debugfile << ((unsigned char*)netbuffer)[i];
 
-		fprintf(debugfile, "\n");
+		debugfile << std::endl;
 	}
-
 	I_NetCmd();
 }
 
@@ -193,14 +198,14 @@ bool HGetPacket(void)
 	if (doomcom->datalength != NetbufferSize())
 	{
 		if (debugfile)
-			fprintf(debugfile, "bad packet length %i\n", doomcom->datalength);
+			debugfile << "bad packet length " << doomcom->datalength << std::endl;
 		return false;
 	}
 
 	if (NetbufferChecksum() != (netbuffer->checksum&NCMD_CHECKSUM))
 	{
 		if (debugfile)
-			fprintf(debugfile, "bad packet checksum\n");
+			debugfile << "bad packet checksum" << std::endl;
 		return false;
 	}
 
@@ -210,7 +215,7 @@ bool HGetPacket(void)
 		int	i;
 
 		if (netbuffer->checksum & NCMD_SETUP)
-			fprintf(debugfile, "setup packet\n");
+			debugfile << "setup packet" << std::endl;
 		else
 		{
 			if (netbuffer->checksum & NCMD_RETRANSMIT)
@@ -218,14 +223,22 @@ bool HGetPacket(void)
 			else
 				realretrans = -1;
 
-			fprintf(debugfile, "get %i = (%i + %i, R %i)[%i] ",
-				doomcom->remotenode,
-				ExpandTics(netbuffer->starttic),
-				netbuffer->numtics, realretrans, doomcom->datalength);
+			debugfile << "get "
+				<< doomcom->remotenode
+				<< " = ("
+				<< ExpandTics(netbuffer->starttic)
+				<< " + "
+				<< netbuffer->numtics
+				<< ", R "
+				<< realretrans
+				<< ")["
+				<< doomcom->datalength
+				<< "] ";
 
-			for (i = 0; i<doomcom->datalength; i++)
-				fprintf(debugfile, "%i ", ((unsigned char *)netbuffer)[i]);
-			fprintf(debugfile, "\n");
+			for (i = 0; i < doomcom->datalength; i++)
+				debugfile << ((unsigned char*)netbuffer)[i];
+
+			debugfile << std::endl;
 		}
 	}
 	return true;
@@ -285,7 +298,7 @@ void GetPackets(void)
 		{
 			resendto[netnode] = ExpandTics(netbuffer->retransmitfrom);
 			if (debugfile)
-				fprintf(debugfile, "retransmit from %i\n", resendto[netnode]);
+				debugfile << "retransmit from " << resendto[netnode] << std::endl;
 			resendcount[netnode] = RESENDCOUNT;
 		}
 		else
@@ -298,9 +311,12 @@ void GetPackets(void)
 		if (realend < nettics[netnode])
 		{
 			if (debugfile)
-				fprintf(debugfile,
-					"out of order packet (%i + %i)\n",
-					realstart, netbuffer->numtics);
+				debugfile << "out of order packet ("
+				<< realstart
+				<< " + "
+				<< netbuffer->numtics
+				<< ")"
+				<< std::endl;
 			continue;
 		}
 
@@ -309,10 +325,14 @@ void GetPackets(void)
 		{
 			// stop processing until the other system resends the missed tics
 			if (debugfile)
-				fprintf(debugfile,
-					"missed tics from %i (%i - %i)\n",
-					netnode, realstart, nettics[netnode]);
-			remoteresend[netnode] = true;
+				debugfile << "missed tics from "
+				<< netnode
+				<< " ("
+				<< realstart
+				<< " - "
+				<< nettics[netnode]
+				<< ")"
+				<< std::endl;
 			continue;
 		}
 
@@ -570,7 +590,7 @@ void D_QuitNetGame(void)
 	int             i, j;
 
 	if (debugfile)
-		fclose(debugfile);
+		debugfile.close();
 
 	if (!netgame || !usergame || consoleplayer == -1 || demoplayback)
 		return;
@@ -645,9 +665,13 @@ void TryRunTics(void)
 	frameon++;
 
 	if (debugfile)
-		fprintf(debugfile,
-			"=======real: %i  avail: %i  game: %i\n",
-			realtics, availabletics, counts);
+		debugfile << "=======real: "
+		<< realtics
+		<< " avail: "
+		<< availabletics
+		<< " game: "
+		<< counts
+		<< std::endl;
 
 	if (!demoplayback)
 	{

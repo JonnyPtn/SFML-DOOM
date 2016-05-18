@@ -1497,14 +1497,7 @@ bool M_Responder (sf::Event* ev)
 	S_StartSound(NULL,sfx_swtchx);
 	return true;
     }
-	
-    if (devparm && ch == KEY_F1)
-    {
-	//take screenshot
-	return true;
-    }
-		
-    
+	    
     // F-Keys
     if (!menuactive)
 	switch(ch)

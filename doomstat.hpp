@@ -8,14 +8,14 @@
 // We need the playr data structure as well.
 #include "d_player.hpp"
 
+#include <fstream>
+
 // ------------------------
 // Command line parameters.
 //
 extern  bool	nomonsters;	// checkparm of -nomonsters
 extern  bool	respawnparm;	// checkparm of -respawn
 extern  bool	fastparm;	// checkparm of -fast
-
-extern  bool	devparm;	// DEBUG: launched with -devparm
 
 // -----------------------------------------------------
 // Game Mode - identify IWAD as shareware, retail etc.
@@ -204,8 +204,8 @@ extern  int		maxammo[NUMAMMO];
 //
 
 // File handling stuff.
-extern	char		basedefault[1024];
-extern  FILE*		debugfile;
+extern	char			basedefault[1024];
+extern  std::ofstream	debugfile;
 
 // if true, load all graphics at level load
 extern  bool         precache;
