@@ -1,8 +1,3 @@
-
-
-static const char
-rcsid[] = "$Id: m_menu.c,v 1.7 1997/02/03 22:45:10 b1 Exp $";
-
 //because stupid
 #ifdef _WIN32
 #include "unistd.hpp"
@@ -15,7 +10,6 @@ rcsid[] = "$Id: m_menu.c,v 1.7 1997/02/03 22:45:10 b1 Exp $";
 #include <fcntl.h>
 #include <stdlib.h>
 #include <ctype.h>
-
 
 #include "doomdef.hpp"
 #include "dstrings.hpp"
@@ -47,7 +41,7 @@ rcsid[] = "$Id: m_menu.c,v 1.7 1997/02/03 22:45:10 b1 Exp $";
 
 #include "m_menu.hpp"
 
-extern patch_t*		hu_font[HU_FONTSIZE];
+extern patch_t*	hu_font[HU_FONTSIZE];
 extern bool		message_dontfuckwithme;
 
 extern bool		chat_on;		// in heads-up code
@@ -74,7 +68,7 @@ int			quickSaveSlot;
  // 1 = message to be printed
 int			messageToPrint;
 // ...and here is the message string!
-char*			messageString;		
+std::string	messageString;		
 
 // message x & y
 int			messx;			
@@ -132,7 +126,7 @@ typedef struct
     void	(*routine)(int choice);
     
     // hotkey in menu
-    char	alphaKey;			
+    sf::Keyboard::Key	alphaKey;			
 } menuitem_t;
 
 
@@ -179,7 +173,6 @@ void M_SfxVol(int choice);
 void M_MusicVol(int choice);
 void M_ChangeDetail(int choice);
 void M_SizeDisplay(int choice);
-void M_StartGame(int choice);
 void M_Sound(int choice);
 
 void M_FinishReadThis(int choice);
@@ -206,7 +199,7 @@ void M_DrawEmptyCell(menu_t *menu,int item);
 void M_DrawSelCell(menu_t *menu,int item);
 void M_WriteText(int x, int y, char *string);
 int  M_StringWidth(char *string);
-int  M_StringHeight(char *string);
+int  M_StringHeight(const std::string& string);
 void M_StartControlPanel(void);
 void M_StartMessage(char *string,void *routine,bool input);
 void M_StopMessage(void);
@@ -231,13 +224,13 @@ enum
 
 menuitem_t MainMenu[]=
 {
-    {1,"M_NGAME",M_NewGame,'n'},
-    {1,"M_OPTION",M_Options,'o'},
-    {1,"M_LOADG",M_LoadGame,'l'},
-    {1,"M_SAVEG",M_SaveGame,'s'},
+    {1,"M_NGAME",M_NewGame,sf::Keyboard::N},
+    {1,"M_OPTION",M_Options,sf::Keyboard::O},
+    {1,"M_LOADG",M_LoadGame,sf::Keyboard::L},
+    {1,"M_SAVEG",M_SaveGame,sf::Keyboard::S},
     // Another hickup with Special edition.
-    {1,"M_RDTHIS",M_ReadThis,'r'},
-    {1,"M_QUITG",M_QuitDOOM,'q'}
+    {1,"M_RDTHIS",M_ReadThis,sf::Keyboard::R},
+    {1,"M_QUITG",M_QuitDOOM,sf::Keyboard::Q}
 };
 
 menu_t  MainDef =
@@ -265,10 +258,10 @@ enum
 
 menuitem_t EpisodeMenu[]=
 {
-    {1,"M_EPI1", M_Episode,'k'},
-    {1,"M_EPI2", M_Episode,'t'},
-    {1,"M_EPI3", M_Episode,'i'},
-    {1,"M_EPI4", M_Episode,'t'}
+    {1,"M_EPI1", M_Episode,sf::Keyboard::K},
+    {1,"M_EPI2", M_Episode,sf::Keyboard::T},
+    {1,"M_EPI3", M_Episode,sf::Keyboard::I},
+    {1,"M_EPI4", M_Episode,sf::Keyboard::T}
 };
 
 menu_t  EpiDef =
@@ -296,11 +289,11 @@ enum
 
 menuitem_t NewGameMenu[]=
 {
-    {1,"M_JKILL",	M_ChooseSkill, 'i'},
-    {1,"M_ROUGH",	M_ChooseSkill, 'h'},
-    {1,"M_HURT",	M_ChooseSkill, 'h'},
-    {1,"M_ULTRA",	M_ChooseSkill, 'u'},
-    {1,"M_NMARE",	M_ChooseSkill, 'n'}
+    {1,"M_JKILL",	M_ChooseSkill, sf::Keyboard::I},
+    {1,"M_ROUGH",	M_ChooseSkill, sf::Keyboard::H},
+    {1,"M_HURT",	M_ChooseSkill, sf::Keyboard::H},
+    {1,"M_ULTRA",	M_ChooseSkill, sf::Keyboard::U},
+    {1,"M_NMARE",	M_ChooseSkill, sf::Keyboard::N}
 };
 
 menu_t  NewDef =
@@ -333,14 +326,14 @@ enum
 
 menuitem_t OptionsMenu[]=
 {
-    {1,"M_ENDGAM",	M_EndGame,'e'},
-    {1,"M_MESSG",	M_ChangeMessages,'m'},
-    {1,"M_DETAIL",	M_ChangeDetail,'g'},
-    {2,"M_SCRNSZ",	M_SizeDisplay,'s'},
+    {1,"M_ENDGAM",	M_EndGame,sf::Keyboard::E},
+    {1,"M_MESSG",	M_ChangeMessages,sf::Keyboard::M},
+    {1,"M_DETAIL",	M_ChangeDetail,sf::Keyboard::G},
+    {2,"M_SCRNSZ",	M_SizeDisplay,sf::Keyboard::S},
     {-1,"",0},
-    {2,"M_MSENS",	M_ChangeSensitivity,'m'},
+    {2,"M_MSENS",	M_ChangeSensitivity,sf::Keyboard::M},
     {-1,"",0},
-    {1,"M_SVOL",	M_Sound,'s'}
+    {1,"M_SVOL",	M_Sound,sf::Keyboard::S}
 };
 
 menu_t  OptionsDef =
@@ -364,7 +357,7 @@ enum
 
 menuitem_t ReadMenu1[] =
 {
-    {1,"",M_ReadThis2,0}
+    {1,"",M_ReadThis2,sf::Keyboard::Unknown}
 };
 
 menu_t  ReadDef1 =
@@ -385,7 +378,7 @@ enum
 
 menuitem_t ReadMenu2[]=
 {
-    {1,"",M_FinishReadThis,0}
+    {1,"",M_FinishReadThis,sf::Keyboard::Unknown}
 };
 
 menu_t  ReadDef2 =
@@ -412,9 +405,9 @@ enum
 
 menuitem_t SoundMenu[]=
 {
-    {2,"M_SFXVOL",M_SfxVol,'s'},
+    {2,"M_SFXVOL",M_SfxVol,sf::Keyboard::S},
     {-1,"",0},
-    {2,"M_MUSVOL",M_MusicVol,'m'},
+    {2,"M_MUSVOL",M_MusicVol,sf::Keyboard::M},
     {-1,"",0}
 };
 
@@ -444,12 +437,12 @@ enum
 
 menuitem_t LoadMenu[]=
 {
-    {1,"", M_LoadSelect,'1'},
-    {1,"", M_LoadSelect,'2'},
-    {1,"", M_LoadSelect,'3'},
-    {1,"", M_LoadSelect,'4'},
-    {1,"", M_LoadSelect,'5'},
-    {1,"", M_LoadSelect,'6'}
+    {1,"", M_LoadSelect,sf::Keyboard::Num1},
+    {1,"", M_LoadSelect,sf::Keyboard::Num2},
+    {1,"", M_LoadSelect,sf::Keyboard::Num3},
+    {1,"", M_LoadSelect,sf::Keyboard::Num4},
+    {1,"", M_LoadSelect,sf::Keyboard::Num5},
+    {1,"", M_LoadSelect,sf::Keyboard::Num6}
 };
 
 menu_t  LoadDef =
@@ -467,12 +460,12 @@ menu_t  LoadDef =
 //
 menuitem_t SaveMenu[]=
 {
-    {1,"", M_SaveSelect,'1'},
-    {1,"", M_SaveSelect,'2'},
-    {1,"", M_SaveSelect,'3'},
-    {1,"", M_SaveSelect,'4'},
-    {1,"", M_SaveSelect,'5'},
-    {1,"", M_SaveSelect,'6'}
+    {1,"", M_SaveSelect,sf::Keyboard::Num1},
+    {1,"", M_SaveSelect,sf::Keyboard::Num2},
+    {1,"", M_SaveSelect,sf::Keyboard::Num3},
+    {1,"", M_SaveSelect,sf::Keyboard::Num4},
+    {1,"", M_SaveSelect,sf::Keyboard::Num5},
+    {1,"", M_SaveSelect,sf::Keyboard::Num6}
 };
 
 menu_t  SaveDef =
@@ -499,21 +492,18 @@ void M_ReadSaveStrings(void)
 	
     for (i = 0;i < load_end;i++)
     {
-	if (M_CheckParm("-cdrom"))
-	    sprintf(name,"c:\\doomdata\\\"SAVEGAMENAME\"%d.dsg",i);
-	else
-	    sprintf(name,SAVEGAMENAME"%d.dsg",i);
+		sprintf(name,SAVEGAMENAME"%d.dsg",i);
 
-	handle = open (name, O_RDONLY | 0, 0666);
-	if (handle == -1)
-	{
-	    strcpy(&savegamestrings[i][0],EMPTYSTRING);
-	    LoadMenu[i].status = 0;
-	    continue;
-	}
-	count = read (handle, &savegamestrings[i], SAVESTRINGSIZE);
-	close (handle);
-	LoadMenu[i].status = 1;
+		handle = open (name, O_RDONLY | 0, 0666);
+		if (handle == -1)
+		{
+		    strcpy(&savegamestrings[i][0],EMPTYSTRING);
+		    LoadMenu[i].status = 0;
+		    continue;
+		}
+		count = read (handle, &savegamestrings[i], SAVESTRINGSIZE);
+		close (handle);
+		LoadMenu[i].status = 1;
     }
 }
 
@@ -528,8 +518,8 @@ void M_DrawLoad(void)
     V_DrawPatchDirect (72,28,0,(patch_t*)W_CacheLumpName("M_LOADG",PU_CACHE));
     for (i = 0;i < load_end; i++)
     {
-	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-	M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
+		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
     }
 }
 
@@ -546,8 +536,8 @@ void M_DrawSaveLoadBorder(int x,int y)
 	
     for (i = 0;i < 24;i++)
     {
-	V_DrawPatchDirect (x,y+7,0, (patch_t*)W_CacheLumpName("M_LSCNTR",PU_CACHE));
-	x += 8;
+		V_DrawPatchDirect (x,y+7,0, (patch_t*)W_CacheLumpName("M_LSCNTR",PU_CACHE));
+		x += 8;
     }
 
     V_DrawPatchDirect (x,y+7,0, (patch_t*)W_CacheLumpName("M_LSRGHT",PU_CACHE));
@@ -562,9 +552,6 @@ void M_LoadSelect(int choice)
 {
     char    name[256];
 	
-    if (M_CheckParm("-cdrom"))
-	sprintf(name,"c:\\doomdata\\\"SAVEGAMENAME\"%d.dsg",choice);
-    else
 	sprintf(name,SAVEGAMENAME"%d.dsg",choice);
     G_LoadGame (name);
     M_ClearMenus ();
@@ -577,8 +564,8 @@ void M_LoadGame (int choice)
 {
     if (netgame)
     {
-	M_StartMessage(LOADNET,NULL,false);
-	return;
+		M_StartMessage(LOADNET,NULL,false);
+		return;
     }
 	
     M_SetupNextMenu(&LoadDef);
@@ -596,14 +583,14 @@ void M_DrawSave(void)
     V_DrawPatchDirect (72,28,0, (patch_t*)W_CacheLumpName("M_SAVEG",PU_CACHE));
     for (i = 0;i < load_end; i++)
     {
-	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-	M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
+		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
     }
 	
     if (saveStringEnter)
     {
-	i = M_StringWidth(savegamestrings[saveSlot]);
-	M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
+		i = M_StringWidth(savegamestrings[saveSlot]);
+		M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
     }
 }
 
@@ -617,7 +604,7 @@ void M_DoSave(int slot)
 
     // PICK QUICKSAVE SLOT YET?
     if (quickSaveSlot == -2)
-	quickSaveSlot = slot;
+		quickSaveSlot = slot;
 }
 
 //
@@ -631,8 +618,8 @@ void M_SaveSelect(int choice)
     saveSlot = choice;
     strcpy(saveOldString,savegamestrings[choice]);
     if (!strcmp(savegamestrings[choice],EMPTYSTRING))
-	savegamestrings[choice][0] = 0;
-    saveCharIndex = strlen(savegamestrings[choice]);
+		savegamestrings[choice][0] = 0;
+	saveCharIndex = strlen(savegamestrings[choice]);
 }
 
 //
@@ -673,20 +660,20 @@ void M_QuickSave(void)
 {
     if (!usergame)
     {
-	S_StartSound(NULL,sfx_oof);
-	return;
+		S_StartSound(NULL,sfx_oof);
+		return;
     }
 
     if (gamestate != GS_LEVEL)
-	return;
+		return;
 	
     if (quickSaveSlot < 0)
     {
-	M_StartControlPanel();
-	M_ReadSaveStrings();
-	M_SetupNextMenu(&SaveDef);
-	quickSaveSlot = -2;	// means to pick a slot now
-	return;
+		M_StartControlPanel();
+		M_ReadSaveStrings();
+		M_SetupNextMenu(&SaveDef);
+		quickSaveSlot = -2;	// means to pick a slot now
+		return;
     }
     sprintf(tempstring,QSPROMPT,savegamestrings[quickSaveSlot]);
     M_StartMessage(tempstring,M_QuickSaveResponse,true);
@@ -701,8 +688,8 @@ void M_QuickLoadResponse(int ch)
 {
     if (ch == 'y')
     {
-	M_LoadSelect(quickSaveSlot);
-	S_StartSound(NULL,sfx_swtchx);
+		M_LoadSelect(quickSaveSlot);
+		S_StartSound(NULL,sfx_swtchx);
     }
 }
 
@@ -711,14 +698,14 @@ void M_QuickLoad(void)
 {
     if (netgame)
     {
-	M_StartMessage(QLOADNET,NULL,false);
-	return;
+		M_StartMessage(QLOADNET,NULL,false);
+		return;
     }
 	
     if (quickSaveSlot < 0)
     {
-	M_StartMessage(QSAVESPOT,NULL,false);
-	return;
+		M_StartMessage(QSAVESPOT,NULL,false);
+		return;
     }
     sprintf(tempstring,QLPROMPT,savegamestrings[quickSaveSlot]);
     M_StartMessage(tempstring,M_QuickLoadResponse,true);
@@ -737,13 +724,13 @@ void M_DrawReadThis1(void)
     switch ( gamemode )
     {
       case commercial:
-	V_DrawPatchDirect (0,0,0, (patch_t*)W_CacheLumpName("HELP",PU_CACHE));
-	break;
+		V_DrawPatchDirect (0,0,0, (patch_t*)W_CacheLumpName("HELP",PU_CACHE));
+		break;
       case shareware:
       case registered:
       case retail:
-	V_DrawPatchDirect (0,0,0, (patch_t*)W_CacheLumpName("HELP1",PU_CACHE));
-	break;
+		V_DrawPatchDirect (0,0,0, (patch_t*)W_CacheLumpName("HELP1",PU_CACHE));
+		break;
       default:
 	break;
     }
@@ -762,13 +749,13 @@ void M_DrawReadThis2(void)
     {
       case retail:
       case commercial:
-	// This hack keeps us from having to change menus.
-	V_DrawPatchDirect (0,0,0, (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
-	break;
+		// This hack keeps us from having to change menus.
+		V_DrawPatchDirect (0,0,0, (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
+		break;
       case shareware:
       case registered:
-	V_DrawPatchDirect (0,0,0, (patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
-	break;
+		V_DrawPatchDirect (0,0,0, (patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
+		break;
       default:
 	break;
     }
@@ -1257,16 +1244,16 @@ int M_StringWidth(char* string)
 //
 //      Find string height from hu_font chars
 //
-int M_StringHeight(char* string)
+int M_StringHeight(const std::string& string)
 {
-    unsigned int             i;
+    unsigned int    i;
     int             h;
     int             height = SHORT(hu_font[0]->height);
 	
     h = height;
-    for (i = 0;i < strlen(string);i++)
-	if (string[i] == '\n')
-	    h += height;
+    for (auto& character : string)
+		if (character == '\n')
+			h += height;
 		
     return h;
 }
@@ -1737,21 +1724,25 @@ void M_Drawer (void)
     {
 	start = 0;
 	y = 100 - M_StringHeight(messageString)/2;
-	while(*(messageString+start))
+	while(*(messageString.c_str()+start))
 	{
-	    for (i = 0;i < strlen(messageString+start);i++)
-		if (*(messageString+start+i) == '\n')
+		i = 0;
+		for (auto& character : messageString)
 		{
-		    memset(string,0,40);
-		    strncpy(string,messageString+start,i);
-		    start += i+1;
-		    break;
+			if (character == '\n')
+			{
+				memset(string, 0, 40);
+				strncpy(string, messageString.c_str() + start, i);
+				start += i + 1;
+				break;
+			}
+			i++;
 		}
 				
-	    if (i == strlen(messageString+start))
+	    if (i == strlen(messageString.c_str()+start))
 	    {
-		strcpy(string,messageString+start);
-		start += i;
+			strcpy(string,messageString.c_str()+start);
+			start += i;
 	    }
 				
 	    x = 160 - M_StringWidth(string)/2;
@@ -1836,7 +1827,7 @@ void M_Init (void)
     skullAnimCounter = 10;
     screenSize = screenblocks - 3;
     messageToPrint = 0;
-    messageString = NULL;
+    messageString = "";
     messageLastMenuActive = menuactive;
     quickSaveSlot = -1;
 
