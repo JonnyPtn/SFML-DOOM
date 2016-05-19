@@ -1,15 +1,4 @@
-
-
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
-
-
-#ifdef __GNUG__
-#pragma implementation "dstrings.hpp"
-#endif
 #include "dstrings.hpp"
-
-
 
 char* endmsg[NUM_QUITMESSAGES+1]=
 {
@@ -44,8 +33,3 @@ char* endmsg[NUM_QUITMESSAGES+1]=
   // Internal debug. Different style, too.
   "THIS IS NO MESSAGE!\nPage intentionally left blank."
 };
-
-
-  
-
-

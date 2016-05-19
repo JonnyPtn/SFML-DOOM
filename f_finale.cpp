@@ -1,9 +1,3 @@
-
-
-
-static const char
-rcsid[] = "$Id: f_finale.c,v 1.5 1997/02/03 21:26:34 b1 Exp $";
-
 #include <ctype.h>
 
 // Functions.
@@ -20,11 +14,6 @@ rcsid[] = "$Id: f_finale.c,v 1.5 1997/02/03 21:26:34 b1 Exp $";
 
 #include "doomstat.hpp"
 #include "r_state.hpp"
-
-// ?
-//#include "doomstat.hpp"
-//#include "r_local.hpp"
-//#include "f_finale.hpp"
 
 // Stage of animation:
 //  0 = text, 1 = art screen, 2 = character cast
@@ -90,95 +79,88 @@ void F_StartFinale (void)
       case registered:
       case retail:
       {
-	S_ChangeMusic(mus_victor, true);
-	
-	switch (gameepisode)
-	{
-	  case 1:
-	    finaleflat = "FLOOR4_8";
-	    finaletext = e1text;
-	    break;
-	  case 2:
-	    finaleflat = "SFLR6_1";
-	    finaletext = e2text;
-	    break;
-	  case 3:
-	    finaleflat = "MFLR8_4";
-	    finaletext = e3text;
-	    break;
-	  case 4:
-	    finaleflat = "MFLR8_3";
-	    finaletext = e4text;
-	    break;
-	  default:
-	    // Ouch.
-	    break;
-	}
-	break;
+		S_ChangeMusic(mus_victor, true);
+		
+		switch (gameepisode)
+		{
+		  case 1:
+		    finaleflat = "FLOOR4_8";
+		    finaletext = e1text;
+		    break;
+		  case 2:
+		    finaleflat = "SFLR6_1";
+		    finaletext = e2text;
+		    break;
+		  case 3:
+		    finaleflat = "MFLR8_4";
+		    finaletext = e3text;
+		    break;
+		  case 4:
+		    finaleflat = "MFLR8_3";
+		    finaletext = e4text;
+		    break;
+		  default:
+		    // Ouch.
+		    break;
+		}
+		break;
       }
       
       // DOOM II and missions packs with E1, M34
       case commercial:
       {
-	  S_ChangeMusic(mus_read_m, true);
+		S_ChangeMusic(mus_read_m, true);
 
-	  switch (gamemap)
-	  {
-	    case 6:
-	      finaleflat = "SLIME16";
-	      finaletext = c1text;
-	      break;
-	    case 11:
-	      finaleflat = "RROCK14";
-	      finaletext = c2text;
-	      break;
-	    case 20:
-	      finaleflat = "RROCK07";
-	      finaletext = c3text;
-	      break;
-	    case 30:
-	      finaleflat = "RROCK17";
-	      finaletext = c4text;
-	      break;
-	    case 15:
-	      finaleflat = "RROCK13";
-	      finaletext = c5text;
-	      break;
-	    case 31:
-	      finaleflat = "RROCK19";
-	      finaletext = c6text;
-	      break;
-	    default:
-	      // Ouch.
-	      break;
-	  }
-	  break;
+		switch (gamemap)
+		{
+		  case 6:
+		    finaleflat = "SLIME16";
+		    finaletext = c1text;
+		    break;
+		  case 11:
+		    finaleflat = "RROCK14";
+		    finaletext = c2text;
+		    break;
+		  case 20:
+		    finaleflat = "RROCK07";
+		    finaletext = c3text;
+		    break;
+		  case 30:
+		    finaleflat = "RROCK17";
+		    finaletext = c4text;
+		    break;
+		  case 15:
+		    finaleflat = "RROCK13";
+		    finaletext = c5text;
+		    break;
+		  case 31:
+		    finaleflat = "RROCK19";
+		    finaletext = c6text;
+		    break;
+		  default:
+		    // Ouch.
+		    break;
+		}
+		break;
       }	
 
-   
       // Indeterminate.
       default:
-	S_ChangeMusic(mus_read_m, true);
-	finaleflat = "F_SKY1"; // Not used anywhere else.
-	finaletext = c1text;  // FIXME - other text, music?
-	break;
+		S_ChangeMusic(mus_read_m, true);
+		finaleflat = "F_SKY1"; // Not used anywhere else.
+		finaletext = c1text;  // FIXME - other text, music?
+		break;
     }
     
     finalestage = 0;
     finalecount = 0;
-	
 }
-
-
 
 bool F_Responder (sf::Event *event)
 {
     if (finalestage == 2)
-	return F_CastResponder (event);
-	
-    return false;
+	return F_CastResponder (event);	
 }
-
 
 //
 // F_Ticker
@@ -188,20 +170,19 @@ void F_Ticker (void)
     int		i;
     
     // check for skipping
-    if ( (gamemode == commercial)
-      && ( finalecount > 50) )
+    if ( (gamemode == commercial) && ( finalecount > 50) )
     {
       // go on to the next level
       for (i=0 ; i<MAXPLAYERS ; i++)
-	if (players[i].cmd.buttons)
-	  break;
+		if (players[i].cmd.buttons)
+			break;
 				
       if (i < MAXPLAYERS)
       {	
-	if (gamemap == 30)
-	  F_StartCast ();
-	else
-	  gameaction = ga_worlddone;
+		if (gamemap == 30)
+			F_StartCast ();
+		else
+			gameaction = ga_worlddone;
       }
     }
     
@@ -210,24 +191,22 @@ void F_Ticker (void)
 	
     if (finalestage == 2)
     {
-	F_CastTicker ();
-	return;
+		F_CastTicker ();
+		return;
     }
 	
     if ( gamemode == commercial)
-	return;
+		return;
 		
     if (!finalestage && static_cast<unsigned int>(finalecount)>strlen (finaletext)*TEXTSPEED + TEXTWAIT)
     {
-	finalecount = 0;
-	finalestage = 1;
-	wipegamestate = (gamestate_t)-1;		// force a wipe
-	if (gameepisode == 3)
-	    S_StartMusic (mus_bunny);
+		finalecount = 0;
+		finalestage = 1;
+		wipegamestate = (gamestate_t)-1;		// force a wipe
+		if (gameepisode == 3)
+		    S_StartMusic (mus_bunny);
     }
 }
-
-
 
 //
 // F_TextWrite
@@ -235,7 +214,6 @@ void F_Ticker (void)
 
 #include "hu_stuff.hpp"
 extern	patch_t *hu_font[HU_FONTSIZE];
-
 
 void F_TextWrite (void)
 {
@@ -255,16 +233,16 @@ void F_TextWrite (void)
 	
     for (y=0 ; y<SCREENHEIGHT ; y++)
     {
-	for (x=0 ; x<SCREENWIDTH/64 ; x++)
-	{
-	    memcpy (dest, src+((y&63)<<6), 64);
-	    dest += 64;
-	}
-	if (SCREENWIDTH&63)
-	{
-	    memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
-	    dest += (SCREENWIDTH&63);
-	}
+		for (x=0 ; x<SCREENWIDTH/64 ; x++)
+		{
+		    memcpy (dest, src+((y&63)<<6), 64);
+		    dest += 64;
+		}
+		if (SCREENWIDTH&63)
+		{
+		    memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
+		    dest += (SCREENWIDTH&63);
+		}
     }
 
     V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
@@ -276,33 +254,32 @@ void F_TextWrite (void)
 	
     count = (finalecount - 10)/TEXTSPEED;
     if (count < 0)
-	count = 0;
+		count = 0;
     for ( ; count ; count-- )
     {
-	c = *ch++;
-	if (!c)
-	    break;
-	if (c == '\n')
-	{
-	    cx = 10;
-	    cy += 11;
-	    continue;
-	}
-		
-	c = toupper(c) - HU_FONTSTART;
-	if (c < 0 || c> HU_FONTSIZE)
-	{
-	    cx += 4;
-	    continue;
-	}
-		
-	w = SHORT (hu_font[c]->width);
-	if (cx+w > SCREENWIDTH)
-	    break;
-	V_DrawPatch(cx, cy, 0, hu_font[c]);
-	cx+=w;
+		c = *ch++;
+		if (!c)
+		    break;
+		if (c == '\n')
+		{
+		    cx = 10;
+		    cy += 11;
+		    continue;
+		}
+			
+		c = toupper(c) - HU_FONTSTART;
+		if (c < 0 || c> HU_FONTSIZE)
+		{
+		    cx += 4;
+		    continue;
+		}
+			
+		w = SHORT (hu_font[c]->width);
+		if (cx+w > SCREENWIDTH)
+		    break;
+		V_DrawPatch(cx, cy, 0, hu_font[c]);
+		cx+=w;
     }
-	
 }
 
 //
@@ -367,7 +344,6 @@ void F_StartCast (void)
     S_ChangeMusic(mus_evil, true);
 }
 
-
 //
 // F_CastTicker
 //
@@ -377,19 +353,19 @@ void F_CastTicker (void)
     int		sfx;
 	
     if (--casttics > 0)
-	return;			// not time to change state yet
+		return;			// not time to change state yet
 		
     if (caststate->tics == -1 || caststate->nextstate == S_NULL)
     {
-	// switch from deathstate to next monster
-	castnum++;
-	castdeath = false;
-	if (castorder[castnum].name == NULL)
-	    castnum = 0;
-	if (mobjinfo[castorder[castnum].type].seesound)
-	    S_StartSound (NULL, mobjinfo[castorder[castnum].type].seesound);
-	caststate = &states[mobjinfo[castorder[castnum].type].seestate];
-	castframes = 0;
+		// switch from deathstate to next monster
+		castnum++;
+		castdeath = false;
+		if (castorder[castnum].name == NULL)
+		    castnum = 0;
+		if (mobjinfo[castorder[castnum].type].seesound)
+		    S_StartSound (NULL, mobjinfo[castorder[castnum].type].seesound);
+		caststate = &states[mobjinfo[castorder[castnum].type].seestate];
+		castframes = 0;
     }
     else
     {
@@ -438,41 +414,39 @@ void F_CastTicker (void)
 	
     if (castframes == 12)
     {
-	// go into attack frame
-	castattacking = true;
-	if (castonmelee)
-	    caststate=&states[mobjinfo[castorder[castnum].type].meleestate];
-	else
-	    caststate=&states[mobjinfo[castorder[castnum].type].missilestate];
-	castonmelee ^= 1;
-	if (caststate == &states[S_NULL])
-	{
-	    if (castonmelee)
-		caststate=
-		    &states[mobjinfo[castorder[castnum].type].meleestate];
-	    else
-		caststate=
-		    &states[mobjinfo[castorder[castnum].type].missilestate];
-	}
+		// go into attack frame
+		castattacking = true;
+		if (castonmelee)
+		    caststate=&states[mobjinfo[castorder[castnum].type].meleestate];
+		else
+		    caststate=&states[mobjinfo[castorder[castnum].type].missilestate];
+		castonmelee ^= 1;
+		if (caststate == &states[S_NULL])
+		{
+		    if (castonmelee)
+			caststate=
+			    &states[mobjinfo[castorder[castnum].type].meleestate];
+		    else
+			caststate=
+			    &states[mobjinfo[castorder[castnum].type].missilestate];
+		}
     }
 	
     if (castattacking)
     {
-	if (castframes == 24
-	    ||	caststate == &states[mobjinfo[castorder[castnum].type].seestate] )
-	{
-	  stopattack:
-	    castattacking = false;
-	    castframes = 0;
-	    caststate = &states[mobjinfo[castorder[castnum].type].seestate];
-	}
+		if (castframes == 24 ||	caststate == &states[mobjinfo[castorder[castnum].type].seestate] )
+		{
+		  stopattack:
+		    castattacking = false;
+		    castframes = 0;
+		    caststate = &states[mobjinfo[castorder[castnum].type].seestate];
+		}
     }
 	
     casttics = caststate->tics;
     if (casttics == -1)
-	casttics = 15;
+		casttics = 15;
 }
-
 
 //
 // F_CastResponder
@@ -481,10 +455,10 @@ void F_CastTicker (void)
 bool F_CastResponder (sf::Event* ev)
 {
     if (ev->type != sf::Event::KeyPressed)
-	return false;
+		return false;
 		
     if (castdeath)
-	return true;			// already in dying frames
+		return true;			// already in dying frames
 		
     // go into death frame
     castdeath = true;
@@ -493,7 +467,7 @@ bool F_CastResponder (sf::Event* ev)
     castframes = 0;
     castattacking = false;
     if (mobjinfo[castorder[castnum].type].deathsound)
-	S_StartSound (NULL, mobjinfo[castorder[castnum].type].deathsound);
+		S_StartSound (NULL, mobjinfo[castorder[castnum].type].deathsound);
 	
     return true;
 }
@@ -513,18 +487,18 @@ void F_CastPrint (char* text)
 	
     while (ch)
     {
-	c = *ch++;
-	if (!c)
-	    break;
-	c = toupper(c) - HU_FONTSTART;
-	if (c < 0 || c> HU_FONTSIZE)
-	{
-	    width += 4;
-	    continue;
-	}
-		
-	w = SHORT (hu_font[c]->width);
-	width += w;
+		c = *ch++;
+		if (!c)
+		    break;
+		c = toupper(c) - HU_FONTSTART;
+		if (c < 0 || c> HU_FONTSIZE)
+		{
+		    width += 4;
+		    continue;
+		}
+			
+		w = SHORT (hu_font[c]->width);
+		width += w;
     }
     
     // draw it
@@ -532,23 +506,21 @@ void F_CastPrint (char* text)
     ch = text;
     while (ch)
     {
-	c = *ch++;
-	if (!c)
-	    break;
-	c = toupper(c) - HU_FONTSTART;
-	if (c < 0 || c> HU_FONTSIZE)
-	{
-	    cx += 4;
-	    continue;
-	}
-		
-	w = SHORT (hu_font[c]->width);
-	V_DrawPatch(cx, 180, 0, hu_font[c]);
-	cx+=w;
+		c = *ch++;
+		if (!c)
+		    break;
+		c = toupper(c) - HU_FONTSTART;
+		if (c < 0 || c> HU_FONTSIZE)
+		{
+		    cx += 4;
+		    continue;
+		}
+			
+		w = SHORT (hu_font[c]->width);
+		V_DrawPatch(cx, 180, 0, hu_font[c]);
+		cx+=w;
     }
-	
 }
-
 
 //
 // F_CastDrawer
@@ -576,20 +548,16 @@ void F_CastDrawer (void)
 			
     patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
     if (flip)
-	V_DrawPatchFlipped (160,170,0,patch);
+		V_DrawPatchFlipped (160,170,0,patch);
     else
-	V_DrawPatch (160,170,0,patch);
+		V_DrawPatch (160,170,0,patch);
 }
-
 
 //
 // F_DrawPatchCol
 //
 void
-F_DrawPatchCol
-( int		x,
-  patch_t*	patch,
-  int		col )
+F_DrawPatchCol( int x, patch_t*	patch, int col )
 {
     column_t*	column;
     unsigned char*	source;
@@ -603,19 +571,18 @@ F_DrawPatchCol
     // step through the posts in a column
     while (column->topdelta != 0xff )
     {
-	source = (unsigned char *)column + 3;
-	dest = desttop + column->topdelta*SCREENWIDTH;
-	count = column->length;
-		
-	while (count--)
-	{
-	    *dest = *source++;
-	    dest += SCREENWIDTH;
-	}
-	column = (column_t *)(  (unsigned char *)column + column->length + 4 );
+		source = (unsigned char *)column + 3;
+		dest = desttop + column->topdelta*SCREENWIDTH;
+		count = column->length;
+			
+		while (count--)
+		{
+		    *dest = *source++;
+		    dest += SCREENWIDTH;
+		}
+		column = (column_t *)(  (unsigned char *)column + column->length + 4 );
     }
 }
-
 
 //
 // F_BunnyScroll
@@ -637,35 +604,35 @@ void F_BunnyScroll (void)
 	
     scrolled = 320 - (finalecount-230)/2;
     if (scrolled > 320)
-	scrolled = 320;
+		scrolled = 320;
     if (scrolled < 0)
-	scrolled = 0;
+		scrolled = 0;
 		
     for ( x=0 ; x<SCREENWIDTH ; x++)
     {
-	if (x+scrolled < 320)
-	    F_DrawPatchCol (x, p1, x+scrolled);
-	else
-	    F_DrawPatchCol (x, p2, x+scrolled - 320);		
+		if (x+scrolled < 320)
+		    F_DrawPatchCol (x, p1, x+scrolled);
+		else
+		    F_DrawPatchCol (x, p2, x+scrolled - 320);		
     }
 	
     if (finalecount < 1130)
-	return;
+		return;
     if (finalecount < 1180)
     {
-	V_DrawPatch ((SCREENWIDTH-13*8)/2,
-		     (SCREENHEIGHT-8*8)/2,0, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
-	laststage = 0;
-	return;
+		V_DrawPatch ((SCREENWIDTH-13*8)/2,
+			     (SCREENHEIGHT-8*8)/2,0, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
+		laststage = 0;
+		return;
     }
 	
     stage = (finalecount-1180) / 5;
     if (stage > 6)
-	stage = 6;
+		stage = 6;
     if (stage > laststage)
     {
-	S_StartSound (NULL, sfx_pistol);
-	laststage = stage;
+		S_StartSound (NULL, sfx_pistol);
+		laststage = stage;
     }
 	
     sprintf (name,"END%i",stage);
@@ -680,38 +647,35 @@ void F_Drawer (void)
 {
     if (finalestage == 2)
     {
-	F_CastDrawer ();
-	return;
+		F_CastDrawer ();
+		return;
     }
 
     if (!finalestage)
-	F_TextWrite ();
+		F_TextWrite ();
     else
     {
-	switch (gameepisode)
-	{
-	  case 1:
-	    if ( gamemode == retail )
-	      V_DrawPatch (0,0,0,
-			  (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
-	    else
-	      V_DrawPatch (0,0,0,
-			  (patch_t*)("HELP2",PU_CACHE));
-	    break;
-	  case 2:
-	    V_DrawPatch(0,0,0,
-			(patch_t*)("VICTORY2",PU_CACHE));
-	    break;
-	  case 3:
-	    F_BunnyScroll ();
-	    break;
-	  case 4:
-	    V_DrawPatch (0,0,0,
-			(patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
-	    break;
-	}
-    }
-			
+		switch (gameepisode)
+		{
+		  case 1:
+		    if ( gamemode == retail )
+		      V_DrawPatch (0,0,0,
+				  (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
+		    else
+		      V_DrawPatch (0,0,0,
+				  (patch_t*)("HELP2",PU_CACHE));
+		    break;
+		  case 2:
+		    V_DrawPatch(0,0,0,
+				(patch_t*)("VICTORY2",PU_CACHE));
+		    break;
+		  case 3:
+		    F_BunnyScroll ();
+		    break;
+		  case 4:
+		    V_DrawPatch (0,0,0,
+				(patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
+		    break;
+		}
+    }	
 }
-
-

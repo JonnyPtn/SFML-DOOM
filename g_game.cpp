@@ -39,16 +39,10 @@
 // SKY handling - still the wrong place.
 #include "r_data.hpp"
 #include "r_sky.hpp"
-
-
-
 #include "g_game.hpp"
-
 
 #define SAVEGAMESIZE	0x2c000
 #define SAVESTRINGSIZE	24
-
-
 
 bool	G_CheckDemoStatus (void); 
 void	G_ReadDemoTiccmd (ticcmd_t* cmd); 
@@ -62,85 +56,80 @@ void	G_DoLoadLevel (void);
 void	G_DoNewGame (void); 
 void	G_DoLoadGame (void); 
 void	G_DoPlayDemo (void); 
-void	G_DoCompleted (void); 
-void	G_DoVictory (void); 
+void	G_DoCompleted (void);  
 void	G_DoWorldDone (void); 
 void	G_DoSaveGame (void); 
- 
  
 gameaction_t    gameaction; 
 gamestate_t     gamestate; 
 skill_t         gameskill; 
-bool		respawnmonsters;
+bool			respawnmonsters;
 int             gameepisode; 
 int             gamemap; 
  
-bool         paused; 
-bool         sendpause;             	// send a pause event next tic 
-bool         sendsave;             	// send a save event next tic 
-bool         usergame;               // ok to save / end game 
+bool			paused; 
+bool			sendpause;             	// send a pause event next tic 
+bool			sendsave;             		// send a save event next tic 
+bool			usergame;					// ok to save / end game 
  
-bool         timingdemo;             // if true, exit with report on completion 
-bool         nodrawers;              // for comparative timing purposes 
-bool         noblit;                 // for comparative timing purposes 
-int             starttime;          	// for comparative timing purposes  	 
+bool			timingdemo;				// if true, exit with report on completion 
+bool			nodrawers;					// for comparative timing purposes 
+bool			noblit;					// for comparative timing purposes 
+int				starttime;          		// for comparative timing purposes  	 
  
-bool         viewactive; 
+bool			viewactive; 
  
-bool         deathmatch;           	// only if started as net death 
-bool         netgame;                // only true if packets are broadcast 
-bool         playeringame[MAXPLAYERS]; 
-player_t        players[MAXPLAYERS]; 
+bool			deathmatch;           		// only if started as net death 
+bool			netgame;					// only true if packets are broadcast 
+bool			playeringame[MAXPLAYERS]; 
+player_t		players[MAXPLAYERS]; 
  
-int             consoleplayer;          // player taking events and displaying 
-int             displayplayer;          // view being displayed 
-int             gametic; 
-int             levelstarttic;          // gametic at level start 
-int             totalkills, totalitems, totalsecret;    // for intermission 
+int				consoleplayer;          // player taking events and displaying 
+int				displayplayer;          // view being displayed 
+int				gametic; 
+int				levelstarttic;          // gametic at level start 
+int				totalkills, totalitems, totalsecret;    // for intermission 
  
-char            demoname[32]; 
-bool         demorecording; 
-bool         demoplayback; 
-bool		netdemo; 
-unsigned char*		demobuffer;
-unsigned char*		demo_p;
-unsigned char*		demoend; 
-bool         singledemo;            	// quit after playing a demo from cmdline 
+char			demoname[32]; 
+bool			demorecording; 
+bool			demoplayback; 
+bool			netdemo; 
+unsigned char*	demobuffer;
+unsigned char*	demo_p;
+unsigned char*	demoend; 
+bool			singledemo;            	// quit after playing a demo from cmdline 
  
-bool         precache = true;        // if true, load all graphics at start 
+bool			precache = true;        // if true, load all graphics at start 
  
 wbstartstruct_t wminfo;               	// parms for world map / intermission 
  
-short		consistancy[MAXPLAYERS][BACKUPTICS]; 
+short			consistancy[MAXPLAYERS][BACKUPTICS]; 
  
-unsigned char*		savebuffer;
- 
+unsigned char*	savebuffer;
  
 // 
 // controls (have defaults) 
 // 
-int             key_right;
+int     key_right;
 int		key_left;
 
 int		key_up;
 int		key_down; 
-int             key_strafeleft;
+int     key_strafeleft;
 int		key_straferight; 
-int             key_fire;
+int     key_fire;
 int		key_use;
 int		key_strafe;
 int		key_speed; 
  
-int             mousebfire; 
-int             mousebstrafe; 
-int             mousebforward; 
+int     mousebfire; 
+int     mousebstrafe; 
+int     mousebforward; 
  
-int             joybfire; 
-int             joybstrafe; 
-int             joybuse; 
-int             joybspeed; 
- 
- 
+int     joybfire; 
+int     joybstrafe; 
+int     joybuse; 
+int     joybspeed; 
  
 #define MAXPLMOVE		(forwardmove[1]) 
  
@@ -154,42 +143,39 @@ int		angleturn[3] = {640, 1280, 320};	// + slow turn
  
 #define NUMKEYS		1024
 
-bool         gamekeydown[NUMKEYS]; 
-int             turnheld;				// for accelerative turning 
+bool        gamekeydown[NUMKEYS]; 
+int			turnheld;				// for accelerative turning 
  
 bool		mousearray[4]; 
-bool*	mousebuttons = &mousearray[1];		// allow [-1]
+bool*		mousebuttons = &mousearray[1];		// allow [-1]
 
 // mouse values are used once 
 int             mousex;
-int		mousey;   
+int				mousey;   
 sf::Vector2i lastMousePos{ 0,0 };
 
-int             dclicktime;
+int     dclicktime;
 int		dclickstate;
 int		dclicks; 
-int             dclicktime2;
+int     dclicktime2;
 int		dclickstate2;
 int		dclicks2;
 
 // joystick values are repeated 
-int             joyxmove;
+int     joyxmove;
 int		joyymove;
-bool         joyarray[5]; 
+bool    joyarray[5]; 
 bool*	joybuttons = &joyarray[1];		// allow [-1] 
  
 int		savegameslot; 
-char		savedescription[32]; 
- 
+char	savedescription[32]; 
  
 #define	BODYQUESIZE	32
 
 mobj_t*		bodyque[BODYQUESIZE]; 
-int		bodyqueslot; 
+int			bodyqueslot; 
  
 void*		statcopy;				// for statistics driver
- 
- 
  
 int G_CmdChecksum (ticcmd_t* cmd) 
 { 
@@ -197,12 +183,11 @@ int G_CmdChecksum (ticcmd_t* cmd)
     int		sum = 0; 
 	 
     for (i=0 ; i< sizeof(*cmd)/4 - 1 ; i++) 
-	sum += ((int *)cmd)[i]; 
+		sum += ((int *)cmd)[i]; 
 		 
     return sum; 
 } 
  
-
 //
 // G_BuildTiccmd
 // Builds a ticcmd from all of the available inputs
