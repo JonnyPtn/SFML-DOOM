@@ -1,8 +1,3 @@
-
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
-
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -22,25 +17,16 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include "d_net.hpp"
 #include "g_game.hpp"
 
-#ifdef __GNUG__
-#pragma implementation "i_system.hpp"
-#endif
 #include "i_system.hpp"
 
 //JONNY//
 #include <chrono>
 #include <thread>
 
-
-
 int	mb_used = 6;
 
 
-void
-I_Tactile
-( int	on,
-  int	off,
-  int	total )
+void I_Tactile( int on, int off, int total )
 {
   // UNUSED.
   on = off = total = 0;
@@ -130,14 +116,6 @@ void I_WaitVBL(int count)
 	std::this_thread::sleep_for(std::chrono::microseconds(count*(1000000 / 70)));
 #endif
 #endif
-}
-
-void I_BeginRead(void)
-{
-}
-
-void I_EndRead(void)
-{
 }
 
 unsigned char*	I_AllocLow(int length)

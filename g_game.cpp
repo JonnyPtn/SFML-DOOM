@@ -1194,8 +1194,6 @@ void G_DoLoadGame (void)
     save_p = savebuffer + SAVESTRINGSIZE;
     
     // skip the description field
-    if (strcmp ((char*)save_p, vcheck)) 
-	return;				// bad version 
     save_p += VERSIONSIZE; 
 			 
     gameskill = (skill_t)*save_p++; 
@@ -1256,7 +1254,7 @@ void G_DoSaveGame (void)
     int		length; 
     int		i; 
 	
-    if (M_CheckParm("-cdrom"))
+    if (CmdParameters::M_CheckParm("-cdrom"))
 	sprintf(name,"c:\\doomdata\\\"SAVEGAMENAME\"%d.dsg",savegameslot);
     else
 	sprintf (name,SAVEGAMENAME"%d.dsg",savegameslot); 
@@ -1517,9 +1515,9 @@ void G_RecordDemo (char* name)
     strcpy (demoname, name); 
     strcat (demoname, ".lmp"); 
     maxsize = 0x20000;
-    i = M_CheckParm ("-maxdemo");
-    if (i && i<myargc-1)
-		maxsize = atoi(myargv[i+1])*1024;
+    i = CmdParameters::M_CheckParm ("-maxdemo");
+    if (i && i<CmdParameters::myargc-1)
+		maxsize = atoi(CmdParameters::myargv[i+1].c_str())*1024;
     demobuffer = (unsigned char*)Z_Malloc (maxsize,PU_STATIC,NULL); 
     demoend = demobuffer + maxsize;
 	
@@ -1600,8 +1598,8 @@ void G_DoPlayDemo (void)
 //
 void G_TimeDemo (char* name) 
 { 	 
-    nodrawers = M_CheckParm ("-nodraw")!=0; 
-    noblit = M_CheckParm ("-noblit")!=0; 
+    nodrawers = CmdParameters::M_CheckParm ("-nodraw")!=0;
+    noblit = CmdParameters::M_CheckParm ("-noblit")!=0;
     timingdemo = true; 
     singletics = true; 
 

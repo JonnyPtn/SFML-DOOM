@@ -16,17 +16,6 @@ unsigned char*	I_ZoneBase (int *size);
 // returns current time in tics.
 int I_GetTime (void);
 
-
-//
-// Called by D_DoomLoop,
-// called before processing any tics in a frame
-// (just after displaying a frame).
-// Time consuming syncronous operations
-// are performed here (joystick reading).
-// Can call D_PostEvent.
-//
-void I_StartFrame (void);
-
 // Asynchronous interrupt functions should maintain private queues
 // that are read by the synchronous functions
 // to be converted into events.

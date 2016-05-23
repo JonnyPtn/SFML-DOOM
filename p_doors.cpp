@@ -1,8 +1,3 @@
-
-static const char
-rcsid[] = "$Id: p_doors.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
-
-
 #include "z_zone.hpp"
 #include "doomdef.hpp"
 #include "p_local.hpp"
@@ -18,20 +13,6 @@ rcsid[] = "$Id: p_doors.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
 #include "dstrings.hpp"
 #include "sounds.hpp"
 
-#if 0
-//
-// Sliding door frame information
-//
-slidename_t	slideFrameNames[MAXSLIDEDOORS] =
-{
-    {"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
-     "GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	// back
-	 
-    {"\0","\0","\0","\0"}
-};
-#endif
-
-
 //
 // VERTICAL DOORS
 //
@@ -45,134 +26,132 @@ void T_VerticalDoor (vldoor_t* door)
 	
     switch(door->direction)
     {
-      case 0:
-	// WAITING
-	if (!--door->topcountdown)
-	{
-	    switch(door->type)
-	    {
-	      case blazeRaise:
-		door->direction = -1; // time to go back down
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_bdcls);
+	case Direction::WAITING:
+		// WAITING
+		if (!--door->topcountdown)
+		{
+		    switch(door->type)
+		    {
+		      case blazeRaise:
+			door->direction = Direction::DOWN; // time to go back down
+			S_StartSound((mobj_t *)&door->sector->soundorg,
+				     sfx_bdcls);
+			break;
+			
+		      case normal:
+			door->direction = Direction::DOWN; // time to go back down
+			S_StartSound((mobj_t *)&door->sector->soundorg,
+				     sfx_dorcls);
+			break;
+			
+		      case close30ThenOpen:
+			door->direction = Direction::UP;
+			S_StartSound((mobj_t *)&door->sector->soundorg,
+				     sfx_doropn);
+			break;
+			
+		      default:
+			break;
+		    }
+		}
 		break;
-		
-	      case normal:
-		door->direction = -1; // time to go back down
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_dorcls);
+	case Direction::INITIAL_WAIT:
+		//  INITIAL WAIT
+		if (!--door->topcountdown)
+		{
+		    switch(door->type)
+		    {
+		      case raiseIn5Mins:
+			door->direction = Direction::UP;
+			door->type = normal;
+			S_StartSound((mobj_t *)&door->sector->soundorg,
+				     sfx_doropn);
+			break;
+			
+		      default:
+			break;
+		    }
+		}
 		break;
-		
-	      case close30ThenOpen:
-		door->direction = 1;
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_doropn);
+	case Direction::DOWN:
+		// DOWN
+		res = T_MovePlane(door->sector,
+				  door->speed,
+				  door->sector->floorheight,
+				  false,1,door->direction);
+		if (res == pastdest)
+		{
+		    switch(door->type)
+		    {
+		      case blazeRaise:
+		      case blazeClose:
+			door->sector->specialdata = NULL;
+			P_RemoveThinker (&door->thinker);  // unlink and free
+			S_StartSound((mobj_t *)&door->sector->soundorg,
+				     sfx_bdcls);
+			break;
+			
+		      case normal:
+		      case close:
+			door->sector->specialdata = NULL;
+			P_RemoveThinker (&door->thinker);  // unlink and free
+			break;
+			
+		      case close30ThenOpen:
+			door->direction = Direction::WAITING;
+			door->topcountdown = 35*30;
+			break;
+			
+		      default:
+			break;
+		    }
+		}
+		else if (res == crushed)
+		{
+		    switch(door->type)
+		    {
+		      case blazeClose:
+		      case close:		// DO NOT GO BACK UP!
+			break;
+			
+		      default:
+			door->direction = Direction::UP;
+			S_StartSound((mobj_t *)&door->sector->soundorg,
+				     sfx_doropn);
+			break;
+		    }
+		}
 		break;
-		
-	      default:
-		break;
-	    }
-	}
-	break;
 	
-      case 2:
-	//  INITIAL WAIT
-	if (!--door->topcountdown)
-	{
-	    switch(door->type)
-	    {
-	      case raiseIn5Mins:
-		door->direction = 1;
-		door->type = normal;
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_doropn);
-		break;
+	case Direction::UP:
+		// UP
+		res = T_MovePlane(door->sector,
+				  door->speed,
+				  door->topheight,
+				  false,1,door->direction);
 		
-	      default:
+		if (res == pastdest)
+		{
+		    switch(door->type)
+		    {
+		      case blazeRaise:
+		      case normal:
+			door->direction = Direction::WAITING; // wait at top
+			door->topcountdown = door->topwait;
+			break;
+			
+		      case close30ThenOpen:
+		      case blazeOpen:
+		      case open:
+			door->sector->specialdata = NULL;
+			P_RemoveThinker (&door->thinker);  // unlink and free
+			break;
+			
+		      default:
+			break;
+		    }
+		}
 		break;
-	    }
-	}
-	break;
-	
-      case -1:
-	// DOWN
-	res = T_MovePlane(door->sector,
-			  door->speed,
-			  door->sector->floorheight,
-			  false,1,door->direction);
-	if (res == pastdest)
-	{
-	    switch(door->type)
-	    {
-	      case blazeRaise:
-	      case blazeClose:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_bdcls);
-		break;
-		
-	      case normal:
-	      case close:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
-		break;
-		
-	      case close30ThenOpen:
-		door->direction = 0;
-		door->topcountdown = 35*30;
-		break;
-		
-	      default:
-		break;
-	    }
-	}
-	else if (res == crushed)
-	{
-	    switch(door->type)
-	    {
-	      case blazeClose:
-	      case close:		// DO NOT GO BACK UP!
-		break;
-		
-	      default:
-		door->direction = 1;
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_doropn);
-		break;
-	    }
-	}
-	break;
-	
-      case 1:
-	// UP
-	res = T_MovePlane(door->sector,
-			  door->speed,
-			  door->topheight,
-			  false,1,door->direction);
-	
-	if (res == pastdest)
-	{
-	    switch(door->type)
-	    {
-	      case blazeRaise:
-	      case normal:
-		door->direction = 0; // wait at top
-		door->topcountdown = door->topwait;
-		break;
-		
-	      case close30ThenOpen:
-	      case blazeOpen:
-	      case open:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
-		break;
-		
-	      default:
-		break;
-	    }
-	}
-	break;
     }
 }
 
@@ -275,7 +254,7 @@ EV_DoDoor
 	  case blazeClose:
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
-	    door->direction = -1;
+	    door->direction = Direction::DOWN;
 	    door->speed = VDOORSPEED * 4;
 	    S_StartSound((mobj_t *)&door->sector->soundorg,
 			 sfx_bdcls);
@@ -284,21 +263,21 @@ EV_DoDoor
 	  case close:
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
-	    door->direction = -1;
+	    door->direction = Direction::DOWN;
 	    S_StartSound((mobj_t *)&door->sector->soundorg,
 			 sfx_dorcls);
 	    break;
 	    
 	  case close30ThenOpen:
 	    door->topheight = sec->ceilingheight;
-	    door->direction = -1;
+	    door->direction = Direction::DOWN;
 	    S_StartSound((mobj_t *)&door->sector->soundorg,
 			 sfx_dorcls);
 	    break;
 	    
 	  case blazeRaise:
 	  case blazeOpen:
-	    door->direction = 1;
+	    door->direction = Direction::UP;
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
 	    door->speed = VDOORSPEED * 4;
@@ -309,7 +288,7 @@ EV_DoDoor
 	    
 	  case normal:
 	  case open:
-	    door->direction = 1;
+	    door->direction = Direction::UP;
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
 	    if (door->topheight != sec->ceilingheight)
@@ -402,14 +381,14 @@ EV_VerticalDoor
 	  case	27:
 	  case	28:
 	  case	117:
-	    if (door->direction == -1)
-		door->direction = 1;	// go back up
+	    if (door->direction == Direction::DOWN)
+		door->direction = Direction::UP;	// go back up
 	    else
 	    {
 		if (!thing->player)
 		    return;		// JDC: bad guys never close doors
 		
-		door->direction = -1;	// start going down immediately
+		door->direction = Direction::DOWN;	// start going down immediately
 	    }
 	    return;
 	}
@@ -440,7 +419,7 @@ EV_VerticalDoor
     sec->specialdata = door;
     door->thinker.function.acp1 = (actionf_p1) T_VerticalDoor;
     door->sector = sec;
-    door->direction = 1;
+    door->direction = Direction::UP;
     door->speed = VDOORSPEED;
     door->topwait = VDOORWAIT;
 
@@ -494,7 +473,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 
     door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
     door->sector = sec;
-    door->direction = 0;
+    door->direction = Direction::WAITING;
     door->type = normal;
     door->speed = VDOORSPEED;
     door->topcountdown = 30 * 35;
@@ -519,7 +498,7 @@ P_SpawnDoorRaiseIn5Mins
 
     door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
     door->sector = sec;
-    door->direction = 2;
+    door->direction = Direction::INITIAL_WAIT;
     door->type = raiseIn5Mins;
     door->speed = VDOORSPEED;
     door->topheight = P_FindLowestCeilingSurrounding(sec);

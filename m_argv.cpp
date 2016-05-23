@@ -1,28 +1,30 @@
-#include <string.h>
+#include <m_argv.hpp>
 
-int			myargc;
-char**		myargv;
+int							CmdParameters::myargc;
+std::vector<std::string>	CmdParameters::myargv;
 
-#ifndef _WIN32
-#define _strcmpi strcasecmp
-#endif
-
+CmdParameters::CmdParameters(int argc, char** argv)
+{
+	myargc = argc;
+	while (argc--)
+		myargv.emplace_back(argv[argc]);
+}
 //
 // M_CheckParm
 // Checks for the given parameter
 // in the program's command line arguments.
 // Returns the argument number (1 to argc-1)
 // or 0 if not present
-int M_CheckParm (char *check)
+int CmdParameters::M_CheckParm(const std::string& check)
 {
-    int		i;
-
-    for (i = 1;i<myargc;i++)
+    int	index(0);
+    for (auto& argv : myargv)
     {
-	if ( !_strcmpi(check, myargv[i]) )
-	    return i;
+		if (check == argv)
+			return index;
+		else
+			index++;
     }
-
     return 0;
 }
 

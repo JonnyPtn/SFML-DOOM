@@ -1165,7 +1165,7 @@ int EV_DoDonut(line_t*	line)
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 	    floor->type = donutRaise;
 	    floor->crush = false;
-	    floor->direction = 1;
+	    floor->direction = Direction::UP;
 	    floor->sector = s2;
 	    floor->speed = FLOORSPEED / 2;
 	    floor->texture = s3->floorpic;
@@ -1179,7 +1179,7 @@ int EV_DoDonut(line_t*	line)
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 	    floor->type = lowerFloor;
 	    floor->crush = false;
-	    floor->direction = -1;
+	    floor->direction = Direction::DOWN;
 	    floor->sector = s1;
 	    floor->speed = FLOORSPEED / 2;
 	    floor->floordestheight = s3->floorheight;
@@ -1219,18 +1219,18 @@ void P_SpawnSpecials (void)
     // See if -TIMER needs to be used.
     levelTimer = false;
 	
-    i = M_CheckParm("-avg");
+    i = CmdParameters::M_CheckParm("-avg");
     if (i && deathmatch)
     {
 	levelTimer = true;
 	levelTimeCount = 20 * 60 * 35;
     }
 	
-    i = M_CheckParm("-timer");
+    i = CmdParameters::M_CheckParm("-timer");
     if (i && deathmatch)
     {
 	int	time;
-	time = atoi(myargv[i+1]) * 60 * 35;
+	time = atoi(CmdParameters::myargv[i+1].c_str()) * 60 * 35;
 	levelTimer = true;
 	levelTimeCount = time;
     }

@@ -32,7 +32,7 @@ void T_PlatRaise(plat_t* plat)
 	res = T_MovePlane(plat->sector,
 			  plat->speed,
 			  plat->high,
-			  plat->crush,0,1);
+			  plat->crush,0, Direction::UP);
 					
 	if (plat->type == raiseAndChange
 	    || plat->type == raiseToNearestAndChange)
@@ -79,7 +79,7 @@ void T_PlatRaise(plat_t* plat)
 	break;
 	
       case	down:
-	res = T_MovePlane(plat->sector,plat->speed,plat->low,false,0,-1);
+	res = T_MovePlane(plat->sector,plat->speed,plat->low,false,0, Direction::DOWN);
 
 	if (res == pastdest)
 	{

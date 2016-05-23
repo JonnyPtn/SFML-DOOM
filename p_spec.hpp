@@ -311,7 +311,13 @@ typedef enum
 
 } vldoor_e;
 
-
+enum class Direction
+{
+	UP,
+	DOWN,
+	WAITING,
+	INITIAL_WAIT
+};
 
 typedef struct
 {
@@ -322,7 +328,7 @@ typedef struct
     int	speed;
 
     // 1 = up, 0 = waiting at top, -1 = down
-    int             direction;
+    Direction   direction;
     
     // tics to wait at the top
     int             topwait;
@@ -388,11 +394,11 @@ typedef struct
     bool	crush;
 
     // 1 = up, 0 = waiting, -1 = down
-    int		direction;
+    Direction	direction;
 
     // ID
-    int		tag;                   
-    int		olddirection;
+    int			tag;                   
+    Direction	olddirection;
     
 } ceiling_t;
 
@@ -474,7 +480,7 @@ typedef struct
     floor_e	type;
     bool	crush;
     sector_t*	sector;
-    int		direction;
+    Direction	direction;
     int		newspecial;
     short	texture;
     int	floordestheight;
@@ -501,7 +507,7 @@ T_MovePlane
   int	dest,
   bool	crush,
   int		floorOrCeiling,
-  int		direction );
+  Direction		direction );
 
 int
 EV_BuildStairs

@@ -332,10 +332,10 @@ void M_LoadDefaults (void)
 	*defaults[i].location = defaults[i].defaultvalue;
     
     // check for a custom default file
-    i = M_CheckParm ("-config");
-    if (i && i<myargc-1)
+    i = CmdParameters::M_CheckParm ("-config");
+    if (i && i<CmdParameters::myargc-1)
     {
-	defaultfile = myargv[i+1];
+	defaultfile = const_cast<char*>(CmdParameters::myargv[i+1].c_str());
 	printf ("	default file: %s\n",defaultfile);
     }
     else

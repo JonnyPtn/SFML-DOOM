@@ -29,7 +29,7 @@ T_MovePlane
   int	dest,
   bool	crush,
   int		floorOrCeiling,
-  int		direction )
+  Direction		direction )
 {
     bool	flag;
     int	lastpos;
@@ -40,7 +40,7 @@ T_MovePlane
 	// FLOOR
 	switch(direction)
 	{
-	  case -1:
+	case Direction::DOWN:
 	    // DOWN
 	    if (sector->floorheight - speed < dest)
 	    {
@@ -69,7 +69,7 @@ T_MovePlane
 	    }
 	    break;
 						
-	  case 1:
+	case Direction::UP:
 	    // UP
 	    if (sector->floorheight + speed > dest)
 	    {
@@ -107,7 +107,7 @@ T_MovePlane
 	// CEILING
 	switch(direction)
 	{
-	  case -1:
+	case Direction::DOWN:
 	    // DOWN
 	    if (sector->ceilingheight - speed < dest)
 	    {
@@ -141,7 +141,7 @@ T_MovePlane
 	    }
 	    break;
 						
-	  case 1:
+	case Direction::UP:
 	    // UP
 	    if (sector->ceilingheight + speed > dest)
 	    {
@@ -200,7 +200,7 @@ void T_MoveFloor(floormove_t* floor)
     {
 	floor->sector->specialdata = NULL;
 
-	if (floor->direction == 1)
+	if (floor->direction == Direction::UP)
 	{
 	    switch(floor->type)
 	    {
@@ -211,7 +211,7 @@ void T_MoveFloor(floormove_t* floor)
 		break;
 	    }
 	}
-	else if (floor->direction == -1)
+	else if (floor->direction == Direction::DOWN)
 	{
 	    switch(floor->type)
 	    {
@@ -266,7 +266,7 @@ EV_DoFloor
 	switch(floortype)
 	{
 	  case lowerFloor:
-	    floor->direction = -1;
+	    floor->direction = Direction::DOWN;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
 	    floor->floordestheight = 
@@ -274,7 +274,7 @@ EV_DoFloor
 	    break;
 
 	  case lowerFloorToLowest:
-	    floor->direction = -1;
+	    floor->direction = Direction::DOWN;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
 	    floor->floordestheight = 
@@ -282,7 +282,7 @@ EV_DoFloor
 	    break;
 
 	  case turboLower:
-	    floor->direction = -1;
+	    floor->direction = Direction::DOWN;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED * 4;
 	    floor->floordestheight = 
@@ -294,7 +294,7 @@ EV_DoFloor
 	  case raiseFloorCrush:
 	    floor->crush = true;
 	  case raiseFloor:
-	    floor->direction = 1;
+	    floor->direction = Direction::UP;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
 	    floor->floordestheight = 
@@ -306,7 +306,7 @@ EV_DoFloor
 	    break;
 
 	  case raiseFloorTurbo:
-	    floor->direction = 1;
+	    floor->direction = Direction::UP;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED*4;
 	    floor->floordestheight = 
@@ -314,7 +314,7 @@ EV_DoFloor
 	    break;
 
 	  case raiseFloorToNearest:
-	    floor->direction = 1;
+	    floor->direction = Direction::UP;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
 	    floor->floordestheight = 
@@ -322,14 +322,14 @@ EV_DoFloor
 	    break;
 
 	  case raiseFloor24:
-	    floor->direction = 1;
+	    floor->direction = Direction::UP;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
 	    floor->floordestheight = floor->sector->floorheight +
 		24 * FRACUNIT;
 	    break;
 	  case raiseFloor512:
-	    floor->direction = 1;
+	    floor->direction = Direction::UP;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
 	    floor->floordestheight = floor->sector->floorheight +
@@ -337,7 +337,7 @@ EV_DoFloor
 	    break;
 
 	  case raiseFloor24AndChange:
-	    floor->direction = 1;
+	    floor->direction = Direction::UP;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
 	    floor->floordestheight = floor->sector->floorheight +
@@ -351,7 +351,7 @@ EV_DoFloor
 	      int	minsize = MAXINT;
 	      side_t*	side;
 				
-	      floor->direction = 1;
+	      floor->direction = Direction::UP;
 	      floor->sector = sec;
 	      floor->speed = FLOORSPEED;
 	      for (i = 0; i < sec->linecount; i++)
@@ -378,7 +378,7 @@ EV_DoFloor
 	  break;
 	  
 	  case lowerAndChange:
-	    floor->direction = -1;
+	    floor->direction = Direction::DOWN;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
 	    floor->floordestheight = 
@@ -463,7 +463,7 @@ EV_BuildStairs
 	P_AddThinker (&floor->thinker);
 	sec->specialdata = floor;
 	floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
-	floor->direction = 1;
+	floor->direction = Direction::UP;
 	floor->sector = sec;
 	switch(type)
 	{
@@ -518,7 +518,7 @@ EV_BuildStairs
 
 		sec->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
-		floor->direction = 1;
+		floor->direction = Direction::UP;
 		floor->sector = sec;
 		floor->speed = speed;
 		floor->floordestheight = height;

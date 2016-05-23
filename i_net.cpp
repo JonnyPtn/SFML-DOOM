@@ -234,10 +234,10 @@ void I_InitNetwork (void)
     memset (doomcom, 0, sizeof(*doomcom) );
     
     // set up for network
-    i = M_CheckParm ("-dup");
-    if (i && i< myargc-1)
+    i = CmdParameters::M_CheckParm ("-dup");
+    if (i && i< CmdParameters::myargc-1)
     {
-	doomcom->ticdup = myargv[i+1][0]-'0';
+	doomcom->ticdup = CmdParameters::myargv[i+1][0]-'0';
 	if (doomcom->ticdup < 1)
 	    doomcom->ticdup = 1;
 	if (doomcom->ticdup > 9)
@@ -246,13 +246,13 @@ void I_InitNetwork (void)
     else
 	doomcom-> ticdup = 1;
 	
-    if (M_CheckParm ("-extratic"))
+    if (CmdParameters::M_CheckParm ("-extratic"))
 	doomcom-> extratics = 1;
     else
 	doomcom-> extratics = 0;
 		
-    p = M_CheckParm ("-port");
-    if (p && p<myargc-1)
+    p = CmdParameters::M_CheckParm ("-port");
+    if (p && p<CmdParameters::myargc-1)
     {
 		//JONNY//		DOOMPORT = atoi (myargv[p+1]);
 		//JONNY//			printf ("using alternate port %i\n",DOOMPORT);
@@ -260,7 +260,7 @@ void I_InitNetwork (void)
     
     // parse network game options,
     //  -net <consoleplayer> <host> <host> ...
-    i = M_CheckParm ("-net");
+    i = CmdParameters::M_CheckParm ("-net");
     if (!i)
     {
 	// single player game
@@ -277,16 +277,16 @@ void I_InitNetwork (void)
     netgame = true;
 
     // parse player number and host list
-    doomcom->consoleplayer = myargv[i+1][0]-'1';
+    doomcom->consoleplayer = CmdParameters::myargv[i+1][0]-'1';
 
     doomcom->numnodes = 1;	// this node for sure
 	
     i++;
-    while (++i < myargc && myargv[i][0] != '-')
+    while (++i < CmdParameters::myargc && CmdParameters::myargv[i][0] != '-')
     {
 		//JONNY//			sendaddress[doomcom->numnodes].sin_family = AF_INET;
 		//JONNY//	sendaddress[doomcom->numnodes].sin_port = htons(DOOMPORT);
-	if (myargv[i][0] == '.')
+	if (CmdParameters::myargv[i][0] == '.')
 	{
 		//JONNY//sendaddress[doomcom->numnodes].sin_addr.s_addr 
 					//JONNY//	= inet_addr (myargv[i]+1);
@@ -295,7 +295,7 @@ void I_InitNetwork (void)
 	{
 		//JONNY//   hostentry = gethostbyname (myargv[i]);
 	    if (!hostentry)
-		I_Error ("gethostbyname: couldn't find %s", myargv[i]);
+		I_Error ("gethostbyname: couldn't find %s", CmdParameters::myargv[i]);
 		//JONNY//   sendaddress[doomcom->numnodes].sin_addr.s_addr 
 		//JONNY//	= *(int *)hostentry->h_addr_list[0];
 	}

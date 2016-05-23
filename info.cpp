@@ -1,15 +1,7 @@
-
-
-static const char
-rcsid[] = "$Id: info.c,v 1.3 1997/01/26 07:45:00 b1 Exp $";
-
 // Data.
 #include "sounds.hpp"
 #include "m_fixed.hpp"
 
-#ifdef __GNUG__
-#pragma implementation "info.hpp"
-#endif
 #include "info.hpp"
 
 #include "p_mobj.hpp"

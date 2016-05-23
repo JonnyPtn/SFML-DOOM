@@ -34,10 +34,10 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	
     switch(ceiling->direction)
     {
-      case 0:
+	case Direction::WAITING:
 	// IN STASIS
 	break;
-      case 1:
+	case Direction::UP:
 	// UP
 	res = T_MovePlane(ceiling->sector,
 			  ceiling->speed,
@@ -71,7 +71,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 			     sfx_pstop);
 	      case fastCrushAndRaise:
 	      case crushAndRaise:
-		ceiling->direction = -1;
+		ceiling->direction = Direction::DOWN;
 		break;
 		
 	      default:
@@ -81,7 +81,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	}
 	break;
 	
-      case -1:
+	case Direction::DOWN:
 	// DOWN
 	res = T_MovePlane(ceiling->sector,
 			  ceiling->speed,
@@ -109,7 +109,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	      case crushAndRaise:
 		ceiling->speed = CEILSPEED;
 	      case fastCrushAndRaise:
-		ceiling->direction = 1;
+		ceiling->direction = Direction::UP;
 		break;
 
 	      case lowerAndCrush:
@@ -192,7 +192,7 @@ EV_DoCeiling
 	    ceiling->crush = true;
 	    ceiling->topheight = sec->ceilingheight;
 	    ceiling->bottomheight = sec->floorheight + (8*FRACUNIT);
-	    ceiling->direction = -1;
+	    ceiling->direction = Direction::DOWN;
 	    ceiling->speed = CEILSPEED * 2;
 	    break;
 
@@ -205,13 +205,13 @@ EV_DoCeiling
 	    ceiling->bottomheight = sec->floorheight;
 	    if (type != lowerToFloor)
 		ceiling->bottomheight += 8*FRACUNIT;
-	    ceiling->direction = -1;
+	    ceiling->direction = Direction::DOWN;
 	    ceiling->speed = CEILSPEED;
 	    break;
 
 	  case raiseToHighest:
 	    ceiling->topheight = P_FindHighestCeilingSurrounding(sec);
-	    ceiling->direction = 1;
+	    ceiling->direction = Direction::UP;
 	    ceiling->speed = CEILSPEED;
 	    break;
 	}
@@ -275,7 +275,7 @@ void P_ActivateInStasisCeiling(line_t* line)
     {
 	if (activeceilings[i]
 	    && (activeceilings[i]->tag == line->tag)
-	    && (activeceilings[i]->direction == 0))
+	    && (activeceilings[i]->direction == Direction::WAITING))
 	{
 	    activeceilings[i]->direction = activeceilings[i]->olddirection;
 	    activeceilings[i]->thinker.function.acp1
@@ -300,11 +300,11 @@ int	EV_CeilingCrushStop(line_t	*line)
     {
 	if (activeceilings[i]
 	    && (activeceilings[i]->tag == line->tag)
-	    && (activeceilings[i]->direction != 0))
+	    && (activeceilings[i]->direction != Direction::WAITING))
 	{
 	    activeceilings[i]->olddirection = activeceilings[i]->direction;
 	    activeceilings[i]->thinker.function.acv = (actionf_v)NULL;
-	    activeceilings[i]->direction = 0;		// in-stasis
+	    activeceilings[i]->direction = Direction::WAITING;		// in-stasis
 	    rtn = 1;
 	}
     }

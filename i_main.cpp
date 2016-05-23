@@ -4,13 +4,9 @@
 #include "m_argv.hpp"
 #include "d_main.hpp"
 
-int
-main
-( int		argc,
-  char**	argv ) 
+int main( int argc, char** argv ) 
 { 
-    myargc = argc; 
-    myargv = argv; 
+	CmdParameters::CmdParameters(argc, argv);
  
     D_DoomMain (); 
 
