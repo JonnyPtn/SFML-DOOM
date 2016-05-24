@@ -209,11 +209,10 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     base = I_BaseTiccmd ();		// empty, or external driver
     memcpy (cmd,base,sizeof(*cmd)); 
 	
-    cmd->consistancy = 
-	consistancy[consoleplayer][maketic%BACKUPTICS]; 
+    cmd->consistancy = consistancy[consoleplayer][maketic%BACKUPTICS]; 
 
  
-    strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe] 
+    strafe = gamekeydown[sf::Keyboard::LAlt] || mousebuttons[mousebstrafe] 
 	|| joybuttons[joybstrafe]; 
     speed = gamekeydown[key_speed] || joybuttons[joybspeed];
  
@@ -223,8 +222,8 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     // on the keyboard and joystick
     if (joyxmove < 0
 	|| joyxmove > 0  
-	|| gamekeydown[key_right]
-	|| gamekeydown[key_left]) 
+	|| gamekeydown[sf::Keyboard::Right]
+	|| gamekeydown[sf::Keyboard::Left]) 
 	turnheld += ticdup; 
     else 
 	turnheld = 0; 
@@ -237,65 +236,65 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     // let movement keys cancel each other out
     if (strafe) 
     { 
-	if (gamekeydown[key_right]) 
-	{
-	    // fprintf(stderr, "strafe right\n");
-	    side += sidemove[speed]; 
-	}
-	if (gamekeydown[key_left]) 
-	{
-	    //	fprintf(stderr, "strafe left\n");
-	    side -= sidemove[speed]; 
-	}
-	if (joyxmove > 0) 
-	    side += sidemove[speed]; 
-	if (joyxmove < 0) 
-	    side -= sidemove[speed]; 
+		if (gamekeydown[sf::Keyboard::Right]) 
+		{
+		    // fprintf(stderr, "strafe right\n");
+		    side += sidemove[speed]; 
+		}
+		if (gamekeydown[sf::Keyboard::Left]) 
+		{
+		    //	fprintf(stderr, "strafe left\n");
+		    side -= sidemove[speed]; 
+		}
+		if (joyxmove > 0) 
+		    side += sidemove[speed]; 
+		if (joyxmove < 0) 
+		    side -= sidemove[speed]; 
  
     } 
     else 
     { 
-	if (gamekeydown[key_right]) 
-	    cmd->angleturn -= angleturn[tspeed]; 
-	if (gamekeydown[key_left]) 
-	    cmd->angleturn += angleturn[tspeed]; 
-	if (joyxmove > 0) 
-	    cmd->angleturn -= angleturn[tspeed]; 
-	if (joyxmove < 0) 
-	    cmd->angleturn += angleturn[tspeed]; 
+		if (gamekeydown[sf::Keyboard::Right]) 
+		    cmd->angleturn -= angleturn[tspeed]; 
+		if (gamekeydown[sf::Keyboard::Left]) 
+		    cmd->angleturn += angleturn[tspeed]; 
+		if (joyxmove > 0) 
+		    cmd->angleturn -= angleturn[tspeed]; 
+		if (joyxmove < 0) 
+		    cmd->angleturn += angleturn[tspeed]; 
     } 
  
-    if (gamekeydown[key_up]) 
+    if (gamekeydown[sf::Keyboard::Up] || gamekeydown[sf::Keyboard::W]) 
     {
-	// fprintf(stderr, "up\n");
-	forward += forwardmove[speed]; 
+		// fprintf(stderr, "up\n");
+		forward += forwardmove[speed]; 
     }
-    if (gamekeydown[key_down]) 
+    if (gamekeydown[sf::Keyboard::Down] || gamekeydown[sf::Keyboard::S]) 
     {
-	// fprintf(stderr, "down\n");
-	forward -= forwardmove[speed]; 
+		// fprintf(stderr, "down\n");
+		forward -= forwardmove[speed]; 
     }
     if (joyymove < 0) 
-	forward += forwardmove[speed]; 
+		forward += forwardmove[speed]; 
     if (joyymove > 0) 
-	forward -= forwardmove[speed]; 
-    if (gamekeydown[key_straferight]) 
-	side += sidemove[speed]; 
-    if (gamekeydown[key_strafeleft]) 
-	side -= sidemove[speed];
+		forward -= forwardmove[speed]; 
+    if (gamekeydown[sf::Keyboard::D]) 
+		side += sidemove[speed]; 
+    if (gamekeydown[sf::Keyboard::A]) 
+		side -= sidemove[speed];
     
     // buttons
     cmd->chatchar = HU_dequeueChatChar(); 
  
-    if (gamekeydown[key_fire] || mousebuttons[mousebfire] 
+    if (gamekeydown[sf::Keyboard::LControl] || mousebuttons[mousebfire] 
 	|| joybuttons[joybfire]) 
-	cmd->buttons |= BT_ATTACK; 
+		cmd->buttons |= BT_ATTACK; 
  
     if (gamekeydown[key_use] || joybuttons[joybuse] ) 
     { 
-	cmd->buttons |= BT_USE;
-	// clear double clicks if hit use button 
-	dclicks = 0;                   
+		cmd->buttons |= BT_USE;
+		// clear double clicks if hit use button 
+		dclicks = 0;                   
     } 
 
 	static std::vector<sf::Keyboard::Key> weaponButtons =
@@ -324,30 +323,30 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     
     // mouse
     if (mousebuttons[mousebforward]) 
-	forward += forwardmove[speed];
+		forward += forwardmove[speed];
     
     // forward double click
     if (static_cast<int>(mousebuttons[mousebforward]) != dclickstate && dclicktime > 1 ) 
     { 
-	dclickstate = mousebuttons[mousebforward]; 
-	if (dclickstate) 
-	    dclicks++; 
-	if (dclicks == 2) 
-	{ 
-	    cmd->buttons |= BT_USE; 
-	    dclicks = 0; 
-	} 
-	else 
-	    dclicktime = 0; 
+		dclickstate = mousebuttons[mousebforward]; 
+		if (dclickstate) 
+		    dclicks++; 
+		if (dclicks == 2) 
+		{ 
+		    cmd->buttons |= BT_USE; 
+		    dclicks = 0; 
+		} 
+		else 
+		    dclicktime = 0; 
     } 
     else 
     { 
-	dclicktime += ticdup; 
-	if (dclicktime > 20) 
-	{ 
-	    dclicks = 0; 
-	    dclickstate = 0; 
-	} 
+		dclicktime += ticdup; 
+		if (dclicktime > 20) 
+		{ 
+		    dclicks = 0; 
+		    dclickstate = 0; 
+		} 
     }
     
     // strafe double click
@@ -386,13 +385,13 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     mousex = mousey = 0; 
 	 
     if (forward > MAXPLMOVE) 
-	forward = MAXPLMOVE; 
+		forward = MAXPLMOVE; 
     else if (forward < -MAXPLMOVE) 
-	forward = -MAXPLMOVE; 
+		forward = -MAXPLMOVE; 
     if (side > MAXPLMOVE) 
-	side = MAXPLMOVE; 
+		side = MAXPLMOVE; 
     else if (side < -MAXPLMOVE) 
-	side = -MAXPLMOVE; 
+		side = -MAXPLMOVE; 
  
     cmd->forwardmove += forward; 
     cmd->sidemove += side;
@@ -400,14 +399,14 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     // special buttons
     if (sendpause) 
     { 
-	sendpause = false; 
-	cmd->buttons = BT_SPECIAL | BTS_PAUSE; 
+		sendpause = false; 
+		cmd->buttons = BT_SPECIAL | BTS_PAUSE; 
     } 
  
     if (sendsave) 
     { 
-	sendsave = false; 
-	cmd->buttons = BT_SPECIAL | BTS_SAVEGAME | (savegameslot<<BTS_SAVESHIFT); 
+		sendsave = false; 
+		cmd->buttons = BT_SPECIAL | BTS_SAVEGAME | (savegameslot<<BTS_SAVESHIFT); 
     } 
 } 
  
@@ -479,7 +478,7 @@ bool G_Responder (sf::Event* ev)
 { 
     // allow spy mode changes even during the demo
     if (gamestate == GS_LEVEL && ev->type == sf::Event::KeyPressed
-	&& ev->key.code == KEY_F12 && (singledemo || !deathmatch) )
+	&& ev->key.code == sf::Keyboard::F12 && (singledemo || !deathmatch) )
     {
 		// spy mode 
 		do 
@@ -525,7 +524,7 @@ bool G_Responder (sf::Event* ev)
     switch (ev->type) 
     { 
 	case sf::Event::KeyPressed:
-		if (ev->key.code == KEY_PAUSE)
+		if (ev->key.code == sf::Keyboard::P)
 		{ 
 		    sendpause = true; 
 		    return true; 

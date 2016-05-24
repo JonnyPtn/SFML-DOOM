@@ -49,20 +49,6 @@
 // drawing stuff
 #define	FB		0
 
-#define AM_PANDOWNKEY	KEY_DOWNARROW
-#define AM_PANUPKEY	KEY_UPARROW
-#define AM_PANRIGHTKEY	KEY_RIGHTARROW
-#define AM_PANLEFTKEY	KEY_LEFTARROW
-#define AM_ZOOMINKEY	'='
-#define AM_ZOOMOUTKEY	'-'
-#define AM_STARTKEY	KEY_TAB
-#define AM_ENDKEY	KEY_TAB
-#define AM_GOBIGKEY	'0'
-#define AM_FOLLOWKEY	'f'
-#define AM_GRIDKEY	'g'
-#define AM_MARKKEY	'm'
-#define AM_CLEARMARKKEY	'c'
-
 #define AM_NUMMARKPOINTS 10
 
 // scale on entry
@@ -537,7 +523,7 @@ bool AM_Responder( sf::Event& ev )
 
     if (!automapactive)
     {
-		if (ev.type == sf::Event::KeyPressed && ev.key.code == AM_STARTKEY)
+		if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Tab)
 		{
 		    AM_Start ();
 		    viewactive = false;
@@ -551,36 +537,36 @@ bool AM_Responder( sf::Event& ev )
 		rc = true;
 		switch(ev.key.code)
 		{
-		  case AM_PANRIGHTKEY: // pan right
+		case sf::Keyboard::Right: // pan right
 		    if (!followplayer) m_paninc.x = FTOM(F_PANINC);
 		    else rc = false;
 		    break;
-		  case AM_PANLEFTKEY: // pan left
+		  case sf::Keyboard::Left: // pan left
 		    if (!followplayer) m_paninc.x = -FTOM(F_PANINC);
 		    else rc = false;
 		    break;
-		  case AM_PANUPKEY: // pan up
+		  case sf::Keyboard::Up: // pan up
 		    if (!followplayer) m_paninc.y = FTOM(F_PANINC);
 		    else rc = false;
 		    break;
-		  case AM_PANDOWNKEY: // pan down
+		  case sf::Keyboard::Down: // pan down
 		    if (!followplayer) m_paninc.y = -FTOM(F_PANINC);
 		    else rc = false;
 		    break;
-		  case AM_ZOOMOUTKEY: // zoom out
+		  case sf::Keyboard::Subtract: // zoom out
 		    mtof_zoommul = M_ZOOMOUT;
 		    ftom_zoommul = M_ZOOMIN;
 		    break;
-		  case AM_ZOOMINKEY: // zoom in
+		  case sf::Keyboard::Equal: // zoom in
 		    mtof_zoommul = M_ZOOMIN;
 		    ftom_zoommul = M_ZOOMOUT;
 		    break;
-		  case AM_ENDKEY:
+		  case sf::Keyboard::Tab:
 		    bigstate = 0;
 		    viewactive = true;
 		    AM_Stop ();
 		    break;
-		  case AM_GOBIGKEY:
+		  case sf::Keyboard::Num0:
 		    bigstate = !bigstate;
 		    if (bigstate)
 		    {
@@ -589,21 +575,21 @@ bool AM_Responder( sf::Event& ev )
 		    }
 		    else AM_restoreScaleAndLoc();
 		    break;
-		  case AM_FOLLOWKEY:
+		  case sf::Keyboard::F:
 		    followplayer = !followplayer;
 		    f_oldloc.x = MAXINT;
 		    plr->message = followplayer ? AMSTR_FOLLOWON : AMSTR_FOLLOWOFF;
 		    break;
-		  case AM_GRIDKEY:
+		  case sf::Keyboard::G:
 		    grid = !grid;
 		    plr->message = grid ? AMSTR_GRIDON : AMSTR_GRIDOFF;
 		    break;
-		  case AM_MARKKEY:
+		  case sf::Keyboard::M:
 		    sprintf(buffer, "%s %d", AMSTR_MARKEDSPOT, markpointnum);
 		    plr->message = buffer;
 		    AM_addMark();
 		    break;
-		  case AM_CLEARMARKKEY:
+		  case sf::Keyboard::C:
 		    AM_clearMarks();
 		    plr->message = AMSTR_MARKSCLEARED;
 		    break;
@@ -617,20 +603,20 @@ bool AM_Responder( sf::Event& ev )
 		rc = false;
 		switch (ev.key.code)
 		{
-		  case AM_PANRIGHTKEY:
+		case sf::Keyboard::Right:
 		    if (!followplayer) m_paninc.x = 0;
 		    break;
-		  case AM_PANLEFTKEY:
+		  case sf::Keyboard::Left:
 		    if (!followplayer) m_paninc.x = 0;
 		    break;
-		  case AM_PANUPKEY:
+		  case sf::Keyboard::Up:
 		    if (!followplayer) m_paninc.y = 0;
 		    break;
-		  case AM_PANDOWNKEY:
+		  case sf::Keyboard::Down:
 		    if (!followplayer) m_paninc.y = 0;
 		    break;
-		  case AM_ZOOMOUTKEY:
-		  case AM_ZOOMINKEY:
+		  case sf::Keyboard::Subtract:
+		  case sf::Keyboard::Equal:
 		    mtof_zoommul = FRACUNIT;
 		    ftom_zoommul = FRACUNIT;
 		    break;

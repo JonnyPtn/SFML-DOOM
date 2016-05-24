@@ -305,10 +305,10 @@ HUlib_keyInIText
     if (ch >= ' ' && ch <= '_') 
   	HUlib_addCharToTextLine(&it->l, (char) ch);
     else 
-	if (ch == KEY_BACKSPACE) 
+	if (ch == sf::Keyboard::BackSpace)
 	    HUlib_delCharFromIText(it);
 	else 
-	    if (ch != KEY_ENTER) 
+	    if (ch != sf::Keyboard::Return)
 		return false; // did not eat key
 
     return true; // ate the key

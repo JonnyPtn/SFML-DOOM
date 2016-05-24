@@ -528,7 +528,7 @@ void HU_Ticker(void)
 		    if (c >= 'a' && c <= 'z')
 			c = (char) shiftxform[(unsigned char) c];
 		    rc = HUlib_keyInIText(&w_inputbuffer[i], c);
-		    if (rc && c == KEY_ENTER)
+		    if (rc && c == sf::Keyboard::Return)
 		    {
 			if (w_inputbuffer[i].l.len
 			    && (chat_dest[i] == consoleplayer+1
@@ -619,12 +619,12 @@ bool HU_Responder(sf::Event *ev)
     for (i=0 ; i<MAXPLAYERS ; i++)
 	numplayers += playeringame[i];
 
-    if (ev->key.code == KEY_RSHIFT)
+    if (ev->key.code == sf::Keyboard::RShift)
     {
 	shiftdown = ev->type == sf::Event::KeyPressed;
 	return false;
     }
-    else if (ev->key.code == KEY_RALT || ev->key.code == KEY_LALT)
+    else if (ev->key.code == sf::Keyboard::RAlt || ev->key.code == sf::Keyboard::LAlt)
     {
 	altdown = ev->type == sf::Event::KeyPressed;
 	return false;
@@ -635,7 +635,7 @@ bool HU_Responder(sf::Event *ev)
 
     if (!chat_on)
     {
-	if (ev->key.code == HU_MSGREFRESH)
+	if (ev->key.code == sf::Keyboard::Return)
 	{
 	    message_on = true;
 	    message_counter = HU_MSGTIMEOUT;
@@ -691,12 +691,12 @@ bool HU_Responder(sf::Event *ev)
 	    macromessage = chat_macros[c];
 	    
 	    // kill last message with a '\n'
-	    HU_queueChatChar(KEY_ENTER); // DEBUG!!!
+	    HU_queueChatChar(sf::Keyboard::Return); // DEBUG!!!
 	    
 	    // send the macro message
 	    while (*macromessage)
 		HU_queueChatChar(*macromessage++);
-	    HU_queueChatChar(KEY_ENTER);
+	    HU_queueChatChar(sf::Keyboard::Return);
 	    
 	    // leave chat mode and notify that it was sent
 	    chat_on = false;
@@ -719,7 +719,7 @@ bool HU_Responder(sf::Event *ev)
 		// sprintf(buf, "KEY: %d => %d", ev->data1, c);
 		//      plr->message = buf;
 	    }
-	    if (c == KEY_ENTER)
+	    if (c == sf::Keyboard::Return)
 	    {
 		chat_on = false;
 		if (w_chat.l.len)
@@ -728,7 +728,7 @@ bool HU_Responder(sf::Event *ev)
 		    plr->message = lastmessage;
 		}
 	    }
-	    else if (c == KEY_ESCAPE)
+	    else if (c == sf::Keyboard::Escape)
 		chat_on = false;
 	}
     }

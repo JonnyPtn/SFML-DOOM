@@ -218,7 +218,7 @@ default_t	defaults[] =
     
 
 //JONNY//#ifdef NORMALUNIX
-    {"key_right",&key_right, KEY_RIGHTARROW},
+   /* {"key_right",&key_right, KEY_RIGHTARROW},
     {"key_left",&key_left, KEY_LEFTARROW},
     {"key_up",&key_up, KEY_UPARROW},
     {"key_down",&key_down, KEY_DOWNARROW},
@@ -228,7 +228,7 @@ default_t	defaults[] =
     {"key_fire",&key_fire, KEY_RCTRL},
     {"key_use",&key_use, sf::Keyboard::Space},
     {"key_strafe",&key_strafe, KEY_RALT},
-    {"key_speed",&key_speed, KEY_RSHIFT},
+    {"key_speed",&key_speed, KEY_RSHIFT},*/
 
 // UNIX hack, to be removed. 
 #ifdef SNDSERV
