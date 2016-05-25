@@ -9,6 +9,7 @@
 #include <stdarg.h>
 #include <sys/types.h>
 #include <signal.h>
+#include <array>
 
 #include "doomstat.hpp"
 #include "i_system.hpp"
@@ -26,9 +27,9 @@
 
 std::unique_ptr<sf::RenderWindow> window;
 
-sf::Image			image;
-std::unique_ptr<sf::Texture>			texture;
-std::unique_ptr<sf::Sprite>			sprite;
+sf::Uint8*						pixels;
+std::unique_ptr<sf::Texture>	texture;
+std::unique_ptr<sf::Sprite>		sprite;
 sf::Color	colors[256];
 int		X_screen;
 int		X_width;
@@ -55,16 +56,15 @@ void I_FinishUpdate (void)
     int		tics;
 	int		i;
 
-	sf::Uint8 pixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
-	auto imagePixels = image.getPixelsPtr();
+	sf::Uint8 colouredPixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
 	for (int i = 0; i < SCREENHEIGHT*SCREENWIDTH; i++)
 	{
-		pixels[i * 4] = colors[imagePixels[i]].r;
-		pixels[i * 4 + 1] = colors[imagePixels[i]].g;
-		pixels[i * 4 + 2] = colors[imagePixels[i]].b;
-		pixels[i * 4 + 3] = 255;
+		colouredPixels[i * 4] = colors[pixels[i]].r;
+		colouredPixels[i * 4 + 1] = colors[pixels[i]].g;
+		colouredPixels[i * 4 + 2] = colors[pixels[i]].b;
+		colouredPixels[i * 4 + 3] = 255;
 	}
-	texture->update(pixels);
+	texture->update(colouredPixels);
 	window->clear();
 	window->draw(*sprite);
 	window->display();
@@ -170,14 +170,14 @@ void I_InitGraphics(void)
 	window.reset(new sf::RenderWindow());
 	window->create(sf::VideoMode(X_width, X_height), displayname);
 	window->setVerticalSyncEnabled(true);
-	image.create(X_width, X_height);
 	texture.reset(new sf::Texture);
 	texture->create(X_width, X_height);
-	texture->loadFromImage(image);
 	sprite.reset(new sf::Sprite());
 	sprite->setTexture(*texture);
 
-	screens[0] = (unsigned char *) (image.getPixelsPtr());
+	pixels = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
+
+	screens[0] = pixels;
 }
 
 bool pollEvent(sf::Event& ev)
