@@ -1696,7 +1696,7 @@ void M_Drawer (void)
     static short	y;
     unsigned short		i;
     short		max;
-    char		string[40];
+    std::string		string;
     int			start;
 
     inhelpscreens = false;
@@ -1705,34 +1705,30 @@ void M_Drawer (void)
     // Horiz. & Vertically center string and print it.
     if (messageToPrint)
     {
-	start = 0;
-	y = 100 - M_StringHeight(messageString)/2;
-	while(*(messageString.data()+start))
-	{
-		i = 0;
-		for (auto& character : messageString)
+		start = 0;
+		y = 100 - M_StringHeight(messageString)/2;
+		for (auto character : messageString)
 		{
 			if (character == '\n')
 			{
-				memset(string, 0, 40);
-				strncpy(string, messageString.c_str() + start, i);
-				start += i + 1;
-				break;
+				//new line, write the line then clear it
+				x = 160 - M_StringWidth(const_cast<char*>(string.c_str())) / 2;
+				M_WriteText(x, y, const_cast<char*>(string.c_str()));
+				string.clear();
+				y += SHORT(hu_font[0]->height);
 			}
-			i++;
+			else
+				string.push_back(character);
 		}
-				
-	    if (i == strlen(messageString.c_str()+start))
-	    {
-			strcpy(string,messageString.c_str()+start);
-			start += i;
-	    }
-				
-	    x = 160 - M_StringWidth(string)/2;
-	    M_WriteText(x,y,string);
-	    y += SHORT(hu_font[0]->height);
-	}
-	return;
+
+		//in case there's no new line at the end of the string
+		//show the final line
+		if (!string.empty())
+		{
+			x = 160 - M_StringWidth(const_cast<char*>(string.c_str())) / 2;
+			M_WriteText(x, y, const_cast<char*>(string.c_str()));
+		}
+		return;
     }
 
     if (!menuactive)
