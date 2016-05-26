@@ -1707,7 +1707,7 @@ void M_Drawer (void)
     {
 	start = 0;
 	y = 100 - M_StringHeight(messageString)/2;
-	while(*(messageString.c_str()+start))
+	while(*(messageString.data()+start))
 	{
 		i = 0;
 		for (auto& character : messageString)

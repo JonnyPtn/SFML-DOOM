@@ -107,21 +107,6 @@ short			consistancy[MAXPLAYERS][BACKUPTICS];
  
 unsigned char*	savebuffer;
  
-// 
-// controls (have defaults) 
-// 
-int     key_right;
-int		key_left;
-
-int		key_up;
-int		key_down; 
-int     key_strafeleft;
-int		key_straferight; 
-int     key_fire;
-int		key_use;
-int		key_strafe;
-int		key_speed; 
- 
 int     mousebfire; 
 int     mousebstrafe; 
 int     mousebforward; 
@@ -214,7 +199,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
  
     strafe = gamekeydown[sf::Keyboard::LAlt] || mousebuttons[mousebstrafe] 
 	|| joybuttons[joybstrafe]; 
-    speed = gamekeydown[key_speed] || joybuttons[joybspeed];
+    speed = gamekeydown[sf::Keyboard::LShift] || gamekeydown[sf::Keyboard::RShift] || joybuttons[joybspeed];
  
     forward = side = 0;
     
@@ -290,7 +275,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	|| joybuttons[joybfire]) 
 		cmd->buttons |= BT_ATTACK; 
  
-    if (gamekeydown[key_use] || joybuttons[joybuse] ) 
+    if (gamekeydown[sf::Keyboard::Space] || joybuttons[joybuse] ) 
     { 
 		cmd->buttons |= BT_USE;
 		// clear double clicks if hit use button 

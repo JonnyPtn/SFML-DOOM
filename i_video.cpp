@@ -122,58 +122,59 @@ void I_SetPalette (unsigned char* palette)
 void I_InitGraphics(void)
 {
 
-    std::string	displayname;
-    int			n;
-    int			pnum;
-    int			x=0;
-    int			y=0;
-    
-    // warning: char format, different type arg
-    char		xsign=' ';
-    char		ysign=' ';
-    static int		firsttime=1;
+	std::string	displayname;
+	int			n;
+	int			pnum;
+	int			x = 0;
+	int			y = 0;
 
-    if (!firsttime)
+	// warning: char format, different type arg
+	char		xsign = ' ';
+	char		ysign = ' ';
+	static int		firsttime = 1;
+
+	if (!firsttime)
 		return;
-    firsttime = 0;
+	firsttime = 0;
 
-    signal(SIGINT, (void (*)(int)) I_Quit);
+	signal(SIGINT, (void(*)(int)) I_Quit);
 
-    X_width = SCREENWIDTH;
+	X_width = SCREENWIDTH;
 	X_height = SCREENHEIGHT;
 
-    // check for command-line display name
-    if ( (pnum= CmdParameters::M_CheckParm("-disp")) ) // suggest parentheses around assignment
-		displayname = CmdParameters::myargv[pnum+1];
-    else
+	// check for command-line display name
+	if ((pnum = CmdParameters::M_CheckParm("-disp"))) // suggest parentheses around assignment
+		displayname = CmdParameters::myargv[pnum + 1];
+	else
 		displayname = "";
 
-    // check for command-line geometry
-    if ( (pnum= CmdParameters::M_CheckParm("-geom")) ) // suggest parentheses around assignment
-    {
+	// check for command-line geometry
+	if ((pnum = CmdParameters::M_CheckParm("-geom"))) // suggest parentheses around assignment
+	{
 		// warning: char format, different type arg 3,5
-		n = sscanf(CmdParameters::myargv[pnum+1].c_str(), "%c%d%c%d", &xsign, &x, &ysign, &y);
-		
-		if (n==2)
-		    x = y = 0;
-		else if (n==6)
+		n = sscanf(CmdParameters::myargv[pnum + 1].c_str(), "%c%d%c%d", &xsign, &x, &ysign, &y);
+
+		if (n == 2)
+			x = y = 0;
+		else if (n == 6)
 		{
-		    if (xsign == '-')
-			x = -x;
-		    if (ysign == '-')
-			y = -y;
+			if (xsign == '-')
+				x = -x;
+			if (ysign == '-')
+				y = -y;
 		}
 		else
-		    I_Error("bad -geom parameter");
-    }
+			I_Error("bad -geom parameter");
+	}
 
 	window.reset(new sf::RenderWindow());
-	window->create(sf::VideoMode(X_width, X_height), displayname);
+	window->create(sf::VideoMode(X_width * 2, X_height * 2), displayname); //quick double size for now
 	window->setVerticalSyncEnabled(true);
 	texture.reset(new sf::Texture);
 	texture->create(X_width, X_height);
 	sprite.reset(new sf::Sprite());
 	sprite->setTexture(*texture);
+	sprite->setScale({2.f,2.f});
 
 	pixels = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
 
