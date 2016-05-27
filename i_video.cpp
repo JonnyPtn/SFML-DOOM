@@ -1,10 +1,5 @@
 
 #include <stdlib.h>
-#ifdef _WIN32
-#include "unistd.hpp"
-#else
-#include "unistd.h"
-#endif
 
 #include <stdarg.h>
 #include <sys/types.h>
@@ -27,7 +22,6 @@
 
 std::unique_ptr<sf::RenderWindow> window;
 
-sf::Uint8*						pixels;
 std::unique_ptr<sf::Texture>	texture;
 std::unique_ptr<sf::Sprite>		sprite;
 sf::Color	colors[256];
@@ -52,16 +46,12 @@ bool		shmFinished;
 //
 void I_FinishUpdate (void)
 {
-    static int	lasttic;
-    int		tics;
-	int		i;
-
 	sf::Uint8 colouredPixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
 	for (int i = 0; i < SCREENHEIGHT*SCREENWIDTH; i++)
 	{
-		colouredPixels[i * 4] = colors[pixels[i]].r;
-		colouredPixels[i * 4 + 1] = colors[pixels[i]].g;
-		colouredPixels[i * 4 + 2] = colors[pixels[i]].b;
+		colouredPixels[i * 4] = colors[screens[0][i]].r;
+		colouredPixels[i * 4 + 1] = colors[screens[0][i]].g;
+		colouredPixels[i * 4 + 2] = colors[screens[0][i]].b;
 		colouredPixels[i * 4 + 3] = 255;
 	}
 	texture->update(colouredPixels);
@@ -176,9 +166,10 @@ void I_InitGraphics(void)
 	sprite->setTexture(*texture);
 	sprite->setScale({2.f,2.f});
 
-	pixels = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
+	screens[0] = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
 
-	screens[0] = pixels;
+	//hide the mouse cursor
+	window->setMouseCursorVisible(false);
 }
 
 bool pollEvent(sf::Event& ev)
