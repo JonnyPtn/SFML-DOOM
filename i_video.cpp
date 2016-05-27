@@ -16,10 +16,6 @@
 
 #define POINTER_WARP_COUNTDOWN	1
 
-//JONNY// SFML stuff for rendering
-#include <SFML/Graphics.hpp>
-#include <memory>
-
 std::unique_ptr<sf::RenderWindow> window;
 
 std::unique_ptr<sf::Texture>	texture;
@@ -44,7 +40,7 @@ bool		shmFinished;
 //
 // I_FinishUpdate
 //
-void I_FinishUpdate (void)
+void I_FinishUpdate(void)
 {
 	sf::Uint8 colouredPixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
 	for (int i = 0; i < SCREENHEIGHT*SCREENWIDTH; i++)

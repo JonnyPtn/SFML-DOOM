@@ -7,6 +7,10 @@
 // Needed because we are refering to patches.
 #include "r_data.hpp"
 
+#include <memory>
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+
 //
 // VIDEO
 //

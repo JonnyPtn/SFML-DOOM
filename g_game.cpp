@@ -3,6 +3,7 @@
 
 #include "doomdef.hpp" 
 #include "doomstat.hpp"
+#include "i_video.hpp"
 
 #include "z_zone.hpp"
 #include "f_finale.hpp"
@@ -546,14 +547,7 @@ bool G_Responder (sf::Event* ev)
 			  mousebuttons[2] = false;
 			  break;
 		  }
-		  break;
-	  case sf::Event::MouseMoved:
-		mousex = (ev->mouseMove.x - lastMousePos.x)*(mouseSensitivity+5)/10;
-		mousey = (lastMousePos.y - ev->mouseMove.y)*(mouseSensitivity+5)/10;
-		lastMousePos = { ev->mouseMove.x,ev->mouseMove.y };
-		
-		return true;    // eat events 
- 
+		  break; 
 	  case sf::Event::JoystickMoved:
 		joybuttons[1] = ev->joystickButton.button == 1; 
 		joybuttons[2] = ev->joystickButton.button == 2; 
@@ -582,6 +576,16 @@ void G_Ticker (void)
     int		buf; 
     ticcmd_t*	cmd;
     
+	//first check for mouse movement and capture it
+	sf::Vector2i windowSize;
+	if (window->hasFocus())
+	{
+		sf::Vector2i windowSize(window->getSize());
+		mousex = (sf::Mouse::getPosition(*window).x - windowSize.x / 2)*(mouseSensitivity + 5) / 10;
+		mousey = (windowSize.y / 2 - sf::Mouse::getPosition(*window).y)*(mouseSensitivity + 5) / 10;
+		sf::Mouse::setPosition({ windowSize.x / 2, windowSize.y / 2 }, *window);
+	}
+
     // do player reborns if needed
     for (i=0 ; i<MAXPLAYERS ; i++) 
 	if (playeringame[i] && players[i].playerstate == PST_REBORN) 

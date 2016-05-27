@@ -2,6 +2,7 @@
 
 #include "doomtype.hpp"
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 // Called by D_DoomMain,
 // determines the hardware configuration
@@ -28,3 +29,11 @@ void I_EndRead (void);
 bool pollEvent(sf::Event& ev);
 
 extern sf::Color	colors[256];
+
+extern std::unique_ptr<sf::RenderWindow> window;
+extern std::unique_ptr<sf::Texture>	texture;
+extern std::unique_ptr<sf::Sprite>		sprite;
+extern sf::Color	colors[256];
+extern int		X_screen;
+extern int		X_width;
+extern int		X_height;
