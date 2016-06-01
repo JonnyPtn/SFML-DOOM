@@ -1,8 +1,3 @@
-
-
-static const char rcsid[] = "$Id: d_net.c,v 1.3 1997/02/03 22:01:47 b1 Exp $";
-
-
 #include "m_menu.hpp"
 #include "i_system.hpp"
 #include "i_video.hpp"
@@ -80,11 +75,6 @@ unsigned NetbufferChecksum(void)
 	int		i, l;
 
 	c = 0x1234567;
-
-	// FIXME -endianess?
-#ifdef NORMALUNIX
-	return 0;			// unsigned char order problems
-#endif
 
 	l = (NetbufferSize() - (int)&(((doomdata_t *)0)->retransmitfrom)) / 4;
 	for (i = 0; i<l; i++)
