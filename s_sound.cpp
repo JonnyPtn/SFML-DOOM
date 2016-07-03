@@ -1,6 +1,10 @@
 #define SAMPLERATE		11025	// Hz
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits>
+
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #include "i_system.hpp"
 #include "i_sound.hpp"
@@ -368,13 +372,17 @@ S_StartSoundAtVolume
 
 	sounds.emplace_back(soundBuffers[sfx->name]);
 	sounds.back().play();
-	if (origin)
+	if (origin && origin != players[consoleplayer].mo)
 	{
-//		sounds.back().setPosition(origin->x, origin->y, origin->z);
+		sounds.back().setPosition(origin->x, origin->y, origin->z);
 
 		//some numbers to frig it a little
 		sounds.back().setMinDistance(S_CLOSE_DIST);
-		sounds.back().setAttenuation(S_ATTENUATOR);
+		sounds.back().setAttenuation(1.f);
+	}
+	else
+	{
+		sounds.back().setRelativeToListener(true);
 	}
 	 // increase the usefulness
   if (sfx->usefulness++ < 0)
@@ -526,7 +534,18 @@ void S_UpdateSounds(void* listener_p)
 
 	if (listener)
 	{
-	//	sf::Listener::setPosition(listener->x, listener->y, listener->z);
+		sf::Listener::setPosition(listener->x, listener->y, 0);
+		auto angle(static_cast<float>(listener->angle) / std::numeric_limits<unsigned int>::max());
+		auto degrees = angle*360.f;
+
+		//flip 180 degrees because...
+		degrees += 180.f;
+		if (degrees > 360.f)
+			degrees -= 360.f;
+
+		auto radians = degrees / (180.f / M_PI);
+
+		sf::Listener::setDirection(std::cos(radians),0, std::sin(radians));
 	}
 
 	for (auto sound = sounds.begin();sound != sounds.end();sound++)
