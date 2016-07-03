@@ -641,7 +641,7 @@ void S_SetSfxVolume(int volume)
     if (volume < 0 || volume > 127)
 	I_Error("Attempt to set sfx volume at %d", volume);
 
-    snd_SfxVolume = volume;
+    sf::Listener::setGlobalVolume(volume/15.f*100.f);
 
 }
 
