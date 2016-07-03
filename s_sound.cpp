@@ -360,7 +360,7 @@ S_StartSoundAtVolume
 			i++;
 		}
 
-		if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
+		if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize-1, 1, SAMPLERATE))
 			fprintf(stderr, "Failed to load sound");
 	}
 
@@ -368,7 +368,7 @@ S_StartSoundAtVolume
 	sounds.back().play();
 	if (origin)
 	{
-		sounds.back().setPosition(origin->x, origin->y, origin->z);
+//		sounds.back().setPosition(origin->x, origin->y, origin->z);
 
 		//some numbers to frig it a little
 		sounds.back().setMinDistance(S_CLOSE_DIST);
@@ -524,7 +524,7 @@ void S_UpdateSounds(void* listener_p)
 
 	if (listener)
 	{
-		sf::Listener::setPosition(listener->x, listener->y, listener->z);
+	//	sf::Listener::setPosition(listener->x, listener->y, listener->z);
 	}
 
 	for (auto sound = sounds.begin();sound != sounds.end();sound++)

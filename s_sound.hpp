@@ -2,10 +2,11 @@
 
 #include <SFML/Audio.hpp>
 #include <map>
+#include <list>
 
 //sounds, sfx, etc.
 static std::map<std::string, sf::SoundBuffer> soundBuffers;
-static std::vector<sf::Sound>	sounds;
+static std::list<sf::Sound>	sounds;
 
 //
 // Initializes sound stuff, including volume
