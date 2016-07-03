@@ -112,11 +112,6 @@ int     mousebfire;
 int     mousebstrafe; 
 int     mousebforward; 
  
-int     joybfire; 
-int     joybstrafe; 
-int     joybuse; 
-int     joybspeed; 
- 
 #define MAXPLMOVE		(forwardmove[1]) 
  
 #define TURBOTHRESHOLD	0x32
@@ -147,11 +142,18 @@ int     dclicktime2;
 int		dclickstate2;
 int		dclicks2;
 
-// joystick values are repeated 
-int     joyxmove;
-int		joyymove;
-bool    joyarray[5]; 
-bool*	joybuttons = &joyarray[1];		// allow [-1] 
+float   leftStickXMove;
+float	leftStickYMove;
+float   rightStickXMove;
+float	rightStickYMove;
+
+float	TriggerMove;
+
+float	joyDeadZone(40.f);
+std::vector<bool> joybuttons(sf::Joystick::ButtonCount,false);
+
+int joybspeed(4);
+int	joybuse(2);
  
 int		savegameslot; 
 char	savedescription[32]; 
@@ -197,83 +199,43 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	
     cmd->consistancy = consistancy[consoleplayer][maketic%BACKUPTICS]; 
 
- 
-    strafe = gamekeydown[sf::Keyboard::LAlt] || mousebuttons[mousebstrafe] 
-	|| joybuttons[joybstrafe]; 
     speed = gamekeydown[sf::Keyboard::LShift] || gamekeydown[sf::Keyboard::RShift] || joybuttons[joybspeed];
  
     forward = side = 0;
     
     // use two stage accelerative turning
     // on the keyboard and joystick
-    if (joyxmove < 0
-	|| joyxmove > 0  
+    if (rightStickXMove < -joyDeadZone || rightStickXMove > joyDeadZone  
 	|| gamekeydown[sf::Keyboard::Right]
 	|| gamekeydown[sf::Keyboard::Left]) 
-	turnheld += ticdup; 
+		turnheld += ticdup; 
     else 
-	turnheld = 0; 
+		turnheld = 0; 
 
     if (turnheld < SLOWTURNTICS) 
-	tspeed = 2;             // slow turn 
+		tspeed = 2;             // slow turn 
     else 
-	tspeed = speed;
-    
-    // let movement keys cancel each other out
-    if (strafe) 
-    { 
-		if (gamekeydown[sf::Keyboard::Right]) 
-		{
-		    // fprintf(stderr, "strafe right\n");
-		    side += sidemove[speed]; 
-		}
-		if (gamekeydown[sf::Keyboard::Left]) 
-		{
-		    //	fprintf(stderr, "strafe left\n");
-		    side -= sidemove[speed]; 
-		}
-		if (joyxmove > 0) 
-		    side += sidemove[speed]; 
-		if (joyxmove < 0) 
-		    side -= sidemove[speed]; 
+		tspeed = speed;
+     
+	if (gamekeydown[sf::Keyboard::Right] || rightStickXMove > joyDeadZone)
+	    cmd->angleturn -= angleturn[tspeed]; 
+	if (gamekeydown[sf::Keyboard::Left] || rightStickXMove < -joyDeadZone)
+	    cmd->angleturn += angleturn[tspeed]; 
  
-    } 
-    else 
-    { 
-		if (gamekeydown[sf::Keyboard::Right]) 
-		    cmd->angleturn -= angleturn[tspeed]; 
-		if (gamekeydown[sf::Keyboard::Left]) 
-		    cmd->angleturn += angleturn[tspeed]; 
-		if (joyxmove > 0) 
-		    cmd->angleturn -= angleturn[tspeed]; 
-		if (joyxmove < 0) 
-		    cmd->angleturn += angleturn[tspeed]; 
-    } 
- 
-    if (gamekeydown[sf::Keyboard::Up] || gamekeydown[sf::Keyboard::W]) 
-    {
-		// fprintf(stderr, "up\n");
+    if (gamekeydown[sf::Keyboard::Up] || gamekeydown[sf::Keyboard::W] || leftStickYMove < -joyDeadZone)
 		forward += forwardmove[speed]; 
-    }
-    if (gamekeydown[sf::Keyboard::Down] || gamekeydown[sf::Keyboard::S]) 
-    {
-		// fprintf(stderr, "down\n");
+    if (gamekeydown[sf::Keyboard::Down] || gamekeydown[sf::Keyboard::S] || leftStickYMove > joyDeadZone)
 		forward -= forwardmove[speed]; 
-    }
-    if (joyymove < 0) 
-		forward += forwardmove[speed]; 
-    if (joyymove > 0) 
-		forward -= forwardmove[speed]; 
-    if (gamekeydown[sf::Keyboard::D]) 
-		side += sidemove[speed]; 
-    if (gamekeydown[sf::Keyboard::A]) 
+	if (gamekeydown[sf::Keyboard::D] || leftStickXMove > joyDeadZone)
+		side += sidemove[speed];
+	if (gamekeydown[sf::Keyboard::A] || leftStickXMove < -joyDeadZone)
 		side -= sidemove[speed];
     
     // buttons
     cmd->chatchar = HU_dequeueChatChar(); 
  
     if (gamekeydown[sf::Keyboard::LControl] || mousebuttons[mousebfire] 
-	|| joybuttons[joybfire]) 
+	|| TriggerMove < -joyDeadZone) 
 		cmd->buttons |= BT_ATTACK; 
  
     if (gamekeydown[sf::Keyboard::Space] || joybuttons[joybuse] ) 
@@ -335,33 +297,6 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 		} 
     }
     
-    // strafe double click
-    bstrafe =
-	mousebuttons[mousebstrafe] 
-	|| joybuttons[joybstrafe]; 
-    if (bstrafe != (dclickstate2!=0) && dclicktime2 > 1 ) 
-    { 
-	dclickstate2 = bstrafe; 
-	if (dclickstate2) 
-	    dclicks2++; 
-	if (dclicks2 == 2) 
-	{ 
-	    cmd->buttons |= BT_USE; 
-	    dclicks2 = 0; 
-	} 
-	else 
-	    dclicktime2 = 0; 
-    } 
-    else 
-    { 
-	dclicktime2 += ticdup; 
-	if (dclicktime2 > 20) 
-	{ 
-	    dclicks2 = 0; 
-	    dclickstate2 = 0; 
-	} 
-    } 
- 
 	cmd->angleturn -= mousex*0x8; 
 
     mousex = mousey = 0; 
@@ -444,11 +379,11 @@ void G_DoLoadLevel (void)
     
     // clear cmd building stuff
     memset (gamekeydown, 0, sizeof(gamekeydown)); 
-    joyxmove = joyymove = 0; 
     mousex = mousey = 0; 
     sendpause = sendsave = paused = false; 
     memset (mousebuttons, 0, sizeof(mousebuttons)); 
-    memset (joybuttons, 0, sizeof(joybuttons)); 
+	for (auto& button : joybuttons)
+		button = false;
 } 
  
  
@@ -549,14 +484,35 @@ bool G_Responder (sf::Event* ev)
 		  }
 		  break; 
 	  case sf::Event::JoystickMoved:
-		joybuttons[1] = ev->joystickButton.button == 1; 
-		joybuttons[2] = ev->joystickButton.button == 2; 
-		joybuttons[3] = ev->joystickButton.button == 3; 
-		joybuttons[0] = ev->joystickButton.button == 4; 
-		/*
-		joyxmove = ev->data2; 
-		joyymove = ev->data3*/
-		return true;    // eat events 
+		switch (ev->joystickMove.axis)
+		{
+		case sf::Joystick::Axis::X:
+			leftStickXMove = ev->joystickMove.position;
+			break;
+
+		case sf::Joystick::Axis::Y:
+			leftStickYMove = ev->joystickMove.position;
+			break;
+			
+		case sf::Joystick::Axis::U:
+			rightStickXMove = ev->joystickMove.position;
+			break;
+
+		case sf::Joystick::Axis::V:
+			rightStickYMove = ev->joystickMove.position;
+
+		case sf::Joystick::Axis::Z:
+			TriggerMove = ev->joystickMove.position;
+		}
+		break;    // eat events 
+
+	  case sf::Event::JoystickButtonPressed:
+		  joybuttons[ev->joystickButton.button] = true;
+		  break;
+
+	  case sf::Event::JoystickButtonReleased:
+		  joybuttons[ev->joystickButton.button] = false;
+		  break;
 
       default: 
 		break; 

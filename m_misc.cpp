@@ -164,8 +164,6 @@ extern int	mousebfire;
 extern int	mousebstrafe;
 extern int	mousebforward;
 
-extern int	joybfire;
-extern int	joybstrafe;
 extern int	joybuse;
 extern int	joybspeed;
 
@@ -249,10 +247,6 @@ default_t	defaults[] =
     {"mouseb_forward",&mousebforward,2},
 
     {"use_joystick",&usejoystick, 0},
-    {"joyb_fire",&joybfire,0},
-    {"joyb_strafe",&joybstrafe,1},
-    {"joyb_use",&joybuse,3},
-    {"joyb_speed",&joybspeed,2},
 
     {"screenblocks",&screenblocks, 10},
     {"detaillevel",&detailLevel, 0},

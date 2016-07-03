@@ -847,7 +847,7 @@ void M_NewGame(int choice)
 	return;
     }
 
-	M_SetupNextMenu(&NewDef);
+	M_SetupNextMenu(&EpiDef);
 }
 
 
@@ -884,6 +884,22 @@ void M_ChooseSkill(int choice)
 
 void M_Episode(int choice)
 {	 
+	if ((gamemode == shareware)
+		&& choice)
+	{
+		M_StartMessage(SWSTRING, NULL, false);
+		M_SetupNextMenu(&ReadDef1);
+		return;
+	}
+
+	// Yet another hack...
+	if ((gamemode == registered)
+		&& (choice > 2))
+	{
+		fprintf(stderr,
+			"M_Episode: 4th episode requires UltimateDOOM\n");
+		choice = 0;
+	}
     epi = choice;
     M_SetupNextMenu(&NewDef);
 }
@@ -1309,101 +1325,62 @@ bool M_Responder (sf::Event* ev)
     ch = -1;
 	
 	//JONNY//
-	if (ev->type != sf::Event::KeyPressed && ev->type != sf::Event::TextEntered)
+	if (ev->type != sf::Event::KeyPressed 
+		&& ev->type != sf::Event::TextEntered 
+		&& ev->type != sf::Event::JoystickMoved
+		&& ev->type != sf::Event::JoystickButtonPressed)
 		return false;
 	else if (ev->type == sf::Event::TextEntered)
 		ch = ev->text.unicode;
 
-    if (ev->type == sf::Event::JoystickMoved && joywait < I_GetTime())
-    {
-		//JONNY//what's data3 and data2?!?!
-	/*if (ev->data3 == -1)
+	if (ev->type == sf::Event::KeyPressed)
 	{
-	    ch = KEY_UPARROW;
-	    joywait = I_GetTime() + 5;
-	}
-	else if (ev->data3 == 1)
-	{
-	    ch = KEY_DOWNARROW;
-	    joywait = I_GetTime() + 5;
-	}
-		
-	if (ev->data2 == -1)
-	{
-	    ch = KEY_LEFTARROW;
-	    joywait = I_GetTime() + 2;
-	}
-	else if (ev->data2 == 1)
-	{
-	    ch = KEY_RIGHTARROW;
-	    joywait = I_GetTime() + 2;
-	}
-		*/
-	if (ev->key.code&1)
-	{
-	    ch = sf::Keyboard::Return;
-	    joywait = I_GetTime() + 5;
-	}
-	if (ev->key.code &2)
-	{
-	    ch = sf::Keyboard::BackSpace;
-	    joywait = I_GetTime() + 5;
-	}
-    }
-    else
-    {
-	if (ev->type == sf::Event::MouseMoved && mousewait < I_GetTime())
-	{
-		//JONNY////no idea what data3 is?!?!
-	   /* mousey += ev->data3;
-	    if (mousey < lasty-30)
-	    {
-		ch = KEY_DOWNARROW;
-		mousewait = I_GetTime() + 5;
-		mousey = lasty -= 30;
-	    }
-	    else if (mousey > lasty+30)
-	    {
-		ch = KEY_UPARROW;
-		mousewait = I_GetTime() + 5;
-		mousey = lasty += 30;
-	    }
-		
-	    mousex += ev->data2;
-	    if (mousex < lastx-30)
-	    {
-		ch = KEY_LEFTARROW;
-		mousewait = I_GetTime() + 5;
-		mousex = lastx -= 30;
-	    }
-	    else if (mousex > lastx+30)
-	    {
-		ch = KEY_RIGHTARROW;
-		mousewait = I_GetTime() + 5;
-		mousex = lastx += 30;
-	    }*/
-		
-	    if (ev->key.code &1)
-	    {
-			ch = sf::Keyboard::Return;
-			mousewait = I_GetTime() + 15;
-	    }
-			
-	    if (ev->key.code &2)
-	    {
-			ch = sf::Keyboard::BackSpace;
-			mousewait = I_GetTime() + 15;
-	    }
-	}
-	else
-	    if (ev->type == sf::Event::KeyPressed)
-	    {
 		ch = ev->key.code;
-	    }
-    }
+	}
+	else if (ev->type == sf::Event::JoystickMoved)
+	{
+		static bool joystickHeld(false);
+		static const float joyDeadZone(40.f);
+		switch (ev->joystickMove.axis)
+		{
+		case sf::Joystick::Axis::Y:
+			if (ev->joystickMove.position < -joyDeadZone)
+			{
+				if (!joystickHeld)
+				{
+					ch = sf::Keyboard::Up;
+					joystickHeld = true;
+				}
+			}
+			else if (ev->joystickMove.position > joyDeadZone)
+			{
+				if (!joystickHeld)
+				{
+					ch = sf::Keyboard::Down;
+					joystickHeld = true;
+				}
+			}
+			else if (joystickHeld)
+			{
+				joystickHeld = false;
+			}
+			break;
+
+		default:
+			break;
+		}
+	}
+	else if (ev->type == sf::Event::JoystickButtonPressed)
+	{
+		if (ev->joystickButton.button == 0) //a
+			ch = sf::Keyboard::Return;
+		else if (ev->joystickButton.button == 1) //b
+			ch = sf::Keyboard::BackSpace;
+
+	}
     
     if (ch == -1)
-	return false;
+		return false;
 
     
     // Save Game string input
@@ -1572,14 +1549,14 @@ bool M_Responder (sf::Event* ev)
     switch (ch)
     {
       case sf::Keyboard::Down:
-	do
-	{
-	    if (itemOn+1 > currentMenu->numitems-1)
-		itemOn = 0;
-	    else itemOn++;
-	    S_StartSound(NULL,sfx_pstop);
-	} while(currentMenu->menuitems[itemOn].status==-1);
-	return true;
+		do
+		{
+		    if (itemOn+1 > currentMenu->numitems-1)
+			itemOn = 0;
+		    else itemOn++;
+		    S_StartSound(NULL,sfx_pstop);
+		} while(currentMenu->menuitems[itemOn].status==-1);
+		return true;
 		
       case sf::Keyboard::Up:
 	do
