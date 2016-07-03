@@ -4,7 +4,7 @@ project(doom)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
-find_package(SFML 2.3 COMPONENTS graphics audio window system)
+find_package(SFML 2.3 COMPONENTS graphics audio window system network)
 
 file(GLOB SOURCE "*.h" "*.hpp" "*.cpp")
 
