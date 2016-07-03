@@ -356,11 +356,13 @@ S_StartSoundAtVolume
 		int i = 0;
 		while (i < dataSize)
 		{
-			newData.push_back(static_cast<sf::Int16>(data[i])<<7);
+			sf::Int16 newSample(data[i] << 8);	//8bit to 16bit
+			newSample ^= 0x8000;	//flip the sign
+			newData.push_back(newSample);
 			i++;
 		}
 
-		if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize-1, 1, SAMPLERATE))
+		if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
 			fprintf(stderr, "Failed to load sound");
 	}
 
