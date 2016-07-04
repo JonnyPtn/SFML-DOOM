@@ -179,10 +179,6 @@ extern int	screenblocks;
 
 extern int	showMessages;
 
-// machine-independent sound params
-extern	int	numChannels;
-
-
 // UNIX hack, to be removed.
 #ifdef SNDSERV
 extern char*	sndserver_filename;
@@ -250,10 +246,6 @@ default_t	defaults[] =
 
     {"screenblocks",&screenblocks, 10},
     {"detaillevel",&detailLevel, 0},
-
-    {"snd_channels",&numChannels, 3},
-
-
 
     {"usegamma",&usegamma, 0},
 
