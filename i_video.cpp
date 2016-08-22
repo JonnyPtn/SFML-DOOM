@@ -156,6 +156,7 @@ void I_InitGraphics(void)
 	window.reset(new sf::RenderWindow());
 	window->create(sf::VideoMode(X_width * 2, X_height * 2), displayname); //quick double size for now
 	window->setVerticalSyncEnabled(true);
+	window->setMouseCursorGrabbed(true);
 	texture.reset(new sf::Texture);
 	texture->create(X_width, X_height);
 	sprite.reset(new sf::Sprite());

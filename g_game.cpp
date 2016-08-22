@@ -483,6 +483,8 @@ bool G_Responder (sf::Event* ev)
 			  break;
 		  }
 		  break; 
+	  case sf::Event::MouseMoved:
+		  break;
 	  case sf::Event::JoystickMoved:
 		switch (ev->joystickMove.axis)
 		{
