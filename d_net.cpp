@@ -19,15 +19,15 @@ doomcom_t*	doomcom;
 doomdata_t*	netbuffer;		// points inside doomcom
 
 
-							//
-							// NETWORKING
-							//
-							// gametic is the tic about to (or currently being) run
-							// maketic is the tick that hasn't had control made for it yet
-							// nettics[] has the maketics for all players 
-							//
-							// a gametic cannot be run until nettics[] > gametic for all players
-							//
+//
+// NETWORKING
+//
+// gametic is the tic about to (or currently being) run
+// maketic is the tick that hasn't had control made for it yet
+// nettics[] has the maketics for all players 
+//
+// a gametic cannot be run until nettics[] > gametic for all players
+//
 #define	RESENDCOUNT	10
 #define	PL_DRONE	0x80	// bit flag in doomdata->player
 
@@ -63,7 +63,7 @@ doomdata_t	reboundstore;
 //
 int NetbufferSize(void)
 {
-	return (int)&(((doomdata_t *)0)->cmds[netbuffer->numtics]);
+	return sizeof(doomdata_t);
 }
 
 //

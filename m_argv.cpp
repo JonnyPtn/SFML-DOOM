@@ -5,9 +5,9 @@ std::vector<std::string>	CmdParameters::myargv;
 
 CmdParameters::CmdParameters(int argc, char** argv)
 {
-	myargc = argc;
-	while (argc--)
-		myargv.emplace_back(argv[argc]);
+	myargc = 0;
+	while (myargc < argc)
+		myargv.emplace_back(argv[myargc++]);
 }
 //
 // M_CheckParm

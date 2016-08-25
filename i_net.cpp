@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <iostream>
 
 #ifdef _WIN32
 #include "unistd.hpp"
@@ -92,7 +93,7 @@ void PacketSend (void)
 		sw.cmds[c].buttons = netbuffer->cmds[c].buttons;
     }
 		
-	printf ("sending %i\n",gametic);		
+	printf ("sending %s\n",sendaddress[doomcom->remotenode].toString().c_str());		
     auto result = sendsocket.send(static_cast<void*>(&sw), doomcom->datalength,
 		sendaddress[doomcom->remotenode], DOOMPORT);
     	if (result != sf::Socket::Done)
@@ -110,12 +111,12 @@ void PacketGet (void)
 	sf::IpAddress	fromAddress;
 	unsigned short	port = DOOMPORT;
 
-	auto result = insocket.receive(static_cast<void*>(&sw), static_cast<size_t>(sizeof(sw)),received
+	auto result = insocket.receive(&sw, sizeof(sw),received
 	  , fromAddress, port);
     if (result != sf::Socket::Done)
     {
-		if (errno != EWOULDBLOCK)
-				    I_Error ("GetPacket: %s",strerror(errno));
+		if (insocket.isBlocking())
+			I_Error ("GetPacket: %i",result);
 		doomcom->remotenode = -1;		// no packet
 		return;
     }
@@ -123,7 +124,7 @@ void PacketGet (void)
     {
 		static int first=1;
 		if (first)
-			printf("len=%d:p=[0x%x 0x%x] \n", result, *(int*)&sw, *((int*)&sw+1));
+			printf("received len=%d:p=[0x%x 0x%x] \n", received, *(int*)&sw, *((int*)&sw+1));
 		first = 0;
     }
 
@@ -241,7 +242,11 @@ void I_InitNetwork (void)
     netgame = true;
 
     // parse player number and host list
-    doomcom->consoleplayer = CmdParameters::myargv[i+1][0]-'1';
+	//doomcom->consoleplayer = CmdParameters::myargv[i+1][0]-'1';
+
+	//cin instead, we still haven't opened the window yet
+	std::cout << "Enter player number (0 is host):";
+	std::cin >> doomcom->consoleplayer;
 
     doomcom->numnodes = 1;	// this node for sure
 	
