@@ -124,7 +124,7 @@ void PacketGet (void)
     {
 		static int first=1;
 		if (first)
-			printf("received len=%d:p=[0x%x 0x%x] \n", received, *(int*)&sw, *((int*)&sw+1));
+			printf("received len=%zd=[0x%p 0x%p] \n", received, &sw, (&sw)+1);
 		first = 0;
     }
 

@@ -6,7 +6,7 @@
 
 int main( int argc, char** argv ) 
 { 
-	CmdParameters::CmdParameters(argc, argv);
+	CmdParameters(argc, argv);
  
     D_DoomMain (); 
 

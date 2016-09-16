@@ -451,8 +451,8 @@ W_CacheLumpNum
 {
     unsigned char*	ptr;
 
-    if (static_cast<int>(lump) >= numlumps)
-	I_Error ("W_CacheLumpNum: %i >= numlumps",lump);
+    if (lump >= numlumps)
+	   I_Error ("W_CacheLumpNum: %i >= numlumps",lump);
 		
 	if (!lumpcache[lump])
 	{

@@ -201,7 +201,7 @@ void M_WriteText(int x, int y, char *string);
 int  M_StringWidth(char *string);
 int  M_StringHeight(const std::string& string);
 void M_StartControlPanel(void);
-void M_StartMessage(char *string,void *routine,bool input);
+void M_StartMessage(char *string, void(*routine)(int),bool input);
 void M_StopMessage(void);
 void M_ClearMenus (void);
 
@@ -1192,13 +1192,13 @@ M_DrawSelCell
 void
 M_StartMessage
 ( char*		string,
-  void*		routine,
+  void(*routine)(int),
   bool	input )
 {
     messageLastMenuActive = menuactive;
     messageToPrint = 1;
     messageString = string;
-	messageRoutine = (void(*)(int))routine;
+	messageRoutine = routine;
     messageNeedsInput = input;
     menuactive = true;
     return;

@@ -159,7 +159,8 @@ void F_StartFinale (void)
 bool F_Responder (sf::Event *event)
 {
     if (finalestage == 2)
-	return F_CastResponder (event);	
+		return F_CastResponder (event);
+	return false;
 }
 
 //
@@ -663,11 +664,11 @@ void F_Drawer (void)
 				  (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
 		    else
 		      V_DrawPatch (0,0,0,
-				  (patch_t*)("HELP2",PU_CACHE));
+				  (patch_t*)(std::intptr_t(PU_CACHE)));
 		    break;
 		  case 2:
 		    V_DrawPatch(0,0,0,
-				(patch_t*)("VICTORY2",PU_CACHE));
+				(patch_t*)(std::intptr_t(PU_CACHE)));
 		    break;
 		  case 3:
 		    F_BunnyScroll ();

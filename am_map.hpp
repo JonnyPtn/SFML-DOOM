@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Window/Event.hpp>
+
 // Called by main loop.
 bool AM_Responder (sf::Event& ev);
 

@@ -663,7 +663,7 @@ void D_DoomMain (void)
 		    sprintf (file,"~\"DEVMAPS\"E%cM%c.wad",
 				CmdParameters::myargv[p+1][0], CmdParameters::myargv[p+2][0]);
 		    printf("Warping to Episode %s, Map %s.\n",
-				CmdParameters::myargv[p+1], CmdParameters::myargv[p+2]);
+				CmdParameters::myargv[p+1].c_str(), CmdParameters::myargv[p+2].c_str());
 		    break;
 		    
 		case commercial:
@@ -695,9 +695,9 @@ void D_DoomMain (void)
 
     if (p && p < CmdParameters::myargc-1)
     {
-		sprintf (file,"%s.lmp", CmdParameters::myargv[p+1]);
+		sprintf (file,"%s.lmp", CmdParameters::myargv[p+1].c_str());
 		D_AddFile (file);
-		printf("Playing demo %s.lmp.\n", CmdParameters::myargv[p+1]);
+		printf("Playing demo %s.lmp.\n", CmdParameters::myargv[p+1].c_str());
     }
     
     // get skill / episode / map from parms
@@ -846,9 +846,8 @@ void D_DoomMain (void)
     if (p && p<CmdParameters::myargc-1)
     {
 		// for statistics driver
-		extern  void*	statcopy;                            
-
-		statcopy = (void*)atoi(CmdParameters::myargv[p+1].c_str());
+		extern  void*	statcopy;
+		statcopy = (void*)atol(CmdParameters::myargv[p+1].c_str());
 		printf ("External statistics registered.\n");
     }
     

@@ -455,13 +455,13 @@ void R_InitTextures (void)
     }
     numtextures = numtextures1 + numtextures2;
 	
-    textures = (texture_t**)Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecolumnlump = (short**)Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecolumnofs = (unsigned short**)Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecomposite = (unsigned char**)Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturecompositesize = (int*)Z_Malloc (numtextures*4, PU_STATIC, 0);
-    texturewidthmask = (int*)Z_Malloc (numtextures*4, PU_STATIC, 0);
-    textureheight = (int*)Z_Malloc (numtextures*4, PU_STATIC, 0);
+    textures = (texture_t**)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
+    texturecolumnlump = (short**)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
+    texturecolumnofs = (unsigned short**)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
+    texturecomposite = (unsigned char**)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
+    texturecompositesize = (int*)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
+    texturewidthmask = (int*)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
+    textureheight = (int*)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
 
     totalwidth = 0;
     
@@ -616,7 +616,7 @@ void R_InitColormaps (void)
     lump = W_GetNumForName("COLORMAP"); 
     length = W_LumpLength (lump) + 255; 
     colormaps = (lighttable_t*)Z_Malloc (length, PU_STATIC, 0); 
-    colormaps = (unsigned char *)( ((int)colormaps + 255)&~0xff); 
+    colormaps = (unsigned char *)( ((std::intptr_t)colormaps + 255)&~0xff); 
     W_ReadLump (lump,colormaps); 
 }
 

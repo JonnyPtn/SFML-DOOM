@@ -76,7 +76,7 @@ unsigned NetbufferChecksum(void)
 
 	c = 0x1234567;
 
-	l = (NetbufferSize() - (int)&(((doomdata_t *)0)->retransmitfrom)) / 4;
+	l = (NetbufferSize() - (std::intptr_t)&(((doomdata_t *)0)->retransmitfrom)) / 4;
 	for (i = 0; i<l; i++)
 		c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i + 1);
 

@@ -424,7 +424,7 @@ void R_InitTranslationTables (void)
     int		i;
 	
     translationtables = (unsigned char*)Z_Malloc (256*3+255, PU_STATIC, 0);
-    translationtables = (unsigned char *)(( (int)translationtables + 255 )& ~255);
+    translationtables = (unsigned char *)(( (std::intptr_t)translationtables + 255 )& ~255);
     
     // translate just the 16 green colors
     for (i=0 ; i<256 ; i++)

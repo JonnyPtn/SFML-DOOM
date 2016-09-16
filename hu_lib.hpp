@@ -123,7 +123,7 @@ void
 HUlib_addMessageToSText
 ( hu_stext_t*	s,
   char*		prefix,
-  char*		msg );
+  const char*		msg );
 
 // draws stext
 void HUlib_drawSText(hu_stext_t* s);
