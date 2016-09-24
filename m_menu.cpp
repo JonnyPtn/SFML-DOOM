@@ -1444,7 +1444,7 @@ bool M_Responder (sf::Event* ev)
 	    
     // F-Keys
     if (!menuactive && ev->type == sf::Event::KeyPressed)
-\	switch(ev->key.code)
+	switch(ev->key.code)
 	{
 	case sf::Keyboard::Dash:         // Screen size down
 	    if (automapactive || chat_on)
