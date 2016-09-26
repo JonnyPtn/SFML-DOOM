@@ -17,6 +17,7 @@
 #define POINTER_WARP_COUNTDOWN	1
 
 std::unique_ptr<sf::RenderWindow> window;
+bool	isFullscreen(false);
 
 std::unique_ptr<sf::Texture>	texture;
 std::unique_ptr<sf::Sprite>		sprite;
@@ -125,8 +126,8 @@ void I_InitGraphics(void)
 
 	signal(SIGINT, (void(*)(int)) I_Quit);
 
-	X_width = SCREENWIDTH;
-	X_height = SCREENHEIGHT;
+	X_width = SCREENWIDTH * 2;
+	X_height = SCREENHEIGHT * 2;
 
 	// check for command-line display name
 	if ((pnum = CmdParameters::M_CheckParm("-disp"))) // suggest parentheses around assignment
@@ -154,11 +155,11 @@ void I_InitGraphics(void)
 	}
 
 	window.reset(new sf::RenderWindow());
-	window->create(sf::VideoMode(X_width * 2, X_height * 2), displayname); //quick double size for now
+	window->create(sf::VideoMode(X_width, X_height), displayname); //quick double size for now
 	window->setVerticalSyncEnabled(true);
 	window->setMouseCursorGrabbed(true);
 	texture.reset(new sf::Texture);
-	texture->create(X_width, X_height);
+	texture->create(SCREENWIDTH, SCREENHEIGHT);
 	sprite.reset(new sf::Sprite());
 	sprite->setTexture(*texture);
 	sprite->setScale({2.f,2.f});
@@ -172,4 +173,24 @@ void I_InitGraphics(void)
 bool pollEvent(sf::Event& ev)
 {
 	return window->pollEvent(ev);
+}
+
+void toggleFullscreen()
+{
+	if (isFullscreen)
+	{
+		window->create(sf::VideoMode(X_width, X_height), "SFML-DOOM", sf::Style::Default);
+		isFullscreen = false;
+		sprite->setScale(2.f, 2.f);
+	}
+	else
+	{
+		window->create(sf::VideoMode::getDesktopMode(), "SFML-DOOM", sf::Style::Fullscreen);
+		isFullscreen = true;
+
+		//adjust sprite scale
+		auto windowSize = static_cast<sf::Vector2f>(window->getSize());
+		sprite->setScale(windowSize.x / SCREENWIDTH, windowSize.y / SCREENHEIGHT);
+	}
+	window->setMouseCursorGrabbed(true);
 }

@@ -441,7 +441,13 @@ bool G_Responder (sf::Event* ev)
     switch (ev->type) 
     { 
 	case sf::Event::KeyPressed:
-		if (ev->key.code == sf::Keyboard::P)
+		//check for full 
+		if (ev->key.code == sf::Keyboard::F &&
+			ev->key.control)
+		{
+			toggleFullscreen();
+		}
+		else if (ev->key.code == sf::Keyboard::P)
 		{ 
 		    sendpause = true; 
 		    return true; 

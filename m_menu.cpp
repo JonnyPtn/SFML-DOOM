@@ -1336,6 +1336,12 @@ bool M_Responder (sf::Event* ev)
 	if (ev->type == sf::Event::KeyPressed)
 	{
 		ch = ev->key.code;
+		//always check for fullscreen toggle first
+		if (ev->key.code == sf::Keyboard::F &&
+			ev->key.control)
+		{
+			toggleFullscreen();
+		}
 	}
 	else if (ev->type == sf::Event::JoystickMoved)
 	{
@@ -1441,7 +1447,7 @@ bool M_Responder (sf::Event* ev)
 	S_StartSound(NULL,sfx_swtchx);
 	return true;
     }
-	    
+
     // F-Keys
     if (!menuactive && ev->type == sf::Event::KeyPressed)
 	switch(ev->key.code)
