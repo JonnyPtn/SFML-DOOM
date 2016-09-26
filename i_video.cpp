@@ -193,4 +193,5 @@ void toggleFullscreen()
 		sprite->setScale(windowSize.x / SCREENWIDTH, windowSize.y / SCREENHEIGHT);
 	}
 	window->setMouseCursorGrabbed(true);
+	window->setMouseCursorVisible(false);
 }
