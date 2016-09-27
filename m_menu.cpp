@@ -107,7 +107,7 @@ bool			menuactive;
 extern bool		sendpause;
 char			savegamestrings[10][SAVESTRINGSIZE];
 
-char	endstring[160];
+std::string	endstring;
 
 
 //
@@ -201,7 +201,7 @@ void M_WriteText(int x, int y, char *string);
 int  M_StringWidth(char *string);
 int  M_StringHeight(const std::string& string);
 void M_StartControlPanel(void);
-void M_StartMessage(char *string, void(*routine)(int),bool input);
+void M_StartMessage(const std::string& string, void(*routine)(int),bool input);
 void M_StopMessage(void);
 void M_ClearMenus (void);
 
@@ -1064,10 +1064,10 @@ void M_QuitDOOM(int choice)
 {
   // We pick index 0 which is language sensitive,
   //  or one at random, between 1 and maximum number.
-  if (language != english )
-    sprintf(endstring,"%s\n\n" DOSY, endmsg[0] );
-  else
-    sprintf(endstring,"%s\n\n" DOSY, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
+	if(language != english)
+		endstring = endmsg[0] + "\n\n" + std::string(DOSY);
+	else
+		endstring = endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ] + "\n\n" + std::string(DOSY);
   
   M_StartMessage(endstring,M_QuitResponse,true);
 }
@@ -1189,11 +1189,7 @@ M_DrawSelCell
 }
 
 
-void
-M_StartMessage
-( char*		string,
-  void(*routine)(int),
-  bool	input )
+void M_StartMessage( const std::string& string, void(*routine)(int), bool input )
 {
     messageLastMenuActive = menuactive;
     messageToPrint = 1;

@@ -10,6 +10,8 @@
 #include "d_englsh.hpp"
 #endif
 
+#include <array>
+
 // Misc. other strings.
 #define SAVEGAMENAME	"doomsav"
 
@@ -28,4 +30,4 @@
 // QuitDOOM messages
 #define NUM_QUITMESSAGES   22
 
-extern char* endmsg[];
+extern std::array<std::string,NUM_QUITMESSAGES+1> endmsg;
