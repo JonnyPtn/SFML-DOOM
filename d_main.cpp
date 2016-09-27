@@ -60,7 +60,7 @@
 //
 void D_DoomLoop (void);
 
-char*		 wadfiles[MAXWADFILES];
+std::vector<std::string> wadfiles;
 
 bool         nomonsters;	// checkparm of -nomonsters
 bool         respawnparm;	// checkparm of -respawn
@@ -438,18 +438,9 @@ char            title[128];
 //
 // D_AddFile
 //
-void D_AddFile (char *file)
-{
-    int     numwadfiles;
-    char    *newfile;
-	
-    for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
-	;
-
-    newfile = (char*)malloc (strlen(file)+1);
-    strcpy (newfile, file);
-	
-    wadfiles[numwadfiles] = newfile;
+void D_AddFile (const std::string& file)
+{	
+    wadfiles.push_back(file);
 }
 
 //
