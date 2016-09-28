@@ -107,10 +107,10 @@ ExtractFileBase
 // But: the reload feature is a fragile hack...
 
 int			reloadlump;
-char*			reloadname;
+std::string	reloadname;
 
 
-void W_AddFile (char *filename)
+void W_AddFile (std::string filename)
 {
     wadinfo_t		header;
     lumpinfo_t*		lump_p;
@@ -125,80 +125,76 @@ void W_AddFile (char *filename)
     // open the file and add to directory
 
     // handle reload indicator.
-    if (filename[0] == '~')
+    if (filename.at(0) == '~')
     {
-	filename++;
-	reloadname = filename;
-	reloadlump = numlumps;
+		filename = filename.substr(1);
+		reloadname = filename;
+		reloadlump = numlumps;
     }
 		
-    if ( (handle = open (filename,O_RDONLY | O_BINARY)) == -1)
+    if ( (handle = open (filename.c_str(),O_RDONLY | O_BINARY)) == -1)
     {
-	printf (" couldn't open %s\n",filename);
-	return;
+		printf (" couldn't open %s\n",filename);
+		return;
     }
 
     printf (" adding %s\n",filename);
     startlump = numlumps;
 	
-    if (_strcmpi (filename+strlen(filename)-3 , "wad" ) )
+    if (filename.substr(filename.find_last_of(".")) == "wad" )
     {
-	// single lump file
-	fileinfo = &singleinfo;
-	singleinfo.filepos = 0;
-	singleinfo.size = LONG(myfilelength(handle));
-	ExtractFileBase (filename, singleinfo.name);
-	numlumps++;
+		// single lump file
+		fileinfo = &singleinfo;
+		singleinfo.filepos = 0;
+		singleinfo.size = LONG(myfilelength(handle));
+		ExtractFileBase (const_cast<char*>(filename.c_str()), singleinfo.name);
+		numlumps++;
     }
     else 
     {
-	// WAD file
-	read (handle, &header, sizeof(header));
-	if (strncmp(header.identification,"IWAD",4))
-	{
-	    // Homebrew levels?
-	    if (strncmp(header.identification,"PWAD",4))
-	    {
-		I_Error ("Wad file %s doesn't have IWAD "
-			 "or PWAD id\n", filename);
-	    }
-	    
-	    // ???modifiedgame = true;		
-	}
-	header.numlumps = LONG(header.numlumps);
-	header.infotableofs = LONG(header.infotableofs);
-	length = header.numlumps*sizeof(filelump_t);
-	fileinfo = (filelump_t*)alloca (length);
-	lseek (handle, header.infotableofs, SEEK_SET);
-	read (handle, fileinfo, length);
-	numlumps += header.numlumps;
+		// WAD file
+		read (handle, &header, sizeof(header));
+		if (strncmp(header.identification,"IWAD",4))
+		{
+		    // Homebrew levels?
+		    if (strncmp(header.identification,"PWAD",4))
+		    {
+			I_Error ("Wad file %s doesn't have IWAD "
+				 "or PWAD id\n", filename);
+		    }
+		    
+		    // ???modifiedgame = true;		
+		}
+		header.numlumps = LONG(header.numlumps);
+		header.infotableofs = LONG(header.infotableofs);
+		length = header.numlumps*sizeof(filelump_t);
+		fileinfo = (filelump_t*)alloca (length);
+		lseek (handle, header.infotableofs, SEEK_SET);
+		read (handle, fileinfo, length);
+		numlumps += header.numlumps;
     }
 
-    
     // Fill in lumpinfo
     lumpinfo = (lumpinfo_t*)realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
 
     if (!lumpinfo)
-	I_Error ("Couldn't realloc lumpinfo");
+		I_Error ("Couldn't realloc lumpinfo");
 
     lump_p = &lumpinfo[startlump];
 	
-    storehandle = reloadname ? -1 : handle;
+    storehandle = reloadname.length() ? -1 : handle;
 	
     for (i=startlump ; i<numlumps ; i++,lump_p++, fileinfo++)
     {
-	lump_p->handle = storehandle;
-	lump_p->position = LONG(fileinfo->filepos);
-	lump_p->size = LONG(fileinfo->size);
-	strncpy (lump_p->name, fileinfo->name, 8);
-    }
+		lump_p->handle = storehandle;
+		lump_p->position = LONG(fileinfo->filepos);
+		lump_p->size = LONG(fileinfo->size);
+		strncpy (lump_p->name, fileinfo->name, 8);
+	}
 	
-    if (reloadname)
-	close (handle);
+    if (!reloadname.empty())
+		close (handle);
 }
-
-
-
 
 //
 // W_Reload
@@ -215,11 +211,11 @@ void W_Reload (void)
     int			length;
     filelump_t*		fileinfo;
 	
-    if (!reloadname)
-	return;
+    if (reloadname.empty())
+		return;
 		
-    if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
-	I_Error ("W_Reload: couldn't open %s",reloadname);
+    if ( (handle = open (reloadname.c_str(),O_RDONLY | O_BINARY)) == -1)
+		I_Error ("W_Reload: couldn't open %s",reloadname);
 
     read (handle, &header, sizeof(header));
     lumpcount = LONG(header.numlumps);
@@ -261,7 +257,7 @@ void W_Reload (void)
 // The name searcher looks backwards, so a later file
 //  does override all earlier ones.
 //
-void W_InitMultipleFiles (char** filenames)
+void W_InitMultipleFiles (std::vector<std::string> filenames)
 {	
     int		size;
     
@@ -271,8 +267,8 @@ void W_InitMultipleFiles (char** filenames)
     // will be realloced as lumps are added
 	lumpinfo = (lumpinfo_t*) malloc(1);
 
-    for ( ; *filenames ; filenames++)
-	W_AddFile (*filenames);
+    for (auto& filename : filenames)
+		W_AddFile (filename);
 
     if (!numlumps)
 	I_Error ("W_InitFiles: no files found");
@@ -294,13 +290,9 @@ void W_InitMultipleFiles (char** filenames)
 // W_InitFile
 // Just initialize from a single file.
 //
-void W_InitFile (char* filename)
+void W_InitFile (const std::string& filename)
 {
-    char*	names[2];
-
-    names[0] = filename;
-    names[1] = NULL;
-    W_InitMultipleFiles (names);
+	W_InitMultipleFiles({ filename });
 }
 
 
@@ -419,7 +411,7 @@ W_ReadLump
     if (l->handle == -1)
     {
 	// reloadable file, so use open / read / close
-	if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
+	if ( (handle = open (reloadname.c_str(),O_RDONLY | O_BINARY)) == -1)
 	    I_Error ("W_ReadLump: couldn't open %s",reloadname);
     }
     else

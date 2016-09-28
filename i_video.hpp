@@ -28,9 +28,12 @@ void I_EndRead (void);
 
 bool pollEvent(sf::Event& ev);
 
+void toggleFullscreen();
+
 extern sf::Color	colors[256];
 
 extern std::unique_ptr<sf::RenderWindow> window;
+extern bool	isFullscreen;
 extern std::unique_ptr<sf::Texture>	texture;
 extern std::unique_ptr<sf::Sprite>		sprite;
 extern sf::Color	colors[256];

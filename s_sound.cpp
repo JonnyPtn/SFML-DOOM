@@ -542,6 +542,17 @@ S_ChangeMusic
     music->data = (void *) W_CacheLumpNum(music->lumpnum, PU_MUSIC);
     music->handle = I_RegisterSong(music->data);
 
+	//first 4 bytes should be "MUS"
+	char 	ID[4];
+	std::memcpy(ID, music->data, 4);
+	auto scoreLength = static_cast<sf::Uint16*>(music->data) + 2;
+	auto scoreStart = static_cast<sf::Uint16*>(music->data) + 3;
+	auto channels = static_cast<sf::Uint16*>(music->data) + 4;
+	auto secondaryChannels = static_cast<sf::Uint16*>(music->data) + 5;
+	auto instrumentCount = static_cast<sf::Uint16*>(music->data) + 6;
+	auto dummy = static_cast<sf::Uint16*>(music->data) + 7;
+	auto instruments = static_cast<sf::Uint16*>(malloc(*instrumentCount));
+	std::memcpy(instruments,static_cast<sf::Uint16*>(music->data) + 8, *instrumentCount*sizeof(sf::Uint16));
 	//load the data into the music
 	/*if (sfMusics.find(music->name) == sfMusics.end())
 	{

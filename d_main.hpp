@@ -2,10 +2,9 @@
 
 #include "d_event.hpp"
 
-#define MAXWADFILES             20
-extern char*		wadfiles[MAXWADFILES];
+extern std::vector<std::string>	wadfiles;
 
-void D_AddFile (char *file);
+void D_AddFile (const std::string& file);
 
 //
 // D_DoomMain()

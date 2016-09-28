@@ -107,7 +107,7 @@ bool			menuactive;
 extern bool		sendpause;
 char			savegamestrings[10][SAVESTRINGSIZE];
 
-char	endstring[160];
+std::string	endstring;
 
 
 //
@@ -201,7 +201,7 @@ void M_WriteText(int x, int y, char *string);
 int  M_StringWidth(char *string);
 int  M_StringHeight(const std::string& string);
 void M_StartControlPanel(void);
-void M_StartMessage(char *string, void(*routine)(int),bool input);
+void M_StartMessage(const std::string& string, void(*routine)(int),bool input);
 void M_StopMessage(void);
 void M_ClearMenus (void);
 
@@ -1064,10 +1064,10 @@ void M_QuitDOOM(int choice)
 {
   // We pick index 0 which is language sensitive,
   //  or one at random, between 1 and maximum number.
-  if (language != english )
-    sprintf(endstring,"%s\n\n" DOSY, endmsg[0] );
-  else
-    sprintf(endstring,"%s\n\n" DOSY, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
+	if(language != english)
+		endstring = endmsg[0] + "\n\n" + std::string(DOSY);
+	else
+		endstring = endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ] + "\n\n" + std::string(DOSY);
   
   M_StartMessage(endstring,M_QuitResponse,true);
 }
@@ -1189,11 +1189,7 @@ M_DrawSelCell
 }
 
 
-void
-M_StartMessage
-( char*		string,
-  void(*routine)(int),
-  bool	input )
+void M_StartMessage( const std::string& string, void(*routine)(int), bool input )
 {
     messageLastMenuActive = menuactive;
     messageToPrint = 1;
@@ -1336,6 +1332,12 @@ bool M_Responder (sf::Event* ev)
 	if (ev->type == sf::Event::KeyPressed)
 	{
 		ch = ev->key.code;
+		//always check for fullscreen toggle first
+		if (ev->key.code == sf::Keyboard::F &&
+			ev->key.control)
+		{
+			toggleFullscreen();
+		}
 	}
 	else if (ev->type == sf::Event::JoystickMoved)
 	{
@@ -1441,12 +1443,12 @@ bool M_Responder (sf::Event* ev)
 	S_StartSound(NULL,sfx_swtchx);
 	return true;
     }
-	    
+
     // F-Keys
-    if (!menuactive)
-	switch(ch)
+    if (!menuactive && ev->type == sf::Event::KeyPressed)
+	switch(ev->key.code)
 	{
-	case sf::Keyboard::Subtract:         // Screen size down
+	case sf::Keyboard::Dash:         // Screen size down
 	    if (automapactive || chat_on)
 		return false;
 	    M_SizeDisplay(0);
@@ -1546,98 +1548,100 @@ bool M_Responder (sf::Event* ev)
 
     
     // Keys usable within menu
-    switch (ch)
-    {
-      case sf::Keyboard::Down:
-		do
+	if (menuactive && ev->type == sf::Event::KeyPressed)
+	{
+		switch (ev->key.code)
 		{
-		    if (itemOn+1 > currentMenu->numitems-1)
-			itemOn = 0;
-		    else itemOn++;
-		    S_StartSound(NULL,sfx_pstop);
-		} while(currentMenu->menuitems[itemOn].status==-1);
-		return true;
-		
-      case sf::Keyboard::Up:
-	do
-	{
-	    if (!itemOn)
-		itemOn = currentMenu->numitems-1;
-	    else itemOn--;
-	    S_StartSound(NULL,sfx_pstop);
-	} while(currentMenu->menuitems[itemOn].status==-1);
-	return true;
+		case sf::Keyboard::Down:
+			do
+			{
+				if (itemOn + 1 > currentMenu->numitems - 1)
+					itemOn = 0;
+				else itemOn++;
+				S_StartSound(NULL, sfx_pstop);
+			} while (currentMenu->menuitems[itemOn].status == -1);
+			return true;
 
-      case sf::Keyboard::Left:
-	if (currentMenu->menuitems[itemOn].routine &&
-	    currentMenu->menuitems[itemOn].status == 2)
-	{
-	    S_StartSound(NULL,sfx_stnmov);
-	    currentMenu->menuitems[itemOn].routine(0);
-	}
-	return true;
-		
-      case sf::Keyboard::Right:
-	if (currentMenu->menuitems[itemOn].routine &&
-	    currentMenu->menuitems[itemOn].status == 2)
-	{
-	    S_StartSound(NULL,sfx_stnmov);
-	    currentMenu->menuitems[itemOn].routine(1);
-	}
-	return true;
+		case sf::Keyboard::Up:
+			do
+			{
+				if (!itemOn)
+					itemOn = currentMenu->numitems - 1;
+				else itemOn--;
+				S_StartSound(NULL, sfx_pstop);
+			} while (currentMenu->menuitems[itemOn].status == -1);
+			return true;
 
-      case sf::Keyboard::Return:
-	if (currentMenu->menuitems[itemOn].routine &&
-	    currentMenu->menuitems[itemOn].status)
-	{
-	    currentMenu->lastOn = itemOn;
-	    if (currentMenu->menuitems[itemOn].status == 2)
-	    {
-		currentMenu->menuitems[itemOn].routine(1);      // right arrow
-		S_StartSound(NULL,sfx_stnmov);
-	    }
-	    else
-	    {
-		currentMenu->menuitems[itemOn].routine(itemOn);
-		S_StartSound(NULL,sfx_pistol);
-	    }
+		case sf::Keyboard::Left:
+			if (currentMenu->menuitems[itemOn].routine &&
+				currentMenu->menuitems[itemOn].status == 2)
+			{
+				S_StartSound(NULL, sfx_stnmov);
+				currentMenu->menuitems[itemOn].routine(0);
+			}
+			return true;
+
+		case sf::Keyboard::Right:
+			if (currentMenu->menuitems[itemOn].routine &&
+				currentMenu->menuitems[itemOn].status == 2)
+			{
+				S_StartSound(NULL, sfx_stnmov);
+				currentMenu->menuitems[itemOn].routine(1);
+			}
+			return true;
+
+		case sf::Keyboard::Return:
+			if (currentMenu->menuitems[itemOn].routine &&
+				currentMenu->menuitems[itemOn].status)
+			{
+				currentMenu->lastOn = itemOn;
+				if (currentMenu->menuitems[itemOn].status == 2)
+				{
+					currentMenu->menuitems[itemOn].routine(1);      // right arrow
+					S_StartSound(NULL, sfx_stnmov);
+				}
+				else
+				{
+					currentMenu->menuitems[itemOn].routine(itemOn);
+					S_StartSound(NULL, sfx_pistol);
+				}
+			}
+			return true;
+
+		case sf::Keyboard::Escape:
+			currentMenu->lastOn = itemOn;
+			M_ClearMenus();
+			S_StartSound(NULL, sfx_swtchx);
+			return true;
+
+		case sf::Keyboard::BackSpace:
+			currentMenu->lastOn = itemOn;
+			if (currentMenu->prevMenu)
+			{
+				currentMenu = currentMenu->prevMenu;
+				itemOn = currentMenu->lastOn;
+				S_StartSound(NULL, sfx_swtchn);
+			}
+			return true;
+
+		default:
+			for (i = itemOn + 1; i < currentMenu->numitems; i++)
+				if (currentMenu->menuitems[i].alphaKey == ev->key.code)
+				{
+					itemOn = i;
+					S_StartSound(NULL, sfx_pstop);
+					return true;
+				}
+			for (i = 0; i <= itemOn; i++)
+				if (currentMenu->menuitems[i].alphaKey == ev->key.code)
+				{
+					itemOn = i;
+					S_StartSound(NULL, sfx_pstop);
+					return true;
+				}
+			break;
+		}
 	}
-	return true;
-		
-      case sf::Keyboard::Escape:
-	currentMenu->lastOn = itemOn;
-	M_ClearMenus ();
-	S_StartSound(NULL,sfx_swtchx);
-	return true;
-		
-      case sf::Keyboard::BackSpace:
-	currentMenu->lastOn = itemOn;
-	if (currentMenu->prevMenu)
-	{
-	    currentMenu = currentMenu->prevMenu;
-	    itemOn = currentMenu->lastOn;
-	    S_StartSound(NULL,sfx_swtchn);
-	}
-	return true;
-	
-      default:
-	for (i = itemOn+1;i < currentMenu->numitems;i++)
-	    if (currentMenu->menuitems[i].alphaKey == ch)
-	    {
-		itemOn = i;
-		S_StartSound(NULL,sfx_pstop);
-		return true;
-	    }
-	for (i = 0;i <= itemOn;i++)
-	    if (currentMenu->menuitems[i].alphaKey == ch)
-	    {
-		itemOn = i;
-		S_StartSound(NULL,sfx_pstop);
-		return true;
-	    }
-	break;
-	
-    }
 
     return false;
 }
