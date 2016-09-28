@@ -1548,98 +1548,100 @@ bool M_Responder (sf::Event* ev)
 
     
     // Keys usable within menu
-    switch (ch)
-    {
-      case sf::Keyboard::Down:
-		do
+	if (menuactive && ev->type == sf::Event::KeyPressed)
+	{
+		switch (ev->key.code)
 		{
-		    if (itemOn+1 > currentMenu->numitems-1)
-			itemOn = 0;
-		    else itemOn++;
-		    S_StartSound(NULL,sfx_pstop);
-		} while(currentMenu->menuitems[itemOn].status==-1);
-		return true;
-		
-      case sf::Keyboard::Up:
-	do
-	{
-	    if (!itemOn)
-		itemOn = currentMenu->numitems-1;
-	    else itemOn--;
-	    S_StartSound(NULL,sfx_pstop);
-	} while(currentMenu->menuitems[itemOn].status==-1);
-	return true;
+		case sf::Keyboard::Down:
+			do
+			{
+				if (itemOn + 1 > currentMenu->numitems - 1)
+					itemOn = 0;
+				else itemOn++;
+				S_StartSound(NULL, sfx_pstop);
+			} while (currentMenu->menuitems[itemOn].status == -1);
+			return true;
 
-      case sf::Keyboard::Left:
-	if (currentMenu->menuitems[itemOn].routine &&
-	    currentMenu->menuitems[itemOn].status == 2)
-	{
-	    S_StartSound(NULL,sfx_stnmov);
-	    currentMenu->menuitems[itemOn].routine(0);
-	}
-	return true;
-		
-      case sf::Keyboard::Right:
-	if (currentMenu->menuitems[itemOn].routine &&
-	    currentMenu->menuitems[itemOn].status == 2)
-	{
-	    S_StartSound(NULL,sfx_stnmov);
-	    currentMenu->menuitems[itemOn].routine(1);
-	}
-	return true;
+		case sf::Keyboard::Up:
+			do
+			{
+				if (!itemOn)
+					itemOn = currentMenu->numitems - 1;
+				else itemOn--;
+				S_StartSound(NULL, sfx_pstop);
+			} while (currentMenu->menuitems[itemOn].status == -1);
+			return true;
 
-      case sf::Keyboard::Return:
-	if (currentMenu->menuitems[itemOn].routine &&
-	    currentMenu->menuitems[itemOn].status)
-	{
-	    currentMenu->lastOn = itemOn;
-	    if (currentMenu->menuitems[itemOn].status == 2)
-	    {
-		currentMenu->menuitems[itemOn].routine(1);      // right arrow
-		S_StartSound(NULL,sfx_stnmov);
-	    }
-	    else
-	    {
-		currentMenu->menuitems[itemOn].routine(itemOn);
-		S_StartSound(NULL,sfx_pistol);
-	    }
+		case sf::Keyboard::Left:
+			if (currentMenu->menuitems[itemOn].routine &&
+				currentMenu->menuitems[itemOn].status == 2)
+			{
+				S_StartSound(NULL, sfx_stnmov);
+				currentMenu->menuitems[itemOn].routine(0);
+			}
+			return true;
+
+		case sf::Keyboard::Right:
+			if (currentMenu->menuitems[itemOn].routine &&
+				currentMenu->menuitems[itemOn].status == 2)
+			{
+				S_StartSound(NULL, sfx_stnmov);
+				currentMenu->menuitems[itemOn].routine(1);
+			}
+			return true;
+
+		case sf::Keyboard::Return:
+			if (currentMenu->menuitems[itemOn].routine &&
+				currentMenu->menuitems[itemOn].status)
+			{
+				currentMenu->lastOn = itemOn;
+				if (currentMenu->menuitems[itemOn].status == 2)
+				{
+					currentMenu->menuitems[itemOn].routine(1);      // right arrow
+					S_StartSound(NULL, sfx_stnmov);
+				}
+				else
+				{
+					currentMenu->menuitems[itemOn].routine(itemOn);
+					S_StartSound(NULL, sfx_pistol);
+				}
+			}
+			return true;
+
+		case sf::Keyboard::Escape:
+			currentMenu->lastOn = itemOn;
+			M_ClearMenus();
+			S_StartSound(NULL, sfx_swtchx);
+			return true;
+
+		case sf::Keyboard::BackSpace:
+			currentMenu->lastOn = itemOn;
+			if (currentMenu->prevMenu)
+			{
+				currentMenu = currentMenu->prevMenu;
+				itemOn = currentMenu->lastOn;
+				S_StartSound(NULL, sfx_swtchn);
+			}
+			return true;
+
+		default:
+			for (i = itemOn + 1; i < currentMenu->numitems; i++)
+				if (currentMenu->menuitems[i].alphaKey == ev->key.code)
+				{
+					itemOn = i;
+					S_StartSound(NULL, sfx_pstop);
+					return true;
+				}
+			for (i = 0; i <= itemOn; i++)
+				if (currentMenu->menuitems[i].alphaKey == ev->key.code)
+				{
+					itemOn = i;
+					S_StartSound(NULL, sfx_pstop);
+					return true;
+				}
+			break;
+		}
 	}
-	return true;
-		
-      case sf::Keyboard::Escape:
-	currentMenu->lastOn = itemOn;
-	M_ClearMenus ();
-	S_StartSound(NULL,sfx_swtchx);
-	return true;
-		
-      case sf::Keyboard::BackSpace:
-	currentMenu->lastOn = itemOn;
-	if (currentMenu->prevMenu)
-	{
-	    currentMenu = currentMenu->prevMenu;
-	    itemOn = currentMenu->lastOn;
-	    S_StartSound(NULL,sfx_swtchn);
-	}
-	return true;
-	
-      default:
-	for (i = itemOn+1;i < currentMenu->numitems;i++)
-	    if (currentMenu->menuitems[i].alphaKey == ch)
-	    {
-		itemOn = i;
-		S_StartSound(NULL,sfx_pstop);
-		return true;
-	    }
-	for (i = 0;i <= itemOn;i++)
-	    if (currentMenu->menuitems[i].alphaKey == ch)
-	    {
-		itemOn = i;
-		S_StartSound(NULL,sfx_pstop);
-		return true;
-	    }
-	break;
-	
-    }
 
     return false;
 }
