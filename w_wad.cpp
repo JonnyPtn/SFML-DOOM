@@ -134,11 +134,11 @@ void W_AddFile (std::string filename)
 		
     if ( (handle = open (filename.c_str(),O_RDONLY | O_BINARY)) == -1)
     {
-		printf (" couldn't open %s\n",filename);
+		printf (" couldn't open %s\n",filename.c_str());
 		return;
     }
 
-    printf (" adding %s\n",filename);
+    printf (" adding %s\n",filename.c_str());
     startlump = numlumps;
 	
     if (filename.substr(filename.find_last_of(".")) == "wad" )

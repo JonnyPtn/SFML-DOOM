@@ -10,7 +10,7 @@ file(GLOB SOURCE "*.h" "*.hpp" "*.cpp")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
-if(CMAKE_COMPILER_IS_GNUXX)
+if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-write-strings -Wno-unused-variable -Wno-unused-but-set-variable -Wno-switch -Werror")
 endif()
 
