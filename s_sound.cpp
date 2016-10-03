@@ -543,7 +543,7 @@ S_ChangeMusic
     music->handle = I_RegisterSong(music->data);
 
 	//first 4 bytes should be "MUS"
-	char 	ID[4];
+	/*char 	ID[4];
 	std::memcpy(ID, music->data, 4);
 	auto scoreLength = static_cast<sf::Uint16*>(music->data) + 2;
 	auto scoreStart = static_cast<sf::Uint16*>(music->data) + 3;
