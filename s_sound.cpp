@@ -7,6 +7,11 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+//check if M_PI is defined or not
+#ifndef M_PI
+#define M_PI std::atan(1)*4
+#endif
+
 #include "i_system.hpp"
 #include "i_sound.hpp"
 #include "sounds.hpp"
