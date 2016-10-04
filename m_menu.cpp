@@ -1337,6 +1337,7 @@ bool M_Responder (sf::Event* ev)
 			ev->key.control)
 		{
 			toggleFullscreen();
+			return true;
 		}
 	}
 	else if (ev->type == sf::Event::JoystickMoved)
