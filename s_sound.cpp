@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits>
+#include <cstring>
 
 #define _USE_MATH_DEFINES
-#include <math.h>
+#include <cmath>
 
 #include "i_system.hpp"
 #include "i_sound.hpp"
