@@ -560,7 +560,7 @@ S_ChangeMusic
 	auto instruments = static_cast<sf::Uint16*>(malloc(*instrumentCount));
 	std::memcpy(instruments,static_cast<sf::Uint16*>(music->data) + 8, *instrumentCount*sizeof(sf::Uint16));
 	//load the data into the music
-	/*if (sfMusics.find(music->name) == sfMusics.end())
+	if (sfMusics.find(music->name) == sfMusics.end())
 	{
 		//not loaded yet, set it up
 		auto dataSize(W_LumpLength(music->lumpnum));
