@@ -8,7 +8,7 @@ find_package(SFML 2.4 COMPONENTS graphics audio window system network)
 
 file(GLOB SOURCE "*.h" "*.hpp" "*.cpp")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
+set (CMAKE_CXX_STANDARD 11)
 
 if(UNIX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-write-strings -Wno-unused-variable -Wno-unused-but-set-variable -Wno-switch -Werror")
