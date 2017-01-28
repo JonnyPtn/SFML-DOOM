@@ -172,7 +172,10 @@ void I_InitGraphics(void)
 
 bool pollEvent(sf::Event& ev)
 {
-	return window->pollEvent(ev);
+    if (window && window->isOpen())
+        return window->pollEvent(ev);
+    else
+        return false;
 }
 
 void toggleFullscreen()
