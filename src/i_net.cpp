@@ -125,9 +125,10 @@ void PacketGet(void)
     fromlen = sizeof(fromaddress);
     auto c = insocket.receive(&sw, sizeof(sw), fromlen
         , fromaddress, fromport);
-    if (c == -1)
+    if (c != sf::Socket::Done)
     {
-        if (errno != EWOULDBLOCK)
+        //if we've received something on a blocking socket, but the status isn't done, something's gone awry
+        if (insocket.isBlocking())
             I_Error("GetPacket: %s", strerror(errno));
         doomcom->remotenode = -1;		// no packet
         return;
