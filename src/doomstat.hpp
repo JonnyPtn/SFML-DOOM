@@ -205,7 +205,7 @@ extern  int		maxammo[NUMAMMO];
 
 // File handling stuff.
 extern	char			basedefault[1024];
-extern  std::ofstream	debugfile;
+extern  bool	        verboseOutput;
 
 // if true, load all graphics at level load
 extern  bool         precache;

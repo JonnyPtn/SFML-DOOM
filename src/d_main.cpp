@@ -76,7 +76,7 @@ int          startepisode;
 int			 startmap;
 bool		 autostart;
 
-std::ofstream		 debugfile;
+bool		 verboseOutput = true;
 
 bool		 advancedemo;
 
@@ -276,10 +276,7 @@ void D_DoomLoop (void)
 		
     if (CmdParameters::M_CheckParm ("-debugfile"))
     {
-		char    filename[20];
-		sprintf (filename,"debug%i.txt",consoleplayer);
-		printf ("debug output to: %s\n",filename);
-		debugfile.open (filename);
+        verboseOutput = true;
     }
 	
     I_InitGraphics ();

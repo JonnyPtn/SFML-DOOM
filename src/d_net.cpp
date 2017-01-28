@@ -138,7 +138,7 @@ HSendPacket
     doomcom->remotenode = node;
     doomcom->datalength = NetbufferSize();
 
-    if (debugfile)
+    if (verboseOutput)
     {
         int		i;
         int		realretrans;
@@ -188,19 +188,19 @@ bool HGetPacket(void)
 
     if (doomcom->datalength != NetbufferSize())
     {
-        if (debugfile)
+        if (verboseOutput)
             std::cout << "bad packet length " << doomcom->datalength << std::endl;
         return false;
     }
 
     if (NetbufferChecksum() != (netbuffer->checksum&NCMD_CHECKSUM))
     {
-        if (debugfile)
+        if (verboseOutput)
             std::cout << "bad packet checksum\n";
         return false;
     }
 
-    if (debugfile)
+    if (verboseOutput)
     {
         int		realretrans;
         int	i;
@@ -649,7 +649,7 @@ void TryRunTics(void)
 
     frameon++;
 
-    if (debugfile)
+    if (verboseOutput)
         std::cout <<
         "=======real: " << realtics <<
         " avail: " << availabletics<<
