@@ -20,7 +20,7 @@
 #include "r_data.hpp"
 
 //JONNY//
-#include <malloc.h>
+#include <stdlib.h>
 
 //
 // Graphics.

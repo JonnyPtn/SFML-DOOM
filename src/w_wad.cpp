@@ -20,7 +20,7 @@
 #define _strcmpi strcasecmp
 #endif
 #include <sys/stat.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <cctype>
 #include <cstring>
 
@@ -160,7 +160,7 @@ void W_AddFile (std::string filename)
 		    if (strncmp(header.identification,"PWAD",4))
 		    {
 			I_Error ("Wad file %s doesn't have IWAD "
-				 "or PWAD id\n", filename);
+				 "or PWAD id\n", filename.c_str());
 		    }
 		    
 		    // ???modifiedgame = true;		
@@ -215,7 +215,7 @@ void W_Reload (void)
 		return;
 		
     if ( (handle = open (reloadname.c_str(),O_RDONLY | O_BINARY)) == -1)
-		I_Error ("W_Reload: couldn't open %s",reloadname);
+		I_Error ("W_Reload: couldn't open %s",reloadname.c_str());
 
     read (handle, &header, sizeof(header));
     lumpcount = LONG(header.numlumps);
@@ -412,7 +412,7 @@ W_ReadLump
     {
 	// reloadable file, so use open / read / close
 	if ( (handle = open (reloadname.c_str(),O_RDONLY | O_BINARY)) == -1)
-	    I_Error ("W_ReadLump: couldn't open %s",reloadname);
+	    I_Error ("W_ReadLump: couldn't open %s",reloadname.c_str());
     }
     else
 	handle = l->handle;

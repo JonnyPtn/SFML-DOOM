@@ -64,7 +64,7 @@ doomdata_t	reboundstore;
 //
 int NetbufferSize(void)
 {
-    return (int)&(((doomdata_t *)0)->cmds[netbuffer->numtics]);
+    return reinterpret_cast<size_t>(&(((doomdata_t *)0)->cmds[netbuffer->numtics]));
 }
 
 //
@@ -82,7 +82,7 @@ unsigned NetbufferChecksum(void)
     return 0;			// byte order problems
 #endif
 
-    l = (NetbufferSize() - (int)&(((doomdata_t *)0)->retransmitfrom)) / 4;
+    l = (NetbufferSize() - reinterpret_cast<size_t>(&(((doomdata_t *)0)->retransmitfrom))) / 4;
     for (i = 0; i<l; i++)
         c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i + 1);
 
