@@ -652,8 +652,8 @@ void TryRunTics(void)
     if (debugfile)
         std::cout <<
         "=======real: " << realtics <<
-        "avail: " << availabletics<<
-        "game : " << counts << std::endl;
+        " avail: " << availabletics<<
+        " game : " << counts << std::endl;
 
     if (!demoplayback)
     {

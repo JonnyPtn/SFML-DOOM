@@ -10,6 +10,7 @@
 #include "d_englsh.hpp"
 #endif
 
+#include <string>
 #include <array>
 
 // Misc. other strings.

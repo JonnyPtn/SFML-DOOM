@@ -163,14 +163,14 @@ void PacketGet(void)
     netbuffer->starttic = sw.starttic;
     netbuffer->numtics = sw.numtics;
 
-    for (fromlen = 0; c< netbuffer->numtics; fromlen++)
+    for (fromlen = 0; fromlen< netbuffer->numtics; fromlen++)
     {
-        netbuffer->cmds[c].forwardmove = sw.cmds[c].forwardmove;
-        netbuffer->cmds[c].sidemove = sw.cmds[c].sidemove;
-        netbuffer->cmds[c].angleturn = ntohs(sw.cmds[c].angleturn);
-        netbuffer->cmds[c].consistancy = ntohs(sw.cmds[c].consistancy);
-        netbuffer->cmds[c].chatchar = sw.cmds[c].chatchar;
-        netbuffer->cmds[c].buttons = sw.cmds[c].buttons;
+        netbuffer->cmds[fromlen].forwardmove = sw.cmds[fromlen].forwardmove;
+        netbuffer->cmds[fromlen].sidemove = sw.cmds[fromlen].sidemove;
+        netbuffer->cmds[fromlen].angleturn = ntohs(sw.cmds[fromlen].angleturn);
+        netbuffer->cmds[fromlen].consistancy = ntohs(sw.cmds[fromlen].consistancy);
+        netbuffer->cmds[fromlen].chatchar = sw.cmds[fromlen].chatchar;
+        netbuffer->cmds[fromlen].buttons = sw.cmds[fromlen].buttons;
     }
 }
 
