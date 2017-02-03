@@ -10,7 +10,7 @@ std::array<std::string,NUM_QUITMESSAGES+1> endmsg
   "you're trying to say you like dos\nbetter than me, right?",
   "don't leave yet -- there's a\ndemon around that corner!",
   "ya know, next time you come in here\ni'm gonna toast ya.",
-  "go ahead and leave. see if i care."
+  "go ahead and leave. see if i care.",
 
   // QuitDOOM II messages
   "you want to quit?\nthen, thou hast lost an eighth!",
@@ -19,7 +19,7 @@ std::array<std::string,NUM_QUITMESSAGES+1> endmsg
   "if i were your boss, i'd \n deathmatch ya in a minute!",
   "look, bud. you leave now\nand you forfeit your body count!",
   "just leave. when you come\nback, i'll be waiting with a bat.",
-  "you're lucky i don't smack\nyou for thinking about leaving."
+  "you're lucky i don't smack\nyou for thinking about leaving.",
 
   // FinalDOOM?
   "fuck you, pussy!\nget the fuck out!",

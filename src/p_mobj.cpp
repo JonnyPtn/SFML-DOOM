@@ -563,7 +563,7 @@ void P_RespawnSpecials (void)
     int			i;
 
     // only respawn items in deathmatch
-	if (deathmatch)
+	if (!deathmatch)
 		return;
 
     // nothing left to respawn?
