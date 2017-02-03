@@ -520,69 +520,30 @@ S_ChangeMusic
 ( int			musicnum,
   int			looping )
 {
-    musicinfo_t*	music;
-    char		namebuf[9];
-
-    if ( (musicnum <= mus_None)
-	 || (musicnum >= NUMMUSIC) )
+#ifdef ID_ENABLE_DOOM_CLASSIC_NETWORKING
+    if (gameLocal->IsSplitscreen() && DoomLib::GetPlayer() > 0)
     {
-	I_Error("Bad music number %d", musicnum);
+        // we aren't the key player... we have no control over music
+        return;
+    }
+#endif
+
+    musicinfo_t*	music = NULL;
+
+    if ((musicnum <= mus_None)
+        || (musicnum >= NUMMUSIC))
+    {
+        I_Error("Bad music number %d", musicnum);
     }
     else
-	music = &S_music[musicnum];
+        music = &S_music[musicnum];
 
     if (mus_playing == music)
-	return;
+        return;
 
-    // shutdown old music
-    S_StopMusic();
+    printf("S_ChangeMusic: Playing new track: '%s'\n", music->name);
 
-    // get lumpnum if neccessary
-    if (!music->lumpnum)
-    {
-	sprintf(namebuf, "d_%s", music->name);
-	music->lumpnum = W_GetNumForName(namebuf);
-    }
-
-    // load & register it
-    music->data = (void *) W_CacheLumpNum(music->lumpnum, PU_MUSIC);
-    music->handle = I_RegisterSong(music->data);
-
-	//first 4 bytes should be "MUS"
-	/*char 	ID[4];
-	std::memcpy(ID, music->data, 4);
-	auto scoreLength = static_cast<sf::Uint16*>(music->data) + 2;
-	auto scoreStart = static_cast<sf::Uint16*>(music->data) + 3;
-	auto channels = static_cast<sf::Uint16*>(music->data) + 4;
-	auto secondaryChannels = static_cast<sf::Uint16*>(music->data) + 5;
-	auto instrumentCount = static_cast<sf::Uint16*>(music->data) + 6;
-	auto dummy = static_cast<sf::Uint16*>(music->data) + 7;
-	auto instruments = static_cast<sf::Uint16*>(malloc(*instrumentCount));
-	std::memcpy(instruments,static_cast<sf::Uint16*>(music->data) + 8, *instrumentCount*sizeof(sf::Uint16));
-	//load the data into the music
-	if (sfMusics.find(music->name) == sfMusics.end())
-	{
-		//not loaded yet, set it up
-		auto dataSize(W_LumpLength(music->lumpnum));
-		unsigned char* data((unsigned char*)music->data);
-		std::vector<sf::Int16> newData;
-		auto lastSample = 0;
-		int i = 0;
-		while (i<dataSize)
-		{
-			newData.push_back(static_cast<sf::Int16>(std::pow(data[i], 2)));
-			i++;
-		}
-
-		if (!sfSounds[music->name].buffer.loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
-			fprintf(stderr, "Failed to load sound");
-		sfSounds[music->name].sound.setBuffer(sfSounds[music->name].buffer);
-	}
-
-	sfSounds[music->name].sound.play();*/
-
-    // play it
-    I_PlaySong(music->handle, looping);
+    I_PlaySong(music->name, looping);
 
     mus_playing = music;
 }

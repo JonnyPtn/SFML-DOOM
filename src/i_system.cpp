@@ -88,6 +88,7 @@ int  I_GetTime (void)
 void I_Init (void)
 {
     I_InitSound();
+    I_InitMusic();
     //  I_InitGraphics();
 }
 

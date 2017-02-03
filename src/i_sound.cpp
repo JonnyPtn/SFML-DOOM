@@ -37,6 +37,31 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 
 #include "doomdef.hpp"
 
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+
+//midi stuff
+#include "timidity/timidity.h"
+#include "timidity/controls.h"
+
+#define	MIDI_CHANNELS		2
+#if 1 //8bit
+#define MIDI_RATE			22050
+#define MIDI_SAMPLETYPE		XAUDIOSAMPLETYPE_8BITPCM
+#define MIDI_FORMAT			AUDIO_U8
+#define MIDI_FORMAT_BYTES	1
+#else //16bit
+#define MIDI_RATE			48000
+#define MIDI_SAMPLETYPE		XAUDIOSAMPLETYPE_16BITPCM
+#define MIDI_FORMAT			AUDIO_S16MSB
+#define MIDI_FORMAT_BYTES	2
+#endif
+
+MidiSong*				doomMusic;
+sf::Sound               musicSound;
+sf::SoundBuffer         musicSoundBuffer;
+char*          musicBuffer;
+
 // The number of internal mixing channels,
 //  the samples calculated for each mixing step,
 //  the size of the 16bit, 2 hardware channel (stereo)
@@ -646,20 +671,103 @@ I_InitSound()
 
 //
 // MUSIC API.
-// Still no music done.
-// Remains. Dummies.
 //
-void I_InitMusic(void)		{ }
-void I_ShutdownMusic(void)	{ }
+void I_InitMusic(void)		
+{
+        // Initialize Timidity
+        Timidity_Init(MIDI_RATE, MIDI_FORMAT, MIDI_CHANNELS, MIDI_RATE, "eawpats/gravis.cfg");
+
+        musicBuffer = NULL;
+
+        ///set up the sf::Sound?
+        // Create Source voice
+        /*WAVEFORMATEX voiceFormat = { 0 };
+        voiceFormat.wFormatTag = WAVE_FORMAT_PCM;
+        voiceFormat.nChannels = 2;
+        voiceFormat.nSamplesPerSec = MIDI_RATE;
+        voiceFormat.nAvgBytesPerSec = MIDI_RATE * MIDI_FORMAT_BYTES * 2;
+        voiceFormat.nBlockAlign = MIDI_FORMAT_BYTES * 2;
+        voiceFormat.wBitsPerSample = MIDI_FORMAT_BYTES * 8;
+        voiceFormat.cbSize = 0;
+
+        soundSystemLocal.hardware.GetIXAudio2()->CreateSourceVoice(&pMusicSourceVoice, (WAVEFORMATEX *)&voiceFormat, XAUDIO2_VOICE_MUSIC);
+
+        Music_initialized = true;*/
+}
+void I_ShutdownMusic(void)	
+{
+    I_StopSong(0);
+
+    musicSound.stop();
+
+    Timidity_Shutdown();
+}
 
 static int	looping=0;
 static int	musicdies=-1;
 
-void I_PlaySong(int handle, int looping)
+namespace {
+    const int MaxMidiConversionSize = 1024 * 1024;
+    unsigned char midiConversionBuffer[MaxMidiConversionSize];
+}
+
+void I_PlaySong(const std::string& songname, int looping)
 {
-  // UNUSED.
-  handle = looping = 0;
-  musicdies = gametic + TICRATE*30;
+
+    if (musicSound.getStatus() != sf::Sound::Stopped)
+    {
+        // Stop the voice
+        musicSound.stop();
+    }
+
+    //I_LoadSong(songname);
+    std::string lumpName = "d_";
+    lumpName += songname.c_str();
+
+    unsigned char * musFile = static_cast< unsigned char * >(W_CacheLumpName(const_cast<char*>(lumpName.c_str()),0));
+
+    int length = 0;
+    Mus2Midi(musFile, midiConversionBuffer, &length);
+
+    doomMusic = Timidity_LoadSongMem(midiConversionBuffer, length);
+
+    if (doomMusic) 
+    {
+        musicBuffer = (char *)malloc(MIDI_CHANNELS * MIDI_FORMAT_BYTES * doomMusic->samples);
+        Timidity_Start(doomMusic);
+
+        int		rc = RC_NO_RETURN_VALUE;
+        int		num_bytes = 0;
+        int		offset = 0;
+
+        do 
+        {
+            rc = Timidity_PlaySome(musicBuffer + offset, MIDI_RATE, &num_bytes);
+            offset += num_bytes;
+        } while (rc != RC_TUNE_END);
+
+        //convert to correct format for SFML
+        std::vector<sf::Int16> newData;
+        auto lastSample = 0;
+        int i = 0;
+        while (i < MIDI_CHANNELS * MIDI_FORMAT_BYTES * doomMusic->samples)
+        {
+            sf::Int16 newSample(musicBuffer[i] << 8);	//8bit to 16bit
+            newSample ^= 0x8000;	//flip the sign
+            newData.push_back(newSample);
+            i++;
+        }
+        //load it into the sound
+        musicSoundBuffer.loadFromSamples(newData.data(), newData.size(),MIDI_CHANNELS,MIDI_RATE);
+        musicSound.setBuffer(musicSoundBuffer);
+        musicSound.play();
+
+        //music has no position
+        musicSound.setRelativeToListener(true);
+
+        Timidity_Stop();
+        Timidity_FreeSong(doomMusic);
+    }
 }
 
 void I_PauseSong (int handle)
@@ -688,6 +796,7 @@ void I_UnRegisterSong(int handle)
   // UNUSED.
   handle = 0;
 }
+
 
 int I_RegisterSong(void* data)
 {

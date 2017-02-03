@@ -76,7 +76,7 @@ int          startepisode;
 int			 startmap;
 bool		 autostart;
 
-bool		 verboseOutput = true;
+bool		 verboseOutput = false;
 
 bool		 advancedemo;
 

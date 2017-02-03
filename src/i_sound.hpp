@@ -72,9 +72,12 @@ int I_RegisterSong(void *data);
 // Horrible thing to do, considering.
 void
 I_PlaySong
-( int		handle,
+(const std::string&		handle,
   int		looping );
 // Stops a song over 3 seconds.
 void I_StopSong(int handle);
 // See above (register), then think backwards
 void I_UnRegisterSong(int handle);
+
+//conver mus format to midi
+int Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
