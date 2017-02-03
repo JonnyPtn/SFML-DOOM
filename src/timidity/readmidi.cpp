@@ -32,6 +32,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "readmidi.h"
 #include "output.h"
 #include "controls.h"
+#include "../m_argv.hpp"
 
 
 void Real_Tim_Free(void *pt);
@@ -440,10 +441,13 @@ static MidiEvent *groom_list(int32_t divisions, int32_t *eventsp, int32_t *sampl
     for (i = 0; i<event_count; i++)
     {
         skip_local_this_event = 0;
-        printf(
-            "%6d: ch %2d: event %d (%d,%d)\n",
-            meep->event.time, meep->event.channel + 1,
-            meep->event.type, meep->event.a, meep->event.b);
+        if (CmdParameters::M_CheckParm("-v"))
+        {
+            printf(
+                "%6d: ch %2d: event %d (%d,%d)\n",
+                meep->event.time, meep->event.channel + 1,
+                meep->event.type, meep->event.a, meep->event.b);
+        }
 
         if (meep->event.type == ME_TEMPO)
         {

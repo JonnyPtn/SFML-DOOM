@@ -747,20 +747,21 @@ void I_PlaySong(const std::string& songname, int looping)
         } while (rc != RC_TUNE_END);
 
         //convert to correct format for SFML
-        std::vector<sf::Int16> newData;
+        std::vector<sf::Int16> newData(MIDI_CHANNELS * MIDI_FORMAT_BYTES * doomMusic->samples);
         auto lastSample = 0;
         int i = 0;
         while (i < MIDI_CHANNELS * MIDI_FORMAT_BYTES * doomMusic->samples)
         {
             sf::Int16 newSample(musicBuffer[i] << 8);	//8bit to 16bit
             newSample ^= 0x8000;	//flip the sign
-            newData.push_back(newSample);
+            newData[i]=(newSample);
             i++;
         }
         //load it into the sound
         musicSoundBuffer.loadFromSamples(newData.data(), newData.size(),MIDI_CHANNELS,MIDI_RATE);
         musicSound.setBuffer(musicSoundBuffer);
         musicSound.play();
+        musicSound.setLoop(true);
 
         //music has no position
         musicSound.setRelativeToListener(true);
