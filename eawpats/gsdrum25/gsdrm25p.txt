@@ -1,0 +1,62 @@
+                        _
+                       [_
+                       [_lysium Entertainment
+                             Presents...
+
+GSDrm25p.ZIP                                          Oct. 24, 1994
+------------
+
+        This contains our GS Drum Set #25+.  Bank 25 is Roland's TR-808
+drum machine.  Not only does this archive contain patches from that drum
+machine, it also includes several patches from the TR-78 and TR-909
+drum synth module.  That's where I get the plus.  =)  The GUS Patches
+contained in this ZIP are as follows:
+
+                                Aprx.           Program
+        TR-808                  Size            Number
+        ------                  ----            -------
+        808Clap1.Pat            10k             39
+        808CowBl.Pat            38k             56
+        808Crsh1.Pat            34.5k           49
+        808HHC.Pat              5.5k            42
+        808HHO.Pat              38.5k           46
+        808Kick.Pat             23.5k           36
+        808Snare.Pat            11.5k           38
+        808Snar2.Pat            11.5k           40      (SCC-1 E.Snare)
+        808Stick.Pat            1k              37
+        808TomH1.Pat            10k             50
+        808TomH2.Pat            19.5k           48
+        808TomL1.Pat            35k             43
+        808TomL2.Pat            44k             41
+        808TomM1.Pat            22.5k           47
+        808TomM2.Pat            32.5k           45
+
+        TR-909
+        ------
+        909HHC.Pat              10k             42
+        909HHO.Pat              35.5k           46
+        909Kick.Pat             37.5k           36
+        909Snare.Pat            17.5k           38
+        909Stick.Pat            3.5k            37
+
+        TR-78
+        -----
+        78HHC.Pat               4k              42
+        78HHO.Pat               30.5k           46
+        78Kick.Pat              15k             36
+        78Snare.Pat             4.5k            38
+
+        Read GSDrm25p.doc for instructions on installation of these
+patches.  Enjoy these and all our future releases for the Advanced
+Gravis UltraSound and UltraSound MAX soundcards.
+
+FTP : archive.epas.utoronto.ca      \pub\pc\ultrasound\submit
+      (Will probably be moved from there shortly)
+
+Any feedback/comments/flames welcome regarding my work.
+
+Dustin McCartney, cmccart@eis.calstate.edu
+ _
+[_  Elysium Ent.
+[_  Coder/Musician
+

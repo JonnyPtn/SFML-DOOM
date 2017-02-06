@@ -1,0 +1,306 @@
+This file will attempt to explain how to install the patch set, install
+TiMidity, use TiMidity to play midi, and use TiMidity to write to a wav file.
+This will be written mostly from a Win32 user's point of view, since that is
+what I mostly run TiMidity in, and I get more questions pertaining to this
+than to Unix related installation problems.
+
+I was going to split the timidity usage portion off into it's own TiMidity++
+FAQ, but that's going to have to wait for another release.  I didn't want to
+hold up releasing the better instruments just because I hadn't gotten around
+to writing new docs :)
+
+
+
+
+Sections of this document:
+
+A   INSTALLING THE PATCH SET
+B   INSTALLING TIMIDITY
+B'  EXAMPLE WIN32 INSTALLATION PROCEDURE
+B'' POSSIBLE DIFFICULTIES GETTING WIN32 GUI TO WORK
+C   FLAGS THAT AFFECT HOW TIMIDITY RUNS
+D   MORE USAGE ADVICE
+E   MORE WIN32 GUI ISSUES (maybe other GUI's too?):
+F   HOW TO OUTPUT TO A WAV FILE
+G   IF YOU /STILL/ HAVE PROBLEMS WITH ANYTHING
+
+
+
+
+A) INSTALLING THE PATCH SET
+
+Get rar or unrar for the platform you are using.  I use the win32 console
+version, which works exactly the same as the Linux rar.
+
+*************************  NOTE TO UNIX USERS !!!!  *************************
+Be sure to use rar/unrar >= 2.50.  Versions earlier than this have a bug in
+how file permissions are set on files that span multiple rar volumes.  This
+results in several instruments having all of their permission flags cleared.
+Timidity can not read them and therefore claims they do not exist.  If you
+see this happening, and are using an older version of rar, get the new
+version and it should solve the problem.
+*****************************************************************************
+
+To extract an entire archive set, extract the .rar file and it will
+automaticly extract the other rars in the set as well, handling the files
+which span multiple rars.  The patch sets and any updates should all be
+extracted in the directory which you will put all the patches in.  This could
+be c:\eawpats, or anywhere else you want.  Extract the archives in the
+following order:
+
+1) extract eawpats*.rar
+2) extract any updates sequentially by update number
+
+Any updates will overwrite files from the original distribution or previous
+updates.
+
+
+
+
+B) INSTALLING TIMIDITY
+
+Get the latest TiMidity from the TiMidity++ web site,
+www.goice.co.jp/member/mo/timidity, or from Richard's site,
+www.stardate.bc.ca/timidity.htm (usually has current src)
+
+If you are using Linux, get the latest src and compile it up.  You'll want
+to be sure to use the --enable-ncurses flag in the configure script if you
+want to use the ncurses interface.  If you want to compile it under Win32,
+get cygwin, mingw32, and pdcurses (pdcurses 2.4 beta is the most stable, 2.4
+final seems to have introduced some bugs).  Have fun installing the compiler
+and building everything :)  For Win32 users, it's simplest to get the latest
+binaries from the TiMidity++ page.  Richard should also have a console mode
+Win32 binary available which is compiled with C-Spline interpolation,
+resulting in higher quality at the expense of CPU time.
+
+Put the timidity program wherever you want it, say c:\timidity.  Now move
+the timidity.cfg file which comes with my patch set into this directory. 
+Leave the other .cfg files where they are, in the patches directory.  There
+are two paths in the timidity.cfg file which you need to have set correctly. 
+These are the paths to the timidity directory, and to the patch directory. 
+Use the "dir" statement in the timidity.cfg file to set these.  There are
+comments in the file which tell you this.  The timidity.cfg file which comes
+with the patch set has these set to c:\timidity and c:\eawpats.  The "dir"
+statements basicly create the path environment that timidity uses when it
+searches for patches and .cfg files.  Thus, if you put any patches or .cfg
+files in the c:\timidity dir, these will be used ahead of any in the patches
+directory.  It's best to avoid possible confusion and just keep all patches
+and .cfg files in the patches directory.
+
+The mt-32.cfg and proteus.cfg are only to be included in timidity.cfg if you
+need to play an MT-32 or Proteus2 midi.  They will replace the normal
+instrument mappings with ones to fit those particular pieces of hardware, so
+normal GM midi will sound very strange if you try to play them while you
+have those .cfg files included.  Only include sndfont.cfg if you are going
+to be using soundfonts, and you'll have to edit it to tell it what your
+soundfont is.
+
+
+
+
+B') EXAMPLE WIN32 INSTALLATION PROCEDURE
+
+c:\timidity                     extract the timidity zip here
+c:\eawpats                      extract all of my patches here
+c:\timidity\timidity.cfg        copy the timidity.cfg file here
+
+For those of you who need a step-by-step example, here is what to type in
+the DOS box (it is harder to describe how to do things in a GUI):
+
+c:                                              #go to the C: drive
+cd \                                            #to to the root directory
+pkunzip c:\timidity-w32-2.9.1.zip               #the zip makes it's own dir
+mkdir eawpats                                   #make the patch directory
+cd eawpats                                      #go there
+rar x c:\eawpats10.rar                          #extract the patch set
+copy timidity.cfg c:\timidity                   #copy the timidity.cfg file
+
+That's it.  It should all be installed and configured properly now, assuming
+you put things in the default locations given above.
+
+
+
+
+B'') POSSIBLE DIFFICULTIES GETTING WIN32 GUI TO WORK
+
+It has come to my attention that certain versions of the Win32 GUI (may or
+may not still do this, I don't use it enough to know) *REQUIRE* timidity.cfg
+to be in c:\windows\timidity.cfg when you run it for the first time.  After
+you have it up and running, you can edit the GUI preferences to point to
+where you really want to put timidity.cfg (assuming you don't want to leave
+it polluting the windows directory) and remove it from c:\windows.
+
+
+
+
+C) FLAGS THAT AFFECT HOW TIMIDITY RUNS
+
+I don't use the GUI interface.  The GUI interface should be fairly self
+explanatory anyhow.  If you are a Win32 user that likes to drag and drop
+files on to player shortcuts, create a .bat file and make a shortcut to it. 
+You can also set this .bat file as your default midi player, set it as a
+helper app in web browsers, etc..  Just associate the midi file type with
+the .bat file and you're set.  Dragging and dropping onto the shortcut to the
+.bat file works fine.  Be sure to check the "Close on Exit" box so that the
+console window closes when the midi finishes playing.  I recommend putting
+the .bat file in your path so that you can run it from any directory you have
+midi in.  My .bat file looks like this (except that it's all on one line
+instead of being chopped up):
+
+c:\timidity\timpp291q -c c:\timidity\timidity.cfg -B 32 -f -m 3000 -EFchorus=2
+-EFreverb=1,63 -Od1S -s 33075 -p 256 -U -t nocnv -int %1 %2 %3 %4 %5 %6
+%7 %8 %9
+
+Explanation of the flags I just used:
+
+first off, I'm using my C-Spline build of the program ('q' for Quality)
+
+-c c:\timidity\timidity.cfg             Tells it where the timidity.cfg file is
+-B 32                                   Gives it a decent buffer size
+-f                                      Toggle fast decay on, sounds more like
+					it should to me
+-m 3000                                 Decay pedal sustains for 3000 msec
+-EFchorus=2                             This turns on an alternate chorus mode
+					which creates a surround sound effect
+					and does not detune the chorus notes
+					as much.  Sometimes -EFchorus=1 sounds
+					better, but I usually prefer mode 2
+-EFreverb=1,63                          Decent global reverb level, rather
+					than only applying reverb to midi
+					which have per channel reverb controls
+-Od1S                                   Use Win32 audio device, 16 bit stereo
+-s 33075                                the sampling rate
+-p 256                                  maximum polyphony
+-D 10                                   Force channel 10 to drums (I don't
+					use this anymore because it messes up
+					>= 10 channel mod files)
+-U                                      Unload instruments from memory between
+					songs (I like to conserve memory)
+-t nocnv                                Display the Japanese characters in
+					the regular extended character set
+					rather than make them all '.'
+-int                                    Use the ncurses interface with tracing
+
+You can also tack on 'r' and/or 'l' to the -i flag to toggle randomizing and
+looping of playlists.  If you use hardware reverb on your soundcard, you may
+want disable software reverb/chorus effects so you don't drown the midi in
+reverb.  Also, using -EFreverb=1,xxx instead of just -EFreverb=1 saves a
+great deal of CPU time on GS/XG midi, since it doesn't have to handle the
+varying reverb for each channel independantly.  If you are short on CPU
+power, and have memory to spare, you can use the -S flag to increase the
+amount of memory used to cache non-chorus'd notes.  I hardly ever see
+a midi that can't cache 100% of the notes when using -S9M, so you shouldn't
+usually need to allocate more than 9 megs, and often you can get by with far
+less than that.  The default cache size is fine for most people, but if you
+use C-Spline interpolation on a Pentium 133 with an ISA sound card (yes, I
+know my machine is getting old and slow) with the chorus and reverb effects I
+list above, every non-cached note can take a rather large chunk of valuable
+CPU time.
+
+Now that TiMidity has really good MOD file support, you may want to use it to
+play your mod files.  If so, you might also want to disable chorus/reverb,
+since many mod files already simulate these things by how the author handled
+the channels, panning, and volumes.  For instance, enabling -EFchorus=2 for
+2nd_skav.s3m (intro/credits to the Unreal II - 2nd Reality demo) will sound
+very strange, and will even lead to bad constructive/destructive
+interferrence of the voices, since the mod was written to simulate a surround
+sound effect to begin with.  I think it's kind of cool to hear the voices
+cancel each other out, but it certainly doesn't sound very good :)
+
+
+
+
+D) MORE USAGE ADVICE
+
+If you only have an ISA soundcard, and have a free PCI slot, buy a new PCI
+sound card.  This will make timidity run about 3x faster (rough estimage, but
+it is a large amount whatever it is), because the CPU is not having to insert
+so many I/O wait states when it interacts with the sound card.  I should do
+this myself....
+
+Win32 users may also want to use the -e flag, which tells TiMidity to be
+"evil" and set itself a high task priority.  If the sound gets choppy while
+running other things, or the TiMidity window is not the active one, this could
+help.  It is somewhat humorous to note that the evil flag has no effect when
+running MS Word.  Evidently, Word just sucks up nearly all your system
+resources.  Is this yet another example of how "evil" Micro$oft is ? ^_^
+
+If you click in the console window and the program pauses, just hit return to
+resume normal functioning.  The same goes for pauses when it load a midi, but
+hasn't drawn the ncurses display yet.  I am pretty sure this is a problem
+with pdcurses, and I think I've hacked my pdcurses library so that it doesn't
+happen anymore.  But if it happens with your binary, just hit return and
+keep going.
+
+
+
+
+E) MORE WIN32 GUI ISSUES (maybe other GUI's too?):
+
+The older GUI versions (all versions less than hacked version Z1) don't
+support the drumsets and SFX (due to a .cfg file parsing error), won't use
+any drumset not on channel 10, and may even crash if the xgmap2.cfg is
+included.  Older GUI versions were noticably slower than their console
+counterparts, and were missing many features.  The current GUI is actually
+quite good now, with no loss of speed compared to the console version, and
+most of the options the average user will want are available through the
+menus.  Double click on the TiMidity logo box a few times to cycle through
+display modes.  For the real "power users" out there, there are more settings
+you can change by editing the timpp32g.ini.  If you still can't find the
+option you want to change in the .ini file, just specify it as a command line
+argument just like you would for the console version.  For example, if you
+want to use chorus mode 2, you will have to specify "-EFchorus=2" as a flag
+in the line that runs the GUI executable because the current GUI (2.9.1 as of
+this writing) has not been updated to know that modes > 1 exist.  If you
+enter "2" on the chorus level line in the GUI preferences, it will use chorus
+mode 1 with a global level of 2, which is not at all what you wanted it to
+do.  In order to be SURE that the GUI is configured like you want it, enter
+in the same flags on the line that runs it as you would use if you were
+running the console version.  It can do everything the console version can,
+it just can't configure it all properly through the menus (or save it
+correctly to the .cfg file).
+
+
+
+
+F) HOW TO OUTPUT TO A WAV FILE
+
+If you are using the console version, add "-Ow1S -s 44100 -o output.wav"
+where output.wav is whatever file name you want for the output wav file. 
+-Ow1S tells it to "O"utput a "w"av file in "1"6 bit "S"tereo.  -s 44100
+sets the sampling rate to 44100.  You'll probably also want to add "-p 256"
+to make sure you never max out your polyphony.  See the FLAGS THAT AFFECT
+HOW TIMIDITY RUNS section above for more flags that you may want to use. 
+
+Also, use the cspline compiled binary, it will sound better.
+
+If you use the Win32 GUI, go to the Config/Preferences/Output menu.  The
+bottom portion of the menu has several output devices that you can choose.
+It should currently be set to "Win32 Audio".  Select "Riff Wave File"
+instead.  You can now enter the name of the wave file you want to write to
+in the "Output File" box.  When you hit play, it will begin writing the wav
+file.
+
+The Win32 GUI does *NOT* use cspline interpolation, only linear.  If you
+want higher sound quality, learn to use the cspline compiled console version.
+
+
+
+
+G) IF YOU /STILL/ HAVE PROBLEMS WITH ANYTHING
+
+Send me email with any questions you have.  I tried to give a good overview
+here to answer most of the questions I have received in the past, but if I
+am too unclear, don't hesitate to ask me anything.  And as always, I'd love
+to hear any feedback on the quality of the patches, how to improve them
+further, which ones are most in need of improvement, and any new patches you
+may wish to send me.
+
+
+
+
+Eric A. Welsh <ewelsh@gpc.wustl.edu>
+Center for Molecular Design
+Center for Computational Biology
+Washington University
+St. Louis, MO

@@ -1,0 +1,278 @@
+                  A SHORT GUIDE TO CREATING MIDI INSTRUMENTS
+
+                                Eric A. Welsh
+
+                                July 4th, 2000
+
+(originally published at http://www.crosswinds.net/~linuxmusic/patguide.html)
+                    (fixed some typos November 10th, 2000)
+
+
+
+
+"What are sound patches, what are they used for, and how do I make a good one?"
+
+A patch is simply a collection of audio samples together with information
+that tells hardware/software how to use those samples to play music from a
+MIDI file.  A long time ago, before most home computers could even play 8-bit
+stereo sound (long live the Amiga!), before there was even a General Midi
+standard, there were only expensive hardware MIDI tone generators and
+synthesizers.  Professional musicians would pop in a floppy with their
+instruments on them and load them into the RAM on their hardware, then use
+them to play music on their keyboard that didn't sound like a plain old
+square wave.  There were many different synths, each one with it's own
+proprietary patch format, yet each containing the same important
+information.  I won't discuss any more history of midi hardware or midi
+standards here, save to mention a few important events related to playing
+MIDI on a home computer.
+
+In the early 90's, Advanced Gravis came out with the first PC sound card that
+I know of that used "wavetable" RAM to hold patches that could be used to play
+midi.  For the first time, your average Joe could buy a cheap Gravis Ultrasound
+and start playing some decent sounding MIDI without having a hugely expensive
+tone generator.  In the mid 90's, as computers became more powerful,
+"software synthesizers" began to appear that would read in these same
+patches and use them to play MIDI files just as a real wavetable sound card
+would, lowering the cost of playing midi even further and virtually removing
+any limitations on total memory and sample size.  No matter what you use to
+play the midi file, whether it be a tone generator, wavetable soundcard, or
+software renderer, they all work the same way and use the same information. 
+Some patch formats may support more features than the ones I will describe
+below, but this should cover most of the important ones and are the most
+likely to be supported in any format you choose to use.  I'll start out by
+describing the different levels of information in a patch and what that
+information is used for.
+
+A generic patch is structured like this:
+
+Instrument
+     Layer 1
+          Region 1
+               Sample 1
+          Region 2
+               Sample 2
+          etc ...
+               etc ...
+     (Layer2, etc...)         not all formats support multiple layers
+
+Let's start out at the lowest level, the Sample.  Most people probably know
+that this contains the raw audio data and the frequency it was sampled at. 
+However, it also contains other information that is vital to it's use as an
+instrument, such as the key, loop points, and loop type.  The key tells it
+which note on an 11 octave scale it is to be associated with.  When the
+player wants to play a note other than the one that the sample is associated
+with, it has to resample the sample to a different frequency to change it's
+pitch.  It looks up a frequency table associated with each note, gets the
+new target frequency, then proceeds to do the resampling.  I'll get to how
+this effects sound quality a little later on.  The loop information is very
+important for use as an instrument.  If a note is held longer than the
+sample length, the player needs to loop back and play part of the sample
+over again to keep the sound going for the requested amount of time.  The
+loop type tells it whether it is a normal, bi-directional, or reversed loop. 
+It can often be tricky to choose good loop points, I'll discuss this further
+down as well.
+
+Every sample is associated with a Region.  Each region is associated with
+one sample, and tells the player almost everything else it needs to know
+about using the sample in an instrument.  First, the player needs to know
+what range of notes is associated with this particular sample.  If a sample
+is sampled at C4, you'll probably only want to use it to play notes between,
+say, C3 - C5, since resampling too far beyond the key note can stretch / 
+shrink the sample too much and start to sound bad.  The other important
+information stored in the region is all of the Envelope settings, including
+chorus, reverb, and panning overrides.  The envelope settings are used by the
+player to embellish the sample and make it sound even better (or worse...)
+than it already does.  Adding a good envelope to a patch can usually greatly
+improve how it sounds, by making it sound more realistic by setting volume
+ramps for Attack, Decay, Sustain, and Release regions of the sample, plus
+adding a base level of reverb.
+
+Each Layer is just a collection of regions.  It can also contain global chorus,
+reverb, and panning information, but some patch formats / players do not
+understand this, so I'd not recommend trying it :)  The assembled regions in
+the layer should cover all of the notes in the scale, or at least as many as
+are supported by the format (typically from C0 - C9).  An instrument may
+have more then one layer, but not everything understands this.  This is
+typically done so that one layer covers the right channel, while the other
+covers the left, so that two samples are played for each note and create a
+surround effect.  This is not generally a good idea IMHO, but some sound card
+vendors do it in an attempt to make their MIDI sound better.  I feel that it
+is better to just leave everything in mono and let the player do fancy stuff
+like add surround sound effects.  Just use one layer, keep the samples mono,
+and don't set any panning or chorus in their envelopes either.  This is just
+my opinion though, there are plenty of SF2 banks out there that would beg to
+differ with me :)  Now that I've discussed how a patch is structured, I'll
+give a quick list of things to do and NOT to do when creating one.
+
+The most important part of the patch is, of course, the sample itself.  The
+easiest pitfall to avoid, and unfortunately one of the more common ones I
+see, is oversampling the sample.  Don't record the sample at a volume that
+maxes out the amplitude of the sample.  This will give flat topped peaks and
+create a large amount of static.  Record the sample so that it's maximum
+amplitudes are just under the limits of the data format.  The next important
+factor is that the vibrato, pitch, volume, and general tone character of the
+sample should remain constant throughout the sample.  There should really be no
+vibrato at all if it can be avoided, since resampling to different
+frequencies will cause the vibrato to either stretch out into weird sounding
+pulses or shrink into high frequency twitters as lower or higher notes are
+played.  The same goes for pitch.  Any deviations from constant pitch will be
+distorted the further away from the root key you get.  The sample needs to
+have dead on perfect pitch too, since the more out of tune a sample is, the
+shorter it's useable range of notes that it can play without the human ear
+hearing it stretch out of tune.  Samples can be retuned by adjusting the
+sampling rate to raise or lower the pitch slighty, but the closer the sample
+is to the correct pitch to begin with, the better.  Pitch problems can also
+surface in note attacks, which will often be flat or sharp, then bend to the
+correct pitch for the sustained note.  This has the effect of causing fast
+notes to be pitched differently than sustained notes, since only the attack
+is heard on the fast notes before the note ends.  Attacks also need to be very
+rapid.  A volume swell at the beginning of a sample can be very bad for both
+short and low notes.  In a short note, the sample will not have enough time to
+rise to a good volume before the note is killed, and on a low note the volume
+swell will be stretched out so that it takes a long time for the sample to
+reach full volume.  The low notes will either have a "sluggish" feel, like
+they are lagging behind the higher notes, or they will be very quiet, since
+none of them will have had time to reach their normal volume.  The constant
+tone character comes more in to play when looping the sample, but it is always
+a good idea that the sample sound the same thoughout it's entire length rather
+than change it's tone.
+
+Looping samples can be a difficult thing to do well.  Practice makes
+perfect, and that just comes with experience.  However, there are some
+samples that just can not be looped well, at least not without substantial
+editing and manipulation to get them to do so, which I have never attempted.
+A good loop needs to be reasonably long and maintain a constant vibrato,
+pitch, volume, and general tone character.  If any one of these criteria are
+not met, the loop will wind up sounding like a fast pulsating mess rather
+than a nice long sustained note.  Volume changes, tone character changes,
+and loops that are too short will all result in a vibrato effect, one which
+generally sounds bad no matter what frequency the note is played at.  The
+phasing of the loop points must also be aligned, so that you align the peaks
+and troughs of the waveforms at the beginning of the loop with those at the
+end.  This includes any higher order patterns that are visible when you view
+the sample at different zoom levels, creating different interference
+patterns.  While misalignment of loop points usually results in a pulsating
+or growling effect, it could also result in a change in pitch.  Making a loop
+a little too long or too short can have the effect of changing the frequency
+of the loop region, so even if the loop itself sounds normal, it may be
+playing at a different effective pitch than the non-looped portion of the
+sample.  It may sound like it can be a little tedious to make a good loop,
+and it IS if the sample is not a good one, but if the sample meets all the
+criteria given above in the sampling section, it should be fairly easy to
+select a section near the end of the sample that will make a good loop.
+
+
+
+
+"Now that I know how to create the perfect sample, how do I go about
+ using that sample to create a good instrument?"
+
+Real instruments sound different depending on what octave they are being
+played in.  As an example, a trumpet sample of a high C will not sound like a
+real trumpet when that sample is stretched down two octaves.  To overcome
+this problem, multiple samples are used in the patch, with each sample
+assigned to a different region of the scale.  The closer in pitch the samples
+are to each other, the more realistic the final patch will sound.
+Unfortunately, using many samples that are very close to each other can
+produce a very large patch.  A compromise must be reached between size and
+realism.  I have found that it is best to create samples 5 half-steps apart.
+Each sample is then assigned a region of the scale +/- 2 half-steps from it's
+root key.  If a particular instrument does not lend itself to producing
+samples every 5th half-step, then it is usually acceptable to create samples
+6 or 7 half-steps apart where necessary.  If you space them any further apart
+than this, then there is a good chance that a note played at the upper extreme
+of one sample's range will have a noticeably different tone character than the
+next higher note, which is at the lower extreme of it's sample.  Different
+instruments have different tolerances for how far apart their samples can be
+spaced without creating bad transitions, but 5 half-steps is generally the
+best distance to aim for.
+
+Even if all of the above guidelines are followed, a multi-sample patch can
+still be ruined by the sampling conditions.  While each sample may be a
+perfect sample by itself, it still may not blend well with any of the other
+samples in the patch, or it could be full of background hiss from a noisy
+amp.  There are a few simple things you can do to keep these problems from
+happening.  In order for the samples to blend well with each other, they all
+need to have the same volume and basic tone character.  Even if the person
+playing the instrument plays each note exactly like the others, they can still
+sound different if the microphone is in a slightly different place for each
+sample.  The best solution here is to fix the microphone in place and keep the
+instrument as close to the same position as possible each time a note is
+sampled.  You should also experiment with different microphone positions to
+determine where the microphone needs to be to get the best sound.  All samples
+should be made in a single sitting, so that as many parameters can be held
+constant as possible.  If the sampling hardware is prone to noise, most of the
+noise can be eliminated by post processing the sample with a sample editing
+program.  These programs work by selecting a portion of the sample as "noise",
+then removing that noise from the sample.  The longer the section of noise is,
+the more accurately the noise is modeled.  It is good to leave a second or two
+of background noise at the beginning and end of a sample, so that you will
+have long regions of "high quality noise" to select from.  These regions also
+act as buffer regions when the noise reduction algorithm is applied, since the
+ends of the sample can sometimes be distorted by the process.  The sample
+should only be cropped to it's final size after all noise reduction and any
+other digital signal processing has been completed.
+
+Envelopes are used to apply the finishing touches to a patch.  The best way
+to get a feel for how to make a good envelope is simply to load up a wide
+variety of patches and look at the envelopes that other people have created. 
+The release envelope is probably the most useful of all the envelope
+parameters.  This controls how quickly the sample decays after the note has
+been turned off.  Melodic percussion instruments often have long releases, to
+better model the reverberations that persist long after the instrument has
+been hit.  The sustain parameter sets the volume at which the sample is
+sustained, while the decay envelope controls how quickly the sample volume
+decays to the sustain volume level.  The attack envelope controls how
+quickly the volume ramps up to 100%, before being effected by the decay
+envelope.  There are many more parameters beyond these four that I have
+mentioned, including chorus (not recommended) and reverb effects (7% is a
+good amount), but these are the ones that are probably the most useful.
+With these, you can greatly enhance the way a sample sounds when it is
+played.  However, you can also greatly detract from the sample by choosing
+unwise envelope settings.  I don't know how many times I've seen decay
+envelopes that ramp the sample down to 0 before it's even reached the end of
+the sample.  While this can be OK for percussive instruments, it usually
+sounds awful for anything else, like electric guitars, brass, woodwinds,
+etc..  It's generally a good idea to just add a little pseudo-reverb with
+the release envelope, and don't add any attack, decay, or sustain parameters.
+
+
+
+
+"Now that I know how to make patches, how can I use them?"
+
+There are many different "wavetable" soundcards on the market that let you
+load user created patches.  Along with this variety comes a variety of patch
+formats that each vendor has created, such as the Gravis PAT, AWE (and
+others) SF2, the up and coming 94B format, and several others too numerous to
+list here.  Most cards come with software (Win32) that lets you create
+patches in their own custom format.  Some even allow you to import patches
+from other formats.  There is a good commercial Win32 product called Awave
+that will edit and convert between just about any patch format.  For those of
+the Linux persuasion, there is the free Smurf Sound Font Editor.  Whatever
+you use to create/convert the patches, make sure that you have enough RAM on
+the card to enable you to use them.  A high quality patch set might take >= 32
+megs of RAM.  For those without a wavetable card, without one that works
+under Linux, or without enough RAM to load large patches, there are a few
+software solutions.
+
+There are some commercial products that will allow Win32 users to load WAV
+files, maybe even PAT/SF2 files, and render midi as a Win32 MIDI device.
+While this is a nice thing, it might be better just to get a wavetable card
+or buy more RAM, since these programs aren't necessarily cheap.  They also
+won't be of ANY use to Linux users.  I have heard good things about CSound,
+a powerful sound/music tool with free ports to just about every operating
+system, but I've never tried it myself.  I use TiMidity++.  It's good, fast,
+has ports for most platforms, is easily customizable, and has free source
+code to hack on if you want to.  Check it out.  Whatever you use to play
+them, I hope this little guide can help you make some really good MIDI
+instruments.
+
+
+
+
+Eric A. Welsh <ewelsh@gpc.wustl.edu>
+Center for Molecular Design
+Center for Computational Biology
+Washington University
+St. Louis, MO

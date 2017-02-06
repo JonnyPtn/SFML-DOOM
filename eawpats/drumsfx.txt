@@ -1,0 +1,75 @@
+DRUMSFX 8.0
+March 27, 2000
+
+{this is just an old readme from when it was separate from the main set}
+{the timidity URL may have been outdated even when I last revised this}
+{some of the info may still be interesting to read}
+
+The original cfgs and most of the pats for the sfx and gsdrums were
+taken from the patchset available from the Japanese site which deals with the
+new hacked versions of TiMidity:
+
+http://www.goice.co.jp/member/mo/hack-progs/timidity.html
+
+I edited out clicks, relooped a few patches, heavily edited a few that were
+not very good, and made a few new ones of my own out of other ones.  The
+major work involved here was cleaning up the map files so that they were 1)
+organized, and 2) were actually correct.  I corrected the XG and GS sfx
+mappings, added a few new drumsets and SFX banks, played a little with the
+note assignments to make them fit what I heard on my XG card, and hunted down
+samples for the sound effects that I did not have good samples for.  All the
+mappings *should* be correct now, at least from the SC-88 and XG lists that I
+have.  All GS/XG SFX banks and drumsets should now be supported.  As of
+TiMidity++ 2.7.0, all of the GS and XG SYSEX bank/program change commands that
+I know of have been implemented, so there should no longer be any midi that
+handle the sound effects incorrectly.  Occasionally TiMidity will not handle
+autodetection of a drumset correctly, in which case you have to force it (like
+with the -D 16 command line option to force channel 16 to be a drumtrack).
+This almost always comes from mistakes in the midi file, so you can fix the
+problematic file with a decent midi sequencer.  The SFX, Power, and Analog
+patches really help a lot of GS/XG midi sound like they were meant to rather
+than sounding strange or really bad.  With these extra patches, TiMidity is
+the only softsynth I know of (besides the Yamaha XG commercial product) which
+will play all the GS and XG sound effects correctly.  Most sound cards, and
+ALL other softsynths that I have seen, do not treat drumsets 48, 49, and 50
+correctly at all.  I should have the mappings right for these now, just that
+the Ethnic set might need some more work since I don't know what most of those
+instruments are supposed to sound like.  TiMidity may also be the only
+non-Yamaha softsynth to use ANY XG drumsets correctly, since they assign
+different instruments to the lower notes than the GM/GS standards (I have no
+idea why).
+
+In order to make use of these new patches, you have to be using a hacked
+version of TiMidity >= Y11.  Previous versions don't interpret comments on
+the same line as a mapping correctly, and don't handle the XG mappings at
+all.  All GUI versions before Z1 do not support multiple drumtracks, or any
+drumtrack not on channel 10, and do not have any Modulation Wheel effects
+(adds vibrato).  Once again I'm going to plug using the console version :)
+
+Just add gsdrums.cfg, gssfx.cfg, and xgmap2.cfg to the list of cfg files in
+timidity.cfg and you're all set.  The total size of the addon set is ~6.8
+megs (at least it was several versions ago, I haven't recalculated it
+recently, but it shouldn't be too far off from that).  I also left in some
+patches that I didn't use in the .cfg files, since these were not used out of
+my personal preference and you might have a different opinion and want to try
+them out for yourself.
+
+
+<note from install.txt>:
+
+The mt-32.cfg and proteus.cfg are only to be included in timidity.cfg if you
+need to play an MT-32 or Proteus2 midi.  They will replace the normal
+instrument mappings with ones to fit those particular pieces of hardware, so
+normal GM midi will sound very strange if you try to play them while you
+have those .cfg files included.  Only include sndfont.cfg if you are going
+to be using soundfonts, and you'll have to edit it to tell it what your
+soundfont is.
+
+
+
+
+Eric A. Welsh <ewelsh@gpc.wustl.edu>
+Center for Molecular Design
+Center for Computational Biology
+Washington University
+St. Louis, MO

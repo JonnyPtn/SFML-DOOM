@@ -1,0 +1,159 @@
+EAWPATS Release 12 (at least that's the last time I edited this file...)
+April, 2002
+
+This is a collection of Gravis UltraSound patches for use with a GUS, or with
+"softsynth" midi players such as Cubic Player and TiMidity.  I hope that
+all of these patches are the best ones you've ever heard.  I've worked really
+hard to try to ensure this.  I collected patches from the Ultrasound mirrors,
+Midia, Kurzweil archives, Roland archives, Yamaha archives, Maui, maybe a few
+from MAZ, and just about every known source of patches on the net.  I have
+tried to leave no stone unturned.
+
+I have removed clicks, changed volumes of samples within multipart patches
+so that they are the same relative to each other, relooped samples, created
+new instruments by combining others, edited out bad samples, remapped the
+note mappings to samples, rekeyed samples, retuned samples, changed
+envelopes, hand edited some to remove oversampling, and just about any other
+kind of manipulation you can think of.  Just because many patches are the
+same size as they originally were doesn't mean they haven't been improved in
+some way or another :)
+
+I think by now I have listened to every patch while being played in a midi
+file, so I've heard them over all sorts of ranges not intended for the
+instruments, in combination with instruments that might be slightly out of
+tune with the one in question, and heard most if not all the waveforms in
+multipatch instruments.  Bigger does not necessarily equal better.  Don't be
+fooled by the small sizes of some of these patches.  Hopefully all the
+patches now in the collection will sound good in every midi file they are
+used in.  PLEASE send me any patches you find that are better than the ones
+I've selected.
+
+The file patref24.hlp is a Windows help file I got from the Maui ftp site.
+It's quite dated by now, but is still useful as a list of places to get
+patches.  I've included it as a resource for those who may wish to continue
+the quest for better patches.
+
+
+
+
+COMPARISON OF SOUND QUALITY:
+
+Once I turn on the hardware reverb on my XG card so that there are good
+reverb effects applied to the TiMidity output, many midi actually sound
+BETTER than my Yamaha SW60XG card.  Sure, any XG midi that has fancy
+variation effects or funky echoes won't sound quite like it was intended, but
+the instruments themselves sound just as good usually.  I am very satisfied
+with the patches that I have currently assembled.  It beats the snot out of
+any softsnyths like Wingroove, Virtual Soundcanvas, Yamaha S-YG20, Netsynth,
+etc.  The Yamaha S-YG50 is pretty good though, since it supports all the cool
+XG effects of their real soundcards.  Still, I think that TiMidity with my
+patch set is a better choice overall.  The built in reverb is ok, and the
+pseudo reverb and disabling of fast note cutoffs can make some pieces sound
+more full as well, so even if you don't have hardware reverb you can still
+get some good results.  Even without reverb though, it's still the winner.
+
+
+
+
+PLAYERS THAT CAN USE THESE PATCHES:
+
+TiMidity is THE best midi player that uses GUS patches.  It sounds SO much
+better than Cubic Player, since it handles so many things that Cubic
+doesn't, like correct volume, looping, sustained notes, better sound quality,
+envelopes, modulation wheel, chorus, reverb, and other more minor stuff.
+Originally a UNIX program, it has ports for DOS and Win95 as well.  I could
+never get the DOS port to handle the SoundBlaster correctly and it sounded
+terrible, but the PC speaker support can be fun :)
+
+Cubic Player was the first midi player I had.  It has lots of really cool
+stuff to look at.  Hi-res spectrum analyzers, note dots, oscilliscopes,
+list of instruments currently being used, which patches inside the
+instruments are being used, what notes they are keyed to, their size, and
+much much more.  It also takes a lot less processor time than TiMidity, running
+very happily on my old 486.  On some Pentiums, like mine and a friend's, Cubic
+will freeze while playing just about anything.  The only way to get around this
+problem is to disable the internal cache on the CPU.  Why?  I have no idea.  
+It's really bizzare.  It DOES work though, and keeps it from crashing.  On my
+P133, this slows things down to slower than my old 486DX50, so be prepared to
+select 8 bit sound quality to save processor time if you're unlucky enough to
+have this problem.  Running it under Win95 seems to somehow avoid this problem
+as well, but not 100% of the time.  Version 1.7 is the latest version which has
+included reverb effects.  The newer versions don't have them and require an
+ultrasnd.ini file which is a different format than default.cfg (which in turn
+is a different format than the current gravis.cfg).  The newer versions,
+however, don't have the weird lockup problem I mentioned above.  The
+default.cfg and ultrasnd.ini files included are outdated and are no longer
+supported by me, since I don't use Cubic for midi now that TiMidity is SO much
+better.  If you REALLY want updated files that are in sync with my current
+release, ask me nicely and I'll take the time to update them.
+
+To sum it up, get TiMidity for awesome quality, get Cubic for really cool
+stuff to watch on the screen.  The default.cfg and ultrasnd.ini are included
+for use with Cubic, and the gravis.cfg is in the format needed by TiMidity.
+Cubic won't support the extra drumsets and SFX that are in the DRUMSFX
+addon though.
+
+PS. I have heard that CSOUND does an OK job too, but I have not tried it.
+
+
+
+
+GS AND XG MIDI SUPPORT:
+
+The newer hacked versions of TiMidity (these evolved into TiMidity++) support
+mapping of XG sound effects to their appropriate instruments.  I used to have
+a separate addon set of patches, DRUMSFX, which included several extra
+drumsets and the patches needed for the SFX banks.  Now that CD-R's and zip
+drives are much more prevalent, downloads are faster, and hard drives are
+cheap, the extra 7 megs or so that the addon takes up really isn't worth
+the hassle (or confusion) of keeping it as an optional download anymore.
+The extra drums and sound effects are no longer a separate set as of
+Release 10.  The full distribution now contains everything you will need to
+play GS and XG midi as close to how they were intended as is possible with
+the current state of the art in free midi renderers.
+
+
+
+
+WHERE TO GET TIMIDITY++:
+
+http://www.goice.co.jp/member/mo/timidity/.
+
+
+
+
+INSTALLATION AND USAGE OF TIMIDITY:
+
+See install.txt.
+
+
+
+
+THANKS:
+
+I would like to thank the following people for their input, patches, and
+anything else that has aided me in improving this patch set:
+
+Richard Sanders
+Masanao Izumo
+Sergey Batov
+Laurent Martelli
+Tasos Tzimoro
+Andy Bakke
+Pavel Vrabec
+Julie Brandon
+John Sankey
+Pedro Lopez
+Jim Oliver
+Jeff Medaglia
+All the people who sampled these patches in the first place
+Anyone else I may have forgotten at the moment
+
+
+
+
+Eric A. Welsh <ewelsh@gpc.wustl.edu>
+Center for Molecular Design
+Center for Computational Biology
+Washington University
+St. Louis, MO

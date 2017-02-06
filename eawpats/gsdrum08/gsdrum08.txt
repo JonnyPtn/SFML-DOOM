@@ -1,0 +1,37 @@
+
+                        _
+                       [_
+                       [_lysium Entertainment
+                             Presents...
+
+GSDrum40.ZIP                                          Aug. 05, 1994
+------------
+
+        This contains our GS Drum Set #08.  In plain English, this means
+that this is a Room Drum Set.  The GUS Patches contained in this ZIP
+are as follows :
+
+        RoomLow2.Pat    (48k)
+        RoomLow1.Pat  (41.5k)
+        RoomMid2.Pat    (30k)
+        RoomMid1.Pat    (26k)
+        RoomHi2.Pat     (21k)
+        RoomHi1.Pat   (16.5k)
+
+        Sorry for the delay, but my life is currently revolving around
+College and a new job.  =)  This is the second ZIP of GS drum sets that
+I am uploading.  I hope you can find these useful and/or entertaining.
+Read GSDrum08.Doc for instructions on installation.  Bank.Inf contains
+the patch maps for these patches.  Enjoy these and my future releases...
+
+FTP : archive.epas.utoronto.ca      \pub\pc\ultrasound\submit
+      (Will probably be moved from there shortly)
+
+
+Any feedback/comments/flames welcome regarding my work.
+
+Dustin McCartney, cmccart@eis.calstate.edu
+ _
+[_  Elysium Ent.
+[_  Coder/Musician
+

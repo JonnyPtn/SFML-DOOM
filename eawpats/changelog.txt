@@ -1,0 +1,377 @@
+All the latest changes will be at the BOTTOM of this file.  I am too lazy to
+keep track of the exact dates, but they are pretty much in chronological
+order.
+
+
+
+[version 5 and before]
+
+Oh geeze, the last time I kept track of changes I made was back at like
+version 2, so I'm not even going to attempt to make a list of all that stuff.
+
+
+
+[eawp5up1]
+
+frenchrn.pat		cut beginning of lowest sample to lessen volume swell
+trumpet.pat		same as above
+trombone.pat		same as above
+viola.pat		same as above
+tremstr.pat		same as above
+pizzcato.pat		same as above
+slowstr.pat		same as above
+
+
+
+[eawp5up3]
+
+accordn.pat		new accordion from Andy Bakke
+newage.pat		resampled with C-Spline interpolatoin
+acguitar.pat		relooped bottom sample, very slight difference
+britepno.pat		retuned 5th sample
+violin.pat		retuned 2nd highest sample
+piccolo.pat		don't remember ...
+
+
+
+[eawpats6]
+
+I deleted several no longer used patches, rearranged some directories.
+To conserve hard drive space, I recommend deleting any old distribution
+and extracting this one afresh.
+
+snap.pat		new perc instrument
+snarerol.pat		new perc instrument
+ocarina.pat		don't remember ...
+scratch1.pat		different patch
+scratch2.pat		different patch
+whistle1.pat		looped it
+whistle2.pat		looped it
+highq.pat		different patch
+surdo2.pat		different patch
+agogohi.pat		retuned
+agogolo.pat		retuned
+woodblk.pat		retuned
+voxlead.pat		I think I remapped this one
+congalo.pat		retuned
+congahi2.pat		retuned
+congahi1.pat		retuned
+marcato.pat		removed the panning in the envelope ...
+ethnic\gong.pat		new instrument
+ethnic\tabla.pat	new instrument
+gsdrum25\revcym.pat	new instrument
+mazpat\fx\steps.pat	retuned?
+mazpat\fx\rainyday.pat	relooped
+mazpat\fx\newstep.pat	filtered noise from steps.pat, edited and relooped
+mazpat\fx\newtrain.pat	mutant of train.pat, relooped and changed note
+sfx\creak.pat		retuned?
+sfx\bubbling.pat	changed note it's keyed to
+sfx\dialtone.pat	new instrument
+sfx\meow.pat		new instrument
+sfx\doggrowl.pat	new instrument
+sfx\ghost.pat		new instrument
+sfx\laugh.pat		don't remember...
+sfx\firework.pat	new instrument
+sfx\thunder2.pat	new instrument
+sfx\ghost2.pat		new instrument
+sfx\scratch2.pat	different patch
+sfx\scratch1.pat	different patch
+sfx\train.pat		don't remember...
+
+default.cfg		updated, still out of date...
+ultrasnd.ini		updated, still out of date...
+gssfx.cfg		new instruments, mapping fixes
+gsdrums.cfg		lots of mapping fixes, new drum sets
+gravis.cfg		lots of drum mapping fixes, various other stuff
+xgmap2.cfg		lots of drum mapping fixes, etc.
+mt-32.cfg		numbering fixes, patch name fixes
+proteus2.cfg		various small fixes
+
+XG drums will sound A LOT better now than previous releases now that the
+mappings are correct!  Regular drums will also sound a lot better, now that
+they are keyed to the right notes, tuned better, etc..  The drumsets have
+been improved a good deal overall, both in the patches and the .cfg files.
+The new sfx are also very good.
+
+
+
+[eawp6up1]
+
+acpiano.pat		relooped many samples, they sound MUCH better
+britepno.pat		relooped some samples, cut noise from one
+harp.pat		added loops to top two samples
+mutegtr.pat		+25% amp to top sample, is closer to other samples now
+pizzcato.pat		adjusted sample amps for better balance within patch
+timpani.pat		retuned, removed nasty part at beginning, relooped roll
+xylophon.pat		removed 2 msec of silence from front of top sample,
+			I doubt anyone can hear a difference
+
+gravis.cfg		pizzcato amp=130 (adjusts for the latest patch edit)
+gsdrums.cfg		fixed 3 typos: "gsdrums25" -> "gsdrum25"
+
+
+
+[eawpats7]
+
+acpiano			fixed decay of highest sample
+xylophon		old+new samples, slight discontinuity but better range
+steeldrum		new bottom sample, sounds more realistic?
+charang			new massivly overdriven guitar
+seashore		new sound of waves breaking on shore
+ocarina			new ocarina
+sitar			decays faster now
+barisax			new baritone sax, kept lowest sample from old one
+piccolo			new piccolo
+harmonca		old+new samples, sounds more realistic
+recorder		new recorder
+woodflut		new wood flute
+oboe			old+new samples
+tenorsax		new tenor sax
+sprnosax		new soprano sax
+accordn			remaped regions, smoother transitions between samples
+
+sfx/bubbles1		new bubbling sound effect
+sfx/machgun2		raised it an octave
+
+xgmap2.cfg		changed amp for the new bubbles1 sound effect
+gssfx2.cfg		same
+gravis.cfg		tweaked amps (mostly brass and saxes)
+sndfont.cfg		added lines to use the huge sf2 banks I have on 2 CDs,
+			I got the banks from http://thesoundsite.ismi.net,
+			most of the new samples came out of this stuff
+timidity.cfg		no longer use sustain.cfg, you should use the -m
+			option instead to set decays for pedal sustains
+eawpats.txt		fixed typos, reworded a little bit
+drumsfx.txt		changed a few things, not much difference here
+install.txt		added recap of Win32 example install, changed
+			example console flags and descriptions
+
+
+
+[eawp7up1]
+
+carillon		Awave butchers some envelope content, so I restored
+			the original envelope from the Midia set with a hex
+			editor.  The loop now decays as it is played, rather
+			than maintain a constant volume.  This sounds much
+			better and more realistic.
+musicbox		same as above
+woodflut		changed range of highest sample, better transition
+
+gravis.cfg		woodflut amp=80, it was too loud before.
+			I may still need to balance the woodwind amps more.
+
+
+
+[eawp7up2]
+
+acguitar		Raised volume of 3rd from top sample by 25%.
+			Transitions between the neighboring samples are much
+			better now, the volume no longer suddenly drops.
+			I also filtered out most of the background hiss from
+			the samples.  Normally I wouldn't release an update
+			with just a single patch, but since the acguitar is a
+			fairly important instrument, I figured I'd go ahead
+			and do it.  I'm still not completely satisfied with
+			it.  If anyone has better samples, please send them
+			my way.
+
+[eawpats8]
+
+britepno		same envelopes as acpiano
+xylophon		new
+tremstr			new samples
+sweeper			new
+seashore		relooped
+glocken			new
+syntom			retuned, recentered
+toms			retuned, recentered
+taiko			retuned, recentered
+newage			changed envelope, longer decay
+steeldrm		new middle samples
+marcato			new samples, better transitions, good improvement
+woodflut		retuned all samples
+ocarina			retuned all samples
+recorder		retuned all samples
+acpiano			new lower sample, replaced highest sample, +2 more high
+trumpet			relooped 7th sample, retuned 8th sample, 6-7 ranges
+timpani			disabled the loop
+newage			resampled yet again with CORRECT C-Spline interpolation
+
+gravis.cfg		various amp= changes
+gsdrums.cfg		changed taiko note= to adjust for new note center
+eawpats.txt		changed version number, moved stuff into install.txt
+drumsfx.txt		changed version number, added a little at the bottom
+install.txt		expanded it to answer more questions, READ IT
+
+
+
+[eawp8up1]
+
+englhorn		transition between 2nd and 3rd samples is better
+charang			old envelopes sounded bad, they are much better now
+bassoon			lots of new samples, more realistic
+glocken			1st and 4th samples 25% louder
+newage			I had forgotten to enable the loop... doh!
+xylophon		lowered samples an octave...,
+			merged in samples from older patch,
+			removed dead space from ends of all samples
+marcato			maximized amplitude of bottom sample (not much louder)
+woodflut		loop of 2nd sample was slighty off for unknown reason
+
+gravis.cfg		disgtr & charang amp=127, vibes amp=80
+gssfx.cfg		98 vibes amp=80 for bank 72, (drum) bubbles1 note=48
+xgmap2.cfg		(drum) bubbles1 note=48
+all cfgs		added drum pans, taken from XG specs
+
+
+
+[eawp8up2]
+
+acguitar.pat		BIG thanks go to Laurent Martelli for creating so many
+			excellent samples to select from
+
+eawpats.txt		added Laurent Martelli to the thank you list
+
+
+
+[eawpats9]
+
+sweeper.pat		cut out 1st "hump", which was oversampled and had too
+			much of a volume swell; sounds better in more midi
+acpiano.pat		relooped 8th sample, adjusted it's range a little
+xylophon.pat		removed the lowest sample, added 4 new low samples
+			to take it's place and extend the usable range,
+			tuned 3rd from top sample
+jazzgtr.pat		new jazz guitar, samples from Marino 70 meg sf2 bank
+altosax.pat		finally, better mid/high alto sax samples ^_^ !!
+
+gravis.cfg		acguitar amp=155 (raised it by 5)
+			jazzgtr amp=175 (new jazzgtr is softer than old one)
+			fretless amp=175 (amp too high before, may still be?)
+			altosax amp=115 (new altosax is softer than old one)
+
+
+
+[eawp9up1]
+
+recorder.pat		retuned bottom sample
+marcato.pat		changed several ranges, more "ugly" notes are avoided
+church.pat		replaced bottom sample, thanks to Pavel Vrabec
+
+gravis.cfg		charang amp=130
+
+
+
+[eawpats10]		Merged DRUMSFX into the regular EAWPATS archive
+
+acguitar		remade patch from Laurent's samples, did a better
+			job this time
+fngrbass		all new samples, thanks to Tasos Tzimoro for pointing
+			out how bad the previous patch was by sending me one
+			of the new samples
+woodflut		retuned middle sample, retuned top sample,
+			recentered top sample on the correct pitch (oops),
+			range of bottom sample raised one half step
+altosax			relooped top sample to make it louder
+cymcrsh1 & 2		Tasos helped me tune/amp some old better samples I had
+			passed over before because they had sounded odd
+nyguitar		discovered ancestor of previous patch, edited it
+englhorn		all new
+barisax			added/replaced some new samples
+acbass			hex edited in the envelope from fngrbass
+fretless		hex edited in the envelope from fngrbass
+acpiano			maximized amplitude of 7th sample
+			raised bottom end of 7th range by one half step
+bassoon			retuned 7th sample, adjusted lowest range, removed
+			several samples, relooped a few to tune the loops
+
+sfx/windchim		hex edited in the envelope from tubebell.pat
+
+gravis.cfg		added amps for many cymbals, thanks again to Tasos
+			newage amp=115 (was amp=120)
+xgmap2.cfg		added needed keep=loop keep=env to sfx drumsets (oops)
+gsdrums.cfg		tweaked a few amps
+
+copyrigh.txt		further clarified that the patches should remain free
+drumsfx.txt		nothing really new, just added some comments at top
+eawpats.txt		added more people to thank, explained DRUMSFX merger
+install.txt		organized a little bit better, added Win32 GUI fix
+patguide.txt		lots of good advice from me on how to create patches
+
+
+
+[eawp10up1]		new harpsichord, basses and epiano2
+
+hrpschrd		all new samples courtesy of John Sankey
+synbass2		new
+fretless		new
+synbass1		different sample, old fngrbass relooped w/ new decay
+
+gravis.cfg		changed most of the bass amps for better balance
+			basslead back down to 100%, may still be too loud?
+			changed conga pitches
+			steeldrm back down to 100% now that basses are balanced
+			cleangtr back down to 100%
+			increased hihat and ride cymbal amps
+			various other minor tweaks
+gsdrums.cfg		changed conga pitches
+			added Room drums into Brush set
+			changed Tabla drum pitches in Ethnic set
+			I really need better Ethnic drum and pitch guesses...
+			Anyone with a SC-88 want to send me an mp3 of all
+			of the Ethnic drums being played sequentially?
+			<UPDATE - Thanks for the mp3 and the midi, Pedro!!>
+xgmap2.cfg		commented out badmaou, it sounded ... bad
+			use new conga pitches, but -10 semitones for XG drums
+
+
+
+[eawpats11]
+
+recorder		new low sample, adjusted ranges
+			(new sample from http://www.soundfont.esmartmusic.com)
+tenorsax		retuned 1st and 3rd samples
+tuba			top 2 sample loop points from Unison SF2 bank, retuned
+pizzcato		added release envelopes, lack thereof was causing pops
+frenchrn		all new samples from Mustheory SF2 bank
+tubebell		different envelopes (notes decay while on)
+			slightly different samples from ancestor patch
+concrtbd		Concert Bass Drum from General User SF2 bank
+choir			lowered ranges one semitone for smoother transitions
+steeldrm		replaced some samples with samples from
+			http://members.1012surfnet.at/henry.kellner/dl02.html
+			played by Andre Varkonyi
+timpani			declipped the sample (source code for the declipper I
+			wrote will be available soon, along with a Win32 .exe)
+harp			top two samples didn't have correct envelopes
+gsdrum25/revcym		new reverse cymbal from Ricky (last name unknown)
+
+xgmap2.cfg		XG conga pitches are correct now for all sets
+			correct revcym pitch
+gravis.cfg		reedorg was way too loud, may still need tweaking
+			adjusted several brass amps
+			adjust steeldrm amp for new samples
+			repitched congas
+			timpani amp=200 (declipping halved most of the sample)
+gsdrums.cfg		use new concrtbd for all the concert bass drums;
+			repitched congas
+			corrected the tabla pitches (based on bongos/congas);
+			BIG thanks go to Pedro Lopez for sending me an mp3 of
+			the Ethnic set from his SC-88 which I will use to
+			overhaul the Ethnic set in a future release
+			correct revcym pitch
+eawpats.txt		updated thanks
+
+
+
+[eawpats12]		Not a lot new, but the britepno is quite nice
+
+englhorn		retuned all the samples
+britepno		all new, thanks go to Jeff Medaglia
+acpiano			much shorter release
+accordn			remapped the ranges
+sitar			changed envelopes again
+marimba			changed envelope
+
+eawpats.txt		updated thanks

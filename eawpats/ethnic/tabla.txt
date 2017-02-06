@@ -1,0 +1,87 @@
+          Tabla:
+
+          The system used here to map the bols  (tabla syllables)
+          to MIDI notes involved creating an interpretation of
+          the tabla compositions for a Roland U220 tabla sample.
+          Some compromise was necessary to arrange the material
+          first for tabla samples, as they were not as complete
+          as would be ideal, and then for General MIDI conga and
+          bongo, but the general feeling of the compositions come
+          through.
+
+          The Bayan Drum
+
+          The bayan  is the larger and lower in pitch of the two
+          drums that comprise the tabla set. Its pitch is
+          variable. To simulate this using the Roland U220
+          sample, an auto bend function was used. The parameter
+          was set so that it would not activate on staccato
+          notes. Staccato notes where set to decay quickly, which
+          allowed for the simulation of both an open variable
+          pitch sound and a closed staccato sound with one
+          sample. The notes were then mapped to coincide with the
+          conga samples in the GM Standard MIDI setup.
+
+          Suggested substitutions: If bayan samples are not
+          available, try mixing a timpani sample with a conga
+          sample.
+
+          The Tabla Drum
+
+          The tabla  is the smaller and higher in pitch of the
+          two drums that comprise the tabla set. The tabla has
+          both open and closed sounds. The most completely open
+          sound of the tabla is a minor or major seventh below
+          the tonic that the drum is tuned to.
+
+          Suggested substitutes: sampled string harmonics mixed
+          with sampled conga or bongo.
+
+          MIDI Maps
+
+          Tabla MIDI map (all channel 10):
+
+          Tabla                                  Bols
+
+          D#3 = open sound, 7th below tonic      di, din, ti, tun
+
+          D3 = slightly dampened sound, tonic    di
+
+          C#3 = half dampened sound, tonic       na, ta (long a)
+
+          C3 = dampened sound                    ne, te, tet, ti, re, ri
+
+          C3/D3 = half dampened sound, tonic     tin
+
+          C3/C#3 = dampened sound                ta (short a)
+
+          C#3,C3,D3,C3 = flam of four dampened   terikita (te,ri,ki,ta flam)
+
+          Bayan MIDI map (all channel 10):
+
+          Bayan                                  Bols
+
+          E3 = open bayan                        ga, ge, gen
+
+          D3 = closed bayan                      ka, kat, ke, ki
+
+          Tabla/Bayan MIDI map (all channel 10):
+
+          Tabla                  Bayan           Bols
+
+          C3 = dampened          E3 = open       de (re + ge), dhe (te + ge)
+
+          C#3 = half dampened    E3 = open       dha (na + ge)
+
+          C3/D3 = half dampened  E3 = open       dhi, dhin (tin + ge)
+
+          D#3 = open             E3 = open       dhi (tun + ge)
+
+          C3 = dampened          D3 = closed     ka, kat, kre (ka,te flam), tre (re + ka)
+
+                            [Indian Tala Button]
+
+          -------------------------------------------------------
+          © info. E-mail: info@ancient-future.com . This site is
+          supported by sales from the catalog. Support world
+          music: buy direct from the artists![Image]

@@ -1,0 +1,79 @@
+                          _         _
+                         [_        [_
+                         [_lysium  [_ntertainment
+                               Presents...
+
+    E_Power.Zip
+        Yes, this is yet another drum kit release from Elysium
+    Entertainment.  This archive contains several Gate, Power,
+    and Room drum kits for the Advanced Gravis (c) UltraSound.
+    The banks are classified as Non-GS, GS, GS+, and GS++.  The
+    GS+ and GS++ are our 'supersets' of Roland's (c) GS standard.
+    All of the following banks include the GS Room Drum Kit's
+    Toms.
+
+    GS Room Drum Kit (Bank #8)
+    --------------------------
+    (Pg#41)    RoomLow2.Pat    Low Floor Tom            (49.5k)
+    (Pg#43)    RoomLow1.Pat    High Floor Tom           (49.5k)
+    (Pg#45)    RoomMid2.Pat    Low Tom                  (43k)
+    (Pg#47)    RoomMid1.Pat    Low-Mid Tom              (39k)
+    (Pg#48)    RoomHi2.Pat     High-Mid Tom             (39k)
+    (Pg#50)    RoomHi1.Pat     High Tom                 (39k)
+
+        The additions to the GS Room Drum Kit are as follows:
+
+    GS+ Room Drum Kit (Bank #9)
+    ---------------------------
+    (Pg#36)    RoomKick.Pat    Ambient Bass Drum        (24k)
+
+    Non-GS Gated Drum Kit (Bank #15)
+    --------------------------------
+    (Pg#36)    PowrKic0.Pat    Gated Bass Drum          (21k)
+    (Pg#38)    GateSD0.Pat     Soft Gated Snare         (24k)
+
+    GS Power Drum Kit (Bank #16)
+    ----------------------------
+    (Pg#36)    PowrKic1.Pat    Sharp Power Kick         (8.5k)
+    (Pg#38)    GateSD1.Pat     Sharp Gated Snare        (25k)
+
+    GS+ Power Drum Kit (Bank #17)
+    -----------------------------
+    (Pg#36)    PowerKic2.Pat   Full Power Kick          (11.5k)
+    (Pg#38)    GateSD1.Pat     Sharp Gated Snare        (25k)
+
+    GS++ Power Drum Kit (Bank #18)
+    ------------------------------
+    (Pg#36)    PowerKic3.Pat   Wet Power Kick           (24k)
+    (Pg#38)    GateSD2.Pat     Loose Gated Snare *      (47.5k)
+
+    * - The Loose Gated Snare was released in the ProPats v3.0
+        archive courtesy of Tom Roscoe.  For a great set of Pro.
+        Patches, check out ProPats v3.0 at a site near you!!
+
+    Note: The bank placement of the Non-GS, GS+, and GS++ seemed
+    logical although is does not follow any particular banking
+    standard.
+
+    -=[ * Bonus * ]=-
+    -----------------
+    (Pg#42)    HiHatCl.Pat     Closed Sox Cymbal        (10.5k)
+    (Pg#44)    HiHatPd.Pat     Pedal Sox Cymbal         (8.5k)
+    (Pg#46)    HiHatOp.Pat     Open Sox Cymbal          (42.5k)
+
+    Note: Most of these were sampled from the R8 MkII drum machine.
+
+Warning:  We are not responsible for any damage incurred by the use of
+these patches.  Please make sure you keep backups of any patches that
+you replace with these.
+
+E_Power.Zip should be available at archive.epas.utoronto.ca in the
+/pub/pc/ultrasound/submit directory.  How long it stays there is
+another question.  =)
+
+Questions/Comments/Requests/Praise/Flames all welcome.  Enjoy!!
+
+Dustin McCartney, cmccart@eis.calstate.edu
+ _
+[_  Elysium Entertainment
+[_  Coder/Musician/Patch Maker

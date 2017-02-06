@@ -1,0 +1,31 @@
+GSDrum40.ZIP                                          Aug. 05, 1994
+------------
+
+        This contains my GS Drum Set #40.  In plain English, this means
+that this is a Brush Drum Set.  The GUS Patches contained in this ZIP
+are as follows :
+
+        Br_Slap.Pat   (16k)
+        Br_Swirl.Pat (124k)
+        Br_Swish.Pat (6.5k)
+        HiHatCl.Pat (14.5k)
+        HiHatOp.Pat (77.5k)
+
+        Sorry for the delay, but my life is currently revolving around
+College and a new job.  =)  This is the first ZIP of GS drum sets I will
+be uploading.  I hope you can find these useful and/or entertaining.
+Read GSDrum40.Doc for instructions on installation.  Bank.Inf contains
+the patch maps for those who know how to install custom patches.  Enjoy
+these and my future releases...
+
+FTP : archive.epas.utoronto.ca      \pub\pc\ultrasound\submit
+      (Will probably be moved from there shortly)
+
+
+Any feedback/comments/flames welcome regarding my work.
+
+Dustin McCartney, cmccart@eis.calstate.edu
+ _
+[_  Elysium Ent. Release
+[_  Coder/Musician
+
