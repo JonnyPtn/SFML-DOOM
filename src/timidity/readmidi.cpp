@@ -110,12 +110,13 @@ static void compute_sample_increment(int32_t tempo, int32_t divisions)
 static  int32_t getvl(void)
 {
     int32_t l = 0;
-    uint8_t c;
+    uint8_t c = 0;
     for (;;)
     {
         read_local(&c, 1, 1);
         l += (c & 0x7f);
-        if (!(c & 0x80)) return l;
+        if (!(c & 0x80)) 
+            return l;
         l <<= 7;
     }
 }
@@ -562,6 +563,7 @@ static MidiEvent *groom_list(int32_t divisions, int32_t *eventsp, int32_t *sampl
     lp->type = ME_EOT;
     our_event_count++;
     free_midi_list();
+
 
     *eventsp = our_event_count;
     *samplesp = st;
