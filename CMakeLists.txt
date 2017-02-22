@@ -6,7 +6,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
 find_package(SFML 2.4 COMPONENTS graphics audio window system network)
 
-file(GLOB SOURCE "src/*.h" "src/*.hpp" "src/*.cpp")
+file(GLOB SOURCE "src/*.h" "src/*.hpp" "src/*.cpp" "src/timidity/*.cpp" "src/timidity/*.h") 
 
 set (CMAKE_CXX_STANDARD 11)
 
