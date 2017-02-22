@@ -328,6 +328,7 @@ S_StartSoundAtVolume
 	{
 		sounds.back().setRelativeToListener(true);
 	}
+    sounds.back().setVolume(snd_SfxVolume / 15.f*100.f);
 	 // increase the usefulness
   if (sfx->usefulness++ < 0)
     sfx->usefulness = 1;
@@ -503,7 +504,10 @@ void S_SetSfxVolume(int volume)
     if (volume < 0 || volume > 127)
 	I_Error("Attempt to set sfx volume at %d", volume);
 
-    sf::Listener::setGlobalVolume(volume/15.f*100.f);
+    for (auto& sound : sounds)
+    {
+        sound.setVolume(volume / 15.f*100.f);
+    }
 
 }
 

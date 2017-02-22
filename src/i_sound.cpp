@@ -390,6 +390,7 @@ void I_SetMusicVolume(int volume)
 {
   // Internal state variable.
   snd_MusicVolume = volume;
+  musicSound.setVolume(volume / 15.f*100.f);
   // Now set volume on output device.
   // Whatever( snd_MusciVolume );
 }
