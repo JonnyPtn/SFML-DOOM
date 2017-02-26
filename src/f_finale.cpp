@@ -3,7 +3,6 @@
 // Functions.
 #include "i_system.hpp"
 #include "m_swap.hpp"
-#include "z_zone.hpp"
 #include "v_video.hpp"
 #include "w_wad.hpp"
 #include "s_sound.hpp"
@@ -229,7 +228,7 @@ void F_TextWrite (void)
     int		cy;
     
     // erase the entire screen to a tiled background
-    src = (unsigned char*)W_CacheLumpName ( finaleflat , PU_CACHE);
+    src = (unsigned char*)WadManager::W_CacheLumpName ( finaleflat);
     dest = screens[0];
 	
     for (y=0 ; y<SCREENHEIGHT ; y++)
@@ -537,7 +536,7 @@ void F_CastDrawer (void)
     patch_t*		patch;
     
     // erase the entire screen to a background
-    V_DrawPatch (0,0,0, (patch_t*)W_CacheLumpName ("BOSSBACK", PU_CACHE));
+    V_DrawPatch (0,0,0, (patch_t*)WadManager::W_CacheLumpName ("BOSSBACK"));
 
     F_CastPrint (castorder[castnum].name);
     
@@ -547,7 +546,7 @@ void F_CastDrawer (void)
     lump = sprframe->lump[0];
     flip = (sprframe->flip[0])!=0;
 			
-    patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
+    patch = (patch_t*)WadManager::WadManager::W_CacheLumpNum (lump+firstspritelump);
     if (flip)
 		V_DrawPatchFlipped (160,170,0,patch);
     else
@@ -598,8 +597,8 @@ void F_BunnyScroll (void)
     int		stage;
     static int	laststage;
 		
-    p1 = (patch_t*)W_CacheLumpName ("PFUB2", PU_LEVEL);
-    p2 = (patch_t*)W_CacheLumpName ("PFUB1", PU_LEVEL);
+    p1 = (patch_t*)WadManager::W_CacheLumpName ("PFUB2");
+    p2 = (patch_t*)WadManager::W_CacheLumpName ("PFUB1");
 
     V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
 	
@@ -622,7 +621,7 @@ void F_BunnyScroll (void)
     if (finalecount < 1180)
     {
 		V_DrawPatch ((SCREENWIDTH-13*8)/2,
-			     (SCREENHEIGHT-8*8)/2,0, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
+			     (SCREENHEIGHT-8*8)/2,0, (patch_t*)WadManager::W_CacheLumpName ("END0"));
 		laststage = 0;
 		return;
     }
@@ -637,7 +636,7 @@ void F_BunnyScroll (void)
     }
 	
     sprintf (name,"END%i",stage);
-    V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, (patch_t*)W_CacheLumpName (name,PU_CACHE));
+    V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, (patch_t*)WadManager::W_CacheLumpName (name));
 }
 
 
@@ -661,21 +660,21 @@ void F_Drawer (void)
 		  case 1:
 		    if ( gamemode == retail )
 		      V_DrawPatch (0,0,0,
-				  (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
+				  (patch_t*)WadManager::W_CacheLumpName("CREDIT"));
 		    else
 		      V_DrawPatch (0,0,0,
-				  (patch_t*)(std::intptr_t(PU_CACHE)));
+				  (patch_t*)(std::intptr_t(101)));
 		    break;
 		  case 2:
 		    V_DrawPatch(0,0,0,
-				(patch_t*)(std::intptr_t(PU_CACHE)));
+				(patch_t*)(std::intptr_t(101)));
 		    break;
 		  case 3:
 		    F_BunnyScroll ();
 		    break;
 		  case 4:
 		    V_DrawPatch (0,0,0,
-				(patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
+				(patch_t*)WadManager::W_CacheLumpName("ENDPIC"));
 		    break;
 		}
     }	

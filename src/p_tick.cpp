@@ -1,5 +1,4 @@
 
-#include "z_zone.hpp"
 #include "p_local.hpp"
 
 #include "doomstat.hpp"
@@ -9,7 +8,7 @@ int	leveltime;
 
 //
 // THINKERS
-// All thinkers should be allocated by Z_Malloc
+// All thinkers should be allocated by malloc
 // so they can be operated on uniformly.
 // The actual structures will vary in size,
 // but the first element must be thinker_t.
@@ -84,7 +83,6 @@ void P_RunThinkers (void)
 	    // time to remove it
 	    currentthinker->next->prev = currentthinker->prev;
 	    currentthinker->prev->next = currentthinker->next;
-	    Z_Free (currentthinker);
 	}
 	else
 	{

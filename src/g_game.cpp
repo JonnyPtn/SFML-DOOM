@@ -5,7 +5,6 @@
 #include "doomstat.hpp"
 #include "i_video.hpp"
 
-#include "z_zone.hpp"
 #include "f_finale.hpp"
 #include "m_argv.hpp"
 #include "m_misc.hpp"
@@ -944,7 +943,7 @@ void G_SecretExitLevel (void)
 { 
     // IF NO WOLF3D LEVELS, NO SECRET EXIT!
     if ( (gamemode == commercial)
-      && (W_CheckNumForName("map31")<0))
+      && (WadManager::WadManager::W_CheckNumForName("map31")<0))
 		secretexit = false;
     else
 		secretexit = true; 
@@ -1169,7 +1168,7 @@ void G_DoLoadGame (void)
 	I_Error ("Bad savegame");
     
     // done 
-    Z_Free (savebuffer); 
+    free (savebuffer); 
  
     if (setsizeneeded)
 	R_ExecuteSetViewSize ();
@@ -1466,7 +1465,7 @@ void G_RecordDemo (char* name)
     i = CmdParameters::M_CheckParm ("-maxdemo");
     if (i && i<CmdParameters::myargc-1)
 		maxsize = atoi(CmdParameters::myargv[i+1].c_str())*1024;
-    demobuffer = (unsigned char*)Z_Malloc (maxsize,PU_STATIC,NULL); 
+    demobuffer = (unsigned char*)malloc (maxsize); 
     demoend = demobuffer + maxsize;
 	
     demorecording = true; 
@@ -1507,7 +1506,7 @@ void G_DoPlayDemo (void)
 
 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = (unsigned char*)W_CacheLumpName (defdemoname, PU_STATIC); 
+    demobuffer = demo_p = (unsigned char*)WadManager::W_CacheLumpName (defdemoname); 
 	if (*demo_p++ != 109)	//magic number, I know, but was a define
 	{
 		fprintf(stderr, "Demo is from a different game version!\n");
@@ -1599,7 +1598,7 @@ bool G_CheckDemoStatus (void)
     { 
 		*demo_p++ = DEMOMARKER; 
 		M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
-		Z_Free (demobuffer); 
+		free (demobuffer); 
 		demorecording = false; 
 		I_Error ("Demo %s recorded",demoname); 
     } 

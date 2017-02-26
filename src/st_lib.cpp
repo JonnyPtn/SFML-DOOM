@@ -2,7 +2,6 @@
 
 #include "doomdef.hpp"
 
-#include "z_zone.hpp"
 #include "v_video.hpp"
 
 #include "m_swap.hpp"
@@ -30,7 +29,7 @@ patch_t*		sttminus;
 
 void STlib_init(void)
 {
-    sttminus = (patch_t *) W_CacheLumpName("STTMINUS", PU_STATIC);
+    sttminus = (patch_t *) WadManager::W_CacheLumpName("STTMINUS");
 }
 
 

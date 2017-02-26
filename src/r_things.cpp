@@ -6,7 +6,6 @@
 #include "m_swap.hpp"
 
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "w_wad.hpp"
 
 #include "r_local.hpp"
@@ -163,7 +162,7 @@ void R_InitSpriteDefs (char** namelist)
     if (!numsprites)
 		return;
 		
-    sprites = (spritedef_t*)Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
+    sprites = (spritedef_t*)malloc(numsprites *sizeof(*sprites));
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -183,22 +182,22 @@ void R_InitSpriteDefs (char** namelist)
 		//  filling in the frames for whatever is found
 		for (l=start+1 ; l<end ; l++)
 		{
-		    if (*(int *)lumpinfo[l].name == intname)
+		    if (*(int *)WadManager::lumpinfo[l].name == intname)
 		    {
-			frame = lumpinfo[l].name[4] - 'A';
-			rotation = lumpinfo[l].name[5] - '0';
+			frame = WadManager::lumpinfo[l].name[4] - 'A';
+			rotation = WadManager::lumpinfo[l].name[5] - '0';
 
 			if (modifiedgame)
-			    patched = W_GetNumForName (lumpinfo[l].name);
+			    patched = WadManager::W_GetNumForName (WadManager::lumpinfo[l].name);
 			else
 			    patched = l;
 
 			R_InstallSpriteLump (patched, frame, rotation, false);
 
-			if (lumpinfo[l].name[6])
+			if (WadManager::lumpinfo[l].name[6])
 			{
-			    frame = lumpinfo[l].name[6] - 'A';
-			    rotation = lumpinfo[l].name[7] - '0';
+			    frame = WadManager::lumpinfo[l].name[6] - 'A';
+			    rotation = WadManager::lumpinfo[l].name[7] - '0';
 			    R_InstallSpriteLump (l, frame, rotation, true);
 			}
 	    }
@@ -241,7 +240,7 @@ void R_InitSpriteDefs (char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes = 
-	    (spriteframe_t*)Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+	    (spriteframe_t*)malloc (maxframe * sizeof(spriteframe_t));
 	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
     }
 
@@ -369,7 +368,7 @@ R_DrawVisSprite
     patch_t*		patch;
 	
 	
-    patch = (patch_t*)W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+    patch = (patch_t*)WadManager::W_CacheLumpNum (vis->patch+firstspritelump);
 
     dc_colormap = vis->colormap;
     

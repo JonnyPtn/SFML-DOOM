@@ -27,8 +27,6 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 #include <time.h>
 #include <signal.h>
 
-#include "z_zone.hpp"
-
 #include "i_system.hpp"
 #include "i_sound.hpp"
 #include "m_argv.hpp"
@@ -161,12 +159,12 @@ getsfx
     // I do not do runtime patches to that
     //  variable. Instead, we will use a
     //  default sound for replacement.
-    if ( W_CheckNumForName(name) == -1 )
-      sfxlump = W_GetNumForName("dspistol");
+    if (WadManager::W_CheckNumForName(name) == -1 )
+      sfxlump = WadManager::W_GetNumForName("dspistol");
     else
-      sfxlump = W_GetNumForName(name);
+      sfxlump = WadManager::W_GetNumForName(name);
     
-    size = W_LumpLength( sfxlump );
+    size = WadManager::WadManager::W_LumpLength( sfxlump );
 
     // Debug.
     // fprintf( stderr, "." );
@@ -174,14 +172,14 @@ getsfx
     //	     sfxname, sfxlump, size );
     //fflush( stderr );
     
-    sfx = (unsigned char*)W_CacheLumpNum( sfxlump, PU_STATIC );
+    sfx = (unsigned char*)WadManager::WadManager::W_CacheLumpNum( sfxlump );
 
     // Pads the sound effect out to the mixing buffer size.
     // The original realloc would interfere with zone memory.
     paddedsize = ((size-8 + (SAMPLECOUNT-1)) / SAMPLECOUNT) * SAMPLECOUNT;
 
     // Allocate from zone memory.
-    paddedsfx = (unsigned char*)Z_Malloc( paddedsize+8, PU_STATIC, 0 );
+    paddedsfx = (unsigned char*)malloc( paddedsize+8);
     // ddt: (unsigned char *) realloc(sfx, paddedsize+8);
     // This should interfere with zone memory handling,
     //  which does not kick in in the soundserver.
@@ -190,9 +188,6 @@ getsfx
     memcpy(  paddedsfx, sfx, size );
     for (i=size ; i<paddedsize+8 ; i++)
         paddedsfx[i] = 128;
-
-    // Remove the cached lump.
-    Z_Free( sfx );
     
     // Preserve padded length.
     *len = paddedsize;
@@ -404,7 +399,7 @@ int I_GetSfxLumpNum(sfxinfo_t* sfx)
 {
     char namebuf[9];
     sprintf(namebuf, "ds%s", sfx->name);
-    return W_GetNumForName(namebuf);
+    return WadManager::W_GetNumForName(namebuf);
 }
 
 //
@@ -725,7 +720,7 @@ void I_PlaySong(const std::string& songname, int looping)
     std::string lumpName = "d_";
     lumpName += songname.c_str();
 
-    unsigned char * musFile = static_cast< unsigned char * >(W_CacheLumpName(const_cast<char*>(lumpName.c_str()),0));
+    unsigned char * musFile = static_cast< unsigned char * >(WadManager::W_CacheLumpName(const_cast<char*>(lumpName.c_str())));
 
     int length = 0;
     Mus2Midi(musFile, midiConversionBuffer, &length);

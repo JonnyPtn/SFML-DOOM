@@ -1,5 +1,4 @@
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "m_random.hpp"
 
 #include "doomdef.hpp"
@@ -143,7 +142,7 @@ EV_DoPlat
 	
 	// Find lowest & highest floors around sector
 	rtn = 1;
-	plat = (plat_t*)Z_Malloc( sizeof(*plat), PU_LEVSPEC, 0);
+	plat = (plat_t*)malloc( sizeof(*plat));
 	P_AddThinker(&plat->thinker);
 		
 	plat->type = type;

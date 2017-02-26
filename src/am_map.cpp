@@ -7,7 +7,6 @@
 #include "doomstat.hpp"
 #include "st_stuff.hpp"
 #include "w_wad.hpp"
-#include "z_zone.hpp"
 #include "d_englsh.hpp"
 
 // For use if I do walls with outsides/insides
@@ -419,12 +418,12 @@ void AM_initVariables(void)
 void AM_loadPics(void)
 {
     int i;
-    char namebuf[9];
+    std::string namebuf;
   
     for (i=0;i<10;i++)
     {
-		sprintf(namebuf, "AMMNUM%d", i);
-		marknums[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+		namebuf = "AMMNUM" + std::to_string(i);
+		marknums[i] = (patch_t*)WadManager::W_CacheLumpName(namebuf);
     }
 }
 

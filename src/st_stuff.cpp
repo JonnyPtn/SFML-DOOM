@@ -2,7 +2,6 @@
 
 #include "i_system.hpp"
 #include "i_video.hpp"
-#include "z_zone.hpp"
 #include "m_random.hpp"
 #include "w_wad.hpp"
 
@@ -1017,7 +1016,7 @@ void ST_doPaletteStuff(void)
     if (palette != st_palette)
     {
 	st_palette = palette;
-	pal = (unsigned char *) W_CacheLumpNum (lu_palette, PU_CACHE)+palette*768;
+	pal = (unsigned char *) WadManager::W_CacheLumpNum (lu_palette)+palette*768;
 	I_SetPalette (pal);
     }
 
@@ -1106,25 +1105,25 @@ void ST_loadGraphics(void)
     for (i=0;i<10;i++)
     {
 	sprintf(namebuf, "STTNUM%d", i);
-	tallnum[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
+	tallnum[i] = (patch_t *) WadManager::W_CacheLumpName(namebuf);
 
 	sprintf(namebuf, "STYSNUM%d", i);
-	shortnum[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
+	shortnum[i] = (patch_t *) WadManager::W_CacheLumpName(namebuf);
     }
 
     // Load percent key.
     //Note: why not load STMINUS here, too?
-    tallpercent = (patch_t *) W_CacheLumpName("STTPRCNT", PU_STATIC);
+    tallpercent = (patch_t *) WadManager::W_CacheLumpName("STTPRCNT");
 
     // key cards
     for (i=0;i<NUMCARDS;i++)
     {
 	sprintf(namebuf, "STKEYS%d", i);
-	keys[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
+	keys[i] = (patch_t *) WadManager::W_CacheLumpName(namebuf);
     }
 
     // arms background
-    armsbg = (patch_t *) W_CacheLumpName("STARMS", PU_STATIC);
+    armsbg = (patch_t *) WadManager::W_CacheLumpName("STARMS");
 
     // arms ownership widgets
     for (i=0;i<6;i++)
@@ -1132,7 +1131,7 @@ void ST_loadGraphics(void)
 	sprintf(namebuf, "STGNUM%d", i+2);
 
 	// gray #
-	arms[i][0] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
+	arms[i][0] = (patch_t *) WadManager::W_CacheLumpName(namebuf);
 
 	// yellow #
 	arms[i][1] = shortnum[i+2]; 
@@ -1140,10 +1139,10 @@ void ST_loadGraphics(void)
 
     // face backgrounds for different color players
     sprintf(namebuf, "STFB%d", consoleplayer);
-    faceback = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
+    faceback = (patch_t *) WadManager::W_CacheLumpName(namebuf);
 
     // status bar background bits
-    sbar = (patch_t *) W_CacheLumpName("STBAR", PU_STATIC);
+    sbar = (patch_t *) WadManager::W_CacheLumpName("STBAR");
 
     // face states
     facenum = 0;
@@ -1152,27 +1151,27 @@ void ST_loadGraphics(void)
 	for (j=0;j<ST_NUMSTRAIGHTFACES;j++)
 	{
 	    sprintf(namebuf, "STFST%d%d", i, j);
-	    faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	    faces[facenum++] = (patch_t*)WadManager::W_CacheLumpName(namebuf);
 	}
 	sprintf(namebuf, "STFTR%d0", i);	// turn right
-	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)WadManager::W_CacheLumpName(namebuf);
 	sprintf(namebuf, "STFTL%d0", i);	// turn left
-	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)WadManager::W_CacheLumpName(namebuf);
 	sprintf(namebuf, "STFOUCH%d", i);	// ouch!
-	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)WadManager::W_CacheLumpName(namebuf);
 	sprintf(namebuf, "STFEVL%d", i);	// evil grin ;)
-	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)WadManager::W_CacheLumpName(namebuf);
 	sprintf(namebuf, "STFKILL%d", i);	// pissed off
-	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)WadManager::W_CacheLumpName(namebuf);
     }
-    faces[facenum++] = (patch_t*)W_CacheLumpName("STFGOD0", PU_STATIC);
-    faces[facenum++] = (patch_t*)W_CacheLumpName("STFDEAD0", PU_STATIC);
+    faces[facenum++] = (patch_t*)WadManager::W_CacheLumpName("STFGOD0");
+    faces[facenum++] = (patch_t*)WadManager::W_CacheLumpName("STFDEAD0");
 
 }
 
 void ST_loadData(void)
 {
-    lu_palette = W_GetNumForName ("PLAYPAL");
+    lu_palette = WadManager::W_GetNumForName ("PLAYPAL");
     ST_loadGraphics();
 }
 
@@ -1401,7 +1400,7 @@ void ST_Stop (void)
     if (st_stopped)
 	return;
 
-    I_SetPalette ((unsigned char*)W_CacheLumpNum (lu_palette, PU_CACHE));
+    I_SetPalette ((unsigned char*)WadManager::W_CacheLumpNum (lu_palette));
 
     st_stopped = true;
 }
@@ -1410,5 +1409,5 @@ void ST_Init (void)
 {
     veryfirsttime = 0;
     ST_loadData();
-    screens[4] = (unsigned char *) Z_Malloc(ST_WIDTH*ST_HEIGHT, PU_STATIC, 0);
+    screens[4] = (unsigned char *) malloc(ST_WIDTH*ST_HEIGHT);
 }

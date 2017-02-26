@@ -1,4 +1,4 @@
-#include "z_zone.hpp"
+
 #include "i_video.hpp"
 #include "v_video.hpp"
 #include "m_random.hpp"
@@ -25,7 +25,7 @@ void wipe_shittyColMajorXform( short* array, int width, int height )
     int		y;
     short*	dest;
 
-    dest = (short*) Z_Malloc(width*height*2, PU_STATIC, 0);
+    dest = (short*) malloc(width*height*2);
 
     for(y=0;y<height;y++)
 		for(x=0;x<width;x++)
@@ -33,7 +33,7 @@ void wipe_shittyColMajorXform( short* array, int width, int height )
 
     memcpy(array, dest, width*height*2);
 
-    Z_Free(dest);
+    free(dest);
 }
 
 int wipe_initColorXForm( int width, int	height, int	ticks )
@@ -99,7 +99,7 @@ int wipe_initMelt( int width, int height, int ticks )
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
+    y = (int *) malloc(width*sizeof(int));
     y[0] = -(M_Random()%16);
     for (i=1;i<width;i++)
     {
@@ -167,7 +167,7 @@ int wipe_doMelt( int width, int	height, int ticks )
 
 int wipe_exitMelt( int width, int height, int ticks )
 {
-    Z_Free(y);
+    free(y);
     return 0;
 }
 

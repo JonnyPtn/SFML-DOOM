@@ -1,5 +1,4 @@
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "i_video.hpp"
 #include "m_swap.hpp"
 
@@ -220,9 +219,7 @@ void R_GenerateComposite (int texnum)
 	
     texture = textures[texnum];
 
-    texturecomposite[texnum] = (unsigned char*)Z_Malloc (texturecompositesize[texnum],
-		      PU_STATIC, 
-		      &texturecomposite[texnum]);	
+    texturecomposite[texnum] = (unsigned char*)malloc (texturecompositesize[texnum]);	
 
     collump = texturecolumnlump[texnum];
     colofs = texturecolumnofs[texnum];
@@ -234,7 +231,7 @@ void R_GenerateComposite (int texnum)
 	 i<texture->patchcount;
 	 i++, patch++)
     {
-	realpatch = (patch_t*)W_CacheLumpNum (patch->patch, PU_CACHE);
+	realpatch = (patch_t*)WadManager::W_CacheLumpNum (patch->patch);
 	x1 = patch->originx;
 	x2 = x1 + SHORT(realpatch->width);
 
@@ -302,7 +299,7 @@ void R_GenerateLookup (int texnum)
 	 i<texture->patchcount;
 	 i++, patch++)
     {
-	realpatch = (patch_t*)W_CacheLumpNum (patch->patch, PU_CACHE);
+	realpatch = (patch_t*)WadManager::W_CacheLumpNum (patch->patch);
 	x1 = patch->originx;
 	x2 = x1 + SHORT(realpatch->width);
 	
@@ -367,7 +364,7 @@ R_GetColumn
     ofs = texturecolumnofs[tex][col];
     
     if (lump > 0)
-	return (unsigned char *)W_CacheLumpNum(lump,PU_CACHE)+ofs;
+	return (unsigned char *)WadManager::W_CacheLumpNum(lump)+ofs;
 
     if (!texturecomposite[tex])
 	R_GenerateComposite (tex);
@@ -420,7 +417,7 @@ void R_InitTextures (void)
     
     // Load the patch names from pnames.lmp.
     name[8] = 0;	
-    names = (char*)W_CacheLumpName ("PNAMES", PU_STATIC);
+    names = (char*)WadManager::W_CacheLumpName ("PNAMES");
     nummappatches = LONG ( *((int *)names) );
     name_p = names+4;
     patchlookup = (int*)alloca (nummappatches*sizeof(*patchlookup));
@@ -428,24 +425,23 @@ void R_InitTextures (void)
     for (i=0 ; i<nummappatches ; i++)
     {
 	strncpy (name,name_p+i*8, 8);
-	patchlookup[i] = W_CheckNumForName (name);
+	patchlookup[i] = WadManager::W_CheckNumForName (name);
     }
-    Z_Free (names);
     
     // Load the map texture definitions from textures.lmp.
     // The data is contained in one or two lumps,
     //  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
-    maptex = maptex1 = (int*)W_CacheLumpName ("TEXTURE1", PU_STATIC);
+    maptex = maptex1 = (int*)WadManager::W_CacheLumpName ("TEXTURE1");
 
     numtextures1 = LONG(*maptex);
-    maxoff = W_LumpLength (W_GetNumForName ("TEXTURE1"));
+    maxoff = WadManager::W_LumpLength (WadManager::W_GetNumForName ("TEXTURE1"));
     directory = maptex+1;
 	
-    if (W_CheckNumForName ("TEXTURE2") != -1)
+    if (WadManager::W_CheckNumForName ("TEXTURE2") != -1)
     {
-	maptex2 = (int*)W_CacheLumpName ("TEXTURE2", PU_STATIC);
+	maptex2 = (int*)WadManager::W_CacheLumpName ("TEXTURE2");
 	numtextures2 = LONG(*maptex2);
-	maxoff2 = W_LumpLength (W_GetNumForName ("TEXTURE2"));
+	maxoff2 = WadManager::W_LumpLength (WadManager::W_GetNumForName ("TEXTURE2"));
     }
     else
     {
@@ -455,19 +451,19 @@ void R_InitTextures (void)
     }
     numtextures = numtextures1 + numtextures2;
 	
-    textures = (texture_t**)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
-    texturecolumnlump = (short**)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
-    texturecolumnofs = (unsigned short**)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
-    texturecomposite = (unsigned char**)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
-    texturecompositesize = (int*)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
-    texturewidthmask = (int*)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
-    textureheight = (int*)Z_Malloc (numtextures*sizeof(void*), PU_STATIC, 0);
+    textures = (texture_t**)malloc (numtextures*sizeof(void*));
+    texturecolumnlump = (short**)malloc (numtextures*sizeof(void*));
+    texturecolumnofs = (unsigned short**)malloc (numtextures*sizeof(void*));
+    texturecomposite = (unsigned char**)malloc (numtextures*sizeof(void*));
+    texturecompositesize = (int*)malloc (numtextures*sizeof(void*));
+    texturewidthmask = (int*)malloc (numtextures*sizeof(void*));
+    textureheight = (int*)malloc (numtextures*sizeof(void*));
 
     totalwidth = 0;
     
     //	Really complex printing shit...
-    temp1 = W_GetNumForName ("S_START");  // P_???????
-    temp2 = W_GetNumForName ("S_END") - 1;
+    temp1 = WadManager::W_GetNumForName ("S_START");  // P_???????
+    temp2 = WadManager::W_GetNumForName ("S_END") - 1;
     temp3 = ((temp2-temp1+63)/64) + ((numtextures+63)/64);
     printf("[");
     for (i = 0; i < temp3; i++)
@@ -498,9 +494,8 @@ void R_InitTextures (void)
 	mtexture = (maptexture_t *) ( (unsigned char *)maptex + offset);
 
 	texture = textures[i] =
-	    (texture_t*)Z_Malloc (sizeof(texture_t)
-		      + sizeof(texpatch_t)*(SHORT(mtexture->patchcount)-1),
-		      PU_STATIC, 0);
+	    (texture_t*)malloc (sizeof(texture_t)
+		      + sizeof(texpatch_t)*(SHORT(mtexture->patchcount)-1));
 	
 	texture->width = SHORT(mtexture->width);
 	texture->height = SHORT(mtexture->height);
@@ -522,8 +517,8 @@ void R_InitTextures (void)
 	    }
 
 	}		
-	texturecolumnlump[i] = (short*)Z_Malloc (texture->width*2, PU_STATIC,0);
-	texturecolumnofs[i] = (unsigned short*)Z_Malloc (texture->width*2, PU_STATIC,0);
+	texturecolumnlump[i] = (short*)malloc (texture->width*2);
+	texturecolumnofs[i] = (unsigned short*)malloc (texture->width*2);
 
 	j = 1;
 	while (j*2 <= texture->width)
@@ -534,17 +529,13 @@ void R_InitTextures (void)
 		
 	totalwidth += texture->width;
     }
-
-    Z_Free (maptex1);
-    if (maptex2)
-	Z_Free (maptex2);
     
     // Precalculate whatever possible.	
     for (i=0 ; i<numtextures ; i++)
 	R_GenerateLookup (i);
     
     // Create translation table for global animation.
-    texturetranslation = (int*)Z_Malloc ((numtextures+1)*4, PU_STATIC, 0);
+    texturetranslation = (int*)malloc ((numtextures+1)*4);
     
     for (i=0 ; i<numtextures ; i++)
 	texturetranslation[i] = i;
@@ -559,12 +550,12 @@ void R_InitFlats (void)
 {
     int		i;
 	
-    firstflat = W_GetNumForName ("F_START") + 1;
-    lastflat = W_GetNumForName ("F_END") - 1;
+    firstflat = WadManager::W_GetNumForName ("F_START") + 1;
+    lastflat = WadManager::W_GetNumForName ("F_END") - 1;
     numflats = lastflat - firstflat + 1;
 	
     // Create translation table for global animation.
-    flattranslation = (int*)Z_Malloc ((numflats+1)*4, PU_STATIC, 0);
+    flattranslation = (int*)malloc ((numflats+1)*4);
     
     for (i=0 ; i<numflats ; i++)
 	flattranslation[i] = i;
@@ -582,20 +573,20 @@ void R_InitSpriteLumps (void)
     int		i;
     patch_t	*patch;
 	
-    firstspritelump = W_GetNumForName ("S_START") + 1;
-    lastspritelump = W_GetNumForName ("S_END") - 1;
+    firstspritelump = WadManager::W_GetNumForName ("S_START") + 1;
+    lastspritelump = WadManager::W_GetNumForName ("S_END") - 1;
     
     numspritelumps = lastspritelump - firstspritelump + 1;
-    spritewidth = (int*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
-    spriteoffset = (int*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
-    spritetopoffset = (int*)Z_Malloc (numspritelumps*4, PU_STATIC, 0);
+    spritewidth = (int*)malloc (numspritelumps*4);
+    spriteoffset = (int*)malloc (numspritelumps*4);
+    spritetopoffset = (int*)malloc (numspritelumps*4);
 	
     for (i=0 ; i< numspritelumps ; i++)
     {
 	if (!(i&63))
 	    printf (".");
 
-	patch = (patch_t*)W_CacheLumpNum (firstspritelump+i, PU_CACHE);
+	patch = (patch_t*)WadManager::W_CacheLumpNum (firstspritelump+i);
 	spritewidth[i] = SHORT(patch->width)<<FRACBITS;
 	spriteoffset[i] = SHORT(patch->leftoffset)<<FRACBITS;
 	spritetopoffset[i] = SHORT(patch->topoffset)<<FRACBITS;
@@ -613,11 +604,10 @@ void R_InitColormaps (void)
     
     // Load in the light tables, 
     //  256 unsigned char align tables.
-    lump = W_GetNumForName("COLORMAP"); 
-    length = W_LumpLength (lump) + 255; 
-    colormaps = (lighttable_t*)Z_Malloc (length, PU_STATIC, 0); 
-    colormaps = (unsigned char *)( ((std::intptr_t)colormaps + 255)&~0xff); 
-    W_ReadLump (lump,colormaps); 
+    lump = WadManager::W_GetNumForName("COLORMAP");
+    length = WadManager::W_LumpLength (lump) + 255; 
+    colormaps = (lighttable_t*)malloc (length); 
+    std::memcpy( colormaps, WadManager::W_CacheLumpNum(lump),length);
 }
 
 
@@ -651,7 +641,7 @@ int R_FlatNumForName (char* name)
     int		i;
     char	namet[9];
 
-    i = W_CheckNumForName (name);
+    i = WadManager::W_CheckNumForName (name);
 
     if (i == -1)
     {
@@ -753,8 +743,8 @@ void R_PrecacheLevel (void)
 	if (flatpresent[i])
 	{
 	    lump = firstflat + i;
-	    flatmemory += lumpinfo[lump].size;
-	    W_CacheLumpNum(lump, PU_CACHE);
+	    flatmemory += WadManager::lumpinfo[lump].size;
+	    WadManager::W_CacheLumpNum(lump);
 	}
     }
     
@@ -788,8 +778,8 @@ void R_PrecacheLevel (void)
 	for (j=0 ; j<texture->patchcount ; j++)
 	{
 	    lump = texture->patches[j].patch;
-	    texturememory += lumpinfo[lump].size;
-	    auto data = W_CacheLumpNum(lump , PU_CACHE);
+	    texturememory += WadManager::lumpinfo[lump].size;
+	    auto data = WadManager::W_CacheLumpNum(lump);
 
 		//JONNY//	extracts and saves texture
 		/*unsigned short* header = (unsigned short*)data;
@@ -851,8 +841,8 @@ void R_PrecacheLevel (void)
 		for (k = 0; k < 8; k++)
 		{
 			lump = firstspritelump + sf->lump[k];
-			spritememory += lumpinfo[lump].size;
-			auto data = W_CacheLumpNum(lump, PU_CACHE);
+			spritememory += WadManager::lumpinfo[lump].size;
+			auto data = WadManager::W_CacheLumpNum(lump);
 			
 			//JONNY//	this extracts the texture data
 			/*

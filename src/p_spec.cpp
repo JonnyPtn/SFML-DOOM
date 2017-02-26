@@ -4,7 +4,6 @@
 #include "doomstat.hpp"
 
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "m_argv.hpp"
 #include "m_random.hpp"
 #include "w_wad.hpp"
@@ -133,7 +132,7 @@ void P_InitPicAnims (void)
 	}
 	else
 	{
-	    if (W_CheckNumForName(animdefs[i].startname) == -1)
+	    if (WadManager::WadManager::W_CheckNumForName(animdefs[i].startname) == -1)
 		continue;
 
 	    lastanim->picnum = R_FlatNumForName (animdefs[i].endname);
@@ -1159,7 +1158,7 @@ int EV_DoDonut(line_t*	line)
 	    s3 = s2->lines[i]->backsector;
 	    
 	    //	Spawn rising slime
-	    floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = (floormove_t*)malloc (sizeof(*floor));
 	    P_AddThinker (&floor->thinker);
 	    s2->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1173,7 +1172,7 @@ int EV_DoDonut(line_t*	line)
 	    floor->floordestheight = s3->floorheight;
 	    
 	    //	Spawn lowering donut-hole
-	    floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = (floormove_t*)malloc (sizeof(*floor));
 	    P_AddThinker (&floor->thinker);
 	    s1->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1212,7 +1211,7 @@ void P_SpawnSpecials (void)
     int		episode;
 
     episode = 1;
-    if (W_CheckNumForName("texture2") >= 0)
+    if (WadManager::W_CheckNumForName("texture2") >= 0)
 	episode = 2;
 
     

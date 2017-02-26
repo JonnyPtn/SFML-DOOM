@@ -6,7 +6,6 @@ rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 
 #include "doomdef.hpp"
 
-#include "z_zone.hpp"
 
 #include "m_swap.hpp"
 
@@ -385,7 +384,7 @@ void HU_Init(void)
     for (i=0;i<HU_FONTSIZE;i++)
     {
 		sprintf(buffer, "STCFN%.3d", j++);
-		hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
+		hu_font[i] = (patch_t *) WadManager::W_CacheLumpName(buffer);
     }
 
 }

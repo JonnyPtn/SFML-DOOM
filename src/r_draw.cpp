@@ -1,7 +1,6 @@
 #include "doomdef.hpp"
 
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "w_wad.hpp"
 
 #include "r_local.hpp"
@@ -423,7 +422,7 @@ void R_InitTranslationTables (void)
 {
     int		i;
 	
-    translationtables = (unsigned char*)Z_Malloc (256*3+255, PU_STATIC, 0);
+    translationtables = (unsigned char*)malloc (256*3+255);
     translationtables = (unsigned char *)(( (std::intptr_t)translationtables + 255 )& ~255);
     
     // translate just the 16 green colors
@@ -715,7 +714,7 @@ void R_FillBackScreen (void)
     else
 	name = name1;
     
-    src = (unsigned char*)W_CacheLumpName (name, PU_CACHE); 
+    src = (unsigned char*)WadManager::W_CacheLumpName (name); 
     dest = screens[1]; 
 	 
     for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++) 
@@ -733,19 +732,19 @@ void R_FillBackScreen (void)
 	} 
     } 
 	
-    patch = (patch_t*)W_CacheLumpName ("brdr_t",PU_CACHE);
+    patch = (patch_t*)WadManager::W_CacheLumpName ("brdr_t");
 
     for (x=0 ; x<scaledviewwidth ; x+=8)
 	V_DrawPatch (viewwindowx+x,viewwindowy-8,1,patch);
-    patch = (patch_t*)W_CacheLumpName ("brdr_b",PU_CACHE);
+    patch = (patch_t*)WadManager::W_CacheLumpName ("brdr_b");
 
     for (x=0 ; x<scaledviewwidth ; x+=8)
 	V_DrawPatch (viewwindowx+x,viewwindowy+viewheight,1,patch);
-    patch = (patch_t*)W_CacheLumpName ("brdr_l",PU_CACHE);
+    patch = (patch_t*)WadManager::W_CacheLumpName ("brdr_l");
 
     for (y=0 ; y<viewheight ; y+=8)
 	V_DrawPatch (viewwindowx-8,viewwindowy+y,1,patch);
-    patch = (patch_t*)W_CacheLumpName ("brdr_r",PU_CACHE);
+    patch = (patch_t*)WadManager::W_CacheLumpName ("brdr_r");
 
     for (y=0 ; y<viewheight ; y+=8)
 	V_DrawPatch (viewwindowx+scaledviewwidth,viewwindowy+y,1,patch);
@@ -755,22 +754,22 @@ void R_FillBackScreen (void)
     V_DrawPatch (viewwindowx-8,
 		 viewwindowy-8,
 		 1,
-		(patch_t*)W_CacheLumpName ("brdr_tl",PU_CACHE));
+		(patch_t*)WadManager::W_CacheLumpName ("brdr_tl"));
     
     V_DrawPatch (viewwindowx+scaledviewwidth,
 		 viewwindowy-8,
 		 1,
-		(patch_t*)W_CacheLumpName ("brdr_tr",PU_CACHE));
+		(patch_t*)WadManager::W_CacheLumpName ("brdr_tr"));
     
     V_DrawPatch (viewwindowx-8,
 		 viewwindowy+viewheight,
 		 1,
-		(patch_t*)W_CacheLumpName ("brdr_bl",PU_CACHE));
+		(patch_t*)WadManager::W_CacheLumpName ("brdr_bl"));
     
     V_DrawPatch (viewwindowx+scaledviewwidth,
 		 viewwindowy+viewheight,
 		 1,
-		(patch_t*)W_CacheLumpName ("brdr_br",PU_CACHE));
+		(patch_t*)WadManager::W_CacheLumpName ("brdr_br"));
 } 
  
 

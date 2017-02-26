@@ -7,7 +7,6 @@
 #include "dstrings.hpp"
 #include "sounds.hpp"
 
-#include "z_zone.hpp"
 #include "w_wad.hpp"
 #include "s_sound.hpp"
 #include "v_video.hpp"
@@ -195,7 +194,7 @@ void D_Display (void)
     
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-		I_SetPalette ((unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+		I_SetPalette ((unsigned char*)WadManager::WadManager::W_CacheLumpName ("PLAYPAL"));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -229,7 +228,7 @@ void D_Display (void)
 		else
 		    y = viewwindowy+4;
 		V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68)/2,
-				  y,0, (patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
+				  y,0, (patch_t*)WadManager::W_CacheLumpName ("M_PAUSE"));
     }
 
     // menus go directly to the screen
@@ -336,7 +335,7 @@ void D_PageTicker (void)
 //
 void D_PageDrawer (void)
 {
-    V_DrawPatch (0,0, 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
+    V_DrawPatch (0,0, 0, (patch_t*)WadManager::W_CacheLumpName(pagename));
 }
 
 //
@@ -735,11 +734,8 @@ void D_DoomMain (void)
     printf ("M_LoadDefaults: Load system defaults.\n");
     M_LoadDefaults ();              // load before initing other systems
 
-    printf ("Z_Init: Init zone memory allocation daemon. \n");
-    Z_Init ();
-
     printf ("W_Init: Init WADfiles.\n");
-    W_InitMultipleFiles (wadfiles);
+    WadManager::W_InitMultipleFiles (wadfiles);
     
 
     // Check for -file in shareware
@@ -759,7 +755,7 @@ void D_DoomMain (void)
 		// but w/o all the lumps of the registered version. 
 		if (gamemode == registered)
 		    for (i = 0;i < 23; i++)
-			if (W_CheckNumForName(name[i])<0)
+			if (WadManager::WadManager::W_CheckNumForName(name[i])<0)
 			    I_Error("\nThis is not the registered version.");
     }
     

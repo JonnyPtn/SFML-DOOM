@@ -1,7 +1,6 @@
 #include <stdlib.h>
 
 #include "i_system.hpp"
-#include "z_zone.hpp"
 #include "w_wad.hpp"
 
 #include "doomdef.hpp"
@@ -391,9 +390,8 @@ void R_DrawPlanes (void)
 	}
 	
 	// regular flat
-	ds_source = (unsigned char*)W_CacheLumpNum(firstflat +
-				   flattranslation[pl->picnum],
-				   PU_STATIC);
+	ds_source = (unsigned char*)WadManager::W_CacheLumpNum(firstflat +
+				   flattranslation[pl->picnum]);
 	
 	planeheight = abs(pl->height-viewz);
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;

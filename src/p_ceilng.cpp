@@ -1,9 +1,3 @@
-
-static const char
-rcsid[] = "$Id: p_ceilng.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
-
-
-#include "z_zone.hpp"
 #include "doomdef.hpp"
 #include "p_local.hpp"
 
@@ -179,7 +173,7 @@ EV_DoCeiling
 	
 	// new door thinker
 	rtn = 1;
-	ceiling = (ceiling_t*)Z_Malloc (sizeof(*ceiling), PU_LEVSPEC, 0);
+	ceiling = (ceiling_t*)malloc (sizeof(*ceiling));
 	P_AddThinker (&ceiling->thinker);
 	sec->specialdata = ceiling;
 	ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;

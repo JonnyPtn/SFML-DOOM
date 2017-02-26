@@ -17,7 +17,6 @@
 #include "sounds.hpp"
 #include "s_sound.hpp"
 
-#include "z_zone.hpp"
 #include "m_random.hpp"
 #include "w_wad.hpp"
 
@@ -287,7 +286,7 @@ S_StartSoundAtVolume
 			"S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
 
 		// DOS remains, 8bit handling
-		//sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
+		//sfx->data = (void *) WadManager::W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
 		// fprintf( stderr,
 		//	     "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
 		//       sfx_id, sfx->lumpnum, (int)sfx->data );
@@ -297,7 +296,7 @@ S_StartSoundAtVolume
 	if (soundBuffers.find(sfx->name) == soundBuffers.end())
 	{
 		//not loaded yet, set it up
-		auto dataSize(W_LumpLength(sfx->lumpnum));
+		auto dataSize(WadManager::W_LumpLength(sfx->lumpnum));
 		unsigned char* data((unsigned char*)sfx->data);
 		std::vector<sf::Int16> newData;
 		auto lastSample = 0;

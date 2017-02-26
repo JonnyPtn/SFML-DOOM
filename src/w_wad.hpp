@@ -1,26 +1,14 @@
 #pragma once
 
 #include <vector>
-
-//
-// TYPES
-//
-typedef struct
-{
-    // Should be "IWAD" or "PWAD".
-    char		identification[4];		
-    int			numlumps;
-    int			infotableofs;
-    
-} wadinfo_t;
-
+#include <fstream>
 
 typedef struct
 {
     int			filepos;
     int			size;
     char		name[8];
-    
+
 } filelump_t;
 
 //
@@ -29,24 +17,35 @@ typedef struct
 typedef struct
 {
     char	name[8];
-    int		handle;
-    int		position;
+    std::vector<char> data;
     int		size;
 } lumpinfo_t;
 
+/////////////////////////////////////////////
+/// Manages the WAD files loaded in the game
+///
+/////////////////////////////////////////////
+class WadManager
+{
+public:
 
-extern	void**		lumpcache;
-extern	lumpinfo_t*	lumpinfo;
-extern	int		numlumps;
+    int W_NumLumps();
 
-void    W_InitMultipleFiles (std::vector<std::string> filenames);
-void    W_Reload (void);
+    static void W_AddFile(const std::string& fileName);
+    //static			lumpcache;
+    static std::vector<lumpinfo_t>	lumpinfo;
 
-int	W_CheckNumForName (char* name);
-int	W_GetNumForName (char* name);
+    static void    W_InitMultipleFiles(std::vector<std::string> filenames);
+ 
+    static int	   W_CheckNumForName(const std::string& name);
+    static int	   W_GetNumForName(const std::string& name);
+  
+    static int	          W_LumpLength(int lump);
+  
+    static void*   W_CacheLumpNum(int lump);
+    static void*   W_CacheLumpName(const std::string& name);
 
-int	W_LumpLength (int lump);
-void    W_ReadLump (int lump, void *dest);
-
-void*	W_CacheLumpNum (int lump, int tag);
-void*	W_CacheLumpName (char* name, int tag);
+private:
+    static int numlumps;
+    std::vector<unsigned char>   fileBytes;
+};
