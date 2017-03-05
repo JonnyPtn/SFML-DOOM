@@ -83,11 +83,11 @@ int  I_GetTime (void)
 
 
 //
+// 
 // I_Init
 //
 void I_Init (void)
 {
-    I_Sound::initialise();
     I_InitGraphics();
 }
 

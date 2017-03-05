@@ -12,8 +12,24 @@
 
 #include <SFML/Audio.hpp>
 
-#include "timidity/timidity.h"
+#include "p_mobj.hpp"
 #include "sounds.hpp"
+#include "timidity/timidity.h"
+
+// when to clip out sounds
+// Does not fit the large outdoor areas.
+#define S_CLIPPING_DIST		(1200*0x10000)
+
+// Distance tp origin when sounds should be maxed out.
+// This should relate to movement clipping resolution
+// (see BLOCKMAP handling).
+// Originally: (200*0x10000).
+#define S_CLOSE_DIST		(160*0x10000)
+
+
+#define S_ATTENUATOR		((S_CLIPPING_DIST-S_CLOSE_DIST)>>FRACBITS)
+
+#define NORM_PITCH     		128
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 /// \class  ISound
@@ -41,13 +57,23 @@ public:
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::playMusic( const std::string& handle, bool looping);
     ///
-    /// \brief  Called by anything that wishes to start music. plays a song, and when the song is
-    ///         done, starts playing it again in an endless loop. Horrible thing to do, considering.
+    /// \brief  Play music by name
     ///
     /// \param  handle  The music name.
     /// \param  looping Loop flag.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static void playMusic( const std::string&	handle, bool looping);
+    static void playMusic( const std::string&   handle, bool looping);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::playMusic(const int musicNum, bool looping);
+    ///
+    /// \brief  Play music by index
+    ///
+    /// \param  musicNum    The music number.
+    /// \param  looping     True to looping.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static void playMusic(const int	musicNum, bool looping = false);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static int I_Sound::I_GetSfxLumpNum(sfxinfo_t* sfxinfo);
@@ -58,67 +84,107 @@ public:
     ///
     /// \return The sfx lump number.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static int I_GetSfxLumpNum(sfxinfo_t* sfxinfo);
+    static int getSfxLumpNum(sfxinfo_t* sfxinfo);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// \fn static void I_Sound::I_SetMusicVolume(int volume);
+    /// \fn static void I_Sound::setMusicVolume(int volume);
     ///
     /// \brief  Sets music volume.
     ///
     /// \param  volume  The volume.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static void I_SetMusicVolume(int volume);
 
-private:
+    static void setMusicVolume(int volume);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// \fn static int I_Sound::I_StartSound( int id,int vol,int pitch);
+    /// \fn static int I_Sound::getMusicVolume();
+    ///
+    /// \brief  Gets music volume.
+    ///
+    /// \return The music volume.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static int getMusicVolume();
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::stopAllSounds();
+    ///
+    /// \brief  Stops all sounds.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static void stopAllSounds();
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn void I_Sound::I_Sound::startSoundAtVolume( void* origin, int sound_id);
     ///
     /// \brief  Starts a sound.
     ///
-    /// \param  id      The identifier.
-    /// \param  vol     The volume.
-    /// \param  pitch   The pitch.
-    ///
-    /// \return An int.
+    /// \param [in,out] origin      If non-null, the origin.
+    /// \param          sound_id    Identifier for the sound.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static int I_StartSound( int id,int vol,int pitch);
+    static void startSound( void* origin, int sound_id, int volume = snd_SfxVolume);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// \fn void I_Sound::I_UpdateSoundParams (int handle, int vol, int sep, int pitch);
+    /// \fn static void I_Sound::pauseSound();
     ///
-    /// \brief  Updates the sound parameters ( Volume, location, remove finished sounds, etc.).
-    ///
-    /// \author Jonny
-    /// \date   05/03/2017
-    ///
-    /// \param  handle  The handle.
-    /// \param  vol     The volume.
-    /// \param  sep     The separator.
-    /// \param  pitch   The pitch.
+    /// \brief  Pause sound.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static void I_UpdateSoundParams (int handle, int vol, int sep, int pitch);
+
+    static void pauseSound();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// \fn void I_Sound::I_SetSfxVolume(int volume);
+    /// \fn static void I_Sound::resumeSound();
+    ///
+    /// \brief  Resume sound.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static void resumeSound();
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::stopSound(void* origin);
+    ///
+    /// \brief  Stops a sound.
+    ///
+    /// \param [in,out] origin  If non-null, the origin.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void stopSound(void* origin);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::S_UpdateSounds(mobj_t*);
+    ///
+    /// \brief  Updates the sounds.
+    ///
+    /// \param [in,out] parameter1  Pointer to the current listener.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static void S_UpdateSounds(mobj_t*);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::setSfxVolume(int volume);
     ///
     /// \brief  Sets sfx volume.
     ///
-    /// \author Jonny
-    /// \date   05/03/2017
-    ///
     /// \param  volume  The volume.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static void I_SetSfxVolume(int volume);
+
+    static void setSfxVolume(int volume);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::getSfxVolume();
+    ///
+    /// \brief  Gets sfx volume.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static int getSfxVolume();
+
+private:
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn int I_Sound::Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
     ///
     /// \brief  Converts the MUS format found in original doom WADs into proper midi format
     ///
-    /// \author Jonny
-    /// \date   05/03/2017
     ///
     /// \param [in,out] bytes   If non-null, the bytes.
     /// \param [in,out] out     If non-null, the out.
@@ -127,7 +193,6 @@ private:
     /// \return An int.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     static int Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
-
 
     /// \brief  The doom music
     static MidiSong*				                doomMusic;
@@ -142,8 +207,8 @@ private:
     /// \brief  The sound music volume
     static int                                     snd_MusicVolume;
     /// \brief  The sound buffers
-    //static std::map<std::string, sf::SoundBuffer> soundBuffers;
-    /// \brief  The sounds
-   // static std::list<sf::Sound>	sounds;
+    static std::map<std::string, sf::SoundBuffer> soundBuffers;
+    /// \brief  The sounds and their origins
+    static std::list<std::pair<sf::Sound,void*>>	sounds;
 
 };

@@ -31,7 +31,6 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "playmidi.h"
 #include "readmidi.h"
 #include "output.h"
-#include "controls.h"
 #include "../m_argv.hpp"
 
 

@@ -8,7 +8,7 @@
 #include "sounds.hpp"
 
 #include "w_wad.hpp"
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 #include "v_video.hpp"
 
 #include "f_finale.hpp"
@@ -300,7 +300,7 @@ void D_DoomLoop (void)
 		    TryRunTics (); // will run at least one tic
 		}
 		
-		S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
+		I_Sound::S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
 
 		// Update display, next frame, with current state.
 		D_Display ();
@@ -370,9 +370,9 @@ void D_AdvanceDemo (void)
 		gamestate = GS_DEMOSCREEN;
 		pagename = "TITLEPIC";
 		if ( gamemode == commercial )
-		  S_StartMusic(mus_dm2ttl);
+		    I_Sound::playMusic(mus_dm2ttl);
 		else
-		  S_StartMusic (mus_intro);
+            I_Sound::playMusic(mus_intro);
 		break;
     case 1:
 		G_DeferedPlayDemo ("demo1");
@@ -391,7 +391,7 @@ void D_AdvanceDemo (void)
 		{
 		    pagetic = 35 * 11;
 		    pagename = "TITLEPIC";
-		    S_StartMusic(mus_dm2ttl);
+            I_Sound::playMusic(mus_dm2ttl);
 		}
 		else
 		{
@@ -484,7 +484,9 @@ void IdentifyVersion (void)
     doom2fwad = (char*)malloc(strlen(doomwaddir)+1+10+1);
     sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
 
-    if ( !access (doom2fwad,R_OK) )
+    std::ifstream file;
+    file.open(doom2fwad);
+    if (file.good())
     {
 		gamemode = commercial;
 		// C'est ridicule!
@@ -495,42 +497,48 @@ void IdentifyVersion (void)
 		return;
     }
 
-    if ( !access (doom2wad,R_OK) )
+    file.open(doom2wad);
+    if (file.good())
     {
 		gamemode = commercial;
 		D_AddFile (doom2wad);
 		return;
     }
 
-    if ( !access (plutoniawad, R_OK ) )
+    file.open(plutoniawad);
+    if (file.good())
     {
 		gamemode = commercial;
 		D_AddFile (plutoniawad);
 		return;
     }
 
-    if ( !access ( tntwad, R_OK ) )
+    file.open(tntwad);
+    if (file.good())
     {
 		gamemode = commercial;
 		D_AddFile (tntwad);
 		return;
     }
 
-    if ( !access (doomuwad,R_OK) )
+    file.open(doomuwad);
+    if (file.good())
     {
 		gamemode = retail;
 		D_AddFile (doomuwad);
 		return;
     }
 
-    if ( !access (doomwad,R_OK) )
+    file.open(doomwad);
+    if (file.good())
     {
 		gamemode = registered;
 		D_AddFile (doomwad);
 		return;
     }
 
-    if ( !access (doom1wad,R_OK) )
+    file.open(doom1wad);
+    if (file.good())
     {
 		gamemode = shareware;
 		D_AddFile (doom1wad);
@@ -539,10 +547,6 @@ void IdentifyVersion (void)
 
     printf("Game mode indeterminate.\n");
     gamemode = indetermined;
-
-    // We don't abort. Let's see what the PWAD contains.
-    //exit(1);
-    //I_Error ("Game mode indeterminate\n");
 }
 
 //
@@ -805,14 +809,14 @@ void D_DoomMain (void)
     printf ("\nP_Init: Init Playloop state.\n");
     P_Init ();
 
-    printf ("I_Init: Setting up machine state.\n");
-    I_Init ();
+    printf("\nI_InitGraphics: Set up window for rendering\n");
+    I_InitGraphics();
 
     printf ("D_CheckNetGame: Checking network game status.\n");
     D_CheckNetGame ();
 
-    printf ("S_Init: Setting up sound.\n");
-    S_Init (snd_SfxVolume /* *8 */, snd_MusicVolume /* *8*/ );
+    printf ("Setting up sound.\n");
+    I_Sound::initialise ();
 
     printf ("HU_Init: Setting up heads up display.\n");
     HU_Init ();

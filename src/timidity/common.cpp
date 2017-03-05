@@ -29,7 +29,6 @@ common.c
 #include "config.h"
 #include "common.h"
 #include "output.h"
-#include "controls.h"
 
 /* I guess "rb" should be right for any libc */
 #define OPEN_MODE "rb"
@@ -150,7 +149,6 @@ void *safe_malloc(size_t count)
     else
         printf( "Sorry. Couldn't malloc %d bytes.", count);
 
-    ctl->close();
     //exit(10);
     return(NULL);
 }

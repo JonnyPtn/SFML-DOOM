@@ -33,9 +33,9 @@ April 95
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
 #include "config.h"
 #include "common.h"
-#include "controls.h"
 #include "instrum.h"
 #include "filter.h"
 

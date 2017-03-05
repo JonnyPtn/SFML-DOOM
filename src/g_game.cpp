@@ -11,6 +11,7 @@
 #include "m_menu.hpp"
 #include "m_random.hpp"
 #include "i_system.hpp"
+#include "i_sound.hpp"
 
 #include "p_setup.hpp"
 #include "p_saveg.hpp"
@@ -30,7 +31,7 @@
 
 #include "p_local.hpp" 
 
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 
 // Data.
 #include "dstrings.hpp"
@@ -184,8 +185,6 @@ int G_CmdChecksum (ticcmd_t* cmd)
 void G_BuildTiccmd (ticcmd_t* cmd) 
 { 
     int		i; 
-    bool	strafe;
-    bool	bstrafe; 
     int		speed;
     int		tspeed; 
     int		forward;
@@ -647,9 +646,9 @@ void G_Ticker (void)
 		  case BTS_PAUSE: 
 		    paused ^= 1; 
 		    if (paused) 
-			S_PauseSound (); 
+			    I_Sound::pauseSound (); 
 		    else 
-			S_ResumeSound (); 
+			    I_Sound::resumeSound (); 
 		    break; 
 					 
 		  case BTS_SAVEGAME: 
@@ -824,7 +823,7 @@ G_CheckSpot
 		      , MT_TFOG); 
 	 
     if (players[consoleplayer].viewz != 1) 
-	S_StartSound (mo, sfx_telept);	// don't start sound on first frame 
+        I_Sound::startSound(mo, sfx_telept);	// don't start sound on first frame 
  
     return true; 
 } 
@@ -1132,8 +1131,7 @@ void G_DoLoadGame (void)
 { 
     int		length; 
     int		i; 
-    int		a,b,c; 
-    char	vcheck[VERSIONSIZE]; 
+    int		a,b,c;
 	 
     gameaction = ga_nothing; 
 	 
@@ -1297,7 +1295,7 @@ G_InitNew
 	if (paused)
 	{
 		paused = false;
-		S_ResumeSound();
+		I_Sound::resumeSound();
 	}
 
 

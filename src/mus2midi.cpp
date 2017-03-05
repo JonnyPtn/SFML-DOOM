@@ -31,7 +31,9 @@ If you have questions concerning this license or the applicable additional terms
 #include <stdio.h>
 #include <memory>
 
+#include "doomstat.hpp"
 #include "i_sound.hpp"
+#include "r_main.hpp"
 
 //  mus2midi.defs begin // 
 #define MUSEVENT_KEYOFF	0
@@ -387,4 +389,3 @@ int I_Sound::Mus2Midi(unsigned char* bytes, unsigned char* out, int* len)
 	}*/
 	return 1;
 }
-

@@ -19,7 +19,7 @@
 #include "am_map.hpp"
 #include "m_cheat.hpp"
 
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 
 // Needs access to LFB.
 #include "v_video.hpp"
@@ -1173,19 +1173,6 @@ void ST_loadData(void)
 {
     lu_palette = WadManager::getNumForName ("PLAYPAL");
     ST_loadGraphics();
-}
-
-void ST_unloadGraphics(void)
-{
-
-    int i;
-    // Note: nobody ain't seen no unloading
-    //   of stminus yet. Dude.
-}
-
-void ST_unloadData(void)
-{
-    ST_unloadGraphics();
 }
 
 void ST_initData(void)

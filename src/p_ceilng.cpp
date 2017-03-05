@@ -1,7 +1,7 @@
 #include "doomdef.hpp"
 #include "p_local.hpp"
 
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 
 // State.
 #include "doomstat.hpp"
@@ -45,7 +45,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	      case silentCrushAndRaise:
 		break;
 	      default:
-		S_StartSound((mobj_t *)&ceiling->sector->soundorg,
+		I_Sound::startSound((mobj_t *)&ceiling->sector->soundorg,
 			     sfx_stnmov);
 		// ?
 		break;
@@ -61,7 +61,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 		break;
 		
 	      case silentCrushAndRaise:
-		S_StartSound((mobj_t *)&ceiling->sector->soundorg,
+              I_Sound::startSound((mobj_t *)&ceiling->sector->soundorg,
 			     sfx_pstop);
 	      case fastCrushAndRaise:
 	      case crushAndRaise:
@@ -88,7 +88,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	    {
 	      case silentCrushAndRaise: break;
 	      default:
-		S_StartSound((mobj_t *)&ceiling->sector->soundorg,
+              I_Sound::startSound((mobj_t *)&ceiling->sector->soundorg,
 			     sfx_stnmov);
 	    }
 	}
@@ -98,7 +98,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	    switch(ceiling->type)
 	    {
 	      case silentCrushAndRaise:
-		S_StartSound((mobj_t *)&ceiling->sector->soundorg,
+              I_Sound::startSound((mobj_t *)&ceiling->sector->soundorg,
 			     sfx_pstop);
 	      case crushAndRaise:
 		ceiling->speed = CEILSPEED;

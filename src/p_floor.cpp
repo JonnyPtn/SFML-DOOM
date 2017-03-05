@@ -5,7 +5,7 @@ rcsid[] = "$Id: p_floor.c,v 1.4 1997/02/03 16:47:54 b1 Exp $";
 #include "doomdef.hpp"
 #include "p_local.hpp"
 
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 
 // State.
 #include "doomstat.hpp"
@@ -192,7 +192,7 @@ void T_MoveFloor(floormove_t* floor)
 		      floor->crush,0,floor->direction);
     
     if (!(leveltime&7))
-	S_StartSound((mobj_t *)&floor->sector->soundorg,
+	I_Sound::startSound((mobj_t *)&floor->sector->soundorg,
 		     sfx_stnmov);
     
     if (res == pastdest)
@@ -223,7 +223,7 @@ void T_MoveFloor(floormove_t* floor)
 	}
 	P_RemoveThinker(&floor->thinker);
 
-	S_StartSound((mobj_t *)&floor->sector->soundorg,
+	I_Sound::startSound((mobj_t *)&floor->sector->soundorg,
 		     sfx_pstop);
     }
 

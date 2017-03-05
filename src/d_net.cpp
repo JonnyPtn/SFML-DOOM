@@ -140,7 +140,6 @@ HSendPacket
 
     if (verboseOutput)
     {
-        int		i;
         int		realretrans;
         if (netbuffer->checksum & NCMD_RETRANSMIT)
             realretrans = ExpandTics(netbuffer->retransmitfrom);
@@ -203,7 +202,6 @@ bool HGetPacket(void)
     if (verboseOutput)
     {
         int		realretrans;
-        int	i;
 
         if (netbuffer->checksum & NCMD_SETUP)
             std::cout << "setup packet\n";

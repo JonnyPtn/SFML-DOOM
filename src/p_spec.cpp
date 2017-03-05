@@ -13,7 +13,7 @@
 
 #include "g_game.hpp"
 
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 
 // State.
 #include "r_state.hpp"
@@ -1115,7 +1115,7 @@ void P_UpdateSpecials (void)
 			buttonlist[i].btexture;
 		    break;
 		}
-		S_StartSound((mobj_t *)&buttonlist[i].soundorg,sfx_swtchn);
+		I_Sound::startSound((mobj_t *)&buttonlist[i].soundorg,sfx_swtchn);
 		memset(&buttonlist[i],0,sizeof(button_t));
 	    }
 	}

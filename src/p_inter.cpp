@@ -12,7 +12,7 @@
 
 #include "p_local.hpp"
 
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 
 #ifdef __GNUG__
 #pragma implementation "p_inter.hpp"
@@ -163,7 +163,7 @@ P_GiveWeapon
 	player->pendingweapon = weapon;
 
 	if (player == &players[consoleplayer])
-	    S_StartSound (NULL, sfx_wpnup);
+	    I_Sound::startSound (NULL, sfx_wpnup);
 	return false;
     }*/
 	
@@ -629,7 +629,7 @@ P_TouchSpecialThing
     P_RemoveMobj (special);
     player->bonuscount += BONUSADD;
     if (player == &players[consoleplayer])
-	S_StartSound (NULL, sound);
+	I_Sound::startSound (NULL, sound);
 }
 
 

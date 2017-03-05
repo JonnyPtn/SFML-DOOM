@@ -8,12 +8,13 @@ rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 
 
 #include "m_swap.hpp"
+#include "i_sound.hpp"
 
 #include "hu_stuff.hpp"
 #include "hu_lib.hpp"
 #include "w_wad.hpp"
 
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 
 #include "doomstat.hpp"
 
@@ -541,9 +542,9 @@ void HU_Ticker(void)
 			    message_on = true;
 			    message_counter = HU_MSGTIMEOUT;
 			    if ( gamemode == commercial )
-			      S_StartSound(0, sfx_radio);
+                    I_Sound::startSound(0, sfx_radio);
 			    else
-			      S_StartSound(0, sfx_tink);
+                    I_Sound::startSound(0, sfx_tink);
 			}
 			HUlib_resetIText(&w_inputbuffer[i]);
 		    }

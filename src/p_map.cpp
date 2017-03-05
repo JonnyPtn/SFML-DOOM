@@ -7,7 +7,7 @@
 #include "doomdef.hpp"
 #include "p_local.hpp"
 
-#include "s_sound.hpp"
+#include "i_sound.hpp"
 
 // State.
 #include "doomstat.hpp"
@@ -1074,7 +1074,7 @@ bool	PTR_UseTraverse (intercept_t* in)
 	P_LineOpening (in->d.line);
 	if (openrange <= 0)
 	{
-	    S_StartSound (usething, sfx_noway);
+	    I_Sound::startSound (usething, sfx_noway);
 	    
 	    // can't use through a wall
 	    return false;	

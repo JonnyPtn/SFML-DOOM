@@ -4,8 +4,10 @@
 /// \brief  Declares the i_sound interface.
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include "doomstat.hpp"
 #include "i_sound.hpp"
-#include "s_sound.hpp"
+#include "m_random.hpp"
+#include "r_main.hpp"
 #include "w_wad.hpp"
 #include "timidity/controls.h"
 
@@ -35,49 +37,13 @@
 /// \brief  Buffer for music data
  char*                              I_Sound::musicBuffer;
 /// \brief  The sound sfx volume
- int                                I_Sound::snd_SfxVolume;
+ int                                I_Sound::snd_SfxVolume = 8;
 /// \brief  The sound music volume
- int                                I_Sound::snd_MusicVolume;
-
- //
- // This function loads the sound data from the WAD lump,
- //  for single sound.
- //
- void* getsfx(char* sfxname)
- {
-     unsigned char*      sfx;
-     int                 i;
-     int                 size;
-     char                name[20];
-     int                 sfxlump;
-
-
-     // Get the sound data from the WAD, allocate lump
-     //  in zone memory.
-     sprintf(name, "ds%s", sfxname);
-
-     // Now, there is a severe problem with the
-     //  sound handling, in it is not (yet/anymore)
-     //  gamemode aware. That means, sounds from
-     //  DOOM II will be requested even with DOOM
-     //  shareware.
-     // The sound list is wired into sounds.c,
-     //  which sets the external variable.
-     // I do not do runtime patches to that
-     //  variable. Instead, we will use a
-     //  default sound for replacement.
-     if (WadManager::checkNumForName(name) == -1)
-         sfxlump = WadManager::getNumForName("dspistol");
-     else
-         sfxlump = WadManager::getNumForName(name);
-
-     size = WadManager::WadManager::getLumpLength(sfxlump);
-
-     sfx = (unsigned char*)WadManager::WadManager::getLump(sfxlump);
-
-     // Return allocated padded data.
-     return (void *)(sfx);
- }
+ int                                I_Sound::snd_MusicVolume = 8;
+ /// \brief  The sound buffers
+ std::map<std::string, sf::SoundBuffer> I_Sound::soundBuffers;
+ /// \brief  The sounds and their origins
+ std::list<std::pair<sf::Sound, void*>>	I_Sound::sounds;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
  void I_Sound::initialise()
@@ -92,6 +58,13 @@
     musicSound = std::make_unique<sf::Sound>();
     musicSoundBuffer = std::make_unique<sf::SoundBuffer>();
 
+    fprintf(stderr, " default sfx volume %d\n", snd_SfxVolume);
+    fprintf(stderr, " default music volume %d\n", snd_MusicVolume);
+
+    setSfxVolume(snd_SfxVolume);
+
+    setMusicVolume(snd_MusicVolume);
+
     // Finished initialization.
     fprintf(stderr, "I_InitSound: sound module ready\n");
 }
@@ -104,25 +77,185 @@
  }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void I_Sound::I_SetSfxVolume(int volume)
+void I_Sound::setSfxVolume(int volume)
 {
   snd_SfxVolume = volume;
   for (auto& s : sounds)
   {
-      s.setVolume(volume / 15.f*100.f);
+      s.first.setVolume(volume / 15.f*100.f);
   }
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+int I_Sound::getSfxVolume()
+{
+    return snd_SfxVolume;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void I_Sound::I_SetMusicVolume(int volume)
+void I_Sound::setMusicVolume(int volume)
 {
   // Internal state variable.
   snd_MusicVolume = volume;
   musicSound->setVolume(volume / 15.f*100.f);
 }
+int I_Sound::getMusicVolume()
+{
+    return snd_MusicVolume;
+}
+void I_Sound::stopAllSounds()
+{
+    sounds.clear();
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void I_Sound::startSound(void * origin_p, int sfx_id, int volume)
+{
+    int		pitch = NORM_PITCH;
+    sfxinfo_t*	sfx;
+
+    mobj_t*	origin = (mobj_t *)origin_p;
+
+    // check for bogus sound #
+    if (sfx_id < 1 || sfx_id > NUMSFX)
+        printf("Bad sfx #: %d", sfx_id);
+
+    sfx = &S_sfx[sfx_id];
+
+    // hacks to vary the sfx pitches
+    if (sfx_id >= sfx_sawup
+        && sfx_id <= sfx_sawhit)
+    {
+        pitch += 8 - (M_Random() & 15);
+
+        if (pitch < 0)
+            pitch = 0;
+        else if (pitch > 255)
+            pitch = 255;
+    }
+    else if (sfx_id != sfx_itemup
+        && sfx_id != sfx_tink)
+    {
+        pitch += 16 - (M_Random() & 31);
+
+        if (pitch < 0)
+            pitch = 0;
+        else if (pitch > 255)
+            pitch = 255;
+    }
+
+    // kill old sound
+    stopSound(origin);
+
+    //
+    // This is supposed to handle the loading/caching.
+    // For some odd reason, the caching is done nearly
+    //  each time the sound is needed?
+    //
+
+    // get lumpnum if necessary
+    if (sfx->lumpnum < 0)
+        sfx->lumpnum = I_Sound::getSfxLumpNum(sfx);
+
+    if (soundBuffers.find(sfx->name) == soundBuffers.end())
+    {
+        //not loaded yet, set it up
+        auto dataSize(WadManager::getLumpLength(sfx->lumpnum) - 8);
+        unsigned char* data((unsigned char*)WadManager::getLump(sfx->lumpnum) + 8);
+        std::vector<sf::Int16> newData(dataSize);
+        auto lastSample = 0;
+        int i = 0;
+        while (i < dataSize)
+        {
+            sf::Int16 newSample(data[i] << 8);	//8bit to 16bit
+            newSample ^= 0x8000;	//flip the sign
+            newData[i] = newSample;
+            i++;
+        }
+
+        if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
+            fprintf(stderr, "Failed to load sound");
+    }
+
+    sounds.emplace_back(std::make_pair( soundBuffers[sfx->name] , origin));
+    sounds.back().first.setBuffer(soundBuffers[sfx->name]);
+    sounds.back().first.play();
+    if (origin && origin != players[consoleplayer].mo)
+    {
+        sounds.back().first.setPosition(origin->x, origin->y, origin->z);
+
+        //some numbers to frig it a little
+        sounds.back().first.setMinDistance(S_CLOSE_DIST);
+        sounds.back().first.setAttenuation(S_ATTENUATOR);
+        sounds.back().first.setPitch(float(pitch) / 255.f);
+    }
+    else
+    {
+        sounds.back().first.setRelativeToListener(true);
+    }
+    sounds.back().first.setVolume(snd_SfxVolume / 15.f*100.f);
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void I_Sound::pauseSound()
+{
+    //pause all sounds
+    for (auto& sound : sounds)
+        sound.first.pause();
+
+    musicSound->pause();
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void I_Sound::resumeSound()
+{
+    //resume all sounds
+    for (auto& sound : sounds)
+        sound.first.play();
+
+    musicSound->play();
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-int I_Sound::I_GetSfxLumpNum(sfxinfo_t* sfx)
+void I_Sound::stopSound(void * origin)
+{
+    if (!origin)
+        return;
+
+    for (auto s = sounds.begin(); s !=sounds.end();s++)
+    {
+        if (s->second == origin)
+        {
+            sounds.erase(s);
+            return;
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void I_Sound::S_UpdateSounds(mobj_t * listener_p)
+{
+    //remove any finished sounds
+    sounds.erase(std::remove_if(sounds.begin(), sounds.end(), [](const std::pair<sf::Sound, void*>& sound)
+    {
+        return sound.first.getStatus() == sf::Sound::Stopped;
+    }),sounds.end());
+
+    if (listener_p)
+    {
+        sf::Listener::setPosition(listener_p->x, listener_p->y, listener_p->z);
+        auto angle(static_cast<float>(listener_p->angle) / std::numeric_limits<unsigned int>::max());
+        auto degrees = angle*360.f;
+
+        //flip 180 degrees because...
+        degrees += 180.f;
+        if (degrees > 360.f)
+            degrees -= 360.f;
+
+        auto radians = degrees / (180.f / std::atan(1)*4); //pi
+
+        sf::Listener::setDirection(std::cos(radians), 0, std::sin(radians));
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+int I_Sound::getSfxLumpNum(sfxinfo_t* sfx)
 {
     char namebuf[9];
     sprintf(namebuf, "ds%s", sfx->name);
@@ -140,6 +273,8 @@ namespace
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void I_Sound::playMusic(const std::string& songname, bool looping)
 {
+    printf("I_Sound::playMusic: Playing new track: '%s'\n", songname.c_str());
+
     //Stop if it's not already
     if (musicSound->getStatus() != sf::Sound::Stopped)
     {
@@ -194,4 +329,19 @@ void I_Sound::playMusic(const std::string& songname, bool looping)
         Timidity_Stop();
         Timidity_FreeSong(doomMusic);
     }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void I_Sound::playMusic(const int musicNum, bool looping)
+{
+
+    if ((musicNum <= mus_None) || (musicNum >= NUMMUSIC))
+    {
+        printf("Bad music number %d", musicNum);
+        return;
+    }
+
+    auto& music = S_music[musicNum];
+
+    playMusic(music.name, looping);
 }
