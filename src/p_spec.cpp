@@ -132,7 +132,7 @@ void P_InitPicAnims (void)
 	}
 	else
 	{
-	    if (WadManager::WadManager::W_CheckNumForName(animdefs[i].startname) == -1)
+	    if (WadManager::WadManager::checkNumForName(animdefs[i].startname) == -1)
 		continue;
 
 	    lastanim->picnum = R_FlatNumForName (animdefs[i].endname);
@@ -1211,7 +1211,7 @@ void P_SpawnSpecials (void)
     int		episode;
 
     episode = 1;
-    if (WadManager::W_CheckNumForName("texture2") >= 0)
+    if (WadManager::checkNumForName("texture2") >= 0)
 	episode = 2;
 
     

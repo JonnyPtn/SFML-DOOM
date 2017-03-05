@@ -1,82 +1,13 @@
-
 #include "w_wad.hpp"
-
 #include "i_system.hpp"
 
-//STATICS
+/// \brief  The wad manager lumpinfo.
 std::vector<lumpinfo_t>		WadManager::lumpinfo;		
+/// \brief  The wad manager numlumps.
 int			                WadManager::numlumps;
 
-void mystrupr(char* s)
-{
-    while (*s) { *s = toupper(*s); s++; }
-}
-
-int myfilelength (std::ifstream& handle) 
-{ 
-    //store the pos
-    auto pos = handle.tellg();
-    handle.seekg(std::ios::end);
-
-    //get the size
-    auto size = handle.tellg();
-
-    //return to pos
-    handle.seekg(pos);
-
-    return size;
-}
-
-
-void
-ExtractFileBase
-( char*		path,
-  char*		dest )
-{
-    char*	src;
-    int		length;
-
-    src = path + strlen(path) - 1;
-    
-    // back up until a \ or the start
-    while (src != path
-	   && *(src-1) != '\\'
-	   && *(src-1) != '/')
-    {
-	src--;
-    }
-    
-    // copy up to eight characters
-    memset (dest,0,8);
-    length = 0;
-    
-    while (*src && *src != '.')
-    {
-	if (++length == 9)
-	    I_Error ("Filename base of %s >8 chars",path);
-
-	*dest++ = toupper((int)*src++);
-    }
-}
-
-
-
-
-
-//
-// LUMP BASED ROUTINES.
-//
-
-//
-// W_AddFile
-// All files are optional, but at least one file must be
-//  found (PWAD, if all required lumps are present).
-// Files with a .wad extension are wadlink files
-//  with multiple lumps.
-// Other files are single lumps with the base filename
-//  for the lump name.
-//
-void WadManager::W_AddFile (const std::string& filename)
+////////////////////////////////////////////////////////////////////////////////////////////////////
+void WadManager::addFile (const std::string& filename)
 {
     lumpinfo_t*		lump_p;
     int		i;
@@ -102,10 +33,10 @@ void WadManager::W_AddFile (const std::string& filename)
     {
 		// single lump file
 		//fileinfo = &singleinfo;
-		singleinfo.filepos = 0;
+		/*singleinfo.filepos = 0;
 		singleinfo.size = myfilelength(fileHandle);
 		ExtractFileBase (const_cast<char*>(filename.c_str()), singleinfo.name);
-		numlumps++;
+		numlumps++;*/
     }
     else 
     {
@@ -153,6 +84,7 @@ void WadManager::W_AddFile (const std::string& filename)
 
         //read the data
         fileHandle.read(reinterpret_cast<char*>(lump_p->data.data()), lump_p->size);
+        printf("Loaded lump: %s \n" ,lump_p->name);
 	}
 }
 
@@ -169,7 +101,7 @@ void WadManager::W_AddFile (const std::string& filename)
 // The name searcher looks backwards, so a later file
 //  does override all earlier ones.
 //
-void WadManager::W_InitMultipleFiles (std::vector<std::string> filenames)
+void WadManager::initMultipleFiles (std::vector<std::string> filenames)
 {	
     int		size;
     
@@ -177,7 +109,7 @@ void WadManager::W_InitMultipleFiles (std::vector<std::string> filenames)
     numlumps = 0;
 
     for (auto& filename : filenames)
-		W_AddFile (filename);
+		addFile (filename);
 
     if (!numlumps)
 	    I_Error ("W_InitFiles: no files found");
@@ -198,55 +130,44 @@ int WadManager::W_NumLumps (void)
 // Returns -1 if name not found.
 //
 
-int WadManager::W_CheckNumForName (const std::string& name)
+int WadManager::checkNumForName (const std::string& name)
 {
-    union {
-	char	s[9];
-	int	x[2];
-	
-    } name8;
-    
-    int		v1;
-    int		v2;
+    //convert the name to upper case first
+    auto n = name;
+    std::transform(n.begin(), n.end(),n.begin(), toupper);
 
-    // make the name into two integers for easy compares
-    strncpy (name8.s,name.c_str(),8);
-
-    // in case the name was a fill 8 chars
-    name8.s[8] = 0;	
-
-    // case insensitive
-    mystrupr (name8.s);		
-
-    v1 = name8.x[0];
-    v2 = name8.x[1];
-
-
+    // We search in reverse, so the most recently added patches are found first
     for (int i=lumpinfo.size()-1;i>=0;i--)
     {
-	    if ( *(int *)lumpinfo[i].name == v1
-	         && *(int *)&lumpinfo[i].name[4] == v2)
-	    {
-	        return i;
-	    }
+	    // Only check as many chars as there are in the parameter
+        auto* l = &lumpinfo[i].name[0];
+        bool match = true;
+        for (auto c : n)
+        {
+            if (c != *l)
+            {
+                match = false;
+                break;
+            }
+            l++;
+        }
+        if (match)
+            return i;
     }
 
     // TFB. Not found.
     return -1;
 }
 
-
-
-
 //
 // W_GetNumForName
 // Calls WadManager::W_CheckNumForName, but bombs out if not found.
 //
-int WadManager::W_GetNumForName (const std::string& name)
+int WadManager::getNumForName (const std::string& name)
 {
     int	i;
 
-    i = WadManager::W_CheckNumForName (name);
+    i = WadManager::checkNumForName (name);
     
     if (i == -1)
       I_Error ("W_GetNumForName: %s not found!", name);
@@ -254,12 +175,17 @@ int WadManager::W_GetNumForName (const std::string& name)
     return i;
 }
 
+std::string WadManager::getNameForNum(int i)
+{
+    return std::string(lumpinfo[i].name,8);
+}
+
 
 //
 // WadManager::W_LumpLength
 // Returns the buffer size needed to load the given lump.
 //
-int WadManager::W_LumpLength (int lump)
+int WadManager::getLumpLength (int lump)
 {
     if (lump >= numlumps)
 	I_Error ("WadManager::W_LumpLength: %i >= numlumps",lump);
@@ -270,7 +196,7 @@ int WadManager::W_LumpLength (int lump)
 //
 // WadManager::W_CacheLumpNum
 //
-void* WadManager::W_CacheLumpNum( int lump)
+void* WadManager::getLump( int lump)
 {
     if (lumpinfo.size() < lump)
         I_Error("Lump %d requested when only %d lumps available", lump, lumpinfo.size());
@@ -282,7 +208,7 @@ void* WadManager::W_CacheLumpNum( int lump)
 // WadManager::W_CacheLumpName
 //
 void*
-WadManager::W_CacheLumpName( const std::string& name )
+WadManager::getLump( const std::string& name )
 {
-    return WadManager::W_CacheLumpNum (W_GetNumForName(name));
+    return WadManager::getLump (getNumForName(name));
 }

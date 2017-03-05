@@ -29,7 +29,7 @@ patch_t*		sttminus;
 
 void STlib_init(void)
 {
-    sttminus = (patch_t *) WadManager::W_CacheLumpName("STTMINUS");
+    sttminus = (patch_t *) WadManager::getLump("STTMINUS");
 }
 
 

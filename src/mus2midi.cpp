@@ -31,6 +31,8 @@ If you have questions concerning this license or the applicable additional terms
 #include <stdio.h>
 #include <memory>
 
+#include "i_sound.hpp"
+
 //  mus2midi.defs begin // 
 #define MUSEVENT_KEYOFF	0
 #define MUSEVENT_KEYON	1
@@ -189,7 +191,7 @@ namespace {
 	}
 }
 
-int Mus2Midi(unsigned char* bytes, unsigned char* out, int* len)
+int I_Sound::Mus2Midi(unsigned char* bytes, unsigned char* out, int* len)
 {
 	// mus header and instruments
 	MUSheader_t header;

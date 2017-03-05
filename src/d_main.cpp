@@ -194,7 +194,7 @@ void D_Display (void)
     
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-		I_SetPalette ((unsigned char*)WadManager::WadManager::W_CacheLumpName ("PLAYPAL"));
+		I_SetPalette ((unsigned char*)WadManager::WadManager::getLump ("PLAYPAL"));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -228,7 +228,7 @@ void D_Display (void)
 		else
 		    y = viewwindowy+4;
 		V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68)/2,
-				  y,0, (patch_t*)WadManager::W_CacheLumpName ("M_PAUSE"));
+				  y,0, (patch_t*)WadManager::getLump ("M_PAUSE"));
     }
 
     // menus go directly to the screen
@@ -277,8 +277,6 @@ void D_DoomLoop (void)
     {
         verboseOutput = true;
     }
-	
-    I_InitGraphics ();
 
     while (1)
     {          
@@ -306,8 +304,6 @@ void D_DoomLoop (void)
 
 		// Update display, next frame, with current state.
 		D_Display ();
-
-		I_UpdateSound();
     }
 }
 
@@ -335,7 +331,7 @@ void D_PageTicker (void)
 //
 void D_PageDrawer (void)
 {
-    V_DrawPatch (0,0, 0, (patch_t*)WadManager::W_CacheLumpName(pagename));
+    V_DrawPatch (0,0, 0, (patch_t*)WadManager::getLump(pagename));
 }
 
 //
@@ -456,9 +452,9 @@ void IdentifyVersion (void)
     char*	tntwad;
 
     char *doomwaddir;
-    doomwaddir = getenv("DOOMWADDIR");
+        doomwaddir = getenv("DOOMWADDIR");
     if (!doomwaddir)
-	doomwaddir = ".";
+	    doomwaddir = ".";
 
     // Commercial.
     doom2wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
@@ -735,7 +731,7 @@ void D_DoomMain (void)
     M_LoadDefaults ();              // load before initing other systems
 
     printf ("W_Init: Init WADfiles.\n");
-    WadManager::W_InitMultipleFiles (wadfiles);
+    WadManager::initMultipleFiles (wadfiles);
     
 
     // Check for -file in shareware
@@ -755,7 +751,7 @@ void D_DoomMain (void)
 		// but w/o all the lumps of the registered version. 
 		if (gamemode == registered)
 		    for (i = 0;i < 23; i++)
-			if (WadManager::WadManager::W_CheckNumForName(name[i])<0)
+			if (WadManager::WadManager::checkNumForName(name[i])<0)
 			    I_Error("\nThis is not the registered version.");
     }
     

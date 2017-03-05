@@ -228,7 +228,7 @@ void F_TextWrite (void)
     int		cy;
     
     // erase the entire screen to a tiled background
-    src = (unsigned char*)WadManager::W_CacheLumpName ( finaleflat);
+    src = (unsigned char*)WadManager::getLump ( finaleflat);
     dest = screens[0];
 	
     for (y=0 ; y<SCREENHEIGHT ; y++)
@@ -536,7 +536,7 @@ void F_CastDrawer (void)
     patch_t*		patch;
     
     // erase the entire screen to a background
-    V_DrawPatch (0,0,0, (patch_t*)WadManager::W_CacheLumpName ("BOSSBACK"));
+    V_DrawPatch (0,0,0, (patch_t*)WadManager::getLump ("BOSSBACK"));
 
     F_CastPrint (castorder[castnum].name);
     
@@ -546,7 +546,7 @@ void F_CastDrawer (void)
     lump = sprframe->lump[0];
     flip = (sprframe->flip[0])!=0;
 			
-    patch = (patch_t*)WadManager::WadManager::W_CacheLumpNum (lump+firstspritelump);
+    patch = (patch_t*)WadManager::WadManager::getLump (lump+firstspritelump);
     if (flip)
 		V_DrawPatchFlipped (160,170,0,patch);
     else
@@ -597,8 +597,8 @@ void F_BunnyScroll (void)
     int		stage;
     static int	laststage;
 		
-    p1 = (patch_t*)WadManager::W_CacheLumpName ("PFUB2");
-    p2 = (patch_t*)WadManager::W_CacheLumpName ("PFUB1");
+    p1 = (patch_t*)WadManager::getLump ("PFUB2");
+    p2 = (patch_t*)WadManager::getLump ("PFUB1");
 
     V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
 	
@@ -621,7 +621,7 @@ void F_BunnyScroll (void)
     if (finalecount < 1180)
     {
 		V_DrawPatch ((SCREENWIDTH-13*8)/2,
-			     (SCREENHEIGHT-8*8)/2,0, (patch_t*)WadManager::W_CacheLumpName ("END0"));
+			     (SCREENHEIGHT-8*8)/2,0, (patch_t*)WadManager::getLump ("END0"));
 		laststage = 0;
 		return;
     }
@@ -636,7 +636,7 @@ void F_BunnyScroll (void)
     }
 	
     sprintf (name,"END%i",stage);
-    V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, (patch_t*)WadManager::W_CacheLumpName (name));
+    V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, (patch_t*)WadManager::getLump (name));
 }
 
 
@@ -660,7 +660,7 @@ void F_Drawer (void)
 		  case 1:
 		    if ( gamemode == retail )
 		      V_DrawPatch (0,0,0,
-				  (patch_t*)WadManager::W_CacheLumpName("CREDIT"));
+				  (patch_t*)WadManager::getLump("CREDIT"));
 		    else
 		      V_DrawPatch (0,0,0,
 				  (patch_t*)(std::intptr_t(101)));
@@ -674,7 +674,7 @@ void F_Drawer (void)
 		    break;
 		  case 4:
 		    V_DrawPatch (0,0,0,
-				(patch_t*)WadManager::W_CacheLumpName("ENDPIC"));
+				(patch_t*)WadManager::getLump("ENDPIC"));
 		    break;
 		}
     }	

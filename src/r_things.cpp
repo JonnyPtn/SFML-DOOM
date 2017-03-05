@@ -64,7 +64,7 @@ int		numsprites;
 
 spriteframe_t	sprtemp[29];
 int		maxframe;
-char*		spritename;
+std::string		spritename;
 
 
 
@@ -145,7 +145,7 @@ R_InstallSpriteLump
 //  letter/number appended.
 // The rotation character can be 0 to signify no rotations.
 //
-void R_InitSpriteDefs (char** namelist) 
+void R_InitSpriteDefs (const std::vector<std::string>& namelist) 
 { 
     char**	check = 0;
     int		i;
@@ -176,28 +176,29 @@ void R_InitSpriteDefs (char** namelist)
 		memset (sprtemp,-1, sizeof(sprtemp));
 			
 		maxframe = -1;
-		intname = *(int *)namelist[i];
+		intname = *(int *)namelist[i].data();
 		
 		// scan the lumps,
 		//  filling in the frames for whatever is found
 		for (l=start+1 ; l<end ; l++)
 		{
-		    if (*(int *)WadManager::lumpinfo[l].name == intname)
+            auto lumpname = WadManager::getNameForNum(l);
+		    if (*(int *)lumpname.data() == intname)
 		    {
-			frame = WadManager::lumpinfo[l].name[4] - 'A';
-			rotation = WadManager::lumpinfo[l].name[5] - '0';
+			frame = lumpname[4] - 'A';
+			rotation = lumpname[5] - '0';
 
 			if (modifiedgame)
-			    patched = WadManager::W_GetNumForName (WadManager::lumpinfo[l].name);
+			    patched = WadManager::getNumForName (lumpname);
 			else
 			    patched = l;
 
 			R_InstallSpriteLump (patched, frame, rotation, false);
 
-			if (WadManager::lumpinfo[l].name[6])
+			if (lumpname[6])
 			{
-			    frame = WadManager::lumpinfo[l].name[6] - 'A';
-			    rotation = WadManager::lumpinfo[l].name[7] - '0';
+			    frame = lumpname[6] - 'A';
+			    rotation = lumpname[7] - '0';
 			    R_InstallSpriteLump (l, frame, rotation, true);
 			}
 	    }
@@ -259,13 +260,13 @@ int		newvissprite;
 // R_InitSprites
 // Called at program start.
 //
-void R_InitSprites (char** namelist)
+void R_InitSprites (const std::vector<std::string>& namelist)
 {
     int		i;
 	
     for (i=0 ; i<SCREENWIDTH ; i++)
     {
-	negonearray[i] = -1;
+	    negonearray[i] = -1;
     }
 	
     R_InitSpriteDefs (namelist);
@@ -368,7 +369,7 @@ R_DrawVisSprite
     patch_t*		patch;
 	
 	
-    patch = (patch_t*)WadManager::W_CacheLumpNum (vis->patch+firstspritelump);
+    patch = (patch_t*)WadManager::getLump (vis->patch+firstspritelump);
 
     dc_colormap = vis->colormap;
     

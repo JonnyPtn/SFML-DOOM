@@ -104,9 +104,6 @@ void S_Init
   int		i;
 
   fprintf( stderr, "S_Init: default sfx volume %d\n", sfxVolume);
-
-  // Whatever these did with DMX, these are rather dummies now.
-  I_SetChannels();
   
   S_SetSfxVolume(sfxVolume);
   // No music with Linux - another dummy.
@@ -114,10 +111,6 @@ void S_Init
   
   // no sounds are playing, and they are not mus_paused
   mus_paused = 0;
-
-  // Note that sounds have not been cached (yet).
-  for (i=1 ; i<NUMSFX ; i++)
-    S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
 }
 
 
@@ -179,7 +172,7 @@ S_StartSoundAtVolume
 
 	int		rc;
 	int		sep;
-	int		pitch;
+	int		pitch=0;
 	int		priority;
 	sfxinfo_t*	sfx;
 	int		cnum;
@@ -197,26 +190,6 @@ S_StartSoundAtVolume
 		I_Error("Bad sfx #: %d", sfx_id);
 
 	sfx = &S_sfx[sfx_id];
-
-	// Initialize sound parameters
-	if (sfx->link)
-	{
-		pitch = sfx->pitch;
-		priority = sfx->priority;
-		volume += sfx->volume;
-
-		if (volume < 1)
-			return;
-
-		if (volume > snd_SfxVolume)
-			volume = snd_SfxVolume;
-	}
-	else
-	{
-		pitch = NORM_PITCH;
-		priority = NORM_PRIORITY;
-	}
-
 
 	// Check to see if it is audible,
 	//  and if not, modify the params
@@ -276,28 +249,13 @@ S_StartSoundAtVolume
 
 	// get lumpnum if necessary
 	if (sfx->lumpnum < 0)
-		sfx->lumpnum = I_GetSfxLumpNum(sfx);
+		sfx->lumpnum = I_Sound::I_GetSfxLumpNum(sfx);
 
-#ifndef SNDSRV
-	// cache data if necessary
-	if (!sfx->data)
-	{
-		fprintf(stderr,
-			"S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
-
-		// DOS remains, 8bit handling
-		//sfx->data = (void *) WadManager::W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
-		// fprintf( stderr,
-		//	     "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
-		//       sfx_id, sfx->lumpnum, (int)sfx->data );
-
-	}
-#endif
 	if (soundBuffers.find(sfx->name) == soundBuffers.end())
 	{
 		//not loaded yet, set it up
-		auto dataSize(WadManager::W_LumpLength(sfx->lumpnum));
-		unsigned char* data((unsigned char*)sfx->data);
+		auto dataSize(WadManager::getLumpLength(sfx->lumpnum)-8);
+		unsigned char* data((unsigned char*)WadManager::getLump(sfx->lumpnum)+8);
 		std::vector<sf::Int16> newData;
 		auto lastSample = 0;
 		int i = 0;
@@ -328,9 +286,6 @@ S_StartSoundAtVolume
 		sounds.back().setRelativeToListener(true);
 	}
     sounds.back().setVolume(snd_SfxVolume / 15.f*100.f);
-	 // increase the usefulness
-  if (sfx->usefulness++ < 0)
-    sfx->usefulness = 1;
 }	
 
 void
@@ -426,8 +381,7 @@ void S_PauseSound(void)
 {
     if (mus_playing && !mus_paused)
     {
-	I_PauseSong(mus_playing->handle);
-	mus_paused = true;
+	    mus_paused = true;
     }
 }
 
@@ -435,8 +389,7 @@ void S_ResumeSound(void)
 {
     if (mus_playing && mus_paused)
     {
-	I_ResumeSong(mus_playing->handle);
-	mus_paused = false;
+	    mus_paused = false;
     }
 }
 
@@ -488,10 +441,8 @@ void S_SetMusicVolume(int volume)
     {
 	I_Error("Attempt to set music volume at %d",
 		volume);
-    }    
-
-    I_SetMusicVolume(127);
-    I_SetMusicVolume(volume);
+    }   
+    I_Sound::I_SetMusicVolume(volume);
     snd_MusicVolume = volume;
 }
 
@@ -546,7 +497,7 @@ S_ChangeMusic
 
     printf("S_ChangeMusic: Playing new track: '%s'\n", music->name);
 
-    I_PlaySong(music->name, looping);
+    I_Sound::playMusic(music->name, looping);
 
     mus_playing = music;
 }
@@ -555,15 +506,9 @@ S_ChangeMusic
 void S_StopMusic(void)
 {
     if (mus_playing)
-    {
-	if (mus_paused)
-	    I_ResumeSong(mus_playing->handle);
-
-	I_StopSong(mus_playing->handle);
-	I_UnRegisterSong(mus_playing->handle);
-	
-	mus_playing->data = 0;
-	mus_playing = 0;
+    {	    
+	    mus_playing->data = 0;
+	    mus_playing = 0;
     }
 }
 

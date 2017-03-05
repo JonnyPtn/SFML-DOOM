@@ -1518,7 +1518,7 @@ void WI_loadData(void)
     }
 
     // background
-    bg = (patch_t*)WadManager::W_CacheLumpName(name);    
+    bg = (patch_t*)WadManager::getLump(name);    
     V_DrawPatch(0, 0, 1, bg);
 
 
@@ -1540,7 +1540,7 @@ void WI_loadData(void)
 	for (i=0 ; i<NUMCMAPS ; i++)
 	{								
 	    sprintf(name, "CWILV%2.2d", i);
-	    lnames[i] = (patch_t*)WadManager::W_CacheLumpName(name);
+	    lnames[i] = (patch_t*)WadManager::getLump(name);
 	}					
     }
     else
@@ -1549,17 +1549,17 @@ void WI_loadData(void)
 	for (i=0 ; i<NUMMAPS ; i++)
 	{
 	    sprintf(name, "WILV%d%d", wbs->epsd, i);
-	    lnames[i] = (patch_t*)WadManager::W_CacheLumpName(name);
+	    lnames[i] = (patch_t*)WadManager::getLump(name);
 	}
 
 	// you are here
-	yah[0] = (patch_t*)WadManager::W_CacheLumpName("WIURH0");
+	yah[0] = (patch_t*)WadManager::getLump("WIURH0");
 
 	// you are here (alt.)
-	yah[1] = (patch_t*)WadManager::W_CacheLumpName("WIURH1");
+	yah[1] = (patch_t*)WadManager::getLump("WIURH1");
 
 	// splat
-	splat = (patch_t*)WadManager::W_CacheLumpName("WISPLAT");
+	splat = (patch_t*)WadManager::getLump("WISPLAT");
 	
 	if (wbs->epsd < 3)
 	{
@@ -1573,7 +1573,7 @@ void WI_loadData(void)
 		    {
 			// animations
 			sprintf(name, "WIA%d%.2d%.2d", wbs->epsd, j, i);  
-			a->p[i] = (patch_t*)WadManager::W_CacheLumpName(name);
+			a->p[i] = (patch_t*)WadManager::getLump(name);
 		    }
 		    else
 		    {
@@ -1586,83 +1586,83 @@ void WI_loadData(void)
     }
 
     // More hacks on minus sign.
-    wiminus = (patch_t*)WadManager::W_CacheLumpName("WIMINUS");
+    wiminus = (patch_t*)WadManager::getLump("WIMINUS");
 
     for (i=0;i<10;i++)
     {
 	 // numbers 0-9
 	sprintf(name, "WINUM%d", i);     
-	num[i] = (patch_t*)WadManager::W_CacheLumpName(name);
+	num[i] = (patch_t*)WadManager::getLump(name);
     }
 
     // percent sign
-    percent = (patch_t*)WadManager::W_CacheLumpName("WIPCNT");
+    percent = (patch_t*)WadManager::getLump("WIPCNT");
 
     // "finished"
-    finished = (patch_t*)WadManager::W_CacheLumpName("WIF");
+    finished = (patch_t*)WadManager::getLump("WIF");
 
     // "entering"
-    entering = (patch_t*)WadManager::W_CacheLumpName("WIENTER");
+    entering = (patch_t*)WadManager::getLump("WIENTER");
 
     // "kills"
-    kills = (patch_t*)WadManager::W_CacheLumpName("WIOSTK");
+    kills = (patch_t*)WadManager::getLump("WIOSTK");
 
     // "scrt"
-    secret = (patch_t*)WadManager::W_CacheLumpName("WIOSTS");
+    secret = (patch_t*)WadManager::getLump("WIOSTS");
 
      // "secret"
-    sp_secret = (patch_t*)WadManager::W_CacheLumpName("WISCRT2");
+    sp_secret = (patch_t*)WadManager::getLump("WISCRT2");
 
     // Yuck. 
     if (french)
     {
 	// "items"
 	if (netgame && !deathmatch)
-	    items = (patch_t*)WadManager::W_CacheLumpName("WIOBJ");
+	    items = (patch_t*)WadManager::getLump("WIOBJ");
   	else
-	    items = (patch_t*)WadManager::W_CacheLumpName("WIOSTI");
+	    items = (patch_t*)WadManager::getLump("WIOSTI");
     } else
-	items = (patch_t*)WadManager::W_CacheLumpName("WIOSTI");
+	items = (patch_t*)WadManager::getLump("WIOSTI");
 
     // "frgs"
-    frags = (patch_t*)WadManager::W_CacheLumpName("WIFRGS");
+    frags = (patch_t*)WadManager::getLump("WIFRGS");
 
     // ":"
-    colon = (patch_t*)WadManager::W_CacheLumpName("WICOLON");
+    colon = (patch_t*)WadManager::getLump("WICOLON");
 
     // "time"
-    mytime = (patch_t*)WadManager::W_CacheLumpName("WITIME");
+    mytime = (patch_t*)WadManager::getLump("WITIME");
 
     // "sucks"
-    sucks = (patch_t*)WadManager::W_CacheLumpName("WISUCKS");
+    sucks = (patch_t*)WadManager::getLump("WISUCKS");
 
     // "par"
-    par = (patch_t*)WadManager::W_CacheLumpName("WIPAR");
+    par = (patch_t*)WadManager::getLump("WIPAR");
 
     // "killers" (vertical)
-    killers = (patch_t*)WadManager::W_CacheLumpName("WIKILRS");
+    killers = (patch_t*)WadManager::getLump("WIKILRS");
 
     // "victims" (horiz)
-    victims = (patch_t*)WadManager::W_CacheLumpName("WIVCTMS");
+    victims = (patch_t*)WadManager::getLump("WIVCTMS");
 
     // "total"
-    total = (patch_t*)WadManager::W_CacheLumpName("WIMSTT");
+    total = (patch_t*)WadManager::getLump("WIMSTT");
 
     // your face
-    star = (patch_t*)WadManager::W_CacheLumpName("STFST01");
+    star = (patch_t*)WadManager::getLump("STFST01");
 
     // dead face
-    bstar = (patch_t*)WadManager::W_CacheLumpName("STFDEAD0");
+    bstar = (patch_t*)WadManager::getLump("STFDEAD0");
 
     for (i=0 ; i<MAXPLAYERS ; i++)
     {
 	// "1,2,3,4"
 	sprintf(name, "STPB%d", i);      
-	p[i] = (patch_t*)WadManager::W_CacheLumpName(name);
+	p[i] = (patch_t*)WadManager::getLump(name);
 
 	// "1,2,3,4"
 	sprintf(name, "WIBP%d", i+1);     
-	bp[i] = (patch_t*)WadManager::W_CacheLumpName(name);
+	bp[i] = (patch_t*)WadManager::getLump(name);
     }
 
 }

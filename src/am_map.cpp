@@ -423,7 +423,7 @@ void AM_loadPics(void)
     for (i=0;i<10;i++)
     {
 		namebuf = "AMMNUM" + std::to_string(i);
-		marknums[i] = (patch_t*)WadManager::W_CacheLumpName(namebuf);
+		marknums[i] = (patch_t*)WadManager::getLump(namebuf);
     }
 }
 

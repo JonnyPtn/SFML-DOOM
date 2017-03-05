@@ -514,7 +514,7 @@ void M_DrawLoad(void)
 {
     int             i;
 	
-    V_DrawPatchDirect (72,28,0,(patch_t*)WadManager::W_CacheLumpName("M_LOADG"));
+    V_DrawPatchDirect (72,28,0,(patch_t*)WadManager::getLump("M_LOADG"));
     for (i = 0;i < load_end; i++)
     {
 		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
@@ -531,15 +531,15 @@ void M_DrawSaveLoadBorder(int x,int y)
 {
     int             i;
 	
-    V_DrawPatchDirect (x-8,y+7,0, (patch_t*)WadManager::W_CacheLumpName("M_LSLEFT"));
+    V_DrawPatchDirect (x-8,y+7,0, (patch_t*)WadManager::getLump("M_LSLEFT"));
 	
     for (i = 0;i < 24;i++)
     {
-		V_DrawPatchDirect (x,y+7,0, (patch_t*)WadManager::W_CacheLumpName("M_LSCNTR"));
+		V_DrawPatchDirect (x,y+7,0, (patch_t*)WadManager::getLump("M_LSCNTR"));
 		x += 8;
     }
 
-    V_DrawPatchDirect (x,y+7,0, (patch_t*)WadManager::W_CacheLumpName("M_LSRGHT"));
+    V_DrawPatchDirect (x,y+7,0, (patch_t*)WadManager::getLump("M_LSRGHT"));
 }
 
 
@@ -579,7 +579,7 @@ void M_DrawSave(void)
 {
     int             i;
 	
-    V_DrawPatchDirect (72,28,0, (patch_t*)WadManager::W_CacheLumpName("M_SAVEG"));
+    V_DrawPatchDirect (72,28,0, (patch_t*)WadManager::getLump("M_SAVEG"));
     for (i = 0;i < load_end; i++)
     {
 		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
@@ -723,12 +723,12 @@ void M_DrawReadThis1(void)
     switch ( gamemode )
     {
       case commercial:
-		V_DrawPatchDirect (0,0,0, (patch_t*)WadManager::W_CacheLumpName("HELP"));
+		V_DrawPatchDirect (0,0,0, (patch_t*)WadManager::getLump("HELP"));
 		break;
       case shareware:
       case registered:
       case retail:
-		V_DrawPatchDirect (0,0,0, (patch_t*)WadManager::W_CacheLumpName("HELP1"));
+		V_DrawPatchDirect (0,0,0, (patch_t*)WadManager::getLump("HELP1"));
 		break;
       default:
 	break;
@@ -749,11 +749,11 @@ void M_DrawReadThis2(void)
       case retail:
       case commercial:
 		// This hack keeps us from having to change menus.
-		V_DrawPatchDirect (0,0,0, (patch_t*)WadManager::W_CacheLumpName("CREDIT"));
+		V_DrawPatchDirect (0,0,0, (patch_t*)WadManager::getLump("CREDIT"));
 		break;
       case shareware:
       case registered:
-		V_DrawPatchDirect (0,0,0, (patch_t*)WadManager::W_CacheLumpName("HELP2"));
+		V_DrawPatchDirect (0,0,0, (patch_t*)WadManager::getLump("HELP2"));
 		break;
       default:
 	break;
@@ -767,7 +767,7 @@ void M_DrawReadThis2(void)
 //
 void M_DrawSound(void)
 {
-    V_DrawPatchDirect (60,38,0, (patch_t*)WadManager::W_CacheLumpName("M_SVOL"));
+    V_DrawPatchDirect (60,38,0, (patch_t*)WadManager::getLump("M_SVOL"));
 
     M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
 		 16,snd_SfxVolume);
@@ -823,7 +823,7 @@ void M_MusicVol(int choice)
 //
 void M_DrawMainMenu(void)
 {
-    V_DrawPatchDirect (94,2,0, (patch_t*)WadManager::W_CacheLumpName("M_DOOM"));
+    V_DrawPatchDirect (94,2,0, (patch_t*)WadManager::getLump("M_DOOM"));
 }
 
 
@@ -834,8 +834,8 @@ void M_DrawMainMenu(void)
 //
 void M_DrawNewGame(void)
 {
-    V_DrawPatchDirect (96,14,0, (patch_t*)WadManager::W_CacheLumpName("M_NEWG"));
-    V_DrawPatchDirect (54,38,0, (patch_t*)WadManager::W_CacheLumpName("M_SKILL"));
+    V_DrawPatchDirect (96,14,0, (patch_t*)WadManager::getLump("M_NEWG"));
+    V_DrawPatchDirect (54,38,0, (patch_t*)WadManager::getLump("M_SKILL"));
 }
 
 void M_NewGame(int choice)
@@ -857,7 +857,7 @@ int     epi;
 
 void M_DrawEpisode(void)
 {
-    V_DrawPatchDirect (54,38,0, (patch_t*)WadManager::W_CacheLumpName("M_EPISOD"));
+    V_DrawPatchDirect (54,38,0, (patch_t*)WadManager::getLump("M_EPISOD"));
 }
 
 void M_VerifyNightmare(int ch)
@@ -914,13 +914,13 @@ char	msgNames[2][9]		= {"M_MSGOFF","M_MSGON"};
 
 void M_DrawOptions(void)
 {
-    V_DrawPatchDirect (108,15,0, (patch_t*)WadManager::W_CacheLumpName("M_OPTTTL"));
+    V_DrawPatchDirect (108,15,0, (patch_t*)WadManager::getLump("M_OPTTTL"));
 	
     V_DrawPatchDirect (OptionsDef.x + 175,OptionsDef.y+LINEHEIGHT*detail,0,
-		(patch_t*)WadManager::W_CacheLumpName(detailNames[detailLevel]));
+		(patch_t*)WadManager::getLump(detailNames[detailLevel]));
 
     V_DrawPatchDirect (OptionsDef.x + 120,OptionsDef.y+LINEHEIGHT*messages,0,
-		(patch_t*)WadManager::W_CacheLumpName(msgNames[showMessages]));
+		(patch_t*)WadManager::getLump(msgNames[showMessages]));
 
     M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(mousesens+1),
 		 10,mouseSensitivity);
@@ -1154,17 +1154,17 @@ M_DrawThermo
     int		i;
 
     xx = x;
-    V_DrawPatchDirect (xx,y,0,(patch_t*)WadManager::W_CacheLumpName("M_THERML"));
+    V_DrawPatchDirect (xx,y,0,(patch_t*)WadManager::getLump("M_THERML"));
     xx += 8;
     for (i=0;i<thermWidth;i++)
     {
-	V_DrawPatchDirect (xx,y,0, (patch_t*)WadManager::W_CacheLumpName("M_THERMM"));
+	V_DrawPatchDirect (xx,y,0, (patch_t*)WadManager::getLump("M_THERMM"));
 	xx += 8;
     }
-    V_DrawPatchDirect (xx,y,0, (patch_t*)WadManager::W_CacheLumpName("M_THERMR"));
+    V_DrawPatchDirect (xx,y,0, (patch_t*)WadManager::getLump("M_THERMR"));
 
     V_DrawPatchDirect ((x+8) + thermDot*8,y,
-		       0, (patch_t*)WadManager::W_CacheLumpName("M_THERMO"));
+		       0, (patch_t*)WadManager::getLump("M_THERMO"));
 }
 
 
@@ -1175,7 +1175,7 @@ M_DrawEmptyCell
   int		item )
 {
     V_DrawPatchDirect (menu->x - 10,        menu->y+item*LINEHEIGHT - 1, 0,
-		(patch_t*)WadManager::W_CacheLumpName("M_CELL1"));
+		(patch_t*)WadManager::getLump("M_CELL1"));
 }
 
 void
@@ -1184,7 +1184,7 @@ M_DrawSelCell
   int		item )
 {
     V_DrawPatchDirect (menu->x - 10,        menu->y+item*LINEHEIGHT - 1, 0,
-		(patch_t*)WadManager::W_CacheLumpName("M_CELL2"));
+		(patch_t*)WadManager::getLump("M_CELL2"));
 }
 
 
@@ -1528,7 +1528,7 @@ bool M_Responder (sf::Event* ev)
 	    if (usegamma > 4)
 		usegamma = 0;
 	    players[consoleplayer].message = gammamsg[usegamma];
-	    I_SetPalette ((unsigned char*)WadManager::W_CacheLumpName ("PLAYPAL"));
+	    I_SetPalette ((unsigned char*)WadManager::getLump ("PLAYPAL"));
 	    return true;
 				
 	}
@@ -1724,14 +1724,14 @@ void M_Drawer (void)
     {
 	if (currentMenu->menuitems[i].name[0])
 	    V_DrawPatchDirect (x,y,0,
-			(patch_t*)WadManager::W_CacheLumpName(currentMenu->menuitems[i].name ));
+			(patch_t*)WadManager::getLump(currentMenu->menuitems[i].name ));
 	y += LINEHEIGHT;
     }
 
     
     // DRAW SKULL
     V_DrawPatchDirect(x + SKULLXOFF,currentMenu->y - 5 + itemOn*LINEHEIGHT, 0,
-		(patch_t*)WadManager::W_CacheLumpName(skullName[whichSkull]));
+		(patch_t*)WadManager::getLump(skullName[whichSkull]));
 
 }
 

@@ -943,7 +943,7 @@ void G_SecretExitLevel (void)
 { 
     // IF NO WOLF3D LEVELS, NO SECRET EXIT!
     if ( (gamemode == commercial)
-      && (WadManager::WadManager::W_CheckNumForName("map31")<0))
+      && (WadManager::WadManager::checkNumForName("map31")<0))
 		secretexit = false;
     else
 		secretexit = true; 
@@ -1506,7 +1506,7 @@ void G_DoPlayDemo (void)
 
 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = (unsigned char*)WadManager::W_CacheLumpName (defdemoname); 
+    demobuffer = demo_p = (unsigned char*)WadManager::getLump (defdemoname); 
 	if (*demo_p++ != 109)	//magic number, I know, but was a define
 	{
 		fprintf(stderr, "Demo is from a different game version!\n");

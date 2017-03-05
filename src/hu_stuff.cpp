@@ -384,7 +384,7 @@ void HU_Init(void)
     for (i=0;i<HU_FONTSIZE;i++)
     {
 		sprintf(buffer, "STCFN%.3d", j++);
-		hu_font[i] = (patch_t *) WadManager::W_CacheLumpName(buffer);
+		hu_font[i] = (patch_t *) WadManager::getLump(buffer);
     }
 
 }

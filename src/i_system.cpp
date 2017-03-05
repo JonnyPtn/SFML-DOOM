@@ -87,9 +87,8 @@ int  I_GetTime (void)
 //
 void I_Init (void)
 {
-    I_InitSound();
-    I_InitMusic();
-    //  I_InitGraphics();
+    I_Sound::initialise();
+    I_InitGraphics();
 }
 
 //
@@ -98,8 +97,7 @@ void I_Init (void)
 void I_Quit (void)
 {
     D_QuitNetGame ();
-    I_ShutdownSound();
-    I_ShutdownMusic();
+    I_Sound::shutdown();
     M_SaveDefaults ();
     I_ShutdownGraphics();
     exit(0);

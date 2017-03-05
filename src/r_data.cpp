@@ -231,7 +231,7 @@ void R_GenerateComposite (int texnum)
 	 i<texture->patchcount;
 	 i++, patch++)
     {
-	realpatch = (patch_t*)WadManager::W_CacheLumpNum (patch->patch);
+	realpatch = (patch_t*)WadManager::getLump (patch->patch);
 	x1 = patch->originx;
 	x2 = x1 + SHORT(realpatch->width);
 
@@ -299,7 +299,7 @@ void R_GenerateLookup (int texnum)
 	 i<texture->patchcount;
 	 i++, patch++)
     {
-	realpatch = (patch_t*)WadManager::W_CacheLumpNum (patch->patch);
+	realpatch = (patch_t*)WadManager::getLump (patch->patch);
 	x1 = patch->originx;
 	x2 = x1 + SHORT(realpatch->width);
 	
@@ -364,7 +364,7 @@ R_GetColumn
     ofs = texturecolumnofs[tex][col];
     
     if (lump > 0)
-	return (unsigned char *)WadManager::W_CacheLumpNum(lump)+ofs;
+	return (unsigned char *)WadManager::getLump(lump)+ofs;
 
     if (!texturecomposite[tex])
 	R_GenerateComposite (tex);
@@ -417,7 +417,7 @@ void R_InitTextures (void)
     
     // Load the patch names from pnames.lmp.
     name[8] = 0;	
-    names = (char*)WadManager::W_CacheLumpName ("PNAMES");
+    names = (char*)WadManager::getLump ("PNAMES");
     nummappatches = LONG ( *((int *)names) );
     name_p = names+4;
     patchlookup = (int*)alloca (nummappatches*sizeof(*patchlookup));
@@ -425,23 +425,23 @@ void R_InitTextures (void)
     for (i=0 ; i<nummappatches ; i++)
     {
 	strncpy (name,name_p+i*8, 8);
-	patchlookup[i] = WadManager::W_CheckNumForName (name);
+	patchlookup[i] = WadManager::checkNumForName (name);
     }
     
     // Load the map texture definitions from textures.lmp.
     // The data is contained in one or two lumps,
     //  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
-    maptex = maptex1 = (int*)WadManager::W_CacheLumpName ("TEXTURE1");
+    maptex = maptex1 = (int*)WadManager::getLump ("TEXTURE1");
 
     numtextures1 = LONG(*maptex);
-    maxoff = WadManager::W_LumpLength (WadManager::W_GetNumForName ("TEXTURE1"));
+    maxoff = WadManager::getLumpLength (WadManager::getNumForName ("TEXTURE1"));
     directory = maptex+1;
 	
-    if (WadManager::W_CheckNumForName ("TEXTURE2") != -1)
+    if (WadManager::checkNumForName ("TEXTURE2") != -1)
     {
-	maptex2 = (int*)WadManager::W_CacheLumpName ("TEXTURE2");
+	maptex2 = (int*)WadManager::getLump ("TEXTURE2");
 	numtextures2 = LONG(*maptex2);
-	maxoff2 = WadManager::W_LumpLength (WadManager::W_GetNumForName ("TEXTURE2"));
+	maxoff2 = WadManager::getLumpLength (WadManager::getNumForName ("TEXTURE2"));
     }
     else
     {
@@ -462,8 +462,8 @@ void R_InitTextures (void)
     totalwidth = 0;
     
     //	Really complex printing shit...
-    temp1 = WadManager::W_GetNumForName ("S_START");  // P_???????
-    temp2 = WadManager::W_GetNumForName ("S_END") - 1;
+    temp1 = WadManager::getNumForName ("S_START");  // P_???????
+    temp2 = WadManager::getNumForName ("S_END") - 1;
     temp3 = ((temp2-temp1+63)/64) + ((numtextures+63)/64);
     printf("[");
     for (i = 0; i < temp3; i++)
@@ -550,8 +550,8 @@ void R_InitFlats (void)
 {
     int		i;
 	
-    firstflat = WadManager::W_GetNumForName ("F_START") + 1;
-    lastflat = WadManager::W_GetNumForName ("F_END") - 1;
+    firstflat = WadManager::getNumForName ("F_START") + 1;
+    lastflat = WadManager::getNumForName ("F_END") - 1;
     numflats = lastflat - firstflat + 1;
 	
     // Create translation table for global animation.
@@ -573,8 +573,8 @@ void R_InitSpriteLumps (void)
     int		i;
     patch_t	*patch;
 	
-    firstspritelump = WadManager::W_GetNumForName ("S_START") + 1;
-    lastspritelump = WadManager::W_GetNumForName ("S_END") - 1;
+    firstspritelump = WadManager::getNumForName ("S_START") + 1;
+    lastspritelump = WadManager::getNumForName ("S_END") - 1;
     
     numspritelumps = lastspritelump - firstspritelump + 1;
     spritewidth = (int*)malloc (numspritelumps*4);
@@ -586,7 +586,7 @@ void R_InitSpriteLumps (void)
 	if (!(i&63))
 	    printf (".");
 
-	patch = (patch_t*)WadManager::W_CacheLumpNum (firstspritelump+i);
+	patch = (patch_t*)WadManager::getLump (firstspritelump+i);
 	spritewidth[i] = SHORT(patch->width)<<FRACBITS;
 	spriteoffset[i] = SHORT(patch->leftoffset)<<FRACBITS;
 	spritetopoffset[i] = SHORT(patch->topoffset)<<FRACBITS;
@@ -604,10 +604,10 @@ void R_InitColormaps (void)
     
     // Load in the light tables, 
     //  256 unsigned char align tables.
-    lump = WadManager::W_GetNumForName("COLORMAP");
-    length = WadManager::W_LumpLength (lump) + 255; 
+    lump = WadManager::getNumForName("COLORMAP");
+    length = WadManager::getLumpLength (lump) + 255; 
     colormaps = (lighttable_t*)malloc (length); 
-    std::memcpy( colormaps, WadManager::W_CacheLumpNum(lump),length);
+    std::memcpy( colormaps, WadManager::getLump(lump),length);
 }
 
 
@@ -636,18 +636,13 @@ void R_InitData (void)
 // R_FlatNumForName
 // Retrieval, get a flat number for a flat name.
 //
-int R_FlatNumForName (char* name)
+int R_FlatNumForName (const std::string& name)
 {
-    int		i;
-    char	namet[9];
-
-    i = WadManager::W_CheckNumForName (name);
+    auto i = WadManager::checkNumForName (name);
 
     if (i == -1)
     {
-	namet[8] = 0;
-	memcpy (namet, name,8);
-	I_Error ("R_FlatNumForName: %s not found",namet);
+	    I_Error ("R_FlatNumForName: %s not found",name.c_str());
     }
     return i - firstflat;
 }
@@ -743,8 +738,8 @@ void R_PrecacheLevel (void)
 	if (flatpresent[i])
 	{
 	    lump = firstflat + i;
-	    flatmemory += WadManager::lumpinfo[lump].size;
-	    WadManager::W_CacheLumpNum(lump);
+	    flatmemory += WadManager::getLumpLength(i);
+	    WadManager::getLump(lump);
 	}
     }
     
@@ -778,8 +773,8 @@ void R_PrecacheLevel (void)
 	for (j=0 ; j<texture->patchcount ; j++)
 	{
 	    lump = texture->patches[j].patch;
-	    texturememory += WadManager::lumpinfo[lump].size;
-	    auto data = WadManager::W_CacheLumpNum(lump);
+	    texturememory += WadManager::getLumpLength(lump);
+	    auto data = WadManager::getLump(lump);
 
 		//JONNY//	extracts and saves texture
 		/*unsigned short* header = (unsigned short*)data;
@@ -841,8 +836,7 @@ void R_PrecacheLevel (void)
 		for (k = 0; k < 8; k++)
 		{
 			lump = firstspritelump + sf->lump[k];
-			spritememory += WadManager::lumpinfo[lump].size;
-			auto data = WadManager::W_CacheLumpNum(lump);
+			auto data = WadManager::getLump(lump);
 			
 			//JONNY//	this extracts the texture data
 			/*

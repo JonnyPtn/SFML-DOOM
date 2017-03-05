@@ -1,83 +1,149 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \file   src\i_sound.hpp.
+///
+/// \brief  Declares the i_sound interface.
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
-#include "doomdef.hpp"
-#include "doomstat.hpp"
+#include <memory>
+#include <map>
+#include <list>
+
+#include <SFML/Audio.hpp>
+
+#include "timidity/timidity.h"
 #include "sounds.hpp"
 
-// Init at program start...
-void I_InitSound();
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \class  ISound
+///
+/// \brief  Sound Interface
+////////////////////////////////////////////////////////////////////////////////////////////////////
+class I_Sound
+{
+public:
 
-// ... update sound buffer and audio device at runtime...
-void I_UpdateSound(void);
-void I_SubmitSound(void);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::initialise();
+    ///
+    /// \brief  Initializes the sound module.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void initialise();
 
-// ... shut down and relase at program termination.
-void I_ShutdownSound(void);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::shutdown();
+    ///
+    /// \brief  Shutdown sound module.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void shutdown();
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::playMusic( const std::string& handle, bool looping);
+    ///
+    /// \brief  Called by anything that wishes to start music. plays a song, and when the song is
+    ///         done, starts playing it again in an endless loop. Horrible thing to do, considering.
+    ///
+    /// \param  handle  The music name.
+    /// \param  looping Loop flag.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void playMusic( const std::string&	handle, bool looping);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static int I_Sound::I_GetSfxLumpNum(sfxinfo_t* sfxinfo);
+    ///
+    /// \brief  Retrieve the raw data lump index for a given SFX name.
+    ///
+    /// \param [in,out] sfxinfo If non-null, the sfxinfo to get the lump number for.
+    ///
+    /// \return The sfx lump number.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static int I_GetSfxLumpNum(sfxinfo_t* sfxinfo);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static void I_Sound::I_SetMusicVolume(int volume);
+    ///
+    /// \brief  Sets music volume.
+    ///
+    /// \param  volume  The volume.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void I_SetMusicVolume(int volume);
+
+private:
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn static int I_Sound::I_StartSound( int id,int vol,int pitch);
+    ///
+    /// \brief  Starts a sound.
+    ///
+    /// \param  id      The identifier.
+    /// \param  vol     The volume.
+    /// \param  pitch   The pitch.
+    ///
+    /// \return An int.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    static int I_StartSound( int id,int vol,int pitch);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn void I_Sound::I_UpdateSoundParams (int handle, int vol, int sep, int pitch);
+    ///
+    /// \brief  Updates the sound parameters ( Volume, location, remove finished sounds, etc.).
+    ///
+    /// \author Jonny
+    /// \date   05/03/2017
+    ///
+    /// \param  handle  The handle.
+    /// \param  vol     The volume.
+    /// \param  sep     The separator.
+    /// \param  pitch   The pitch.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void I_UpdateSoundParams (int handle, int vol, int sep, int pitch);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn void I_Sound::I_SetSfxVolume(int volume);
+    ///
+    /// \brief  Sets sfx volume.
+    ///
+    /// \author Jonny
+    /// \date   05/03/2017
+    ///
+    /// \param  volume  The volume.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static void I_SetSfxVolume(int volume);
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \fn int I_Sound::Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
+    ///
+    /// \brief  Converts the MUS format found in original doom WADs into proper midi format
+    ///
+    /// \author Jonny
+    /// \date   05/03/2017
+    ///
+    /// \param [in,out] bytes   If non-null, the bytes.
+    /// \param [in,out] out     If non-null, the out.
+    /// \param [in,out] len     If non-null, the length.
+    ///
+    /// \return An int.
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    static int Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
 
 
-//
-//  SFX I/O
-//
+    /// \brief  The doom music
+    static MidiSong*				                doomMusic;
+    /// \brief  The music sound
+    static std::unique_ptr<sf::Sound>              musicSound;
+    /// \brief  Buffer for music sound data
+    static std::unique_ptr<sf::SoundBuffer>        musicSoundBuffer;
+    /// \brief  Buffer for music data
+    static char*                                   musicBuffer;
+    /// \brief  The sound sfx volume
+    static int                                     snd_SfxVolume;
+    /// \brief  The sound music volume
+    static int                                     snd_MusicVolume;
+    /// \brief  The sound buffers
+    //static std::map<std::string, sf::SoundBuffer> soundBuffers;
+    /// \brief  The sounds
+   // static std::list<sf::Sound>	sounds;
 
-// Initialize channels?
-void I_SetChannels();
-
-// Get raw data lump index for sound descriptor.
-int I_GetSfxLumpNum (sfxinfo_t* sfxinfo );
-
-
-// Starts a sound in a particular sound channel.
-int
-I_StartSound
-( int		id,
-  int		vol,
-  int		sep,
-  int		pitch,
-  int		priority );
-
-
-// Stops a sound channel.
-void I_StopSound(int handle);
-
-// Called by S_*() functions
-//  to see if a channel is still playing.
-// Returns 0 if no longer playing, 1 if playing.
-int I_SoundIsPlaying(int handle);
-
-// Updates the volume, separation,
-//  and pitch of a sound channel.
-void
-I_UpdateSoundParams
-( int		handle,
-  int		vol,
-  int		sep,
-  int		pitch );
-
-
-//
-//  MUSIC I/O
-//
-void I_InitMusic(void);
-void I_ShutdownMusic(void);
-// Volume.
-void I_SetMusicVolume(int volume);
-// PAUSE game handling.
-void I_PauseSong(int handle);
-void I_ResumeSong(int handle);
-// Registers a song handle to song data.
-int I_RegisterSong(void *data);
-// Called by anything that wishes to start music.
-//  plays a song, and when the song is done,
-//  starts playing it again in an endless loop.
-// Horrible thing to do, considering.
-void
-I_PlaySong
-(const std::string&		handle,
-  int		looping );
-// Stops a song over 3 seconds.
-void I_StopSong(int handle);
-// See above (register), then think backwards
-void I_UnRegisterSong(int handle);
-
-//conver mus format to midi
-int Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
+};

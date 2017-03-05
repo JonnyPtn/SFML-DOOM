@@ -390,7 +390,7 @@ void R_DrawPlanes (void)
 	}
 	
 	// regular flat
-	ds_source = (unsigned char*)WadManager::W_CacheLumpNum(firstflat +
+	ds_source = (unsigned char*)WadManager::getLump(firstflat +
 				   flattranslation[pl->picnum]);
 	
 	planeheight = abs(pl->height-viewz);
