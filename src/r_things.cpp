@@ -260,7 +260,7 @@ int		newvissprite;
 // R_InitSprites
 // Called at program start.
 //
-void R_InitSprites (const std::vector<std::string>& namelist)
+void R_InitSprites (const std::array<std::string,NUMSPRITES+1>& namelist)
 {
     int		i;
 	
@@ -269,7 +269,7 @@ void R_InitSprites (const std::vector<std::string>& namelist)
 	    negonearray[i] = -1;
     }
 	
-    R_InitSpriteDefs (namelist);
+    R_InitSpriteDefs (std::vector<std::string>(namelist.begin(),namelist.end()));
 }
 
 

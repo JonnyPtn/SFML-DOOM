@@ -1,6 +1,7 @@
 #pragma once
 
 #include "d_player.hpp"
+#include "d_ticcmd.hpp"
 
 //
 // Network play related stuff.
@@ -30,7 +31,7 @@ typedef enum
 //
 // Network packet data.
 //
-typedef struct
+struct doomdata_t
 {
 	// High bit is retransmit request.
 	unsigned		checksum;
@@ -42,12 +43,12 @@ typedef struct
 	unsigned char		numtics;
 	ticcmd_t		cmds[BACKUPTICS];
 
-} doomdata_t;
+};
 
 
 
 
-typedef struct
+struct doomcom_t
 {
 	// Supposed to be DOOMCOM_ID?
 	long		id;
@@ -95,7 +96,7 @@ typedef struct
 	// The packet data to be sent.
 	doomdata_t		data;
 
-} doomcom_t;
+};
 
 
 

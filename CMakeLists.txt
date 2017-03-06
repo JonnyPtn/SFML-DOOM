@@ -10,10 +10,6 @@ file(GLOB SOURCE "src/*.h" "src/*.hpp" "src/*.cpp" "src/timidity/*.cpp" "src/tim
 
 set (CMAKE_CXX_STANDARD 11)
 
-if(UNIX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-write-strings -Wno-unused-variable -Wno-unused-but-set-variable -Wno-switch -Werror")
-endif()
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${SFML_INCLUDE_DIR})
 add_executable(SFML-DOOM ${SOURCE})
 target_link_libraries(SFML-DOOM ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

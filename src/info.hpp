@@ -1,6 +1,7 @@
 #pragma once
 
-#include <vector>
+#include <array>
+#include <string>
 
 // Needed for action function pointer handling.
 #include "d_think.hpp"
@@ -1134,7 +1135,7 @@ typedef struct
 } state_t;
 
 extern state_t	states[NUMSTATES];
-extern std::vector<std::string> sprnames;
+extern std::array<std::string,NUMSPRITES+1> sprnames;
 
 
 

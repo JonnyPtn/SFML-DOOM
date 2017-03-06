@@ -1,6 +1,6 @@
 #include "dstrings.hpp"
 
-std::array<std::string,NUM_QUITMESSAGES+1> endmsg
+std::array<std::string,NUM_QUITMESSAGES+1> endmsg =
 {
   // DOOM1
   QUITMSG,

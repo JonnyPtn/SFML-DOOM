@@ -28,10 +28,10 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	
     switch(ceiling->direction)
     {
-	case Direction::WAITING:
+	case static_cast<const int>(Direction::WAITING):
 	// IN STASIS
 	break;
-	case Direction::UP:
+	case static_cast<const int>(Direction::UP):
 	// UP
 	res = T_MovePlane(ceiling->sector,
 			  ceiling->speed,
@@ -75,7 +75,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	}
 	break;
 	
-	case Direction::DOWN:
+	case static_cast<const int>(Direction::DOWN):
 	// DOWN
 	res = T_MovePlane(ceiling->sector,
 			  ceiling->speed,

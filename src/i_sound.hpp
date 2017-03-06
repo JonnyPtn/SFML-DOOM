@@ -209,6 +209,6 @@ private:
     /// \brief  The sound buffers
     static std::map<std::string, sf::SoundBuffer> soundBuffers;
     /// \brief  The sounds and their origins
-    static std::list<std::pair<sf::Sound,void*>>	sounds;
+    static std::list<std::pair<sf::Sound,void*> >	sounds;
 
 };

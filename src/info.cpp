@@ -6,7 +6,9 @@
 
 #include "p_mobj.hpp"
 
-std::vector<std::string> sprnames =  {
+#include <array>
+
+std::array<std::string,NUMSPRITES+1> sprnames =  {
     "TROO","SHTG","PUNG","PISG","PISF","SHTF","SHT2","CHGG","CHGF","MISG",
     "MISF","SAWG","PLSG","PLSF","BFGG","BFGF","BLUD","PUFF","BAL1","BAL2",
     "PLSS","PLSE","MISL","BFS1","BFE1","BFE2","TFOG","IFOG","PLAY","POSS",

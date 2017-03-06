@@ -157,12 +157,12 @@ void I_InitGraphics(void)
 	window.reset(new sf::RenderWindow());
 	window->create(sf::VideoMode(X_width, X_height), displayname); //quick double size for now
 	window->setVerticalSyncEnabled(true);
-	window->setMouseCursorGrabbed(true);
+	//window->setMouseCursorGrabbed(true);
 	texture.reset(new sf::Texture);
 	texture->create(SCREENWIDTH, SCREENHEIGHT);
 	sprite.reset(new sf::Sprite());
 	sprite->setTexture(*texture);
-	sprite->setScale({2.f,2.f});
+	sprite->setScale(sf::Vector2f(2.f,2.f));
 
 	screens[0] = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
 
@@ -195,6 +195,6 @@ void toggleFullscreen()
 		auto windowSize = static_cast<sf::Vector2f>(window->getSize());
 		sprite->setScale(windowSize.x / SCREENWIDTH, windowSize.y / SCREENHEIGHT);
 	}
-	window->setMouseCursorGrabbed(true);
+	//window->setMouseCursorGrabbed(true);
 	window->setMouseCursorVisible(false);
 }

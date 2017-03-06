@@ -39,7 +39,7 @@ T_MovePlane
 	// FLOOR
 	switch(direction)
 	{
-	case Direction::DOWN:
+	case static_cast<const int>(Direction::DOWN):
 	    // DOWN
 	    if (sector->floorheight - speed < dest)
 	    {
@@ -68,7 +68,7 @@ T_MovePlane
 	    }
 	    break;
 						
-	case Direction::UP:
+	case static_cast<const int>(Direction::UP):
 	    // UP
 	    if (sector->floorheight + speed > dest)
 	    {
@@ -106,7 +106,7 @@ T_MovePlane
 	// CEILING
 	switch(direction)
 	{
-	case Direction::DOWN:
+	case static_cast<const int>(Direction::DOWN):
 	    // DOWN
 	    if (sector->ceilingheight - speed < dest)
 	    {
@@ -140,7 +140,7 @@ T_MovePlane
 	    }
 	    break;
 						
-	case Direction::UP:
+	case static_cast<const int>(Direction::UP):
 	    // UP
 	    if (sector->ceilingheight + speed > dest)
 	    {

@@ -16,6 +16,7 @@
 // Needs precompiled tables/data structures.
 #include "info.hpp"
 
+class player_t;
 //
 // NOTES: mobj_t
 //
@@ -241,7 +242,7 @@ typedef struct mobj_s
 
     // Additional info record for player avatars only.
     // Only valid if type == MT_PLAYER
-    struct player_s*	player;
+    player_t*	player;
 
     // Player number last looked for.
     int			lastlook;	

@@ -7,7 +7,7 @@ CmdParameters::CmdParameters(int argc, char** argv)
 {
 	myargc = 0;
 	while (myargc < argc)
-		myargv.emplace_back(argv[myargc++]);
+		myargv.push_back(argv[myargc++]);
 }
 //
 // M_CheckParm

@@ -1,7 +1,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 
-
 #include "v_video.hpp"
 #include "p_local.hpp"
 #include "doomstat.hpp"
@@ -100,53 +99,53 @@ typedef struct
 //
 #define R ((8*PLAYERRADIUS)/7)
 mline_t player_arrow[] = {
-    { { -R+R/8, 0 }, { R, 0 } }, // -----
-    { { R, 0 }, { R-R/2, R/4 } },  // ----->
-    { { R, 0 }, { R-R/2, -R/4 } },
-    { { -R+R/8, 0 }, { -R-R/8, R/4 } }, // >---->
-    { { -R+R/8, 0 }, { -R-R/8, -R/4 } },
-    { { -R+3*R/8, 0 }, { -R+R/8, R/4 } }, // >>--->
-    { { -R+3*R/8, 0 }, { -R+R/8, -R/4 } }
+    { sf::Vector2i( -R+R/8, 0 ),            sf::Vector2i( R, 0 ) }, // -----
+    { sf::Vector2i( R, 0 ),                 sf::Vector2i( R - R / 2, R / 4 ) },  // ----->
+    { sf::Vector2i( R, 0 ),                 sf::Vector2i( R - R / 2, -R / 4 ) },
+    { sf::Vector2i( -R + R / 8, 0 ),        sf::Vector2i( -R - R / 8, R / 4 ) }, // >---->
+    { sf::Vector2i( -R + R / 8, 0 ),        sf::Vector2i( -R - R / 8, -R / 4 ) },
+    { sf::Vector2i( -R + 3 * R / 8, 0 ),    sf::Vector2i( -R + R / 8, R / 4 ) }, // >>--->
+    { sf::Vector2i( -R + 3 * R / 8, 0 ),    sf::Vector2i( -R+R/8, -R/4 ) }
 };
 #undef R
 #define NUMPLYRLINES (sizeof(player_arrow)/sizeof(mline_t))
 
 #define R ((8*PLAYERRADIUS)/7)
 mline_t cheat_player_arrow[] = {
-    { { -R+R/8, 0 }, { R, 0 } }, // -----
-    { { R, 0 }, { R-R/2, R/6 } },  // ----->
-    { { R, 0 }, { R-R/2, -R/6 } },
-    { { -R+R/8, 0 }, { -R-R/8, R/6 } }, // >----->
-    { { -R+R/8, 0 }, { -R-R/8, -R/6 } },
-    { { -R+3*R/8, 0 }, { -R+R/8, R/6 } }, // >>----->
-    { { -R+3*R/8, 0 }, { -R+R/8, -R/6 } },
-    { { -R/2, 0 }, { -R/2, -R/6 } }, // >>-d--->
-    { { -R/2, -R/6 }, { -R/2+R/6, -R/6 } },
-    { { -R/2+R/6, -R/6 }, { -R/2+R/6, R/4 } },
-    { { -R/6, 0 }, { -R/6, -R/6 } }, // >>-dd-->
-    { { -R/6, -R/6 }, { 0, -R/6 } },
-    { { 0, -R/6 }, { 0, R/4 } },
-    { { R/6, R/4 }, { R/6, -R/7 } }, // >>-ddt->
-    { { R/6, -R/7 }, { R/6+R/32, -R/7-R/32 } },
-    { { R/6+R/32, -R/7-R/32 }, { R/6+R/10, -R/7 } }
+    { sf::Vector2i( -R+R/8, 0 ),    sf::Vector2i( R, 0 ) }, // -----
+    { sf::Vector2i( R, 0 ),         sf::Vector2i( R-R/2, R/6 ) },  // ----->
+    { sf::Vector2i( R, 0 ),         sf::Vector2i( R-R/2, -R/6 ) },
+    { sf::Vector2i( -R+R/8, 0 ),    sf::Vector2i( -R-R/8, R/6 ) }, // >----->
+    { sf::Vector2i( -R+R/8, 0 ),    sf::Vector2i( -R-R/8, -R/6 ) },
+    { sf::Vector2i( -R+3*R/8, 0 ),  sf::Vector2i( -R+R/8, R/6 ) }, // >>----->
+    { sf::Vector2i( -R+3*R/8, 0 ),  sf::Vector2i( -R+R/8, -R/6 ) },
+    { sf::Vector2i(-R / 2, 0),  sf::Vector2i(-R / 2, -R / 6)}, // >>-d--->
+    { sf::Vector2i( -R/2, -R/6  ),  sf::Vector2i( -R/2+R/6, -R/6 ) },
+    { sf::Vector2i( -R/2+R/6, -R/6 ), sf::Vector2i(-R/2+R/6, R/4 ) },
+    { sf::Vector2i( -R/6, 0     ),  sf::Vector2i( -R/6, -R/6 ) }, // >>-dd-->
+    { sf::Vector2i( -R/6, -R/6  ),  sf::Vector2i( 0, -R/6 ) },
+    { sf::Vector2i( 0, -R/6     ),  sf::Vector2i( 0, R/4 ) },
+    { sf::Vector2i( R/6, R/4    ),  sf::Vector2i( R/6, -R/7 ) }, // >>-ddt->
+    { sf::Vector2i( R/6, -R/7   ),  sf::Vector2i( R/6+R/32, -R/7-R/32 ) },
+    { sf::Vector2i( R/6+R/32, -R/7-R/32 ), sf::Vector2i(R/6+R/10, -R/7 ) }
 };
 #undef R
 #define NUMCHEATPLYRLINES (sizeof(cheat_player_arrow)/sizeof(mline_t))
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
-    { { int(-.867*R), int(-.5*R) }, { int(.867*R), int (-.5*R) } },
-    { { int(.867*R), int(-.5*R) } , { 0, R } },
-    { { 0, R }, { int(-.867*R), int (-.5*R) } }
+    { sf::Vector2i( int(-.867*R), int(-.5*R) ), sf::Vector2i( int(.867*R), int (-.5*R) ) },
+    { sf::Vector2i( int(.867*R), int(-.5*R) ) , sf::Vector2i( 0, R ) },
+    { sf::Vector2i( 0, R ), sf::Vector2i(int(-.867*R), int (-.5*R) ) }
 };
 #undef R
 #define NUMTRIANGLEGUYLINES (sizeof(triangle_guy)/sizeof(mline_t))
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
-    { { int (-.5*R), int(-.7*R) }, { R, 0 } },
-    { { R, 0 }, { int (-.5*R), int(.7*R) } },
-    { { int (-.5*R), int(.7*R) }, { int(-.5*R), int (-.7*R) } }
+    { sf::Vector2i( int (-.5*R), int(-.7*R) ), sf::Vector2i(R, 0 ) },
+    { sf::Vector2i( R, 0 ), sf::Vector2i(int (-.5*R), int(.7*R) ) },
+    { sf::Vector2i( int (-.5*R), int(.7*R) ), sf::Vector2i(int(-.5*R), int (-.7*R) ) }
 };
 #undef R
 #define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))
@@ -422,7 +421,7 @@ void AM_loadPics(void)
   
     for (i=0;i<10;i++)
     {
-		namebuf = "AMMNUM" + std::to_string(i);
+		namebuf = "AMMNUM" + patch::to_string(i);
 		marknums[i] = (patch_t*)WadManager::getLump(namebuf);
     }
 }

@@ -2,6 +2,7 @@
 #include "p_local.hpp"
 
 #include "i_sound.hpp"
+#include "d_player.hpp"
 
 
 // State.
@@ -25,25 +26,25 @@ void T_VerticalDoor (vldoor_t* door)
 	
     switch(door->direction)
     {
-	case Direction::WAITING:
+	case static_cast<const int>(Direction::WAITING):
 		// WAITING
 		if (!--door->topcountdown)
 		{
 		    switch(door->type)
 		    {
-		      case blazeRaise:
+            case static_cast<const int>(vldoor_e::blazeRaise):
 			door->direction = Direction::DOWN; // time to go back down
             I_Sound::startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_bdcls);
 			break;
 			
-		      case normal:
+		      case static_cast<const int>(vldoor_e::normal):
 			door->direction = Direction::DOWN; // time to go back down
             I_Sound::startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_dorcls);
 			break;
 			
-		      case close30ThenOpen:
+		      case static_cast<const int>(vldoor_e::close30ThenOpen):
 			door->direction = Direction::UP;
             I_Sound::startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_doropn);
@@ -54,15 +55,15 @@ void T_VerticalDoor (vldoor_t* door)
 		    }
 		}
 		break;
-	case Direction::INITIAL_WAIT:
+	case static_cast<const int>(Direction::INITIAL_WAIT):
 		//  INITIAL WAIT
 		if (!--door->topcountdown)
 		{
 		    switch(door->type)
 		    {
-		      case raiseIn5Mins:
+		      case static_cast<const int>(vldoor_e::raiseIn5Mins):
 			door->direction = Direction::UP;
-			door->type = normal;
+			door->type = vldoor_e::normal;
             I_Sound::startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_doropn);
 			break;
@@ -72,7 +73,7 @@ void T_VerticalDoor (vldoor_t* door)
 		    }
 		}
 		break;
-	case Direction::DOWN:
+	case static_cast<const int>(Direction::DOWN):
 		// DOWN
 		res = T_MovePlane(door->sector,
 				  door->speed,
@@ -82,21 +83,21 @@ void T_VerticalDoor (vldoor_t* door)
 		{
 		    switch(door->type)
 		    {
-		      case blazeRaise:
-		      case blazeClose:
+		      case static_cast<const int>(vldoor_e::blazeRaise):
+		      case static_cast<const int>(vldoor_e::blazeClose):
 			door->sector->specialdata = NULL;
 			P_RemoveThinker (&door->thinker);  // unlink and free
             I_Sound::startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_bdcls);
 			break;
 			
-		      case normal:
-		      case close:
+		      case static_cast<const int>(vldoor_e::normal):
+		      case static_cast<const int>(vldoor_e::close):
 			door->sector->specialdata = NULL;
 			P_RemoveThinker (&door->thinker);  // unlink and free
 			break;
 			
-		      case close30ThenOpen:
+		      case static_cast<const int>(vldoor_e::close30ThenOpen):
 			door->direction = Direction::WAITING;
 			door->topcountdown = 35*30;
 			break;
@@ -109,8 +110,8 @@ void T_VerticalDoor (vldoor_t* door)
 		{
 		    switch(door->type)
 		    {
-		      case blazeClose:
-		      case close:		// DO NOT GO BACK UP!
+		      case static_cast<const int>(vldoor_e::blazeClose):
+		      case static_cast<const int>(vldoor_e::close):		// DO NOT GO BACK UP!
 			break;
 			
 		      default:
@@ -122,7 +123,7 @@ void T_VerticalDoor (vldoor_t* door)
 		}
 		break;
 	
-	case Direction::UP:
+	case static_cast<const int>(Direction::UP):
 		// UP
 		res = T_MovePlane(door->sector,
 				  door->speed,
@@ -133,15 +134,15 @@ void T_VerticalDoor (vldoor_t* door)
 		{
 		    switch(door->type)
 		    {
-		      case blazeRaise:
-		      case normal:
+		      case static_cast<const int>(vldoor_e::blazeRaise):
+		      case static_cast<const int>(vldoor_e::normal):
 			door->direction = Direction::WAITING; // wait at top
 			door->topcountdown = door->topwait;
 			break;
 			
-		      case close30ThenOpen:
-		      case blazeOpen:
-		      case open:
+		      case static_cast<const int>(vldoor_e::close30ThenOpen):
+		      case static_cast<const int>(vldoor_e::blazeOpen):
+		      case static_cast<const int>(vldoor_e::open):
 			door->sector->specialdata = NULL;
 			P_RemoveThinker (&door->thinker);  // unlink and free
 			break;
@@ -250,7 +251,7 @@ EV_DoDoor
 		
 	switch(type)
 	{
-	  case blazeClose:
+    case static_cast<const int>(vldoor_e::blazeClose):
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
 	    door->direction = Direction::DOWN;
@@ -259,7 +260,7 @@ EV_DoDoor
 			 sfx_bdcls);
 	    break;
 	    
-	  case close:
+	  case static_cast<const int>(vldoor_e::close):
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
 	    door->direction = Direction::DOWN;
@@ -267,15 +268,15 @@ EV_DoDoor
 			 sfx_dorcls);
 	    break;
 	    
-	  case close30ThenOpen:
+	  case static_cast<const int>(vldoor_e::close30ThenOpen):
 	    door->topheight = sec->ceilingheight;
 	    door->direction = Direction::DOWN;
         I_Sound::startSound((mobj_t *)&door->sector->soundorg,
 			 sfx_dorcls);
 	    break;
 	    
-	  case blazeRaise:
-	  case blazeOpen:
+	  case static_cast<const int>(vldoor_e::blazeRaise):
+	  case static_cast<const int>(vldoor_e::blazeOpen):
 	    door->direction = Direction::UP;
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
@@ -285,8 +286,8 @@ EV_DoDoor
 			     sfx_bdopn);
 	    break;
 	    
-	  case normal:
-	  case open:
+	  case static_cast<const int>(vldoor_e::normal):
+	  case static_cast<const int>(vldoor_e::open):
 	    door->direction = Direction::UP;
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
@@ -428,23 +429,23 @@ EV_VerticalDoor
       case 26:
       case 27:
       case 28:
-	door->type = normal;
+	door->type = vldoor_e::normal;
 	break;
 	
       case 31:
       case 32:
       case 33:
       case 34:
-	door->type = open;
+	door->type = vldoor_e::open;
 	line->special = 0;
 	break;
 	
       case 117:	// blazing door raise
-	door->type = blazeRaise;
+	door->type = vldoor_e::blazeRaise;
 	door->speed = VDOORSPEED*4;
 	break;
       case 118:	// blazing door open
-	door->type = blazeOpen;
+	door->type = vldoor_e::blazeOpen;
 	line->special = 0;
 	door->speed = VDOORSPEED*4;
 	break;
@@ -473,7 +474,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
     door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
     door->sector = sec;
     door->direction = Direction::WAITING;
-    door->type = normal;
+    door->type = vldoor_e::normal;
     door->speed = VDOORSPEED;
     door->topcountdown = 30 * 35;
 }
@@ -498,7 +499,7 @@ P_SpawnDoorRaiseIn5Mins
     door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
     door->sector = sec;
     door->direction = Direction::INITIAL_WAIT;
-    door->type = raiseIn5Mins;
+    door->type = vldoor_e::raiseIn5Mins;
     door->speed = VDOORSPEED;
     door->topheight = P_FindLowestCeilingSurrounding(sec);
     door->topheight -= 4*FRACUNIT;

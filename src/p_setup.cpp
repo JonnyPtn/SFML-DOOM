@@ -14,6 +14,7 @@
 #include "sounds.hpp"
 
 #include "doomstat.hpp"
+#include "r_things.hpp"
 
 
 void	P_SpawnMapThing (mapthing_t*	mthing);

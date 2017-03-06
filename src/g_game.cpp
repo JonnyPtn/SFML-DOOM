@@ -133,7 +133,7 @@ bool*		mousebuttons = &mousearray[1];		// allow [-1]
 // mouse values are used once 
 int             mousex;
 int				mousey;   
-sf::Vector2i lastMousePos{ 0,0 };
+sf::Vector2i lastMousePos = sf::Vector2i( 0,0 );
 
 int     dclicktime;
 int		dclickstate;
@@ -243,19 +243,18 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 		dclicks = 0;                   
     } 
 
-	static std::vector<sf::Keyboard::Key> weaponButtons =
-	{
-		sf::Keyboard::Num0,
-		sf::Keyboard::Num1,
-		sf::Keyboard::Num2,
-		sf::Keyboard::Num3,
-		sf::Keyboard::Num4,
-		sf::Keyboard::Num5,
-		sf::Keyboard::Num6,
-		sf::Keyboard::Num7,
-		sf::Keyboard::Num8,
-		sf::Keyboard::Num9
-	};
+    static std::array<sf::Keyboard::Key, NUMWEAPONS+1> weaponButtons = {
+        sf::Keyboard::Num0,
+        sf::Keyboard::Num1,
+        sf::Keyboard::Num2,
+        sf::Keyboard::Num3,
+        sf::Keyboard::Num4,
+        sf::Keyboard::Num5,
+        sf::Keyboard::Num6,
+        sf::Keyboard::Num7,
+        sf::Keyboard::Num8,
+        sf::Keyboard::Num9
+    };
     // chainsaw overrides 
 	for (i = 0; i < NUMWEAPONS - 1; i++)
 	{
@@ -545,7 +544,7 @@ void G_Ticker (void)
 		sf::Vector2i windowSize(window->getSize());
 		mousex = (sf::Mouse::getPosition(*window).x - windowSize.x / 2)*(mouseSensitivity + 5) / 10;
 		mousey = (windowSize.y / 2 - sf::Mouse::getPosition(*window).y)*(mouseSensitivity + 5) / 10;
-		sf::Mouse::setPosition({ windowSize.x / 2, windowSize.y / 2 }, *window);
+		sf::Mouse::setPosition(sf::Vector2i( windowSize.x / 2, windowSize.y / 2 ), *window);
 	}
 
     // do player reborns if needed

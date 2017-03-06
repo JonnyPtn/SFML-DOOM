@@ -43,7 +43,7 @@
  /// \brief  The sound buffers
  std::map<std::string, sf::SoundBuffer> I_Sound::soundBuffers;
  /// \brief  The sounds and their origins
- std::list<std::pair<sf::Sound, void*>>	I_Sound::sounds;
+ std::list<std::pair<sf::Sound, void*> >	I_Sound::sounds;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
  void I_Sound::initialise()
@@ -55,8 +55,8 @@
     fprintf(stderr, " initialised timidity\n");
 
     //create music objects
-    musicSound = std::make_unique<sf::Sound>();
-    musicSoundBuffer = std::make_unique<sf::SoundBuffer>();
+    musicSound.reset(new sf::Sound());
+    musicSoundBuffer.reset(new sf::SoundBuffer());
 
     fprintf(stderr, " default sfx volume %d\n", snd_SfxVolume);
     fprintf(stderr, " default music volume %d\n", snd_MusicVolume);
@@ -175,7 +175,7 @@ void I_Sound::startSound(void * origin_p, int sfx_id, int volume)
             fprintf(stderr, "Failed to load sound");
     }
 
-    sounds.emplace_back(std::make_pair( soundBuffers[sfx->name] , origin));
+    sounds.push_back(std::make_pair( sf::Sound() , origin));
     sounds.back().first.setBuffer(soundBuffers[sfx->name]);
     sounds.back().first.play();
     if (origin && origin != players[consoleplayer].mo)
@@ -232,10 +232,10 @@ void I_Sound::stopSound(void * origin)
 void I_Sound::S_UpdateSounds(mobj_t * listener_p)
 {
     //remove any finished sounds
-    sounds.erase(std::remove_if(sounds.begin(), sounds.end(), [](const std::pair<sf::Sound, void*>& sound)
+    /*sounds.erase(std::remove_if(sounds.begin(), sounds.end(), [](const std::pair<sf::Sound, void*>& sound)
     {
         return sound.first.getStatus() == sf::Sound::Stopped;
-    }),sounds.end());
+    }),sounds.end());*/
 
     if (listener_p)
     {
@@ -248,9 +248,9 @@ void I_Sound::S_UpdateSounds(mobj_t * listener_p)
         if (degrees > 360.f)
             degrees -= 360.f;
 
-        auto radians = degrees / (180.f / std::atan(1)*4); //pi
+        auto radians = degrees / (180.f / atan(1)*4); //pi
 
-        sf::Listener::setDirection(std::cos(radians), 0, std::sin(radians));
+        sf::Listener::setDirection(cos(radians), 0, sin(radians));
     }
 }
 
@@ -334,7 +334,9 @@ void I_Sound::playMusic(const std::string& songname, bool looping)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void I_Sound::playMusic(const int musicNum, bool looping)
 {
-
+    //don't play music for shareware
+    if (gamemode == shareware)
+        return;
     if ((musicNum <= mus_None) || (musicNum >= NUMMUSIC))
     {
         printf("Bad music number %d", musicNum);

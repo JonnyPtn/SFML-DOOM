@@ -1,13 +1,33 @@
 #pragma once
 
+#include <string>
+#include <sstream>
+
+namespace patch
+{
+    template < typename T > std::string to_string(const T& n)
+    {
+        std::ostringstream stm;
+        stm << n;
+        return stm.str();
+    }
+}
+
+#ifndef BACKUPTICS
+#define BACKUPTICS		12
+#endif
+#ifndef MAXNETNODES
+#define MAXNETNODES 8
+#endif
+
 // We need globally shared data structures,
 //  for defining the global state variables.
 #include "doomdata.hpp"
 #include "d_net.hpp"
 
 // We need the playr data structure as well.
-#include "d_player.hpp"
-
+struct player_t;
+struct wbstartstruct_t;
 #include <fstream>
 
 // ------------------------
@@ -226,12 +246,15 @@ extern int		skyflatnum;
 // Netgame stuff (buffers and pointers, i.e. indices).
 
 // This is ???
+struct doomcom_t;
 extern  doomcom_t*	doomcom;
 
 // This points inside doomcom.
+struct doomdata_t;
 extern  doomdata_t*	netbuffer;	
 
 
+struct ticcmd_t;
 extern  ticcmd_t	localcmds[BACKUPTICS];
 extern	int		rndindex;
 

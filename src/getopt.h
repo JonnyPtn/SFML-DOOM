@@ -14,7 +14,7 @@
 
 /* All the headers include this file. */
 #ifdef _WIN32
-#include <crtdefs.h>
+//#include <crtdefs.h>
 #endif
 
 #ifdef __cplusplus

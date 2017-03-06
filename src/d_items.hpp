@@ -1,6 +1,7 @@
 #pragma once
 
 #include "doomdef.hpp"
+#include "doomstat.hpp"
 
 // Weapon info: sprite frames, ammunition use.
 typedef struct
