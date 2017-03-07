@@ -1,6 +1,7 @@
 
 #include "doomdef.hpp"
 #include "d_event.hpp"
+#include "d_player.hpp"
 
 #include "p_local.hpp"
 
@@ -20,6 +21,52 @@
 #define MAXBOB	0x100000	
 
 bool		onground;
+
+//
+// P_GivePower
+//
+bool
+P_GivePower(player_t*	player,
+    int 	power)
+{
+    if (power == pw_invulnerability)
+    {
+        player->powers[power] = INVULNTICS;
+        return true;
+    }
+
+    if (power == pw_invisibility)
+    {
+        player->powers[power] = INVISTICS;
+        player->mo->flags |= MF_SHADOW;
+        return true;
+    }
+
+    if (power == pw_infrared)
+    {
+        player->powers[power] = INFRATICS;
+        return true;
+    }
+
+    if (power == pw_ironfeet)
+    {
+        player->powers[power] = IRONTICS;
+        return true;
+    }
+
+    if (power == pw_strength)
+    {
+        P_GiveBody(player, 100);
+        player->powers[power] = 1;
+        return true;
+    }
+
+    if (player->powers[power])
+        return false;	// already got it
+
+    player->powers[power] = 1;
+    return true;
+}
 
 
 //

@@ -1,6 +1,5 @@
 #include "i_system.hpp"
 #include "i_video.hpp"
-#include "m_swap.hpp"
 
 #include "w_wad.hpp"
 
@@ -137,7 +136,7 @@ int*	spritewidth;
 int*	spriteoffset;
 int*	spritetopoffset;
 
-lighttable_t	*colormaps;
+unsigned char	*colormaps;
 
 
 //
@@ -233,7 +232,7 @@ void R_GenerateComposite (int texnum)
     {
 	realpatch = (patch_t*)WadManager::getLump (patch->patch);
 	x1 = patch->originx;
-	x2 = x1 + SHORT(realpatch->width);
+	x2 = x1 + realpatch->width;
 
 	if (x1<0)
 	    x = 0;
@@ -250,7 +249,7 @@ void R_GenerateComposite (int texnum)
 		continue;
 	    
 	    patchcol = (column_t *)((unsigned char *)realpatch
-				    + LONG(realpatch->columnofs[x-x1]));
+				    + realpatch->columnofs[x-x1]);
 	    R_DrawColumnInCache (patchcol,
 			texturecomposite[texnum] + colofs[x],
 				 patch->originy,
@@ -301,7 +300,7 @@ void R_GenerateLookup (int texnum)
     {
 	realpatch = (patch_t*)WadManager::getLump (patch->patch);
 	x1 = patch->originx;
-	x2 = x1 + SHORT(realpatch->width);
+	x2 = x1 + realpatch->width;
 	
 	if (x1 < 0)
 	    x = 0;
@@ -314,7 +313,7 @@ void R_GenerateLookup (int texnum)
 	{
 	    patchcount[x]++;
 	    collump[x] = patch->patch;
-	    colofs[x] = LONG(realpatch->columnofs[x-x1])+3;
+	    colofs[x] = realpatch->columnofs[x-x1]+3;
 	}
     }
 	
@@ -418,7 +417,7 @@ void R_InitTextures (void)
     // Load the patch names from pnames.lmp.
     name[8] = 0;	
     names = (char*)WadManager::getLump ("PNAMES");
-    nummappatches = LONG ( *((int *)names) );
+    nummappatches =  *((int *)names) ;
     name_p = names+4;
     patchlookup = (int*)alloca (nummappatches*sizeof(*patchlookup));
     
@@ -433,14 +432,14 @@ void R_InitTextures (void)
     //  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
     maptex = maptex1 = (int*)WadManager::getLump ("TEXTURE1");
 
-    numtextures1 = LONG(*maptex);
+    numtextures1 = *maptex;
     maxoff = WadManager::getLumpLength (WadManager::getNumForName ("TEXTURE1"));
     directory = maptex+1;
 	
     if (WadManager::checkNumForName ("TEXTURE2") != -1)
     {
 	maptex2 = (int*)WadManager::getLump ("TEXTURE2");
-	numtextures2 = LONG(*maptex2);
+	numtextures2 = *maptex2;
 	maxoff2 = WadManager::getLumpLength (WadManager::getNumForName ("TEXTURE2"));
     }
     else
@@ -486,7 +485,7 @@ void R_InitTextures (void)
 	    directory = maptex+1;
 	}
 		
-	offset = LONG(*directory);
+	offset = *directory;
 
 	if (offset > maxoff)
 	    I_Error ("R_InitTextures: bad texture directory");
@@ -495,11 +494,11 @@ void R_InitTextures (void)
 
 	texture = textures[i] =
 	    (texture_t*)malloc (sizeof(texture_t)
-		      + sizeof(texpatch_t)*(SHORT(mtexture->patchcount)-1));
+		      + sizeof(texpatch_t)*(mtexture->patchcount-1));
 	
-	texture->width = SHORT(mtexture->width);
-	texture->height = SHORT(mtexture->height);
-	texture->patchcount = SHORT(mtexture->patchcount);
+	texture->width = mtexture->width;
+	texture->height = mtexture->height;
+	texture->patchcount = mtexture->patchcount;
 
 	memcpy (texture->name, mtexture->name, sizeof(texture->name));
 	mpatch = &mtexture->patches[0];
@@ -507,8 +506,8 @@ void R_InitTextures (void)
 
 	for (j=0 ; j<texture->patchcount ; j++, mpatch++, patch++)
 	{
-	    patch->originx = SHORT(mpatch->originx);
-	    patch->originy = SHORT(mpatch->originy);
+	    patch->originx = mpatch->originx;
+	    patch->originy = mpatch->originy;
 	    patch->patch = patchlookup[short(mpatch->patch)];
 	    if (patch->patch == -1)
 	    {
@@ -587,9 +586,9 @@ void R_InitSpriteLumps (void)
 	    printf (".");
 
 	patch = (patch_t*)WadManager::getLump (firstspritelump+i);
-	spritewidth[i] = SHORT(patch->width)<<FRACBITS;
-	spriteoffset[i] = SHORT(patch->leftoffset)<<FRACBITS;
-	spritetopoffset[i] = SHORT(patch->topoffset)<<FRACBITS;
+	spritewidth[i] = patch->width<<FRACBITS;
+	spriteoffset[i] = patch->leftoffset<<FRACBITS;
+	spritetopoffset[i] = patch->topoffset<<FRACBITS;
     }
 }
 
@@ -606,7 +605,7 @@ void R_InitColormaps (void)
     //  256 unsigned char align tables.
     lump = WadManager::getNumForName("COLORMAP");
     length = WadManager::getLumpLength (lump) + 255; 
-    colormaps = (lighttable_t*)malloc (length); 
+    colormaps = (unsigned char*)malloc (length); 
     std::memcpy( colormaps, WadManager::getLump(lump),length);
 }
 

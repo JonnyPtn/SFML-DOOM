@@ -1,8 +1,9 @@
 #pragma once
 
 // Need data structure definitions.
-#include "d_player.hpp"
 #include "r_data.hpp"
+#include "r_defs.hpp"
+#include "d_player.hpp"
 
 //
 // Refresh internal data structures,
@@ -18,7 +19,7 @@ extern int*		spritewidth;
 extern int*		spriteoffset;
 extern int*		spritetopoffset;
 
-extern lighttable_t*	colormaps;
+extern unsigned char*	colormaps;
 
 extern int		viewwidth;
 extern int		scaledviewwidth;

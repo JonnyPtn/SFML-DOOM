@@ -3,7 +3,6 @@
 
 
 #include "doomdef.hpp"
-#include "m_swap.hpp"
 
 #include "i_system.hpp"
 #include "w_wad.hpp"
@@ -45,7 +44,7 @@ typedef struct
 int		pspritescale;
 int		pspriteiscale;
 
-lighttable_t**	spritelights;
+unsigned char**	spritelights;
 
 // constant arrays
 //  used for psprite clipping and initializing clipping
@@ -395,11 +394,11 @@ R_DrawVisSprite
     {
 	texturecolumn = frac>>FRACBITS;
 #ifdef RANGECHECK
-	if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
+	if (texturecolumn < 0 || texturecolumn >= patch->width)
 	    I_Error ("R_DrawSpriteRange: bad texturecolumn");
 #endif
 	column = (column_t *) ((unsigned char *)patch +
-			       LONG(patch->columnofs[texturecolumn]));
+			       patch->columnofs[texturecolumn]);
 	R_DrawMaskedColumn (column);
     }
 

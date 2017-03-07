@@ -29,7 +29,6 @@
 #include "g_game.hpp"
 
 #include "m_argv.hpp"
-#include "m_swap.hpp"
 
 #include "i_sound.hpp"
 
@@ -1227,7 +1226,7 @@ int M_StringWidth(char* string)
 	if (c < 0 || c >= HU_FONTSIZE)
 	    w += 4;
 	else
-	    w += SHORT (hu_font[c]->width);
+	    w += hu_font[c]->width;
     }
 		
     return w;
@@ -1242,7 +1241,7 @@ int M_StringHeight(const std::string& string)
 {
     unsigned int    i;
     int             h;
-    int             height = SHORT(hu_font[0]->height);
+    int             height = hu_font[0]->height;
 	
     h = height;
     for (auto& character : string)
@@ -1292,7 +1291,7 @@ M_WriteText
 	    continue;
 	}
 		
-	w = SHORT (hu_font[c]->width);
+	w = hu_font[c]->width;
 	if (cx+w > SCREENWIDTH)
 	    break;
 	V_DrawPatchDirect(cx, cy, 0, hu_font[c]);
@@ -1696,7 +1695,7 @@ void M_Drawer (void)
 				x = 160 - M_StringWidth(const_cast<char*>(string.c_str())) / 2;
 				M_WriteText(x, y, const_cast<char*>(string.c_str()));
 				string.clear();
-				y += SHORT(hu_font[0]->height);
+				y += hu_font[0]->height;
 			}
 			else
 				string.push_back(character);

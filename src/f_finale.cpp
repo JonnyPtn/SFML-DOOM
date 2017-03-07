@@ -2,7 +2,6 @@
 
 // Functions.
 #include "i_system.hpp"
-#include "m_swap.hpp"
 #include "v_video.hpp"
 #include "w_wad.hpp"
 #include "i_sound.hpp"
@@ -275,7 +274,7 @@ void F_TextWrite (void)
 		    continue;
 		}
 			
-		w = SHORT (hu_font[c]->width);
+		w = hu_font[c]->width;
 		if (cx+w > SCREENWIDTH)
 		    break;
 		V_DrawPatch(cx, cy, 0, hu_font[c]);
@@ -498,7 +497,7 @@ void F_CastPrint (char* text)
 		    continue;
 		}
 			
-		w = SHORT (hu_font[c]->width);
+		w = hu_font[c]->width;
 		width += w;
     }
     
@@ -517,7 +516,7 @@ void F_CastPrint (char* text)
 		    continue;
 		}
 			
-		w = SHORT (hu_font[c]->width);
+		w = hu_font[c]->width;
 		V_DrawPatch(cx, 180, 0, hu_font[c]);
 		cx+=w;
     }
@@ -566,7 +565,7 @@ F_DrawPatchCol( int x, patch_t*	patch, int col )
     unsigned char*	desttop;
     int		count;
 	
-    column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
+    column = (column_t *)((unsigned char *)patch + patch->columnofs[col]);
     desttop = screens[0]+x;
 
     // step through the posts in a column

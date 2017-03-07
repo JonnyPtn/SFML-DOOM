@@ -1,5 +1,4 @@
 #include <math.h>
-#include "m_swap.hpp"
 #include "m_bbox.hpp"
 
 #include "g_game.hpp"
@@ -114,8 +113,8 @@ void P_LoadVertexes (int lump)
     // internal representation as fixed.
     for (i=0 ; i<numvertexes ; i++, li++, ml++)
     {
-	li->x = SHORT(ml->x)<<FRACBITS;
-	li->y = SHORT(ml->y)<<FRACBITS;
+	li->x = ml->x<<FRACBITS;
+	li->y = ml->y<<FRACBITS;
     }
 }
 
@@ -143,15 +142,15 @@ void P_LoadSegs (int lump)
     li = segs;
     for (i=0 ; i<numsegs ; i++, li++, ml++)
     {
-	li->v1 = &vertexes[SHORT(ml->v1)];
-	li->v2 = &vertexes[SHORT(ml->v2)];
+	li->v1 = &vertexes[ml->v1];
+	li->v2 = &vertexes[ml->v2];
 					
-	li->angle = (SHORT(ml->angle))<<16;
-	li->offset = (SHORT(ml->offset))<<16;
-	linedef = SHORT(ml->linedef);
+	li->angle = (ml->angle)<<16;
+	li->offset = (ml->offset)<<16;
+	linedef = ml->linedef;
 	ldef = &lines[linedef];
 	li->linedef = ldef;
-	side = SHORT(ml->side);
+	side = ml->side;
 	li->sidedef = &sides[ldef->sidenum[side]];
 	li->frontsector = sides[ldef->sidenum[side]].sector;
 	if (ldef-> flags & ML_TWOSIDED)
@@ -182,8 +181,8 @@ void P_LoadSubsectors (int lump)
     
     for (i=0 ; i<numsubsectors ; i++, ss++, ms++)
     {
-	ss->numlines = SHORT(ms->numsegs);
-	ss->firstline = SHORT(ms->firstseg);
+	ss->numlines = ms->numsegs;
+	ss->firstline = ms->firstseg;
     }
 }
 
@@ -208,13 +207,13 @@ void P_LoadSectors (int lump)
     ss = sectors;
     for (i=0 ; i<numsectors ; i++, ss++, ms++)
     {
-	ss->floorheight = SHORT(ms->floorheight)<<FRACBITS;
-	ss->ceilingheight = SHORT(ms->ceilingheight)<<FRACBITS;
+	ss->floorheight = ms->floorheight<<FRACBITS;
+	ss->ceilingheight = ms->ceilingheight<<FRACBITS;
 	ss->floorpic = R_FlatNumForName(std::string(ms->floorpic,8));
 	ss->ceilingpic = R_FlatNumForName(std::string(ms->ceilingpic,8));
-	ss->lightlevel = SHORT(ms->lightlevel);
-	ss->special = SHORT(ms->special);
-	ss->tag = SHORT(ms->tag);
+	ss->lightlevel = ms->lightlevel;
+	ss->special = ms->special;
+	ss->tag = ms->tag;
 	ss->thinglist = NULL;
     }
 }
@@ -241,15 +240,15 @@ void P_LoadNodes (int lump)
     
     for (i=0 ; i<numnodes ; i++, no++, mn++)
     {
-	no->x = SHORT(mn->x)<<FRACBITS;
-	no->y = SHORT(mn->y)<<FRACBITS;
-	no->dx = SHORT(mn->dx)<<FRACBITS;
-	no->dy = SHORT(mn->dy)<<FRACBITS;
+	no->x = mn->x<<FRACBITS;
+	no->y = mn->y<<FRACBITS;
+	no->dx = mn->dx<<FRACBITS;
+	no->dy = mn->dy<<FRACBITS;
 	for (j=0 ; j<2 ; j++)
 	{
-	    no->children[j] = SHORT(mn->children[j]);
+	    no->children[j] = mn->children[j];
 	    for (k=0 ; k<4 ; k++)
-		no->bbox[j][k] = SHORT(mn->bbox[j][k])<<FRACBITS;
+		no->bbox[j][k] = mn->bbox[j][k]<<FRACBITS;
 	}
     }
 }
@@ -297,11 +296,11 @@ void P_LoadThings (int lump)
 	    break;
 
 	// Do spawn all other stuff. 
-	mt->x = SHORT(mt->x);
-	mt->y = SHORT(mt->y);
-	mt->angle = SHORT(mt->angle);
-	mt->type = SHORT(mt->type);
-	mt->options = SHORT(mt->options);
+	mt->x = mt->x;
+	mt->y = mt->y;
+	mt->angle = mt->angle;
+	mt->type = mt->type;
+	mt->options = mt->options;
 	
 	P_SpawnMapThing (mt);
     }
@@ -330,11 +329,11 @@ void P_LoadLineDefs (int lump)
     ld = lines;
     for (i=0 ; i<numlines ; i++, mld++, ld++)
     {
-	ld->flags = SHORT(mld->flags);
-	ld->special = SHORT(mld->special);
-	ld->tag = SHORT(mld->tag);
-	v1 = ld->v1 = &vertexes[SHORT(mld->v1)];
-	v2 = ld->v2 = &vertexes[SHORT(mld->v2)];
+	ld->flags = mld->flags;
+	ld->special = mld->special;
+	ld->tag = mld->tag;
+	v1 = ld->v1 = &vertexes[mld->v1];
+	v2 = ld->v2 = &vertexes[mld->v2];
 	ld->dx = v2->x - v1->x;
 	ld->dy = v2->y - v1->y;
 	
@@ -372,8 +371,8 @@ void P_LoadLineDefs (int lump)
 	    ld->bbox[BOXTOP] = v1->y;
 	}
 
-	ld->sidenum[0] = SHORT(mld->sidenum[0]);
-	ld->sidenum[1] = SHORT(mld->sidenum[1]);
+	ld->sidenum[0] = mld->sidenum[0];
+	ld->sidenum[1] = mld->sidenum[1];
 
 	if (ld->sidenum[0] != -1)
 	    ld->frontsector = sides[ld->sidenum[0]].sector;
@@ -407,12 +406,12 @@ void P_LoadSideDefs (int lump)
     sd = sides;
     for (i=0 ; i<numsides ; i++, msd++, sd++)
     {
-	sd->textureoffset = SHORT(msd->textureoffset)<<FRACBITS;
-	sd->rowoffset = SHORT(msd->rowoffset)<<FRACBITS;
+	sd->textureoffset = msd->textureoffset<<FRACBITS;
+	sd->rowoffset = msd->rowoffset<<FRACBITS;
 	sd->toptexture = R_TextureNumForName(msd->toptexture);
 	sd->bottomtexture = R_TextureNumForName(msd->bottomtexture);
 	sd->midtexture = R_TextureNumForName(msd->midtexture);
-	sd->sector = &sectors[SHORT(msd->sector)];
+	sd->sector = &sectors[msd->sector];
     }
 }
 
@@ -430,7 +429,7 @@ void P_LoadBlockMap (int lump)
     count = WadManager::getLumpLength (lump)/2;
 
     for (i=0 ; i<count ; i++)
-	blockmaplump[i] = SHORT(blockmaplump[i]);
+	blockmaplump[i] = blockmaplump[i];
 		
     bmaporgx = blockmaplump[0]<<FRACBITS;
     bmaporgy = blockmaplump[1]<<FRACBITS;

@@ -45,12 +45,12 @@ extern int		loopcount;
 #define MAXLIGHTZ	       128
 #define LIGHTZSHIFT		20
 
-extern lighttable_t*	scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
-extern lighttable_t*	scalelightfixed[MAXLIGHTSCALE];
-extern lighttable_t*	zlight[LIGHTLEVELS][MAXLIGHTZ];
+extern unsigned char*	scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
+extern unsigned char*	scalelightfixed[MAXLIGHTSCALE];
+extern unsigned char*	zlight[LIGHTLEVELS][MAXLIGHTZ];
 
 extern int		extralight;
-extern lighttable_t*	fixedcolormap;
+extern unsigned char*	fixedcolormap;
 
 
 // Number of diminishing brightness levels.

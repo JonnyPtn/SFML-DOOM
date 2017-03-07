@@ -6,8 +6,6 @@ rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 
 #include "doomdef.hpp"
 
-
-#include "m_swap.hpp"
 #include "i_sound.hpp"
 
 #include "hu_stuff.hpp"
@@ -31,11 +29,11 @@ rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 #define HU_TITLET	(mapnamest[gamemap-1])
 #define HU_TITLEHEIGHT	1
 #define HU_TITLEX	0
-#define HU_TITLEY	(167 - SHORT(hu_font[0]->height))
+#define HU_TITLEY	(167 - hu_font[0]->height)
 
 #define HU_INPUTTOGGLE	't'
 #define HU_INPUTX	HU_MSGX
-#define HU_INPUTY	(HU_MSGY + HU_MSGHEIGHT*(SHORT(hu_font[0]->height) +1))
+#define HU_INPUTY	(HU_MSGY + HU_MSGHEIGHT*(hu_font[0]->height +1))
 #define HU_INPUTWIDTH	64
 #define HU_INPUTHEIGHT	1
 

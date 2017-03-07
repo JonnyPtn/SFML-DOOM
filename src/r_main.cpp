@@ -25,8 +25,8 @@ int			viewangleoffset;
 int			validcount = 1;		
 
 
-lighttable_t*		fixedcolormap;
-extern lighttable_t**	walllights;
+unsigned char*		fixedcolormap;
+extern unsigned char**	walllights;
 
 int			centerx;
 int			centery;
@@ -83,9 +83,9 @@ angle_t			xtoviewangle[SCREENWIDTH+1];
 int*		finecosine = &finesine[FINEANGLES/4];
 
 
-lighttable_t*		scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
-lighttable_t*		scalelightfixed[MAXLIGHTSCALE];
-lighttable_t*		zlight[LIGHTLEVELS][MAXLIGHTZ];
+unsigned char*		scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
+unsigned char*		scalelightfixed[MAXLIGHTSCALE];
+unsigned char*		zlight[LIGHTLEVELS][MAXLIGHTZ];
 
 // bumped light from gun blasts
 int			extralight;			
@@ -818,7 +818,7 @@ void R_SetupFrame (player_t* player)
     {
 	fixedcolormap =
 	    colormaps
-	    + player->fixedcolormap*256*sizeof(lighttable_t);
+	    + player->fixedcolormap*256*sizeof(unsigned char);
 	
 	walllights = scalelightfixed;
 

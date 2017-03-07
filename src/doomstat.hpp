@@ -26,7 +26,7 @@ namespace patch
 #include "d_net.hpp"
 
 // We need the playr data structure as well.
-struct player_t;
+class player_t;
 struct wbstartstruct_t;
 #include <fstream>
 

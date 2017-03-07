@@ -32,11 +32,9 @@ cht_GetParam
 ( cheatseq_t*	cht,
   char*		buffer )
 {
+    char *p, c;
 
-	//JONNY// TODO
-  /*  unsigned char *p, c;
-
-    p = cht->sequence;
+    p = const_cast<char*>(cht->sequence.data());
     while (*(p++) != 1);
     
     do
@@ -48,8 +46,7 @@ cht_GetParam
     while (c && *p!=0xff );
 
     if (*p==0xff)
-	*buffer = 0;
-	*/
+	    *buffer = 0;
 }
 
 

@@ -5,7 +5,6 @@
 #include "doomdata.hpp"
 
 #include "m_bbox.hpp"
-#include "m_swap.hpp"
 
 #include "v_video.hpp"
 
@@ -186,13 +185,13 @@ V_DrawPatch
     unsigned char*	source; 
     int		w; 
 	 
-    y -= SHORT(patch->topoffset); 
-    x -= SHORT(patch->leftoffset); 
+    y -= patch->topoffset; 
+    x -= patch->leftoffset; 
 #ifdef RANGECHECK 
     if (x<0
-	||x+SHORT(patch->width) >SCREENWIDTH
+	||x+patch->width >SCREENWIDTH
 	|| y<0
-	|| y+SHORT(patch->height)>SCREENHEIGHT 
+	|| y+patch->height>SCREENHEIGHT 
 	|| (unsigned)scrn>4)
     {
       fprintf( stderr, "Patch at %d,%d exceeds LFB\n", x,y );
@@ -203,16 +202,16 @@ V_DrawPatch
 #endif 
  
     if (!scrn)
-	V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height)); 
+	V_MarkRect (x, y, patch->width, patch->height); 
 
     col = 0; 
     desttop = screens[scrn]+y*SCREENWIDTH+x; 
 	 
-    w = SHORT(patch->width); 
+    w = patch->width; 
 
     for ( ; col<w ; x++, col++, desttop++)
     { 
-	column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col])); 
+	column = (column_t *)((unsigned char *)patch + patch->columnofs[col]); 
  
 	// step through the posts in a column 
 	while (column->topdelta != 0xff ) 
@@ -253,13 +252,13 @@ V_DrawPatchFlipped
     unsigned char*	source; 
     int		w; 
 	 
-    y -= SHORT(patch->topoffset); 
-    x -= SHORT(patch->leftoffset); 
+    y -= patch->topoffset; 
+    x -= patch->leftoffset; 
 #ifdef RANGECHECK 
     if (x<0
-	||x+SHORT(patch->width) >SCREENWIDTH
+	||x+patch->width >SCREENWIDTH
 	|| y<0
-	|| y+SHORT(patch->height)>SCREENHEIGHT 
+	|| y+patch->height>SCREENHEIGHT 
 	|| (unsigned)scrn>4)
     {
       fprintf( stderr, "Patch origin %d,%d exceeds LFB\n", x,y );
@@ -268,16 +267,16 @@ V_DrawPatchFlipped
 #endif 
  
     if (!scrn)
-	V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height)); 
+	V_MarkRect (x, y, patch->width, patch->height); 
 
     col = 0; 
     desttop = screens[scrn]+y*SCREENWIDTH+x; 
 	 
-    w = SHORT(patch->width); 
+    w = patch->width; 
 
     for ( ; col<w ; x++, col++, desttop++) 
     { 
-	column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[w-1-col])); 
+	column = (column_t *)((unsigned char *)patch + patch->columnofs[w-1-col]); 
  
 	// step through the posts in a column 
 	while (column->topdelta != 0xff ) 

@@ -14,7 +14,6 @@
 
 #include "doomdef.hpp"
 
-#include "m_swap.hpp"
 #include "m_argv.hpp"
 
 #include "w_wad.hpp"
@@ -60,7 +59,7 @@ M_DrawText
 	    continue;
 	}
 		
-	w = SHORT (hu_font[c]->width);
+	w = hu_font[c]->width;
 	if (x+w > SCREENWIDTH)
 	    break;
 	if (direct)

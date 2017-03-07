@@ -59,7 +59,7 @@ int		bottomfrac;
 int		bottomstep;
 
 
-lighttable_t**	walllights;
+unsigned char**	walllights;
 
 short*		maskedtexturecol;
 

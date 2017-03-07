@@ -51,7 +51,7 @@ unsigned char		translations[3][256];
 // R_DrawColumn
 // Source is the top of the column to scale.
 //
-lighttable_t*		dc_colormap; 
+unsigned char*		dc_colormap; 
 int			dc_x; 
 int			dc_yl; 
 int			dc_yh; 
@@ -463,7 +463,7 @@ int			ds_y;
 int			ds_x1; 
 int			ds_x2;
 
-lighttable_t*		ds_colormap; 
+unsigned char*		ds_colormap; 
 
 int			ds_xfrac; 
 int			ds_yfrac; 

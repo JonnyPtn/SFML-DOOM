@@ -7,7 +7,6 @@ rcsid[] = "$Id: hu_lib.c,v 1.3 1997/01/26 07:44:58 b1 Exp $";
 #include "doomdef.hpp"
 
 #include "v_video.hpp"
-#include "m_swap.hpp"
 
 #include "hu_lib.hpp"
 #include "r_local.hpp"
@@ -98,7 +97,7 @@ HUlib_drawTextLine
 	    && c >= l->sc
 	    && c <= '_')
 	{
-	    w = SHORT(l->f[c - l->sc]->width);
+	    w = l->f[c - l->sc]->width;
 	    if (x+w > SCREENWIDTH)
 		break;
 	    V_DrawPatchDirect(x, l->y, FG, l->f[c - l->sc]);
@@ -114,7 +113,7 @@ HUlib_drawTextLine
 
     // draw the cursor if requested
     if (drawcursor
-	&& x + SHORT(l->f['_' - l->sc]->width) <= SCREENWIDTH)
+	&& x + l->f['_' - l->sc]->width <= SCREENWIDTH)
     {
 	V_DrawPatchDirect(x, l->y, FG, l->f['_' - l->sc]);
     }
@@ -136,7 +135,7 @@ void HUlib_eraseTextLine(hu_textline_t* l)
     if (!automapactive &&
 	viewwindowx && l->needsupdate)
     {
-	lh = SHORT(l->f[0]->height) + 1;
+	lh = l->f[0]->height + 1;
 	for (y=l->y,yoffset=y*SCREENWIDTH ; y<l->y+lh ; y++,yoffset+=SCREENWIDTH)
 	{
 	    if (y < viewwindowy || y >= viewwindowy + viewheight)
@@ -174,7 +173,7 @@ HUlib_initSText
     s->cl = 0;
     for (i=0;i<h;i++)
 	HUlib_initTextLine(&s->l[i],
-			   x, y - i*(SHORT(font[0]->height)+1),
+			   x, y - i*(font[0]->height+1),
 			   font, startchar);
 
 }

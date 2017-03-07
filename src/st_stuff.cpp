@@ -14,7 +14,6 @@
 #include "r_local.hpp"
 
 #include "p_local.hpp"
-#include "p_inter.hpp"
 
 #include "am_map.hpp"
 #include "m_cheat.hpp"

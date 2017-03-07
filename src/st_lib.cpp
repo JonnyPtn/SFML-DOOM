@@ -4,7 +4,6 @@
 
 #include "v_video.hpp"
 
-#include "m_swap.hpp"
 
 #include "i_system.hpp"
 
@@ -70,8 +69,8 @@ STlib_drawNum
     int		numdigits = n->width;
     int		num = *n->num;
     
-    int		w = SHORT(n->p[0]->width);
-    int		h = SHORT(n->p[0]->height);
+    int		w = n->p[0]->width;
+    int		h = n->p[0]->height;
     int		x = n->x;
     
     int		neg;
@@ -198,10 +197,10 @@ STlib_updateMultIcon
     {
 	if (mi->oldinum != -1)
 	{
-	    x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset);
-	    y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset);
-	    w = SHORT(mi->p[mi->oldinum]->width);
-	    h = SHORT(mi->p[mi->oldinum]->height);
+	    x = mi->x - mi->p[mi->oldinum]->leftoffset;
+        y = mi->y - mi->p[mi->oldinum]->topoffset;
+	    w = mi->p[mi->oldinum]->width;
+	    h = mi->p[mi->oldinum]->height;
 
 	    if (y - ST_Y < 0)
 		I_Error("updateMultIcon: y - ST_Y < 0");
@@ -247,10 +246,10 @@ STlib_updateBinIcon
     if (*bi->on
 	&& ((bi->oldval==1) != *bi->val || refresh))
     {
-	x = bi->x - SHORT(bi->p->leftoffset);
-	y = bi->y - SHORT(bi->p->topoffset);
-	w = SHORT(bi->p->width);
-	h = SHORT(bi->p->height);
+	x = bi->x - bi->p->leftoffset;
+	y = bi->y - bi->p->topoffset;
+	w = bi->p->width;
+	h = bi->p->height;
 
 	if (y - ST_Y < 0)
 	    I_Error("updateBinIcon: y - ST_Y < 0");

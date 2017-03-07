@@ -49,7 +49,7 @@ int			spanstop[SCREENHEIGHT];
 //
 // texture mapping
 //
-lighttable_t**		planezlight;
+unsigned char**		planezlight;
 int			planeheight;
 
 int			yslope[SCREENHEIGHT];

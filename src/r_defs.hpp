@@ -270,16 +270,6 @@ typedef post_t	column_t;
 // OTHER TYPES
 //
 
-// This could be wider for >8 bit display.
-// Indeed, true color support is posibble
-//  precalculating 24bpp lightmap/colormap LUT.
-//  from darkening PLAYPAL to all black.
-// Could even us emore than 32 levels.
-typedef unsigned char	lighttable_t;	
-
-
-
-
 //
 // ?
 //
@@ -366,7 +356,7 @@ typedef struct vissprite_s
 
     // for color translation and shadow draw,
     //  maxbright frames as well
-    lighttable_t*	colormap;
+    unsigned char*	colormap;
    
     int			mobjflags;
     

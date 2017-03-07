@@ -45,12 +45,21 @@ typedef enum
 
 } cheat_t;
 
+bool
+P_GivePower
+(player_t*	player, int	power);
+
+bool
+P_GiveBody
+(player_t*	player,
+    int		num);
 
 //
 // Extended player object info: player_t
 //
-struct player_t
+class player_t
 {
+public:
     mobj_t*		mo;
     playerstate_t	playerstate;
     ticcmd_t		cmd;
