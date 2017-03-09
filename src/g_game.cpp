@@ -45,6 +45,8 @@
 #define SAVEGAMESIZE	0x2c000
 #define SAVESTRINGSIZE	24
 
+GameMode_t Game::gamemode = GameMode_t::indetermined;
+
 bool	G_CheckDemoStatus (void); 
 void	G_ReadDemoTiccmd (ticcmd_t* cmd); 
 void	G_WriteDemoTiccmd (ticcmd_t* cmd); 
@@ -343,9 +345,9 @@ void G_DoLoadLevel (void)
 
     // DOOM determines the sky texture to be used
     // depending on the current episode, and the game version.
-    if ( (gamemode == commercial)
-	 || ( gamemode == static_cast<GameMode_t>(pack_tnt) )
-	 || ( gamemode == static_cast<GameMode_t>(pack_plut) ) )
+    if ( (Game::gamemode == GameMode_t::commercial)
+	 || (Game::gamemode == static_cast<GameMode_t>(GameMission_t::pack_tnt) )
+	 || (Game::gamemode == static_cast<GameMode_t>(GameMission_t::pack_plut) ) )
     {
 	skytexture = R_TextureNumForName ("SKY3");
 	if (gamemap < 12)
@@ -940,7 +942,7 @@ void G_ExitLevel (void)
 void G_SecretExitLevel (void) 
 { 
     // IF NO WOLF3D LEVELS, NO SECRET EXIT!
-    if ( (gamemode == commercial)
+    if ( (Game::gamemode == GameMode_t::commercial)
       && (WadManager::WadManager::checkNumForName("map31")<0))
 		secretexit = false;
     else
@@ -961,7 +963,7 @@ void G_DoCompleted (void)
     if (automapactive) 
 		AM_Stop (); 
 	
-    if ( gamemode != commercial)
+    if (Game::gamemode != GameMode_t::commercial)
 	switch(gamemap)
 	{
 	  case 8:
@@ -974,7 +976,7 @@ void G_DoCompleted (void)
 	}
 		
     if ( (gamemap == 8)
-	 && (gamemode != commercial) ) 
+	 && (Game::gamemode != GameMode_t::commercial) )
     {
 		// victory 
 		gameaction = ga_victory; 
@@ -982,7 +984,7 @@ void G_DoCompleted (void)
     } 
 	 
     if ( (gamemap == 9)
-	 && (gamemode != commercial) ) 
+	 && (Game::gamemode != GameMode_t::commercial) )
     {
 		// exit secret level 
 		for (i=0 ; i<MAXPLAYERS ; i++) 
@@ -994,7 +996,7 @@ void G_DoCompleted (void)
     wminfo.last = gamemap -1;
     
     // wminfo.next is 0 biased, unlike gamemap
-    if ( gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
     {
 	if (secretexit)
 	    switch(gamemap)
@@ -1041,7 +1043,7 @@ void G_DoCompleted (void)
     wminfo.maxitems = totalitems; 
     wminfo.maxsecret = totalsecret; 
     wminfo.maxfrags = 0; 
-    if ( gamemode == commercial )
+    if (Game::gamemode == GameMode_t::commercial )
 		wminfo.partime = 35*cpars[gamemap-1]; 
     else
 		wminfo.partime = 35*pars[gameepisode][gamemap]; 
@@ -1079,7 +1081,7 @@ void G_WorldDone (void)
     if (secretexit) 
 		players[consoleplayer].didsecret = true; 
 
-    if ( gamemode == commercial )
+    if (Game::gamemode == GameMode_t::commercial )
     {
 		switch (gamemap)
 		{
@@ -1313,12 +1315,12 @@ G_InitNew
 	if (episode < 1)
 		episode = 1;
 
-	if (gamemode == retail)
+	if (Game::gamemode == GameMode_t::retail)
 	{
 		if (episode > 4)
 			episode = 4;
 	}
-	else if (gamemode == shareware)
+	else if (Game::gamemode == GameMode_t::shareware)
 	{
 		if (episode > 1)
 			episode = 1;	// only start episode 1 on shareware
@@ -1335,7 +1337,7 @@ G_InitNew
 		map = 1;
 
 	if ((map > 9)
-		&& (gamemode != commercial))
+		&& (Game::gamemode != GameMode_t::commercial))
 		map = 9;
 
 	M_ClearRandom();
@@ -1379,7 +1381,7 @@ G_InitNew
 	viewactive = true;
 
 	// set the sky map for the episode
-	if (gamemode == commercial)
+	if (Game::gamemode == GameMode_t::commercial)
 	{
 		skytexture = R_TextureNumForName("SKY3");
 		if (gamemap < 12)

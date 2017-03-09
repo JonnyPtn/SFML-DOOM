@@ -468,7 +468,7 @@ void WI_initAnimatedBack(void)
     int		i;
     anim_t*	a;
 
-    if (gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
 	return;
 
     if (wbs->epsd > 2)
@@ -497,7 +497,7 @@ void WI_updateAnimatedBack(void)
     int		i;
     anim_t*	a;
 
-    if (gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
 	return;
 
     if (wbs->epsd > 2)
@@ -547,9 +547,6 @@ void WI_drawAnimatedBack(void)
 {
     int			i;
     anim_t*		a;
-
-    if (commercial)
-	return;
 
     if (wbs->epsd > 2)
 	return;
@@ -734,7 +731,7 @@ void WI_drawShowNextLoc(void)
     // draw animated background
     WI_drawAnimatedBack(); 
 
-    if ( gamemode != commercial)
+    if (Game::gamemode != GameMode_t::commercial)
     {
   	if (wbs->epsd > 2)
 	{
@@ -758,7 +755,7 @@ void WI_drawShowNextLoc(void)
     }
 
     // draws which level you are entering..
-    if ( (gamemode != commercial)
+    if ( (Game::gamemode != GameMode_t::commercial)
 	 || wbs->next != 30)
 	WI_drawEL();  
 
@@ -915,7 +912,7 @@ void WI_updateDeathmatchStats(void)
 	{
 	    I_Sound::startSound(0, sfx_slop);
 
-	    if ( gamemode == commercial)
+	    if (Game::gamemode == GameMode_t::commercial)
 		WI_initNoState();
 	    else
 		WI_initShowNextLoc();
@@ -1195,7 +1192,7 @@ void WI_updateNetgameStats(void)
 	if (acceleratestage)
 	{
 	    I_Sound::startSound(0, sfx_sgcock);
-	    if ( gamemode == commercial )
+	    if (Game::gamemode == GameMode_t::commercial )
 		WI_initNoState();
 	    else
 		WI_initShowNextLoc();
@@ -1371,7 +1368,7 @@ void WI_updateStats(void)
 	{
 	    I_Sound::startSound(0, sfx_sgcock);
 
-	    if (gamemode == commercial)
+	    if (Game::gamemode == GameMode_t::commercial)
 		WI_initNoState();
 	    else
 		WI_initShowNextLoc();
@@ -1463,7 +1460,7 @@ void WI_Ticker(void)
     if (bcnt == 1)
     {
 	// intermission music
-  	if ( gamemode == commercial )
+  	if (Game::gamemode == GameMode_t::commercial )
 	  I_Sound::playMusic(mus_dm2int, true);
 	else
 	  I_Sound::playMusic(mus_inter, true); 
@@ -1497,12 +1494,12 @@ void WI_loadData(void)
     char	name[9];
     anim_t*	a;
 
-    if (gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
 	strcpy(name, "INTERPIC");
     else 
 	sprintf(name, "WIMAP%d", wbs->epsd);
     
-    if ( gamemode == retail )
+    if (Game::gamemode == GameMode_t::retail )
     {
       if (wbs->epsd == 3)
 	strcpy(name,"INTERPIC");
@@ -1524,7 +1521,7 @@ void WI_loadData(void)
     // }
     //}
 
-    if (gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
     {
 	NUMCMAPS = 32;								
 	lnames = (patch_t **) malloc(sizeof(patch_t*) * NUMCMAPS);
@@ -1604,15 +1601,7 @@ void WI_loadData(void)
      // "secret"
     sp_secret = (patch_t*)WadManager::getLump("WISCRT2");
 
-    // Yuck. 
-    if (french)
-    {
 	// "items"
-	if (netgame && !deathmatch)
-	    items = (patch_t*)WadManager::getLump("WIOBJ");
-  	else
-	    items = (patch_t*)WadManager::getLump("WIOSTI");
-    } else
 	items = (patch_t*)WadManager::getLump("WIOSTI");
 
     // "frgs"
@@ -1719,7 +1708,7 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
     if (!wbs->maxsecret)
 	wbs->maxsecret = 1;
 
-    if ( gamemode != retail )
+    if (Game::gamemode != GameMode_t::retail )
       if (wbs->epsd > 2)
 	wbs->epsd -= 3;
 }

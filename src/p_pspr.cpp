@@ -11,7 +11,7 @@
 
 // Data.
 #include "sounds.hpp"
-
+#include "g_game.hpp"
 #include "p_pspr.hpp"
 
 #define LOWERSPEED		FRACUNIT*6
@@ -157,13 +157,13 @@ bool P_CheckAmmo (player_t* player)
     {
 	if (player->weaponowned[wp_plasma]
 	    && player->ammo[am_cell]
-	    && (gamemode != shareware) )
+	    && (Game::gamemode != GameMode_t::shareware) )
 	{
 	    player->pendingweapon = wp_plasma;
 	}
 	else if (player->weaponowned[wp_supershotgun] 
 		 && player->ammo[am_shell]>2
-		 && (gamemode == commercial) )
+		 && (Game::gamemode == GameMode_t::commercial) )
 	{
 	    player->pendingweapon = wp_supershotgun;
 	}
@@ -192,7 +192,7 @@ bool P_CheckAmmo (player_t* player)
 	}
 	else if (player->weaponowned[wp_bfg]
 		 && player->ammo[am_cell]>40
-		 && (gamemode != shareware) )
+		 && (Game::gamemode != GameMode_t::shareware) )
 	{
 	    player->pendingweapon = wp_bfg;
 	}

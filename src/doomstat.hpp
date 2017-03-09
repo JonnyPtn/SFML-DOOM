@@ -37,19 +37,8 @@ extern  bool	nomonsters;	// checkparm of -nomonsters
 extern  bool	respawnparm;	// checkparm of -respawn
 extern  bool	fastparm;	// checkparm of -fast
 
-// -----------------------------------------------------
-// Game Mode - identify IWAD as shareware, retail etc.
-//
-extern GameMode_t	gamemode;
-extern GameMission_t	gamemission;
-
 // Set if homebrew PWAD stuff has been added.
 extern  bool	modifiedgame;
-
-
-// -------------------------------------------
-// Language.
-extern  Language_t   language;
 
 
 // -------------------------------------------

@@ -41,3 +41,11 @@ void G_WorldDone ();
 
 void G_Ticker ();
 bool G_Responder (sf::Event*	ev);
+
+#include "doomdef.hpp"
+
+class Game
+{
+public:
+    static GameMode_t gamemode;
+};

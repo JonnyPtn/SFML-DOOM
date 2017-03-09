@@ -355,7 +355,7 @@ void D_AdvanceDemo (void)
     paused = false;
     gameaction = ga_nothing;
 
-    if ( gamemode == retail )
+    if (Game::gamemode == GameMode_t::retail )
 		demosequence = (demosequence+1)%7;
     else
 		demosequence = (demosequence+1)%6;
@@ -363,13 +363,13 @@ void D_AdvanceDemo (void)
     switch (demosequence)
     {
     case 0:
-		if ( gamemode == commercial )
+		if (Game::gamemode == GameMode_t::commercial )
 		    pagetic = 35 * 11;
 		else
 		    pagetic = 170;
 		gamestate = GS_DEMOSCREEN;
 		pagename = "TITLEPIC";
-		if ( gamemode == commercial )
+		if (Game::gamemode == GameMode_t::commercial )
 		    I_Sound::playMusic(mus_dm2ttl);
 		else
             I_Sound::playMusic(mus_intro);
@@ -387,7 +387,7 @@ void D_AdvanceDemo (void)
 		break;
     case 4:
 		gamestate = GS_DEMOSCREEN;
-		if ( gamemode == commercial)
+		if (Game::gamemode == GameMode_t::commercial)
 		{
 		    pagetic = 35 * 11;
 		    pagename = "TITLEPIC";
@@ -397,7 +397,7 @@ void D_AdvanceDemo (void)
 		{
 		    pagetic = 200;
 
-		    if ( gamemode == retail )
+		    if (Game::gamemode == GameMode_t::retail )
 		      pagename = "CREDIT";
 		    else
 		      pagename = "HELP2";
@@ -480,27 +480,12 @@ void IdentifyVersion (void)
     tntwad = (char*)malloc(strlen(doomwaddir)+1+9+1);
     sprintf(tntwad, "%s/tnt.wad", doomwaddir);
 
-	// French stuff.
-    doom2fwad = (char*)malloc(strlen(doomwaddir)+1+10+1);
-    sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
-
     std::ifstream file;
-    file.open(doom2fwad);
-    if (file.good())
-    {
-		gamemode = commercial;
-		// C'est ridicule!
-		// Let's handle languages in config files, okay?
-		language = french;
-		printf("French version\n");
-		D_AddFile (doom2fwad);
-		return;
-    }
 
     file.open(doom2wad);
     if (file.good())
     {
-		gamemode = commercial;
+        Game::gamemode = GameMode_t::commercial;
 		D_AddFile (doom2wad);
 		return;
     }
@@ -508,7 +493,7 @@ void IdentifyVersion (void)
     file.open(plutoniawad);
     if (file.good())
     {
-		gamemode = commercial;
+        Game::gamemode = GameMode_t::commercial;
 		D_AddFile (plutoniawad);
 		return;
     }
@@ -516,7 +501,7 @@ void IdentifyVersion (void)
     file.open(tntwad);
     if (file.good())
     {
-		gamemode = commercial;
+        Game::gamemode = GameMode_t::commercial;
 		D_AddFile (tntwad);
 		return;
     }
@@ -524,7 +509,7 @@ void IdentifyVersion (void)
     file.open(doomuwad);
     if (file.good())
     {
-		gamemode = retail;
+        Game::gamemode = GameMode_t::retail;
 		D_AddFile (doomuwad);
 		return;
     }
@@ -532,7 +517,7 @@ void IdentifyVersion (void)
     file.open(doomwad);
     if (file.good())
     {
-		gamemode = registered;
+        Game::gamemode = GameMode_t::registered;
 		D_AddFile (doomwad);
 		return;
     }
@@ -540,13 +525,13 @@ void IdentifyVersion (void)
     file.open(doom1wad);
     if (file.good())
     {
-		gamemode = shareware;
+        Game::gamemode = GameMode_t::shareware;
 		D_AddFile (doom1wad);
 		return;
     }
 
     printf("Game mode indeterminate.\n");
-    gamemode = indetermined;
+    Game::gamemode = GameMode_t::indetermined;
 }
 
 //
@@ -569,30 +554,30 @@ void D_DoomMain (void)
     if (CmdParameters::M_CheckParm ("-altdeath") || CmdParameters::M_CheckParm("-deathmatch")	)
 		deathmatch = true;
 
-    switch ( gamemode )
+    switch (Game::gamemode )
     {
-    case retail:
+    case GameMode_t::retail:
 		sprintf (title,
 			 "                         "
 			 "The Ultimate DOOM Startup v%i.%i"
 			 "                           ",
 			 0,1);
 		break;
-    case shareware:
+    case GameMode_t::shareware:
 		sprintf (title,
 			 "                            "
 			 "DOOM Shareware Startup v%i.%i"
 			 "                           ",
 			 0,1);
 		break;
-    case registered:
+    case GameMode_t::registered:
 		sprintf (title,
 			 "                            "
 			 "DOOM Registered Startup v%i.%i"
 			 "                           ",
 			0, 1);
 		break;
-    case commercial:
+    case GameMode_t::commercial:
 		sprintf (title,
 			 "                         "
 			 "DOOM 2: Hell on Earth v%i.%i"
@@ -641,18 +626,18 @@ void D_DoomMain (void)
 		CmdParameters::myargv[p][4] = 'p';     // big hack, change to -warp
 
 		// Map name handling.
-		switch (gamemode )
+		switch (Game::gamemode )
 		{
-		case shareware:
-		case retail:
-		case registered:
+		case GameMode_t::shareware:
+		case GameMode_t::retail:
+		case GameMode_t::registered:
 		    sprintf (file,"~\"DEVMAPS\"E%cM%c.wad",
 				CmdParameters::myargv[p+1][0], CmdParameters::myargv[p+2][0]);
 		    printf("Warping to Episode %s, Map %s.\n",
 				CmdParameters::myargv[p+1].c_str(), CmdParameters::myargv[p+2].c_str());
 		    break;
 		    
-		case commercial:
+		case GameMode_t::commercial:
 		default:
 		    p = atoi (CmdParameters::myargv[p+1].c_str());
 		    if (p<10)
@@ -753,7 +738,7 @@ void D_DoomMain (void)
 		
 		// Check for fake IWAD with right name,
 		// but w/o all the lumps of the registered version. 
-		if (gamemode == registered)
+		if (Game::gamemode == GameMode_t::registered)
 		    for (i = 0;i < 23; i++)
 			if (WadManager::WadManager::checkNumForName(name[i])<0)
 			    I_Error("\nThis is not the registered version.");
@@ -775,19 +760,19 @@ void D_DoomMain (void)
 	
 
     // Check and print which version is executed.
-    switch ( gamemode )
+    switch (Game::gamemode )
     {
-      case shareware:
-      case indetermined:
+      case GameMode_t::shareware:
+      case GameMode_t::indetermined:
 		printf (
 		    "===========================================================================\n"
 		    "                                Shareware!\n"
 		    "===========================================================================\n"
 		);
 		break;
-      case registered:
-      case retail:
-      case commercial:
+      case GameMode_t::registered:
+      case GameMode_t::retail:
+      case GameMode_t::commercial:
 		printf (
 		    "===========================================================================\n"
 		    "                 Commercial product - do not distribute!\n"

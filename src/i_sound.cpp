@@ -10,6 +10,7 @@
 #include "r_main.hpp"
 #include "w_wad.hpp"
 #include "timidity/controls.h"
+#include "g_game.hpp"
 
 #define	MIDI_CHANNELS		2
 #if 1 //8bit
@@ -335,7 +336,7 @@ void I_Sound::playMusic(const std::string& songname, bool looping)
 void I_Sound::playMusic(const int musicNum, bool looping)
 {
     //don't play music for shareware
-    if (gamemode == shareware)
+    if (Game::gamemode == GameMode_t::shareware)
         return;
     if ((musicNum <= mus_None) || (musicNum >= NUMMUSIC))
     {

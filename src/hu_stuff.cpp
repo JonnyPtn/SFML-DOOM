@@ -13,6 +13,7 @@ rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 #include "w_wad.hpp"
 
 #include "i_sound.hpp"
+#include "g_game.hpp"
 
 #include "doomstat.hpp"
 
@@ -373,9 +374,6 @@ void HU_Init(void)
     int		j;
     char	buffer[9];
 
-    if (french)
-	shiftxform = french_shiftxform;
-    else
 	shiftxform = english_shiftxform;
 
     // load the heads-up font
@@ -420,24 +418,15 @@ void HU_Start(void)
 		       hu_font,
 		       HU_FONTSTART);
     
-    switch ( gamemode )
+    switch (Game::gamemode )
     {
-      case shareware:
-      case registered:
-      case retail:
+    case GameMode_t::shareware:
+      case GameMode_t::registered:
+      case GameMode_t::retail:
 	s = HU_TITLE;
 	break;
-
-/* FIXME
-      case pack_plut:
-	s = HU_TITLEP;
-	break;
-      case pack_tnt:
-	s = HU_TITLET;
-	break;
-*/
 	
-      case commercial:
+      case GameMode_t::commercial:
       default:
 	 s = HU_TITLE2;
 	 break;
@@ -539,7 +528,7 @@ void HU_Ticker(void)
 			    message_nottobefuckedwith = true;
 			    message_on = true;
 			    message_counter = HU_MSGTIMEOUT;
-			    if ( gamemode == commercial )
+			    if (Game::gamemode == GameMode_t::commercial )
                     I_Sound::startSound(0, sfx_radio);
 			    else
                     I_Sound::startSound(0, sfx_tink);
@@ -704,8 +693,6 @@ bool HU_Responder(sf::Event *ev)
 	}
 	else
 	{
-	    if (french)
-		c = ForeignTranslation(c);
 	    if (shiftdown || (c >= 'a' && c <= 'z'))
 		c = shiftxform[c];
 	    eatkey = HUlib_keyInIText(&w_chat, c);

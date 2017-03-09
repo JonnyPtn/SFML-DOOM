@@ -4,7 +4,7 @@
 #include "w_wad.hpp"
 
 #include "r_local.hpp"
-
+#include "g_game.hpp"
 // Needs access to LFB (guess what).
 #include "v_video.hpp"
 
@@ -709,7 +709,7 @@ void R_FillBackScreen (void)
     if (scaledviewwidth == 320)
 	return;
 	
-    if ( gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
 	name = name2;
     else
 	name = name1;

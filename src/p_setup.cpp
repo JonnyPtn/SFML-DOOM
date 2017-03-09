@@ -274,7 +274,7 @@ void P_LoadThings (int lump)
 	spawn = true;
 
 	// Do not spawn cool, new monsters if !commercial
-	if ( gamemode != commercial)
+	if (Game::gamemode != GameMode_t::commercial)
 	{
 	    switch(mt->type)
 	    {
@@ -563,7 +563,7 @@ P_SetupLevel
     int mnum;
 
     // start new music for the level
-    if (gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
         mnum = mus_runnin + gamemap - 1;
     else
     {
@@ -594,7 +594,7 @@ P_SetupLevel
     P_InitThinkers ();	
 	   
     // find map name
-    if ( gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
     {
 	if (map<10)
 	    sprintf (lumpname,"map0%i", map);

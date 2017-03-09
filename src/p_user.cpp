@@ -4,7 +4,7 @@
 #include "d_player.hpp"
 
 #include "p_local.hpp"
-
+#include "g_game.hpp"
 #include "doomstat.hpp"
 
 
@@ -313,7 +313,7 @@ void P_PlayerThink (player_t* player)
 	    newweapon = wp_chainsaw;
 	}
 	
-	if ( (gamemode == commercial)
+	if ( (Game::gamemode == GameMode_t::commercial)
 	    && newweapon == wp_shotgun 
 	    && player->weaponowned[wp_supershotgun]
 	    && player->readyweapon != wp_supershotgun)

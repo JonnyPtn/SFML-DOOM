@@ -13,6 +13,7 @@
 
 #include "doomstat.hpp"
 #include "r_state.hpp"
+#include "g_game.hpp"
 
 // Stage of animation:
 //  0 = text, 1 = art screen, 2 = character cast
@@ -70,13 +71,13 @@ void F_StartFinale (void)
     // Okay - IWAD dependend stuff.
     // This has been changed severly, and
     //  some stuff might have changed in the process.
-    switch ( gamemode )
+    switch (Game::gamemode )
     {
 
       // DOOM 1 - E1, E3 or E4, but each nine missions
-      case shareware:
-      case registered:
-      case retail:
+      case GameMode_t::shareware:
+      case GameMode_t::registered:
+      case GameMode_t::retail:
       {
           I_Sound::playMusic(mus_victor, true);
 		
@@ -106,7 +107,7 @@ void F_StartFinale (void)
       }
       
       // DOOM II and missions packs with E1, M34
-      case commercial:
+      case GameMode_t::commercial:
       {
           I_Sound::playMusic(mus_read_m, true);
 
@@ -170,7 +171,7 @@ void F_Ticker (void)
     int		i;
     
     // check for skipping
-    if ( (gamemode == commercial) && ( finalecount > 50) )
+    if ( (Game::gamemode == GameMode_t::commercial) && ( finalecount > 50) )
     {
       // go on to the next level
       for (i=0 ; i<MAXPLAYERS ; i++)
@@ -195,7 +196,7 @@ void F_Ticker (void)
 		return;
     }
 	
-    if ( gamemode == commercial)
+    if (Game::gamemode == GameMode_t::commercial)
 		return;
 		
     if (!finalestage && static_cast<unsigned int>(finalecount)>strlen (finaletext)*TEXTSPEED + TEXTWAIT)
@@ -658,7 +659,7 @@ void F_Drawer (void)
 		switch (gameepisode)
 		{
 		  case 1:
-		    if ( gamemode == retail )
+		    if (Game::gamemode == GameMode_t::retail )
 		      V_DrawPatch (0,0,0,
 				  (patch_t*)WadManager::getLump("CREDIT"));
 		    else

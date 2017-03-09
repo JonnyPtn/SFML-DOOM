@@ -14,6 +14,8 @@
 
 #include "i_sound.hpp"
 
+#include "g_game.hpp"
+
 #define BONUSADD	6
 
 
@@ -324,7 +326,7 @@ P_TouchSpecialThing
 	break;
 	
       case SPR_MEGA:
-	if (gamemode != commercial)
+	if (Game::gamemode != GameMode_t::commercial)
 	    return;
 	player->health = 200;
 	player->mo->health = player->health;
