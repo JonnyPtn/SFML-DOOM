@@ -1,10 +1,3 @@
-//because stupid
-#ifdef _WIN32
-#include "unistd.hpp"
-#else
-#include <unistd.h>
-#endif
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -492,15 +485,14 @@ void M_ReadSaveStrings(void)
     {
 		sprintf(name,SAVEGAMENAME"%d.dsg",i);
 
-		handle = open (name, O_RDONLY | 0, 0666);
-		if (handle == -1)
+		auto handle = std::ifstream (name, std::ios::binary);
+		if (!handle.good())
 		{
 		    strcpy(&savegamestrings[i][0],EMPTYSTRING);
 		    LoadMenu[i].status = 0;
 		    continue;
 		}
-		count = read (handle, &savegamestrings[i], SAVESTRINGSIZE);
-		close (handle);
+		handle.read (savegamestrings[i], SAVESTRINGSIZE);
 		LoadMenu[i].status = 1;
     }
 }

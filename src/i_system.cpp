@@ -3,11 +3,6 @@
 #include <string.h>
 
 #include <stdarg.h>
-#ifdef _WIN32
-#include "unistd.hpp"
-#else
-#include "unistd.h"
-#endif
 
 #include "doomdef.hpp"
 #include "m_misc.hpp"
