@@ -1234,7 +1234,9 @@ void G_DoSaveGame (void)
     length = save_p - savebuffer; 
     if (length > SAVEGAMESIZE) 
 	I_Error ("Savegame buffer overrun"); 
-    M_WriteFile (name, savebuffer, length); 
+    std::ofstream file;
+    file.open(name, std::ios::binary | std::ios::trunc);
+    file.write(reinterpret_cast<char*>(savebuffer), length);
     gameaction = ga_nothing; 
     savedescription[0] = 0;		 
 	 
@@ -1597,7 +1599,9 @@ bool G_CheckDemoStatus (void)
     if (demorecording) 
     { 
 		*demo_p++ = DEMOMARKER; 
-		M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
+        std::ofstream file;
+        file.open(demoname);
+        file.write(reinterpret_cast<char*>(demobuffer), demo_p - demobuffer);
 		free (demobuffer); 
 		demorecording = false; 
 		I_Error ("Demo %s recorded",demoname); 
