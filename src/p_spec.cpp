@@ -351,7 +351,7 @@ P_FindLowestCeilingSurrounding(sector_t* sec)
     int			i;
     line_t*		check;
     sector_t*		other;
-    int		height = MAXINT;
+    int		height = std::numeric_limits<int>::max();
 	
     for (i=0 ;i < sec->linecount ; i++)
     {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "doomtype.hpp"
+
 
 // The data sampled per tick (single player)
 // and transmitted to other peers (multiplayer).

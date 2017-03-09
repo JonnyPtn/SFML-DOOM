@@ -69,8 +69,8 @@ void	P_PlayerThink (player_t* player);
 //
 // P_MOBJ
 //
-#define ONFLOORZ		MININT
-#define ONCEILINGZ		MAXINT
+#define ONFLOORZ		std::numeric_limits<int>::min()
+#define ONCEILINGZ		std::numeric_limits<int>::max()
 
 // Time interval for item respawning.
 #define ITEMQUESIZE		128

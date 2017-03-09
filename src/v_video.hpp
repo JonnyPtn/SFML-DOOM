@@ -1,7 +1,5 @@
 #pragma once
 
-#include "doomtype.hpp"
-
 #include "doomdef.hpp"
 
 // Needed because we are refering to patches.

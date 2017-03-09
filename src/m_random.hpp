@@ -1,6 +1,6 @@
 #pragma once
 
-#include "doomtype.hpp"
+
 
 
 // Returns a number from 0 to 255,

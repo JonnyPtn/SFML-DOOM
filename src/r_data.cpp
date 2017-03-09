@@ -204,7 +204,6 @@ R_DrawColumnInCache
 //
 void R_GenerateComposite (int texnum)
 {
-    unsigned char*		block;
     texture_t*		texture;
     texpatch_t*		patch;	
     patch_t*		realpatch;

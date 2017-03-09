@@ -1,6 +1,6 @@
 #pragma once
 
-#include "doomtype.hpp"
+
 
 #include <SFML/Graphics.hpp>
  

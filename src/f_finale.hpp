@@ -1,6 +1,6 @@
 #pragma once
 
-#include "doomtype.hpp"
+
 #include "d_event.hpp"
 //
 // FINALE
