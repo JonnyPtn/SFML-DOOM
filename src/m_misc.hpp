@@ -12,11 +12,6 @@ M_WriteFile
   void*		source,
   int		length );
 
-int
-M_ReadFile
-( char const*	name,
-  unsigned char**	buffer );
-
 void M_ScreenShot (void);
 
 void M_LoadDefaults (void);

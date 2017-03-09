@@ -1131,11 +1131,17 @@ void G_DoLoadGame (void)
     int		length; 
     int		i; 
     int		a,b,c;
+    std::vector<char> saveFileData;
 	 
     gameaction = ga_nothing; 
 	 
-    length = M_ReadFile (savename, &savebuffer); 
-    save_p = savebuffer + SAVESTRINGSIZE;
+    std::ifstream file;
+    file.open(savename, std::ios::binary | std::ios::ate);
+    auto size = file.tellg();
+    saveFileData.resize(size);
+    file.seekg(std::ios::beg);
+    file.read(saveFileData.data(), size);
+    save_p = reinterpret_cast<unsigned char*>(saveFileData.data())+ SAVESTRINGSIZE;
     
     // skip the description field
     save_p += VERSIONSIZE; 
@@ -1163,9 +1169,6 @@ void G_DoLoadGame (void)
  
     if (*save_p != 0x1d) 
 	I_Error ("Bad savegame");
-    
-    // done 
-    free (savebuffer); 
  
     if (setsizeneeded)
 	R_ExecuteSetViewSize ();
