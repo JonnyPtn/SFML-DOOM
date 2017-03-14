@@ -28,7 +28,7 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <stdio.h>
 
 #include <SFML/Network/UdpSocket.hpp>
-#include <SFML/Network/IPAddress.hpp>
+#include <SFML/Network/IpAddress.hpp>
 #include <errno.h>
 
 #include "i_system.hpp"
