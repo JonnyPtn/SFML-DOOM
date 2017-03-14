@@ -10,15 +10,12 @@
 #include "doomstat.hpp"
 #include "r_sky.hpp"
 
-#ifdef LINUX
-#include  <alloca.h>
-#endif
-
 
 #include "r_data.hpp"
 
 //JONNY//
 #include <stdlib.h>
+#include <cstring>
 
 //
 // Graphics.
@@ -28,9 +25,6 @@
 // a patch or sprite is composed of zero or more columns.
 // 
 
-#ifndef _WIN32
-#define _strnicmp strncasecmp
-#endif
 
 //
 // Texture definition.
