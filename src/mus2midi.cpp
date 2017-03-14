@@ -30,6 +30,7 @@ If you have questions concerning this license or the applicable additional terms
 #include <stdlib.h>
 #include <stdio.h>
 #include <memory>
+#include <cstring>
 
 #include "doomstat.hpp"
 #include "i_sound.hpp"
