@@ -1,7 +1,3 @@
-static const char
-rcsid[] = "$Id: p_floor.c,v 1.4 1997/02/03 16:47:54 b1 Exp $";
-
-
 #include "doomdef.hpp"
 #include "p_local.hpp"
 
@@ -39,7 +35,7 @@ T_MovePlane
 	// FLOOR
 	switch(direction)
 	{
-	case static_cast<const int>(Direction::DOWN):
+	case Direction::DOWN:
 	    // DOWN
 	    if (sector->floorheight - speed < dest)
 	    {
@@ -68,7 +64,7 @@ T_MovePlane
 	    }
 	    break;
 						
-	case static_cast<const int>(Direction::UP):
+	case Direction::UP:
 	    // UP
 	    if (sector->floorheight + speed > dest)
 	    {
@@ -106,7 +102,7 @@ T_MovePlane
 	// CEILING
 	switch(direction)
 	{
-	case static_cast<const int>(Direction::DOWN):
+	case Direction::DOWN:
 	    // DOWN
 	    if (sector->ceilingheight - speed < dest)
 	    {
@@ -140,7 +136,7 @@ T_MovePlane
 	    }
 	    break;
 						
-	case static_cast<const int>(Direction::UP):
+	case Direction::UP:
 	    // UP
 	    if (sector->ceilingheight + speed > dest)
 	    {
