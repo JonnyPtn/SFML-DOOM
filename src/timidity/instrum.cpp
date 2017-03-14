@@ -241,7 +241,7 @@ static Instrument *load_instrument(char *name, int percussion,
         return 0;
     }
 
-    printf("Loading instrument %s\n", current_filename);
+    printf("Loading instrument %s\n", current_filename.c_str());
 
     /* Read some headers and do cursory sanity checks. There are loads
     of magic offsets. This could be rewritten... */
