@@ -91,7 +91,7 @@ std::ifstream * open_file(const char *name, int decompress, int noise_mode)
                     current_filename += PATH_STRING;
             }
             current_filename += name;
-            printf( "Trying to open %s\n", current_filename);
+            printf( "Trying to open %s\n", current_filename.c_str());
             if ((fp = try_to_open(const_cast<char*>(current_filename.c_str()), decompress, noise_mode)))
                 return fp;
 
