@@ -655,7 +655,7 @@ int	R_CheckTextureNumForName (char *name)
 	return 0;
 		
     for (i=0 ; i<numtextures ; i++)
-	if (!+_strnicmp (textures[i]->name, name, 8) )
+	if (std::string(textures[i]->name,8) == std::string(name,8))
 	    return i;
 		
     return -1;
