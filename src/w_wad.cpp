@@ -169,7 +169,7 @@ int WadManager::getNumForName (const std::string& name)
     i = WadManager::checkNumForName (name);
     
     if (i == -1)
-      I_Error ("W_GetNumForName: %s not found!", name);
+      I_Error ("W_GetNumForName: %s not found!", name.c_str());
       
     return i;
 }
