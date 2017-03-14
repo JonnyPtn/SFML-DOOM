@@ -10,6 +10,9 @@ file(GLOB SOURCE "src/*.h" "src/*.hpp" "src/*.cpp" "src/timidity/*.cpp" "src/tim
 
 set (CMAKE_CXX_STANDARD 11)
 
+#for backwards compatibility
+set(CMAKE_CXX_FLAGS "-stdlib=c++11")
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${SFML_INCLUDE_DIR})
 add_executable(SFML-DOOM ${SOURCE})
 target_link_libraries(SFML-DOOM ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
