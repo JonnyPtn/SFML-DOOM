@@ -165,7 +165,7 @@ static MidiEventList *read_midi_event(void)
         if (read_local(&me, 1, 1) != 1)
         {
             printf("%s: read_midi_event: %s\n",
-                current_filename, strerror(errno));
+                current_filename.c_str(), strerror(errno));
             return 0;
         }
 
@@ -356,14 +356,14 @@ static int read_track(int append)
     if ((read_local(tmp, 1, 4) != 4) || (read_local(&len, 4, 1) != 1))
     {
         printf(
-            "%s: Can't read track header.\n", current_filename);
+            "%s: Can't read track header.\n", current_filename.c_str());
         return -1;
     }
     len = BE_LONG(len);
     if (memcmp(tmp, "MTrk", 4))
     {
         printf(
-            "%s: Corrupt MIDI file.\n", current_filename);
+            "%s: Corrupt MIDI file.\n", current_filename.c_str());
         return -2;
     }
 
@@ -593,7 +593,7 @@ MidiEvent *read_midi_buffer(unsigned char* buffer, size_t length, int32_t *count
     len = BE_LONG(len);
     if (memcmp(tmp, "MThd", 4) || len < 6)
     {
-        printf("%s: Not a MIDI file!\n", current_filename);
+        printf("%s: Not a MIDI file!\n", current_filename.c_str());
         return 0;
     }
 
@@ -614,13 +614,13 @@ MidiEvent *read_midi_buffer(unsigned char* buffer, size_t length, int32_t *count
     {
         printf(
             "%s: MIDI file header size %ld bytes\n",
-            current_filename, len);
+            current_filename.c_str(), len);
         skip_local(len - 6); /* skip_local the excess */
     }
     if (format<0 || format >2)
     {
         printf(
-            "%s: Unknown MIDI file format %d\n", current_filename, format);
+            "%s: Unknown MIDI file format %d\n", current_filename.c_str(), format);
         return 0;
     }
     //ctl->cmsg(CMSG_INFO, VERB_VERBOSE, 
