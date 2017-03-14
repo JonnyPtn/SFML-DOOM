@@ -1,6 +1,6 @@
 
 #include <stdlib.h>
-
+#include <limits.h>
 
 #include "m_bbox.hpp"
 
