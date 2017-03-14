@@ -219,7 +219,7 @@ void R_InitSpriteDefs (const std::vector<std::string>& namelist)
 	      case -1:
 			// no rotations were found for that frame at all
 			I_Error ("R_InitSprites: No patches found "
-				 "for %s frame %c", namelist[i], frame+'A');
+				 "for %s frame %c", namelist[i].c_str(), frame+'A');
 			break;
 		
 	      case 0:
@@ -232,7 +232,7 @@ void R_InitSpriteDefs (const std::vector<std::string>& namelist)
 			    if (sprtemp[frame].lump[rotation] == -1)
 				I_Error ("R_InitSprites: Sprite %s frame %c "
 					 "is missing rotations",
-					 namelist[i], frame+'A');
+					 namelist[i].c_str(), frame+'A');
 			break;
 	    }
 	}
