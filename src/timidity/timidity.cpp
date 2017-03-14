@@ -41,7 +41,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 void (*s32tobuf)(void *dp,  int32_t *lp,  int32_t c);
 int free_instruments_afterwards=0;
-static char def_instr_name[256]="";
+static std::string def_instr_name="";
 
 int AUDIO_BUFFER_SIZE;
 sample_t *resample_buffer;
@@ -113,7 +113,7 @@ static int read_config_file(const char *name)
 					name, line);
 				return -5;
 			}
-			strncpy(def_instr_name, w[1], 255);
+			def_instr_name = std::string(w[1], 255);
 			def_instr_name[255]='\0';
 		}
 		else if (!strcmp(w[0], "drumset"))
@@ -355,8 +355,8 @@ int Timidity_Init(int rate, int format, int channels, int samples, const char* c
 		else if (control_ratio > MAX_CONTROL_RATIO)
 			control_ratio=MAX_CONTROL_RATIO;
 	}
-	if (*def_instr_name)
-		set_default_instrument(def_instr_name);
+	if (!def_instr_name.empty())
+		set_default_instrument(const_cast<char*>(def_instr_name.c_str()));
 	return(0);
 }
 

@@ -80,7 +80,7 @@ void WadManager::addFile (const std::string& filename)
         lump_p->data.resize(fileInfo_p->size);
 
         //store the name
-		strncpy (lump_p->name, fileInfo_p->name, 8);
+		lump_p->name = std::string(fileInfo_p->name,8);
 
         //read the data
         fileHandle.read(reinterpret_cast<char*>(lump_p->data.data()), lump_p->size);
@@ -176,7 +176,7 @@ int WadManager::getNumForName (const std::string& name)
 
 std::string WadManager::getNameForNum(int i)
 {
-    return std::string(lumpinfo[i].name,8);
+    return lumpinfo[i].name;
 }
 
 

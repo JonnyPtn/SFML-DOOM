@@ -392,7 +392,7 @@ void R_InitTextures (void)
     int*		maptex2;
     int*		maptex1;
     
-    char		name[9];
+    std::string		name(9,'0');
     char*		names;
     char*		name_p;
     
@@ -414,7 +414,6 @@ void R_InitTextures (void)
 
     
     // Load the patch names from pnames.lmp.
-    name[8] = 0;	
     names = (char*)WadManager::getLump ("PNAMES");
     nummappatches =  *((int *)names) ;
     name_p = names+4;
@@ -422,8 +421,8 @@ void R_InitTextures (void)
     
     for (i=0 ; i<nummappatches ; i++)
     {
-	strncpy (name,name_p+i*8, 8);
-	patchlookup[i] = WadManager::checkNumForName (name);
+	    name = std::string(name_p+i*8, 8);
+	    patchlookup[i] = WadManager::checkNumForName (name);
     }
     
     // Load the map texture definitions from textures.lmp.

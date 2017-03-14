@@ -22,7 +22,9 @@ common.h
 */
 #include <memory>
 #include <fstream>
-extern char *program_name, current_filename[];
+#include <string>
+extern char *program_name;
+extern std::string current_filename;
 
 extern FILE *msgfp;
 

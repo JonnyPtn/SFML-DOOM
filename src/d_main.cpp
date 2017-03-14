@@ -447,39 +447,28 @@ void IdentifyVersion (void)
     char*	doomuwad;
     char*	doom2wad;
 
-    char*	doom2fwad;
     char*	plutoniawad;
     char*	tntwad;
 
-    char *doomwaddir;
-        doomwaddir = getenv("DOOMWADDIR");
-    if (!doomwaddir)
-	    doomwaddir = ".";
-
     // Commercial.
-    doom2wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(doom2wad, "%s/doom2.wad", doomwaddir);
+    doom2wad = "doom2.wad";
 
     // Retail.
-    doomuwad = (char*)malloc(strlen(doomwaddir)+1+8+1);
-    sprintf(doomuwad, "%s/doomu.wad", doomwaddir);
+    doomuwad = "doomu.wad";
     
     // Registered.
-    doomwad = (char*)malloc(strlen(doomwaddir)+1+8+1);
-    sprintf(doomwad, "%s/doom.wad", doomwaddir);
+    doomwad = "doom.wad";
     
     // Shareware.
-    doom1wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(doom1wad, "%s/doom1.wad", doomwaddir);
+    doom1wad = "doom1.wad";
 
-     // Bug, dear Shawn.
-    // Insufficient malloc, caused spurious realloc errors.
-    plutoniawad = (char*)malloc(strlen(doomwaddir)+1+/*9*/12+1);
-    sprintf(plutoniawad, "%s/plutonia.wad", doomwaddir);
+    // Plutonia
+    plutoniawad = "plutonia.wad";
 
-    tntwad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(tntwad, "%s/tnt.wad", doomwaddir);
+    // TNT
+    tntwad = "tnt.wad";
 
+    // See which file we can open
     std::ifstream file;
 
     file.open(doom2wad);
@@ -545,7 +534,6 @@ void D_DoomMain (void)
 	
     IdentifyVersion ();
 	
-    setbuf (stdout, NULL);
     modifiedgame = false;
 	
     nomonsters = CmdParameters::M_CheckParm ("-nomonsters")!=0;

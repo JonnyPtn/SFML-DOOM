@@ -31,7 +31,7 @@ typedef struct
 
 typedef struct
 {
-    char	name[8];
+    std::string	name = std::string(8, '0');
     std::vector<char> data;
     int		size;
 } lumpinfo_t;

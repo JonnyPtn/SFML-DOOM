@@ -33,7 +33,7 @@ common.c
 /* I guess "rb" should be right for any libc */
 #define OPEN_MODE "rb"
 
-char current_filename[1024];
+std::string current_filename;
 
 #ifdef DEFAULT_PATH
 /* The paths in this list will be tried whenever we're reading a file */
@@ -73,27 +73,26 @@ std::ifstream * open_file(const char *name, int decompress, int noise_mode)
 
     /* First try the given name */
 
-    strncpy(current_filename, name, 1023);
-    current_filename[1023] = '\0';
+    current_filename = name;
 
     printf( "Trying to open %s\n", current_filename);
-    if ((fp = try_to_open(current_filename, decompress, noise_mode)))
+    if ((fp = try_to_open(const_cast<char*>(current_filename.c_str()), decompress, noise_mode)))
         return fp;
 
     if (name[0] != PATH_SEP)
         while (plp)  /* Try along the path then */
         {
-            *current_filename = 0;
+            current_filename.clear();
             l = strlen(plp->path);
             if (l)
             {
-                strcpy(current_filename, plp->path);
+                current_filename = plp->path;
                 if (current_filename[l - 1] != PATH_SEP)
-                    strcat(current_filename, PATH_STRING);
+                    current_filename += PATH_STRING;
             }
-            strcat(current_filename, name);
+            current_filename += name;
             printf( "Trying to open %s\n", current_filename);
-            if ((fp = try_to_open(current_filename, decompress, noise_mode)))
+            if ((fp = try_to_open(const_cast<char*>(current_filename.c_str()), decompress, noise_mode)))
                 return fp;
 
             plp = (PathList*)plp->next;
@@ -101,7 +100,7 @@ std::ifstream * open_file(const char *name, int decompress, int noise_mode)
 
     /* Nothing could be opened. */
 
-    *current_filename = 0;
+    current_filename.clear();
 
     if (noise_mode >= 2)
         printf( "%s: %s\n", name, strerror(errno));
