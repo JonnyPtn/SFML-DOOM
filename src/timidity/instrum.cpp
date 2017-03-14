@@ -29,6 +29,7 @@ Code to load and unload GUS-compatible instrument patches.
 #include <stdlib.h>
 #include <ctype.h>
 #include <vector>
+#include <cstring>
 
 #include "config.h"
 #include "common.h"
