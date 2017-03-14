@@ -485,7 +485,8 @@ void M_ReadSaveStrings(void)
     {
 		sprintf(name,SAVEGAMENAME"%d.dsg",i);
 
-		auto& handle = std::ifstream (name, std::ios::binary);
+        std::ifstream handle;
+        handle.open(name, std::ios::binary);
 		if (!handle.good())
 		{
 		    strcpy(&savegamestrings[i][0],EMPTYSTRING);
