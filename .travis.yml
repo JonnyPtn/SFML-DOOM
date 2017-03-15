@@ -1,0 +1,24 @@
+language:
+  - cpp
+
+os: 
+  - linux
+  - osx
+
+compiler:
+  - gcc
+  - clang
+
+install: 
+  - git clone https://github/com/sfml/sfml
+  - cd sfml
+  - mkdir install
+  - cmake . -DCMAKE_INSTALL_PATH=./install
+  - make install
+  - cd ../
+
+script:
+  - mkdir build
+  - cd build
+  - cmake .. -DSFML_ROOT=../sfml/install
+  - make

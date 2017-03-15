@@ -84,6 +84,7 @@ void WadManager::addFile (const std::string& filename)
 
         //read the data
         fileHandle.read(reinterpret_cast<char*>(lump_p->data.data()), lump_p->size);
+        printf("Loaded %s \n", lump_p->name.c_str());
 	}
 }
 
