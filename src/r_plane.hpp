@@ -2,10 +2,6 @@
 
 #include "r_data.hpp"
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 // Visplane related.
 extern  short*		lastopening;

@@ -4,10 +4,6 @@
 // Needed for Flat retrieval.
 #include "r_data.hpp"
 
-
-#ifdef __GNUG__
-#pragma implementation "r_sky.hpp"
-#endif
 #include "r_sky.hpp"
 
 //
