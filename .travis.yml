@@ -10,7 +10,7 @@ compiler:
   - clang
 
 install: 
-  - git clone https://github/com/sfml/sfml
+  - git clone https://github.com/sfml/sfml
   - cd sfml
   - mkdir install
   - cmake . -DCMAKE_INSTALL_PATH=./install
