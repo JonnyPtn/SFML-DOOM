@@ -182,7 +182,7 @@ EV_DoLockedDoor
 	    return 0;
 	if (!p->cards[it_bluecard] && !p->cards[it_blueskull])
 	{
-	    p->message = PD_BLUEO;
+	    p->message = s_BlueKeyNeeded.c_str();
         I_Sound::startSound(NULL,sfx_oof);
 	    return 0;
 	}
@@ -194,7 +194,7 @@ EV_DoLockedDoor
 	    return 0;
 	if (!p->cards[it_redcard] && !p->cards[it_redskull])
 	{
-	    p->message = PD_REDO;
+	    p->message = s_RedKeyNeeded.c_str();
         I_Sound::startSound(NULL,sfx_oof);
 	    return 0;
 	}
@@ -207,7 +207,7 @@ EV_DoLockedDoor
 	if (!p->cards[it_yellowcard] &&
 	    !p->cards[it_yellowskull])
 	{
-	    p->message = PD_YELLOWO;
+	    p->message = s_YellowKeyNeeded.c_str();
         I_Sound::startSound(NULL,sfx_oof);
 	    return 0;
 	}
@@ -333,7 +333,7 @@ EV_VerticalDoor
 	
 	if (!player->cards[it_bluecard] && !player->cards[it_blueskull])
 	{
-	    player->message = PD_BLUEK;
+	    player->message = s_BlueKeyNeededDoor.c_str();
         I_Sound::startSound(NULL,sfx_oof);
 	    return;
 	}
@@ -347,7 +347,7 @@ EV_VerticalDoor
 	if (!player->cards[it_yellowcard] &&
 	    !player->cards[it_yellowskull])
 	{
-	    player->message = PD_YELLOWK;
+	    player->message = s_YellowKeyNeededDoor.c_str();
         I_Sound::startSound(NULL,sfx_oof);
 	    return;
 	}
@@ -360,7 +360,7 @@ EV_VerticalDoor
 	
 	if (!player->cards[it_redcard] && !player->cards[it_redskull])
 	{
-	    player->message = PD_REDK;
+	    player->message = s_RedKeyNeededDoor.c_str();
         I_Sound::startSound(NULL,sfx_oof);
 	    return;
 	}

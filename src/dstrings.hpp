@@ -13,7 +13,7 @@
 const std::array<std::string, NUM_QUITMESSAGES + 1> endmsg =
 {
     // DOOM1
-    QUITMSG,
+    s_QuitMsg,
     "please don't leave, there's more\ndemons to toast!",
     "let's beat it -- this is turning\ninto a bloodbath!",
     "i wouldn't leave if i were you.\ndos is much worse.",

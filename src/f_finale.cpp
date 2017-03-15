@@ -24,39 +24,13 @@ int		finalecount;
 #define	TEXTSPEED	3
 #define	TEXTWAIT	250
 
-char*	e1text = E1TEXT;
-char*	e2text = E2TEXT;
-char*	e3text = E3TEXT;
-char*	e4text = E4TEXT;
+const char*	finaletext;
+const char*	finaleflat;
 
-char*	c1text = C1TEXT;
-char*	c2text = C2TEXT;
-char*	c3text = C3TEXT;
-char*	c4text = C4TEXT;
-char*	c5text = C5TEXT;
-char*	c6text = C6TEXT;
-
-char*	p1text = P1TEXT;
-char*	p2text = P2TEXT;
-char*	p3text = P3TEXT;
-char*	p4text = P4TEXT;
-char*	p5text = P5TEXT;
-char*	p6text = P6TEXT;
-
-char*	t1text = T1TEXT;
-char*	t2text = T2TEXT;
-char*	t3text = T3TEXT;
-char*	t4text = T4TEXT;
-char*	t5text = T5TEXT;
-char*	t6text = T6TEXT;
-
-char*	finaletext;
-char*	finaleflat;
-
-void	F_StartCast (void);
-void	F_CastTicker (void);
-bool F_CastResponder (sf::Event *ev);
-void	F_CastDrawer (void);
+void	    F_StartCast (void);
+void	    F_CastTicker (void);
+bool        F_CastResponder (sf::Event *ev);
+void	    F_CastDrawer (void);
 
 //
 // F_StartFinale
@@ -85,19 +59,19 @@ void F_StartFinale (void)
 		{
 		  case 1:
 		    finaleflat = "FLOOR4_8";
-		    finaletext = e1text;
+		    finaletext = s_E1M1.c_str();
 		    break;
 		  case 2:
 		    finaleflat = "SFLR6_1";
-		    finaletext = e2text;
+		    finaletext = s_E1M2.c_str();
 		    break;
 		  case 3:
 		    finaleflat = "MFLR8_4";
-		    finaletext = e3text;
+		    finaletext = s_E1M3.c_str();
 		    break;
 		  case 4:
 		    finaleflat = "MFLR8_3";
-		    finaletext = e4text;
+		    finaletext = s_E1M4.c_str();
 		    break;
 		  default:
 		    // Ouch.
@@ -115,27 +89,27 @@ void F_StartFinale (void)
 		{
 		  case 6:
 		    finaleflat = "SLIME16";
-		    finaletext = c1text;
+		    finaletext = s_C1Text.c_str();
 		    break;
 		  case 11:
 		    finaleflat = "RROCK14";
-		    finaletext = c2text;
+		    finaletext = s_C2Text.c_str();
 		    break;
 		  case 20:
 		    finaleflat = "RROCK07";
-		    finaletext = c3text;
+		    finaletext = s_C3Text.c_str();
 		    break;
 		  case 30:
 		    finaleflat = "RROCK17";
-		    finaletext = c4text;
+		    finaletext = s_C4Text.c_str();
 		    break;
 		  case 15:
 		    finaleflat = "RROCK13";
-		    finaletext = c5text;
+		    finaletext = s_C5Text.c_str();
 		    break;
 		  case 31:
 		    finaleflat = "RROCK19";
-		    finaletext = c6text;
+		    finaletext = s_C6Text.c_str();
 		    break;
 		  default:
 		    // Ouch.
@@ -148,7 +122,7 @@ void F_StartFinale (void)
       default:
           I_Sound::playMusic(mus_read_m, true);
 		finaleflat = "F_SKY1"; // Not used anywhere else.
-		finaletext = c1text;  // FIXME - other text, music?
+		finaletext = s_C1Text.c_str();  // FIXME - other text, music?
 		break;
     }
     
@@ -223,7 +197,7 @@ void F_TextWrite (void)
     
     int		x,y,w;
     int		count;
-    char*	ch;
+    const char*	ch;
     int		c;
     int		cx;
     int		cy;
@@ -290,28 +264,28 @@ void F_TextWrite (void)
 //
 typedef struct
 {
-    char		*name;
+    const char		*name;
     mobjtype_t	type;
 } castinfo_t;
 
 castinfo_t	castorder[] = {
-    {CC_ZOMBIE, MT_POSSESSED},
-    {CC_SHOTGUN, MT_SHOTGUY},
-    {CC_HEAVY, MT_CHAINGUY},
-    {CC_IMP, MT_TROOP},
-    {CC_DEMON, MT_SERGEANT},
-    {CC_LOST, MT_SKULL},
-    {CC_CACO, MT_HEAD},
-    {CC_HELL, MT_KNIGHT},
-    {CC_BARON, MT_BRUISER},
-    {CC_ARACH, MT_BABY},
-    {CC_PAIN, MT_PAIN},
-    {CC_REVEN, MT_UNDEAD},
-    {CC_MANCU, MT_FATSO},
-    {CC_ARCH, MT_VILE},
-    {CC_SPIDER, MT_SPIDER},
-    {CC_CYBER, MT_CYBORG},
-    {CC_HERO, MT_PLAYER},
+    {s_Zombie.c_str(), MT_POSSESSED},
+    {s_ShotgunGuy.c_str(), MT_SHOTGUY},
+    {s_HeavyDude.c_str(), MT_CHAINGUY},
+    {s_Imp.c_str(), MT_TROOP},
+    {s_Demon.c_str(), MT_SERGEANT},
+    {s_LostSoul.c_str(), MT_SKULL},
+    {s_CacoDemon.c_str(), MT_HEAD},
+    {s_HellKnight.c_str(), MT_KNIGHT},
+    {s_Baron.c_str(), MT_BRUISER},
+    {s_Arach.c_str(), MT_BABY},
+    {s_PainElemental.c_str(), MT_PAIN},
+    {s_Revenant.c_str(), MT_UNDEAD},
+    {s_Mancubus.c_str(), MT_FATSO},
+    {s_ArchVile.c_str(), MT_VILE},
+    {s_Spider.c_str(), MT_SPIDER},
+    {s_CyberDemon.c_str(), MT_CYBORG},
+    {s_Hero.c_str(), MT_PLAYER},
 
     {NULL,(mobjtype_t)0}
 };
@@ -474,9 +448,9 @@ bool F_CastResponder (sf::Event* ev)
 }
 
 
-void F_CastPrint (char* text)
+void F_CastPrint (const char* text)
 {
-    char*	ch;
+    const char*	ch;
     int		c;
     int		cx;
     int		w;

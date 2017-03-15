@@ -73,13 +73,13 @@ void    (*messageRoutine)(int response);
 
 #define SAVESTRINGSIZE 	24
 
-char gammamsg[5][26] =
+const char* gammamsg[5] =
 {
-    GAMMALVL0,
-    GAMMALVL1,
-    GAMMALVL2,
-    GAMMALVL3,
-    GAMMALVL4
+    s_GammaLevelZero.c_str(),
+    s_GammaLevelOne.c_str(),
+    s_GammaLevelTwo.c_str(),
+    s_GammaLevelThree.c_str(),
+    s_GammaLevelFour.c_str()
 };
 
 // we are going to be entering a savegame string
@@ -489,7 +489,7 @@ void M_ReadSaveStrings(void)
         handle.open(name, std::ios::binary);
 		if (!handle.good())
 		{
-		    strcpy(&savegamestrings[i][0],EMPTYSTRING);
+		    strcpy(&savegamestrings[i][0],s_EmptySlot.c_str());
 		    LoadMenu[i].status = 0;
 		    continue;
 		}
@@ -555,7 +555,7 @@ void M_LoadGame (int choice)
 {
     if (netgame)
     {
-		M_StartMessage(LOADNET,NULL,false);
+		M_StartMessage(s_CantLoadNet,NULL,false);
 		return;
     }
 	
@@ -608,7 +608,7 @@ void M_SaveSelect(int choice)
     
     saveSlot = choice;
     strcpy(saveOldString,savegamestrings[choice]);
-    if (!strcmp(savegamestrings[choice],EMPTYSTRING))
+    if (!strcmp(savegamestrings[choice],s_EmptySlot.c_str()))
 		savegamestrings[choice][0] = 0;
 	saveCharIndex = strlen(savegamestrings[choice]);
 }
@@ -620,7 +620,7 @@ void M_SaveGame (int choice)
 {
     if (!usergame)
     {
-	M_StartMessage(SAVEDEAD,NULL,false);
+	M_StartMessage(s_CantSaveDead,NULL,false);
 	return;
     }
 	
@@ -666,7 +666,7 @@ void M_QuickSave(void)
 		quickSaveSlot = -2;	// means to pick a slot now
 		return;
     }
-    sprintf(tempstring,QSPROMPT,savegamestrings[quickSaveSlot]);
+    sprintf(tempstring,s_QsaveConfirm.c_str(),savegamestrings[quickSaveSlot]);
     M_StartMessage(tempstring,M_QuickSaveResponse,true);
 }
 
@@ -689,16 +689,16 @@ void M_QuickLoad(void)
 {
     if (netgame)
     {
-		M_StartMessage(QLOADNET,NULL,false);
+		M_StartMessage(s_CantQloadNet,NULL,false);
 		return;
     }
 	
     if (quickSaveSlot < 0)
     {
-		M_StartMessage(QSAVESPOT,NULL,false);
+		M_StartMessage(s_HaventPickedQsaveSlot,NULL,false);
 		return;
     }
-    sprintf(tempstring,QLPROMPT,savegamestrings[quickSaveSlot]);
+    sprintf(tempstring,s_QloadConfirm.c_str(),savegamestrings[quickSaveSlot]);
     M_StartMessage(tempstring,M_QuickLoadResponse,true);
 }
 
@@ -837,7 +837,7 @@ void M_NewGame(int choice)
 {
     if (netgame && !demoplayback)
     {
-	M_StartMessage(NEWGAME,NULL,false);
+	M_StartMessage(s_CantNewNet,NULL,false);
 	return;
     }
 
@@ -868,7 +868,7 @@ void M_ChooseSkill(int choice)
 {
     if (choice == nightmare)
     {
-	M_StartMessage( NIGHTMARE,M_VerifyNightmare,true);
+	M_StartMessage( s_NightmareConfirm,M_VerifyNightmare,true);
 	return;
     }
 	
@@ -881,7 +881,7 @@ void M_Episode(int choice)
 	if ((Game::gamemode == GameMode_t::shareware)
 		&& choice)
 	{
-		M_StartMessage(SWSTRING, NULL, false);
+		M_StartMessage(s_Shareware, NULL, false);
 		M_SetupNextMenu(&ReadDef1);
 		return;
 	}
@@ -941,9 +941,9 @@ void M_ChangeMessages(int choice)
     showMessages = 1 - showMessages;
 	
     if (!showMessages)
-	players[consoleplayer].message = MSGOFF;
+	players[consoleplayer].message = s_MessagesOff.c_str();
     else
-	players[consoleplayer].message = MSGON ;
+	players[consoleplayer].message = s_MessagesOn.c_str();
 
     message_dontfuckwithme = true;
 }
@@ -973,11 +973,11 @@ void M_EndGame(int choice)
 	
     if (netgame)
     {
-	M_StartMessage(NETEND,NULL,false);
+	M_StartMessage(s_CantEndNet,NULL,false);
 	return;
     }
 	
-    M_StartMessage(ENDGAME,M_EndGameResponse,true);
+    M_StartMessage(s_EndConfirm,M_EndGameResponse,true);
 }
 
 
@@ -1056,7 +1056,7 @@ void M_QuitResponse(int ch)
 
 void M_QuitDOOM(int choice)
 {
-    endstring = endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ] + "\n\n" + std::string(DOSY);
+    endstring = endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ] + "\n\n" + std::string(s_YtoQuit);
   
   M_StartMessage(endstring,M_QuitResponse,true);
 }

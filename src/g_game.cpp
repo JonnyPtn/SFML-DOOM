@@ -614,7 +614,7 @@ void G_Ticker (void)
 			&& !(gametic&31) && ((gametic>>5)&3) == i )
 		    {
 			static char turbomessage[80];
-			extern char *player_names[4];
+			extern const char *player_names[4];
 			sprintf (turbomessage, "%s is turbo!",player_names[i]);
 			players[consoleplayer].message = turbomessage;
 		    }
@@ -1242,7 +1242,7 @@ void G_DoSaveGame (void)
     gameaction = ga_nothing; 
     savedescription[0] = 0;		 
 	 
-    players[consoleplayer].message = GGSAVED; 
+    players[consoleplayer].message = s_GameSaved.c_str(); 
 
     // draw the pattern into the back screen
     R_FillBackScreen ();	

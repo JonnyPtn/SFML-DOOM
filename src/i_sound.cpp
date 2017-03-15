@@ -181,7 +181,7 @@ void I_Sound::startSound(void * origin_p, int sfx_id, int volume)
     sounds.back().first.play();
     if (origin && origin != players[consoleplayer].mo)
     {
-        sounds.back().first.setPosition(origin->x, origin->y, origin->z);
+        sounds.back().first.setPosition(static_cast<float>(origin->x), static_cast<float>(origin->y), static_cast<float>(origin->z));
 
         //some numbers to frig it a little
         sounds.back().first.setMinDistance(S_CLOSE_DIST);
@@ -240,7 +240,7 @@ void I_Sound::S_UpdateSounds(mobj_t * listener_p)
 
     if (listener_p)
     {
-        sf::Listener::setPosition(listener_p->x, listener_p->y, listener_p->z);
+        sf::Listener::setPosition(static_cast<float>(listener_p->x), static_cast<float>(listener_p->y), static_cast<float>(listener_p->z));
         auto angle(static_cast<float>(listener_p->angle) / std::numeric_limits<unsigned int>::max());
         auto degrees = angle*360.f;
 

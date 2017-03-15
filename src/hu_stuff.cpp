@@ -40,26 +40,26 @@ rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 
 
 
-char*	chat_macros[] =
+const char*	chat_macros[] =
 {
-    HUSTR_CHATMACRO0,
-    HUSTR_CHATMACRO1,
-    HUSTR_CHATMACRO2,
-    HUSTR_CHATMACRO3,
-    HUSTR_CHATMACRO4,
-    HUSTR_CHATMACRO5,
-    HUSTR_CHATMACRO6,
-    HUSTR_CHATMACRO7,
-    HUSTR_CHATMACRO8,
-    HUSTR_CHATMACRO9
+    s_ChatMacro0.c_str(),
+    s_ChatMacro1.c_str(),
+    s_ChatMacro2.c_str(),
+    s_ChatMacro3.c_str(),
+    s_ChatMacro4.c_str(),
+    s_ChatMacro5.c_str(),
+    s_ChatMacro6.c_str(),
+    s_ChatMacro7.c_str(),
+    s_ChatMacro8.c_str(),
+    s_ChatMacro9.c_str()
 };
 
-char*	player_names[] =
+const char*	player_names[] =
 {
-    HUSTR_PLRGREEN,
-    HUSTR_PLRINDIGO,
-    HUSTR_PLRBROWN,
-    HUSTR_PLRRED
+    s_PlayerGreen.c_str(),
+    s_PlayerIndigo.c_str(),
+    s_PlayerBrown.c_str(),
+    s_PlayerRed.c_str()
 };
 
 
@@ -90,48 +90,48 @@ static bool		headsupactive = false;
 // The actual names can be found in DStrings.h.
 //
 
-char*	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
+const char*	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
 {
 
-    HUSTR_E1M1,
-    HUSTR_E1M2,
-    HUSTR_E1M3,
-    HUSTR_E1M4,
-    HUSTR_E1M5,
-    HUSTR_E1M6,
-    HUSTR_E1M7,
-    HUSTR_E1M8,
-    HUSTR_E1M9,
+    s_E1M1.c_str(),
+    s_E1M2.c_str(),
+    s_E1M3.c_str(),
+    s_E1M4.c_str(),
+    s_E1M5.c_str(),
+    s_E1M6.c_str(),
+    s_E1M7.c_str(),
+    s_E1M8.c_str(),
+    s_E1M9.c_str(),
 
-    HUSTR_E2M1,
-    HUSTR_E2M2,
-    HUSTR_E2M3,
-    HUSTR_E2M4,
-    HUSTR_E2M5,
-    HUSTR_E2M6,
-    HUSTR_E2M7,
-    HUSTR_E2M8,
-    HUSTR_E2M9,
+    s_E2M1.c_str(),
+    s_E2M2.c_str(),
+    s_E2M3.c_str(),
+    s_E2M4.c_str(),
+    s_E2M5.c_str(),
+    s_E2M6.c_str(),
+    s_E2M7.c_str(),
+    s_E2M8.c_str(),
+    s_E2M9.c_str(),
 
-    HUSTR_E3M1,
-    HUSTR_E3M2,
-    HUSTR_E3M3,
-    HUSTR_E3M4,
-    HUSTR_E3M5,
-    HUSTR_E3M6,
-    HUSTR_E3M7,
-    HUSTR_E3M8,
-    HUSTR_E3M9,
+    s_E3M1.c_str(),
+    s_E3M2.c_str(),
+    s_E3M3.c_str(),
+    s_E3M4.c_str(),
+    s_E3M5.c_str(),
+    s_E3M6.c_str(),
+    s_E3M7.c_str(),
+    s_E3M8.c_str(),
+    s_E3M9.c_str(),
 
-    HUSTR_E4M1,
-    HUSTR_E4M2,
-    HUSTR_E4M3,
-    HUSTR_E4M4,
-    HUSTR_E4M5,
-    HUSTR_E4M6,
-    HUSTR_E4M7,
-    HUSTR_E4M8,
-    HUSTR_E4M9,
+    s_E4M1.c_str(),
+    s_E4M2.c_str(),
+    s_E4M3.c_str(),
+    s_E4M4.c_str(),
+    s_E4M5.c_str(),
+    s_E4M6.c_str(),
+    s_E4M7.c_str(),
+    s_E4M8.c_str(),
+    s_E4M9.c_str(),
 
     "NEWLEVEL",
     "NEWLEVEL",
@@ -144,120 +144,120 @@ char*	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
     "NEWLEVEL"
 };
 
-char*	mapnames2[] =	// DOOM 2 map names.
+const char*	mapnames2[] =	// DOOM 2 map names.
 {
-    HUSTR_1,
-    HUSTR_2,
-    HUSTR_3,
-    HUSTR_4,
-    HUSTR_5,
-    HUSTR_6,
-    HUSTR_7,
-    HUSTR_8,
-    HUSTR_9,
-    HUSTR_10,
-    HUSTR_11,
+    s_Level1.c_str(),
+    s_Level2.c_str(),
+    s_Level3.c_str(),
+    s_Level4.c_str(),
+    s_Level5.c_str(),
+    s_Level6.c_str(),
+    s_Level7.c_str(),
+    s_Level8.c_str(),
+    s_Level9.c_str(),
+    s_Level10.c_str(),
+    s_Level11.c_str(),
 	
-    HUSTR_12,
-    HUSTR_13,
-    HUSTR_14,
-    HUSTR_15,
-    HUSTR_16,
-    HUSTR_17,
-    HUSTR_18,
-    HUSTR_19,
-    HUSTR_20,
+    s_Level12.c_str(),
+    s_Level13.c_str(),
+    s_Level14.c_str(),
+    s_Level15.c_str(),
+    s_Level16.c_str(),
+    s_Level17.c_str(),
+    s_Level18.c_str(),
+    s_Level19.c_str(),
+    s_Level20.c_str(),
 	
-    HUSTR_21,
-    HUSTR_22,
-    HUSTR_23,
-    HUSTR_24,
-    HUSTR_25,
-    HUSTR_26,
-    HUSTR_27,
-    HUSTR_28,
-    HUSTR_29,
-    HUSTR_30,
-    HUSTR_31,
-    HUSTR_32
+    s_Level21.c_str(),
+    s_Level22.c_str(),
+    s_Level23.c_str(),
+    s_Level24.c_str(),
+    s_Level25.c_str(),
+    s_Level26.c_str(),
+    s_Level27.c_str(),
+    s_Level28.c_str(),
+    s_Level29.c_str(),
+    s_Level30.c_str(),
+    s_Level31.c_str(),
+    s_Level32.c_str()
 };
 
 
-char*	mapnamesp[] =	// Plutonia WAD map names.
+const char*	mapnamesp[] =	// Plutonia WAD map names.
 {
-    PHUSTR_1,
-    PHUSTR_2,
-    PHUSTR_3,
-    PHUSTR_4,
-    PHUSTR_5,
-    PHUSTR_6,
-    PHUSTR_7,
-    PHUSTR_8,
-    PHUSTR_9,
-    PHUSTR_10,
-    PHUSTR_11,
+    s_PlutLevel1.c_str(),
+    s_PlutLevel2.c_str(),
+    s_PlutLevel3.c_str(),
+    s_PlutLevel4.c_str(),
+    s_PlutLevel5.c_str(),
+    s_PlutLevel6.c_str(),
+    s_PlutLevel7.c_str(),
+    s_PlutLevel8.c_str(),
+    s_PlutLevel9.c_str(),
+    s_PlutLevel10.c_str(),
+    s_PlutLevel11.c_str(),
 	
-    PHUSTR_12,
-    PHUSTR_13,
-    PHUSTR_14,
-    PHUSTR_15,
-    PHUSTR_16,
-    PHUSTR_17,
-    PHUSTR_18,
-    PHUSTR_19,
-    PHUSTR_20,
+    s_PlutLevel12.c_str(),
+    s_PlutLevel13.c_str(),
+    s_PlutLevel14.c_str(),
+    s_PlutLevel15.c_str(),
+    s_PlutLevel16.c_str(),
+    s_PlutLevel17.c_str(),
+    s_PlutLevel18.c_str(),
+    s_PlutLevel19.c_str(),
+    s_PlutLevel20.c_str(),
 	
-    PHUSTR_21,
-    PHUSTR_22,
-    PHUSTR_23,
-    PHUSTR_24,
-    PHUSTR_25,
-    PHUSTR_26,
-    PHUSTR_27,
-    PHUSTR_28,
-    PHUSTR_29,
-    PHUSTR_30,
-    PHUSTR_31,
-    PHUSTR_32
+    s_PlutLevel21.c_str(),
+    s_PlutLevel22.c_str(),
+    s_PlutLevel23.c_str(),
+    s_PlutLevel24.c_str(),
+    s_PlutLevel25.c_str(),
+    s_PlutLevel26.c_str(),
+    s_PlutLevel27.c_str(),
+    s_PlutLevel28.c_str(),
+    s_PlutLevel29.c_str(),
+    s_PlutLevel30.c_str(),
+    s_PlutLevel31.c_str(),
+    s_PlutLevel32.c_str()
 };
 
 
-char *mapnamest[] =	// TNT WAD map names.
+const char *mapnamest[] =	// TNT WAD map names.
 {
-    THUSTR_1,
-    THUSTR_2,
-    THUSTR_3,
-    THUSTR_4,
-    THUSTR_5,
-    THUSTR_6,
-    THUSTR_7,
-    THUSTR_8,
-    THUSTR_9,
-    THUSTR_10,
-    THUSTR_11,
+    s_TNTLevel1.c_str(),
+    s_TNTLevel2.c_str(),
+    s_TNTLevel3.c_str(),
+    s_TNTLevel4.c_str(),
+    s_TNTLevel5.c_str(),
+    s_TNTLevel6.c_str(),
+    s_TNTLevel7.c_str(),
+    s_TNTLevel8.c_str(),
+    s_TNTLevel9.c_str(),
+    s_TNTLevel10.c_str(),
+    s_TNTLevel11.c_str(),
 	
-    THUSTR_12,
-    THUSTR_13,
-    THUSTR_14,
-    THUSTR_15,
-    THUSTR_16,
-    THUSTR_17,
-    THUSTR_18,
-    THUSTR_19,
-    THUSTR_20,
+    s_TNTLevel12.c_str(),
+    s_TNTLevel13.c_str(),
+    s_TNTLevel14.c_str(),
+    s_TNTLevel15.c_str(),
+    s_TNTLevel16.c_str(),
+    s_TNTLevel17.c_str(),
+    s_TNTLevel18.c_str(),
+    s_TNTLevel19.c_str(),
+    s_TNTLevel20.c_str(),
 	
-    THUSTR_21,
-    THUSTR_22,
-    THUSTR_23,
-    THUSTR_24,
-    THUSTR_25,
-    THUSTR_26,
-    THUSTR_27,
-    THUSTR_28,
-    THUSTR_29,
-    THUSTR_30,
-    THUSTR_31,
-    THUSTR_32
+    s_TNTLevel21.c_str(),
+    s_TNTLevel22.c_str(),
+    s_TNTLevel23.c_str(),
+    s_TNTLevel24.c_str(),
+    s_TNTLevel25.c_str(),
+    s_TNTLevel26.c_str(),
+    s_TNTLevel27.c_str(),
+    s_TNTLevel28.c_str(),
+    s_TNTLevel29.c_str(),
+    s_TNTLevel30.c_str(),
+    s_TNTLevel31.c_str(),
+    s_TNTLevel32.c_str()
 };
 
 
@@ -395,7 +395,7 @@ void HU_Start(void)
 {
 
     int		i;
-    char*	s;
+    const char*	s;
 
     if (headsupactive)
 	HU_Stop();
@@ -554,7 +554,7 @@ void HU_queueChatChar(char c)
 {
     if (((head + 1) & (QUEUESIZE-1)) == tail)
     {
-	plr->message = HUSTR_MSGU;
+	plr->message = s_MessageUnsent.c_str();
     }
     else
     {
@@ -584,7 +584,7 @@ bool HU_Responder(sf::Event *ev)
 {
 
     static char		lastmessage[HU_MAXLINELENGTH+1];
-    char*		macromessage;
+    const char*		macromessage;
     bool		eatkey = false;
     static bool	shiftdown = false;
     static bool	altdown = false;
@@ -592,12 +592,13 @@ bool HU_Responder(sf::Event *ev)
     int			i;
     int			numplayers;
     
-    static char		destination_keys[MAXPLAYERS] =
+    //pretty brutal hack here, todo: remove this entirely
+    static const char		destination_keys[MAXPLAYERS] =
     {
-	HUSTR_KEYGREEN,
-	HUSTR_KEYINDIGO,
-	HUSTR_KEYBROWN,
-	HUSTR_KEYRED
+	    s_KeyGreen[0],
+	    s_KeyIndigo[0],
+	    s_KeyBrown[0],
+	    s_KeyRed[0]
     };
     
     static int		num_nobrainers = 0;
@@ -651,15 +652,15 @@ bool HU_Responder(sf::Event *ev)
 		    {
 			num_nobrainers++;
 			if (num_nobrainers < 3)
-			    plr->message = HUSTR_TALKTOSELF1;
+			    plr->message = s_TalkToSelf1.c_str();
 			else if (num_nobrainers < 6)
-			    plr->message = HUSTR_TALKTOSELF2;
+			    plr->message = s_TalkToSelf.c_str();
 			else if (num_nobrainers < 9)
-			    plr->message = HUSTR_TALKTOSELF3;
+			    plr->message = s_TalkToSelf3.c_str();
 			else if (num_nobrainers < 32)
-			    plr->message = HUSTR_TALKTOSELF4;
+			    plr->message = s_TalkToSelf4.c_str();
 			else
-			    plr->message = HUSTR_TALKTOSELF5;
+			    plr->message = s_TalkToSelf5.c_str();
 		    }
 		}
 	    }

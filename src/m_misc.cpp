@@ -105,18 +105,7 @@ extern int	screenblocks;
 
 extern int	showMessages;
 
-// UNIX hack, to be removed.
-#ifdef SNDSERV
-extern char*	sndserver_filename;
-extern int	mb_used;
-#endif
-
-#ifdef LINUX
-char*		mousetype;
-char*		mousedev;
-#endif
-
-extern char*	chat_macros[];
+extern const char*	chat_macros[];
 
 
 
@@ -133,33 +122,6 @@ default_t	defaults[] =
 {
     {"mouse_sensitivity",&mouseSensitivity, 5},
     {"show_messages",&showMessages, 1},
-    
-
-//JONNY//#ifdef NORMALUNIX
-   /* {"key_right",&key_right, KEY_RIGHTARROW},
-    {"key_left",&key_left, KEY_LEFTARROW},
-    {"key_up",&key_up, KEY_UPARROW},
-    {"key_down",&key_down, KEY_DOWNARROW},
-    {"key_strafeleft",&key_strafeleft, sf::Keyboard::Comma},
-    {"key_straferight",&key_straferight, sf::Keyboard::Period},
-
-    {"key_fire",&key_fire, KEY_RCTRL},
-    {"key_use",&key_use, sf::Keyboard::Space},
-    {"key_strafe",&key_strafe, KEY_RALT},
-    {"key_speed",&key_speed, KEY_RSHIFT},*/
-
-// UNIX hack, to be removed. 
-#ifdef SNDSERV
-    {"sndserver", (int *) &sndserver_filename, (int) "sndserver"},
-    {"mb_used", &mb_used, 2},
-#endif
-    
-//JONNY//#endif
-
-#ifdef LINUX
-    {"mousedev", (int*)&mousedev, (int)"/dev/ttyS0"},
-    {"mousetype", (int*)&mousetype, (int)"microsoft"},
-#endif
 
     {"use_mouse",&usemouse, 1},
     {"mouseb_fire",&mousebfire,0},
@@ -173,16 +135,16 @@ default_t	defaults[] =
 
     {"usegamma",&usegamma, 0},
 
-    {"chatmacro0", (int *) &chat_macros[0], (std::intptr_t) HUSTR_CHATMACRO0 },
-    {"chatmacro1", (int *) &chat_macros[1], (std::intptr_t) HUSTR_CHATMACRO1 },
-    {"chatmacro2", (int *) &chat_macros[2], (std::intptr_t) HUSTR_CHATMACRO2 },
-    {"chatmacro3", (int *) &chat_macros[3], (std::intptr_t) HUSTR_CHATMACRO3 },
-    {"chatmacro4", (int *) &chat_macros[4], (std::intptr_t) HUSTR_CHATMACRO4 },
-    {"chatmacro5", (int *) &chat_macros[5], (std::intptr_t) HUSTR_CHATMACRO5 },
-    {"chatmacro6", (int *) &chat_macros[6], (std::intptr_t) HUSTR_CHATMACRO6 },
-    {"chatmacro7", (int *) &chat_macros[7], (std::intptr_t) HUSTR_CHATMACRO7 },
-    {"chatmacro8", (int *) &chat_macros[8], (std::intptr_t) HUSTR_CHATMACRO8 },
-    {"chatmacro9", (int *) &chat_macros[9], (std::intptr_t) HUSTR_CHATMACRO9 }
+    {"chatmacro0", (int *) &chat_macros[0], (std::intptr_t) s_ChatMacro0.c_str() },
+    {"chatmacro1", (int *) &chat_macros[1], (std::intptr_t) s_ChatMacro1.c_str() },
+    {"chatmacro2", (int *) &chat_macros[2], (std::intptr_t) s_ChatMacro2.c_str() },
+    {"chatmacro3", (int *) &chat_macros[3], (std::intptr_t) s_ChatMacro3.c_str() },
+    {"chatmacro4", (int *) &chat_macros[4], (std::intptr_t) s_ChatMacro4.c_str() },
+    {"chatmacro5", (int *) &chat_macros[5], (std::intptr_t) s_ChatMacro5.c_str() },
+    {"chatmacro6", (int *) &chat_macros[6], (std::intptr_t) s_ChatMacro6.c_str() },
+    {"chatmacro7", (int *) &chat_macros[7], (std::intptr_t) s_ChatMacro7.c_str() },
+    {"chatmacro8", (int *) &chat_macros[8], (std::intptr_t) s_ChatMacro8.c_str() },
+    {"chatmacro9", (int *) &chat_macros[9], (std::intptr_t) s_ChatMacro9.c_str() }
 
 };
 

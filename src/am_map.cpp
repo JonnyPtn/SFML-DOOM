@@ -576,20 +576,20 @@ bool AM_Responder( sf::Event& ev )
 		  case sf::Keyboard::F:
 		    followplayer = !followplayer;
 		    f_oldloc.x = std::numeric_limits<int>::max();
-		    plr->message = followplayer ? AMSTR_FOLLOWON : AMSTR_FOLLOWOFF;
+		    plr->message = followplayer ? s_FollowOn.c_str() : s_FollowOff.c_str();
 		    break;
 		  case sf::Keyboard::G:
 		    grid = !grid;
-		    plr->message = grid ? AMSTR_GRIDON : AMSTR_GRIDOFF;
+		    plr->message = grid ? s_GridOn.c_str() : s_GridOff.c_str();
 		    break;
 		  case sf::Keyboard::M:
-		    sprintf(buffer, "%s %d", AMSTR_MARKEDSPOT, markpointnum);
+		    sprintf(buffer, "%s %d", s_MarkedSpot.c_str(), markpointnum);
 		    plr->message = buffer;
 		    AM_addMark();
 		    break;
 		  case sf::Keyboard::C:
 		    AM_clearMarks();
-		    plr->message = AMSTR_MARKSCLEARED;
+		    plr->message = s_MarksCleared.c_str();
 		    break;
 		  default:
 		    cheatstate=0;

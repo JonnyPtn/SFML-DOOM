@@ -525,10 +525,10 @@ ST_Responder (sf::Event* ev)
 						plyr->mo->health = 100;
 					
 					plyr->health = 100;
-					plyr->message = STSTR_DQDON;
+					plyr->message = s_DegreelessOn.c_str();
 				}
 				else 
-					plyr->message = STSTR_DQDOFF;
+					plyr->message = s_DegreelessOff.c_str();
 			}
 			// 'fa' cheat for killer fucking arsenal
 			else if (cht_CheckCheat(cheat_ammonokey, ev))
@@ -542,7 +542,7 @@ ST_Responder (sf::Event* ev)
 				for (i=0;i<NUMAMMO;i++)
 					plyr->ammo[i] = plyr->maxammo[i];
 				
-				plyr->message = STSTR_FAADDED;
+				plyr->message = s_AmmoAdded.c_str();
 			}
 			// 'kfa' cheat for key full ammo
 			else if (cht_CheckCheat(cheat_ammo, ev))
@@ -559,7 +559,7 @@ ST_Responder (sf::Event* ev)
 				for (i = 0; i < NUMCARDS; i++)
 					plyr->cards[i] = true;
 
-				plyr->message = STSTR_KFAADDED;
+				plyr->message = s_VeryHappyAmmoAdded.c_str();
 			}
 			// 'mus' cheat for changing music
 			/*else if (cht_CheckCheat(&cheat_mus, ev->key.code))
@@ -598,9 +598,9 @@ ST_Responder (sf::Event* ev)
 				plyr->cheats ^= CF_NOCLIP;
 		
 				if (plyr->cheats & CF_NOCLIP)
-					plyr->message = STSTR_NCON;
+					plyr->message = s_NoClipOn.c_str();
 				else
-					plyr->message = STSTR_NCOFF;
+					plyr->message = s_NoClipOff.c_str();
 			}
 			// 'behold?' power-up cheats
 			for (i=0;i<6;i++)
@@ -614,21 +614,21 @@ ST_Responder (sf::Event* ev)
 				  else
 				    plyr->powers[i] = 0;
 				  
-				  plyr->message = STSTR_BEHOLDX;
+				  plyr->message = s_BeholdX.c_str();
 				}
 			}
 		  
 			// 'behold' power-up menu
 			if (cht_CheckCheat(cheat_powerup[6], ev))
 			{
-				plyr->message = STSTR_BEHOLD;
+				plyr->message = s_Behold.c_str();
 			}
 			// 'choppers' invulnerability & chainsaw
 			else if (cht_CheckCheat(cheat_choppers, ev))
 			{
 				plyr->weaponowned[wp_chainsaw] = true;
 				plyr->powers[pw_invulnerability] = true;
-				plyr->message = STSTR_CHOPPERS;
+				plyr->message = s_Choppers.c_str();
 			}
 			// 'mypos' for player position
 			else if (cht_CheckCheat(cheat_mypos, ev))
@@ -687,7 +687,7 @@ ST_Responder (sf::Event* ev)
 				return false;
 		
 			// So be it.
-			plyr->message = STSTR_CLEV;
+			plyr->message = s_ChangeLevel.c_str();
 			G_DeferedInitNew(gameskill, epsd, map);
 		}    
 	}
