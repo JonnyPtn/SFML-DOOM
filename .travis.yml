@@ -22,6 +22,7 @@ addons:
     - libfreetype6-dev
     - libvorbis-dev
     - libflac-dev
+    - cmake
 
 
 install: 
