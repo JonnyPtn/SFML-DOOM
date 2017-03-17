@@ -20,6 +20,7 @@ addons:
     - libudev-dev
     - libxrandr-dev
     - libfreetype6-dev
+    - libvorbis-dev
 
 
 install: 
