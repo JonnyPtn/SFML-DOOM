@@ -35,5 +35,5 @@ install:
 script:
   - mkdir build
   - cd build
-  - cmake .. -DSFML_ROOT=../sfml/install
+  - cmake .. -DSFML_ROOT=./sfml/install
   - make
