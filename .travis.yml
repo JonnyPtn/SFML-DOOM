@@ -28,7 +28,7 @@ install:
   - git clone https://github.com/sfml/sfml
   - cd sfml
   - mkdir install
-  - cmake . -DCMAKE_INSTALL_PREFIX=./install
+  - cmake . -DCMAKE_INSTALL_PREFIX=./install -DSFML_BUILD_FRAMEWORKS=FALSE
   - make install
   - cd ../
 
