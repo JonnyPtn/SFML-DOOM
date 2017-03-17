@@ -21,6 +21,7 @@ addons:
     - libxrandr-dev
     - libfreetype6-dev
     - libvorbis-dev
+    - libflac-dev
 
 
 install: 
