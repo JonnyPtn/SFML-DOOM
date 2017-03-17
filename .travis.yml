@@ -13,6 +13,7 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
+    - kalakris-cmake
     packages:
     #SFML dependencies:
     - libopenal-dev
