@@ -25,7 +25,7 @@ addons:
 
 
 install: 
-  - git clone https://github.com/sfml/sfml
+  - git clone -b cmakefix https://github.com/jonnyptn/sfml
   - cd sfml
   - mkdir install
   - cmake . -DCMAKE_INSTALL_PREFIX=./install -DSFML_BUILD_FRAMEWORKS=FALSE -DBUILD_SHARED_LIBS=TRUE
