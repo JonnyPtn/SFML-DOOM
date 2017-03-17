@@ -9,8 +9,18 @@ compiler:
   - gcc
   - clang
 
-before_install:
-  - apt-get install libudev-dev
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    #SFML dependencies:
+    - libopenal-dev
+    - libjpeg-dev
+    - libudev-dev
+    - libxrandr-dev
+    - libfreetype6-dev
+
 
 install: 
   - git clone https://github.com/sfml/sfml
