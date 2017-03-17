@@ -13,7 +13,6 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - kalakris-cmake
     packages:
     #SFML dependencies:
     - libopenal-dev
@@ -23,14 +22,13 @@ addons:
     - libfreetype6-dev
     - libvorbis-dev
     - libflac-dev
-    - cmake
 
 
 install: 
   - git clone https://github.com/sfml/sfml
   - cd sfml
   - mkdir install
-  - cmake . -DCMAKE_INSTALL_PATH=./install
+  - cmake . -DCMAKE_INSTALL_PREFIX=./install
   - make install
   - cd ../
 
