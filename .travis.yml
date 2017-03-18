@@ -27,6 +27,7 @@ addons:
 
 
 install: 
+  - export CXX="g++-5"
   - git clone -b cmakefix https://github.com/jonnyptn/sfml
   - cd sfml
   - mkdir install
