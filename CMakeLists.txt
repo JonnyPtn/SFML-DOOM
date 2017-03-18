@@ -12,7 +12,7 @@ set (CMAKE_CXX_STANDARD 11)
 
 #for backwards compatibility
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-std=c++11" "-fno-strict-aliasing")
+    set(CMAKE_CXX_FLAGS "-std=c++11 -fno-strict-aliasing")
 endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${SFML_INCLUDE_DIR})
