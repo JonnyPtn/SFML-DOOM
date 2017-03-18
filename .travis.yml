@@ -22,6 +22,8 @@ addons:
     - libfreetype6-dev
     - libvorbis-dev
     - libflac-dev
+    - gcc-5
+    - g++-5
 
 
 install: 
