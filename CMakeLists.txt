@@ -11,7 +11,7 @@ file(GLOB SOURCE "src/*.h" "src/*.hpp" "src/*.cpp" "src/timidity/*.cpp" "src/tim
 set (CMAKE_CXX_STANDARD 11)
 
 #for backwards compatibility
-if(CMAKE_COMPILER_IS_GNUXX)
+if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "-std=c++11" "-fno-strict-aliasing")
 endif()
 
