@@ -11,7 +11,9 @@ file(GLOB SOURCE "src/*.h" "src/*.hpp" "src/*.cpp" "src/timidity/*.cpp" "src/tim
 set (CMAKE_CXX_STANDARD 11)
 
 #for backwards compatibility
-set(CMAKE_CXX_FLAGS "-std=c++11")
+if(CMAKE_COMPILER_IS_GNUXX)
+    set(CMAKE_CXX_FLAGS "-std=c++11" "-fno-strict-aliasing")
+endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${SFML_INCLUDE_DIR})
 add_executable(SFML-DOOM ${SOURCE})
