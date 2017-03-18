@@ -28,7 +28,7 @@ addons:
 
 install: 
   #Update the g++ symbol first
-  - if [ "$CXX" == "g++" ]; then export CXX="g++-5"
+  - if [ "$CXX" == "g++" ]; then export CXX="g++-5"; fi
   - git clone -b cmakefix https://github.com/jonnyptn/sfml
   - cd sfml
   - mkdir install
