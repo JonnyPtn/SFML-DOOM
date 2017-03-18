@@ -1,6 +1,6 @@
 # SFML-DOOM
 [![Build status](https://img.shields.io/appveyor/ci/jonnyptn/sfml-doom.svg?label=windows)](https://ci.appveyor.com/project/JonnyPtn/sfml-doom)
-[![](https://img.shields.io/codeship/9687c4c0-e4f1-0134-823a-4a091761e024/master.svg?label=linux)](https://app.codeship.com/projects/206363)
+[![Build Status](https://img.shields.io/travis/JonnyPtn/SFML-DOOM.svg?label=linux+and+macOS)](https://travis-ci.org/JonnyPtn/SFML-DOOM)
 
 Original DOOM source code adapted to use c++ (as modern as possible...).
 
