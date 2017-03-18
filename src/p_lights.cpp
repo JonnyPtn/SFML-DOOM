@@ -1,5 +1,3 @@
-
-#include <malloc.h>
 #include "m_random.hpp"
 
 #include "doomdef.hpp"
