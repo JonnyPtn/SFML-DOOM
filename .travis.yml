@@ -1,16 +1,13 @@
 language:
-  - cpp
-
-os: 
-  - linux
-  - osx
-
+- cpp
+os:
+- linux
+- osx
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    #SFML dependencies:
     - libopenal-dev
     - libjpeg-dev
     - libudev-dev
@@ -20,20 +17,28 @@ addons:
     - libflac-dev
     - gcc-5
     - g++-5
-
-install: 
-  #Update the g++ symbol for linux
-  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then export CXX="g++-5"; fi
-  - git clone -b cmakefix https://github.com/jonnyptn/sfml
-  - cd sfml
-  - curl https://gitlab.peach-bun.com/pinion/SFML/commit/3383b4a472f0bd16a8161fb8760cd3e6333f1782.patch | patch -p1
-  - mkdir install
-  - cmake . -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_INSTALL_FRAMEWORK_PREFIX=./install -DSFML_BUILD_FRAMEWORKS=FALSE -DBUILD_SHARED_LIBS=TRUE
-  - make install
-  - cd ../
-
+install:
+- if [ "$TRAVIS_OS_NAME" == "linux" ]; then export CXX="g++-5"; fi
+- git clone -b cmakefix https://github.com/jonnyptn/sfml
+- cd sfml
+- curl https://gitlab.peach-bun.com/pinion/SFML/commit/3383b4a472f0bd16a8161fb8760cd3e6333f1782.patch
+  | patch -p1
+- mkdir install
+- cmake . -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_INSTALL_FRAMEWORK_PREFIX=./install
+  -DSFML_BUILD_FRAMEWORKS=FALSE -DBUILD_SHARED_LIBS=TRUE
+- make install
+- cd ../
 script:
-  - mkdir build
-  - cd build
-  - cmake .. -DSFML_ROOT=./sfml/install
-  - make
+- mkdir build
+- cd build
+- cmake .. -DSFML_ROOT=./sfml/install
+- make
+deploy:
+  provider: releases
+  api_key:
+    secure: gAxBTg9xwuf5ZrWnB8V+g0xue8kswJGxyI4gEQPRIcLlrZDTMVyaNm7LR8lisf0alnoFCeHw5x7TBAYBg57lHnIx05egkoQUwBywtHgTkqawWoPepaZeB6kRkKBASn7xoD2ypoC3NS6+WLJQdVW+ndw/LYThJmDvu0HJe81msSIQrWcCqLAGpwJxIR1H17+sX2GGLr4XomYayjy9RbAmPDpxcnf5l2dgMIOVCocSyefn8FFR0gI4H9PdBpRjq5YpJEcj+7FHSPqrfhKRcG8EXMCSWIQjyeHAGd88awbnNjU9QUqcSqK/s833SoKd1cLNNTUYhlawc7pyy4HsQDJIqkU1KZ6Dp23UlUeKav2ur0WhEekpd+iRuNZFig7SdKir8XF4JmnmeEPvOJDDKmx+/TeA1j8Q+GIL6FpU+UGcnx8hUWajd3Gxec4qR/IEWO+6OpFJ8SOf54glkx9dPpdjwUQ3ud0A04NsvY3/oMe5NXzsi+LDo31/6bbIG/OHsJRxxOVdi9s99QTRVS7HSt+SIU8de6JddWeu+bpFUB0PFGqaUOMzd1LnV1B6B6b/AlaB8RSGeNKSU9+DT+cdr78TwkMYDzhps+eyQk86ONrnPAJwL46Uz9g6QVd4i0a6xphMxKrBdhRLRM0H+bcjgu8F7GGKL/FBC/JBW9D+nXhU+94=
+  file: 
+    - "./SFML-DOOM"
+    - "./doom1.wad"
+  on:
+    tags: true
