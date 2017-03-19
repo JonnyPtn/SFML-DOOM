@@ -34,7 +34,7 @@ script:
 - cmake .. -DSFML_ROOT=./sfml/install
 - make
 before_deploy:
-  - zip SFML_DOOM_$TRAVIS_OS_NAME ./SFML-DOOM ../doom1.wad ../eawpats -r
+  - zip SFML-DOOM_$TRAVIS_OS_NAME ./SFML-DOOM ../doom1.wad ../eawpats -r
   - ls # To check the zip file is created correctly
 deploy:
   skip_cleanup: true
