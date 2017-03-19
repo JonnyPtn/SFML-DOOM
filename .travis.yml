@@ -33,12 +33,13 @@ script:
 - cd build
 - cmake .. -DSFML_ROOT=./sfml/install
 - make
+before_deploy:
+  - zip SFML_DOOM_$TRAVIS_OS_NAME ./SFML-DOOM ../doom1.wad ../eawpats -r
 deploy:
   provider: releases
   api_key:
     secure: gAxBTg9xwuf5ZrWnB8V+g0xue8kswJGxyI4gEQPRIcLlrZDTMVyaNm7LR8lisf0alnoFCeHw5x7TBAYBg57lHnIx05egkoQUwBywtHgTkqawWoPepaZeB6kRkKBASn7xoD2ypoC3NS6+WLJQdVW+ndw/LYThJmDvu0HJe81msSIQrWcCqLAGpwJxIR1H17+sX2GGLr4XomYayjy9RbAmPDpxcnf5l2dgMIOVCocSyefn8FFR0gI4H9PdBpRjq5YpJEcj+7FHSPqrfhKRcG8EXMCSWIQjyeHAGd88awbnNjU9QUqcSqK/s833SoKd1cLNNTUYhlawc7pyy4HsQDJIqkU1KZ6Dp23UlUeKav2ur0WhEekpd+iRuNZFig7SdKir8XF4JmnmeEPvOJDDKmx+/TeA1j8Q+GIL6FpU+UGcnx8hUWajd3Gxec4qR/IEWO+6OpFJ8SOf54glkx9dPpdjwUQ3ud0A04NsvY3/oMe5NXzsi+LDo31/6bbIG/OHsJRxxOVdi9s99QTRVS7HSt+SIU8de6JddWeu+bpFUB0PFGqaUOMzd1LnV1B6B6b/AlaB8RSGeNKSU9+DT+cdr78TwkMYDzhps+eyQk86ONrnPAJwL46Uz9g6QVd4i0a6xphMxKrBdhRLRM0H+bcjgu8F7GGKL/FBC/JBW9D+nXhU+94=
   file: 
-    - "./SFML-DOOM"
-    - "../doom1.wad"
+    - ./SFML-DOOM_$TRAVIS_OS_NAME.zip
   on:
     tags: true
