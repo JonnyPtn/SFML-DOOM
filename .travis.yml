@@ -43,3 +43,4 @@ deploy:
     - ./SFML-DOOM_$TRAVIS_OS_NAME.zip
   on:
     tags: true
+    skip_cleanup: true

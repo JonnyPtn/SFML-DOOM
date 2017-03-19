@@ -513,9 +513,9 @@ void AM_maxOutWindowScale(void)
 bool AM_Responder( sf::Event& ev )
 {
     int rc;
-    static int cheatstate=0;
-    static int bigstate=0;
-    static char buffer[20];
+    int cheatstate=0;
+    int bigstate=0;
+    char buffer[20];
 
     rc = false;
 
