@@ -19,7 +19,7 @@ addons:
     - g++-5
 install:
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then export CXX="g++-5"; fi
-- git clone -b cmakefix https://github.com/jonnyptn/sfml
+- git clone https://github.com/jonnyptn/sfml
 - cd sfml
 - curl https://gitlab.peach-bun.com/pinion/SFML/commit/3383b4a472f0bd16a8161fb8760cd3e6333f1782.patch
   | patch -p1
