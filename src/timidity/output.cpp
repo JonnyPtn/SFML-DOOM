@@ -24,7 +24,7 @@ Audio output (to file / device) functions.
 
 #include "config.h"
 #include "output.h"
-#include "../tables.hpp"
+#include "tables.hpp"
 
 
 #ifdef SDL

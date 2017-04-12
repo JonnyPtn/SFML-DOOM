@@ -33,7 +33,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "output.h"
 #include "controls.h"
 #include "timidity.h"
-#include "../tables.hpp"
+#include "tables.hpp"
 
 
 //void *Real_Tim_Malloc( int sz );

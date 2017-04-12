@@ -35,7 +35,7 @@ playmidi.c -- random stuff in need of rearrangement
 #include "controls.h"
 #include "timidity.h"
 
-#include "../tables.hpp"
+#include "tables.hpp"
 
 #include "structs.h"
 

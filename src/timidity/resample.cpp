@@ -30,7 +30,7 @@ resample.c
 #include "playmidi.h"
 #include "output.h"
 #include "controls.h"
-#include "../tables.hpp"
+#include "tables.hpp"
 #include "resample.h"
 
 #ifdef LINEAR_INTERPOLATION

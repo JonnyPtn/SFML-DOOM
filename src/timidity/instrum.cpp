@@ -37,7 +37,7 @@ Code to load and unload GUS-compatible instrument patches.
 #include "playmidi.h"
 #include "output.h"
 #include "resample.h"
-#include "../tables.hpp"
+#include <tables.hpp>
 #include "filter.h"
 
 

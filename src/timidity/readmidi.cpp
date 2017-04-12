@@ -31,7 +31,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "playmidi.h"
 #include "readmidi.h"
 #include "output.h"
-#include "../m_argv.hpp"
+#include "m_argv.hpp"
 
 
 void Real_Tim_Free(void *pt);

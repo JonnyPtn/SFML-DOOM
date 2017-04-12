@@ -31,7 +31,7 @@ mix.c */
 #include "playmidi.h"
 #include "output.h"
 #include "controls.h"
-#include "../tables.hpp"
+#include "tables.hpp"
 #include "resample.h"
 #include "mix.h"
 
