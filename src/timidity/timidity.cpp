@@ -25,14 +25,14 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <fstream>
 
 //#include "SDL.h"
-#include "config.h"
-#include "common.h"
-#include "instrum.h"
-#include "playmidi.h"
-#include "readmidi.h"
-#include "output.h"
-#include "controls.h"
-#include "timidity.h"
+#include <timidity/config.h>
+#include <timidity/common.h>
+#include <timidity/instrum.h>
+#include <timidity/playmidi.h>
+#include <timidity/readmidi.h>
+#include <timidity/output.h>
+#include <timidity/controls.h>
+#include <timidity/timidity.h>
 #include "tables.hpp"
 
 

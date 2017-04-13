@@ -21,7 +21,7 @@ playmidi.h
 
 */
 
-#include "structs.h"
+#include <timidity/structs.h>
 
 /* Midi events */
 #define ME_NONE 	0

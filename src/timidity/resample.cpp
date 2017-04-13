@@ -24,14 +24,14 @@ resample.c
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "config.h"
-#include "common.h"
-#include "instrum.h"
-#include "playmidi.h"
-#include "output.h"
-#include "controls.h"
+#include <timidity/config.h>
+#include <timidity/common.h>
+#include <timidity/instrum.h>
+#include <timidity/playmidi.h>
+#include <timidity/output.h>
+#include <timidity/controls.h>
 #include "tables.hpp"
-#include "resample.h"
+#include <timidity/resample.h>
 
 #ifdef LINEAR_INTERPOLATION
 # if defined(LOOKUP_HACK) && defined(LOOKUP_INTERPOLATION)

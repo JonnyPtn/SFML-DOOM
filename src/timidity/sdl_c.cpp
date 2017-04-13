@@ -27,12 +27,12 @@ Minimal control mode -- no interaction, just stores messages.
 #include <string.h>
 #include <iostream>
 
-#include "config.h"
-#include "common.h"
-#include "output.h"
-#include "controls.h"
-#include "instrum.h"
-#include "playmidi.h"
+#include <timidity/config.h>
+#include <timidity/common.h>
+#include <timidity/output.h>
+#include <timidity/controls.h>
+#include <timidity/instrum.h>
+#include <timidity/playmidi.h>
 
 static void ctl_refresh(void);
 static void ctl_total_time(int tt);

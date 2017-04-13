@@ -32,7 +32,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #define AUDIO_U16	AUDIO_U16LSB
 #define AUDIO_S16	AUDIO_S16LSB
 
-#include "structs.h"
+#include <timidity/structs.h>
 
 typedef struct _MidiSong MidiSong;
 

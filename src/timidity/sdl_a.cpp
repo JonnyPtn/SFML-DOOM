@@ -23,8 +23,8 @@ Functions to output RIFF WAVE format data to a file or stdout.
 
 */
 
-#include "config.h"
-#include "output.h"
+#include <timidity/config.h>
+#include <timidity/output.h>
 
 /* export the playback mode */
 

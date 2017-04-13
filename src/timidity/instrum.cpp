@@ -31,14 +31,14 @@ Code to load and unload GUS-compatible instrument patches.
 #include <vector>
 #include <cstring>
 
-#include "config.h"
-#include "common.h"
-#include "instrum.h"
-#include "playmidi.h"
-#include "output.h"
-#include "resample.h"
+#include <timidity/config.h>
+#include <timidity/common.h>
+#include <timidity/instrum.h>
+#include <timidity/playmidi.h>
+#include <timidity/output.h>
+#include <timidity/resample.h>
 #include <tables.hpp>
-#include "filter.h"
+#include <timidity/filter.h>
 
 
 

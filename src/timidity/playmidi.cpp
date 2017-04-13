@@ -25,19 +25,19 @@ playmidi.c -- random stuff in need of rearrangement
 #include <stdlib.h>
 #include <string.h>
 
-#include "config.h"
-#include "common.h"
-#include "instrum.h"
-#include "playmidi.h"
-#include "readmidi.h"
-#include "output.h"
-#include "mix.h"
-#include "controls.h"
-#include "timidity.h"
+#include <timidity/config.h>
+#include <timidity/common.h>
+#include <timidity/instrum.h>
+#include <timidity/playmidi.h>
+#include <timidity/readmidi.h>
+#include <timidity/output.h>
+#include <timidity/mix.h>
+#include <timidity/controls.h>
+#include <timidity/timidity.h>
 
 #include "tables.hpp"
 
-#include "structs.h"
+#include <timidity/structs.h>
 
 //void Real_Tim_Free( void *pt );
 

@@ -21,7 +21,7 @@ output.h
 
 */
 #include <stdio.h>
-#include "timidity.h"
+#include <timidity/timidity.h>
 /* Data format encoding bits */
 
 #define PE_MONO 	0x01  /* versus stereo */

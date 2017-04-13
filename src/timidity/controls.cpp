@@ -21,8 +21,8 @@ controls.c
 
 */
 
-#include "config.h"
-#include "controls.h"
+#include <timidity/config.h>
+#include <timidity/controls.h>
 
 #ifdef SDL
 extern ControlMode sdl_control_mode;

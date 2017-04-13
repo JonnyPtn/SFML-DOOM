@@ -25,15 +25,15 @@ mix.c */
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "config.h"
-#include "common.h"
-#include "instrum.h"
-#include "playmidi.h"
-#include "output.h"
-#include "controls.h"
+#include <timidity/config.h>
+#include <timidity/common.h>
+#include <timidity/instrum.h>
+#include <timidity/playmidi.h>
+#include <timidity/output.h>
+#include <timidity/controls.h>
 #include "tables.hpp"
-#include "resample.h"
-#include "mix.h"
+#include <timidity/resample.h>
+#include <timidity/mix.h>
 
 /* Returns 1 if envelope runs out */
 int recompute_envelope(int v)

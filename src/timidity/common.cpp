@@ -26,9 +26,9 @@ common.c
 #include <string.h>
 
 #include <errno.h>
-#include "config.h"
-#include "common.h"
-#include "output.h"
+#include <timidity/config.h>
+#include <timidity/common.h>
+#include <timidity/output.h>
 
 /* I guess "rb" should be right for any libc */
 #define OPEN_MODE "rb"

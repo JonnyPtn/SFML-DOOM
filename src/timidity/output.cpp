@@ -22,8 +22,8 @@ output.c
 Audio output (to file / device) functions.
 */
 
-#include "config.h"
-#include "output.h"
+#include <timidity/config.h>
+#include <timidity/output.h>
 #include "tables.hpp"
 
 

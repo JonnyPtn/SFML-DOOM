@@ -34,10 +34,10 @@ April 95
 #include <math.h>
 #include <stdlib.h>
 #include <iostream>
-#include "config.h"
-#include "common.h"
-#include "instrum.h"
-#include "filter.h"
+#include <timidity/config.h>
+#include <timidity/common.h>
+#include <timidity/instrum.h>
+#include <timidity/filter.h>
 
 void Real_Tim_Free( void *pt );
 
