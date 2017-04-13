@@ -1,6 +1,8 @@
 #define	BGCOLOR		7
 #define	FGCOLOR		8
 
+#include <iostream>
+
 #include "doomdef.hpp"
 #include "doomstat.hpp"
 
@@ -424,7 +426,7 @@ void D_StartTitle (void)
 }
 
 //      print title for every printed line
-char            title[128];
+std::string title;
 
 //
 // D_AddFile
@@ -529,7 +531,7 @@ void IdentifyVersion (void)
 void D_DoomMain (void)
 {
     int             p;
-    char            file[256];
+    std::string            file[256];
 
 	
     IdentifyVersion ();
@@ -544,44 +546,28 @@ void D_DoomMain (void)
 
     switch (Game::gamemode )
     {
+
     case GameMode_t::retail:
-		sprintf (title,
-			 "                         "
-			 "The Ultimate DOOM Startup v%i.%i"
-			 "                           ",
-			 0,1);
+        title = "\n The Ultimate SFML-DOOM Startup \n\n";
 		break;
+
     case GameMode_t::shareware:
-		sprintf (title,
-			 "                            "
-			 "DOOM Shareware Startup v%i.%i"
-			 "                           ",
-			 0,1);
+        title = "\n SFML-DOOM Shareware Startup \n\n";
 		break;
+
     case GameMode_t::registered:
-		sprintf (title,
-			 "                            "
-			 "DOOM Registered Startup v%i.%i"
-			 "                           ",
-			0, 1);
+        title = "\n SFML-DOOM Registered Startup \n\n";
 		break;
     case GameMode_t::commercial:
-		sprintf (title,
-			 "                         "
-			 "DOOM 2: Hell on Earth v%i.%i"
-			 "                           ",
-			0, 1);
+        title = "\n SFML-DOOM 2: Hell on Earth \n\n";
 		break;
+
      default:
-		sprintf (title,
-			 "                     "
-			 "Public DOOM - v%i.%i"
-			 "                           ",
-			0, 1);
+		title = "\n Public DOOM \n\n";
 		break;
     }
     
-    printf ("%s\n",title);
+    std::cout << title;
     
     // turbo option
     if ( (p= CmdParameters::M_CheckParm ("-turbo")) )
@@ -602,41 +588,7 @@ void D_DoomMain (void)
 		sidemove[0] = sidemove[0]*scale/100;
 		sidemove[1] = sidemove[1]*scale/100;
     }
-    
-    // add any files specified on the command line with -file wadfile
-    // to the wad list
-    //
-    // convenience hack to allow -wart e m to add a wad file
-    // prepend a tilde to the filename so wadfile will be reloadable
-    p = CmdParameters::M_CheckParm ("-wart");
-    if (p)
-    {
-		CmdParameters::myargv[p][4] = 'p';     // big hack, change to -warp
-
-		// Map name handling.
-		switch (Game::gamemode )
-		{
-		case GameMode_t::shareware:
-		case GameMode_t::retail:
-		case GameMode_t::registered:
-		    sprintf (file,"~\"DEVMAPS\"E%cM%c.wad",
-				CmdParameters::myargv[p+1][0], CmdParameters::myargv[p+2][0]);
-		    printf("Warping to Episode %s, Map %s.\n",
-				CmdParameters::myargv[p+1].c_str(), CmdParameters::myargv[p+2].c_str());
-		    break;
-		    
-		case GameMode_t::commercial:
-		default:
-		    p = atoi (CmdParameters::myargv[p+1].c_str());
-		    if (p<10)
-				sprintf (file,"~\"DEVMAPS\"cdata/map0%i.wad", p);
-		    else
-				sprintf (file,"~\"DEVMAPS\"cdata/map%i.wad", p);
-		    break;
-		}
-		D_AddFile (file);
-    }
-	
+  
     p = CmdParameters::M_CheckParm ("-file");
     if (p)
     {
@@ -654,9 +606,10 @@ void D_DoomMain (void)
 
     if (p && p < CmdParameters::myargc-1)
     {
-		sprintf (file,"%s.lmp", CmdParameters::myargv[p+1].c_str());
-		D_AddFile (file);
-		printf("Playing demo %s.lmp.\n", CmdParameters::myargv[p+1].c_str());
+        // Load the demo file
+        auto demo = CmdParameters::myargv[p + 1] + ".lmp";
+		D_AddFile (demo);
+		std::cout << "Playing demo " << demo << std::endl;
     }
     
     // get skill / episode / map from parms
@@ -694,7 +647,6 @@ void D_DoomMain (void)
     p = CmdParameters::M_CheckParm ("-warp");
     if (p && p < CmdParameters::myargc-1)
     {
-
 		startepisode = CmdParameters::myargv[p+1][0]-'0';
 		startmap = CmdParameters::myargv[p+2][0]-'0';
 		autostart = true;
@@ -796,16 +748,6 @@ void D_DoomMain (void)
 
     printf ("ST_Init: Init status bar.\n");
     ST_Init ();
-
-    // check for a driver that wants intermission stats
-    p = CmdParameters::M_CheckParm ("-statcopy");
-    if (p && p<CmdParameters::myargc-1)
-    {
-		// for statistics driver
-		extern  void*	statcopy;
-		statcopy = (void*)atol(CmdParameters::myargv[p+1].c_str());
-		printf ("External statistics registered.\n");
-    }
     
     // start the apropriate game based on parms
     p = CmdParameters::M_CheckParm ("-record");
@@ -834,11 +776,8 @@ void D_DoomMain (void)
     p = CmdParameters::M_CheckParm ("-loadgame");
     if (p && p < CmdParameters::myargc-1)
     {
-		if (CmdParameters::M_CheckParm("-cdrom"))
-		    sprintf(file, "c:\\doomdata\\\"SAVEGAMENAME\"%c.dsg", CmdParameters::myargv[p+1][0]);
-		else
-		    sprintf(file, SAVEGAMENAME"%c.dsg", CmdParameters::myargv[p+1][0]);
-		G_LoadGame (file);
+		auto save = SAVEGAMENAME + CmdParameters::myargv[p+1] + ".dsg";
+		G_LoadGame (save);
     }
 	
 

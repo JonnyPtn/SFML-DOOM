@@ -1,3 +1,5 @@
+#include <array>
+
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 
@@ -515,7 +517,7 @@ bool AM_Responder( sf::Event& ev )
     int rc;
     int cheatstate=0;
     int bigstate=0;
-    char buffer[20];
+    std::string buffer;
 
     rc = false;
 
@@ -583,8 +585,8 @@ bool AM_Responder( sf::Event& ev )
 		    plr->message = grid ? s_GridOn.c_str() : s_GridOff.c_str();
 		    break;
 		  case sf::Keyboard::M:
-		    sprintf(buffer, "%s %d", s_MarkedSpot.c_str(), markpointnum);
-		    plr->message = buffer;
+		    buffer = s_MarkedSpot + std::to_string(markpointnum);
+		    plr->message = buffer.c_str();
 		    AM_addMark();
 		    break;
 		  case sf::Keyboard::C:
