@@ -1117,11 +1117,11 @@ void G_DoWorldDone (void)
 extern bool setsizeneeded;
 void R_ExecuteSetViewSize (void);
 
-char	savename[256];
+std::string	savename;
 
-void G_LoadGame (char* name) 
+void G_LoadGame (const std::string& name) 
 { 
-    strcpy (savename, name); 
+    savename = name; 
     gameaction = ga_loadgame; 
 } 
  

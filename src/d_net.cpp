@@ -229,7 +229,7 @@ bool HGetPacket(void)
 //
 // GetPackets
 //
-char    exitmsg[80];
+std::string    exitmsg;
 
 void GetPackets(void)
 {
@@ -259,9 +259,8 @@ void GetPackets(void)
                 continue;
             nodeingame[netnode] = false;
             playeringame[netconsole] = false;
-            strcpy(exitmsg, "Player 1 left the game");
-            exitmsg[7] += netconsole;
-            players[consoleplayer].message = exitmsg;
+            exitmsg = "Player " + std::to_string(netconsole) + " 1 left the game";
+            players[consoleplayer].message = exitmsg.c_str();
             if (demorecording)
                 G_CheckDemoStatus();
             continue;
