@@ -24,7 +24,7 @@ void G_LoadGame (const std::string& name);
 void G_DoLoadGame ();
 
 // Called by M_Responder.
-void G_SaveGame (int slot, char* description);
+void G_SaveGame (int slot, const std::string& description);
 
 // Only called by startup code.
 void G_RecordDemo (char* name);

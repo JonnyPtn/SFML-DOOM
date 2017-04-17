@@ -249,7 +249,7 @@ void I_Sound::S_UpdateSounds(mobj_t * listener_p)
         if (degrees > 360.f)
             degrees -= 360.f;
 
-        auto radians = degrees / (180.f / atan(1)*4); //pi
+        auto radians = degrees / (180.f / atan(1.f)*4); //pi
 
         sf::Listener::setDirection(cos(radians), 0, sin(radians));
     }
@@ -258,8 +258,7 @@ void I_Sound::S_UpdateSounds(mobj_t * listener_p)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 int I_Sound::getSfxLumpNum(sfxinfo_t* sfx)
 {
-    char namebuf[9];
-    sprintf(namebuf, "ds%s", sfx->name);
+    auto namebuf = "ds" +  std::string(sfx->name);
     return WadManager::getNumForName(namebuf);
 }
 

@@ -62,9 +62,9 @@ doomdata_t	reboundstore;
 //
 //
 //
-int NetbufferSize(void)
+intptr_t NetbufferSize(void)
 {
-    return reinterpret_cast<size_t>(&(((doomdata_t *)0)->cmds[netbuffer->numtics]));
+    return reinterpret_cast<intptr_t>(&(((doomdata_t *)0)->cmds[netbuffer->numtics]));
 }
 
 //
@@ -73,17 +73,12 @@ int NetbufferSize(void)
 unsigned NetbufferChecksum(void)
 {
     unsigned		c;
-    int		i, l;
 
     c = 0x1234567;
 
-    // FIXME -endianess?
-#ifdef NORMALUNIX
-    return 0;			// byte order problems
-#endif
 
-    l = (NetbufferSize() - reinterpret_cast<size_t>(&(((doomdata_t *)0)->retransmitfrom))) / 4;
-    for (i = 0; i<l; i++)
+    auto l = (NetbufferSize() - reinterpret_cast<intptr_t>(&(((doomdata_t *)0)->retransmitfrom))) / 4;
+    for (auto i = 0; i<l; i++)
         c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i + 1);
 
     return c & NCMD_CHECKSUM;
@@ -136,7 +131,7 @@ HSendPacket
 
     doomcom->command = CMD_SEND;
     doomcom->remotenode = node;
-    doomcom->datalength = NetbufferSize();
+    doomcom->datalength = static_cast<short>(NetbufferSize());
 
     if (verboseOutput)
     {

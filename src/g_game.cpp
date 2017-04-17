@@ -93,7 +93,7 @@ int				gametic;
 int				levelstarttic;          // gametic at level start 
 int				totalkills, totalitems, totalsecret;    // for intermission 
  
-char			demoname[32]; 
+std::string			demoname; 
 bool			demorecording; 
 bool			demoplayback; 
 bool			netdemo; 
@@ -157,8 +157,8 @@ std::vector<bool> joybuttons(sf::Joystick::ButtonCount,false);
 int joybspeed(4);
 int	joybuse(2);
  
-int		savegameslot; 
-char	savedescription[32]; 
+int			savegameslot; 
+std::string	savedescription; 
  
 #define	BODYQUESIZE	32
 
@@ -613,10 +613,10 @@ void G_Ticker (void)
 		    if (cmd->forwardmove > TURBOTHRESHOLD 
 			&& !(gametic&31) && ((gametic>>5)&3) == i )
 		    {
-			static char turbomessage[80];
+			static std::string turbomessage;
 			extern const char *player_names[4];
-			sprintf (turbomessage, "%s is turbo!",player_names[i]);
-			players[consoleplayer].message = turbomessage;
+			turbomessage = std::string(player_names[i]) + " is turbo!";
+			players[consoleplayer].message = turbomessage.c_str();
 		    }
 				
 		    if (netgame && !netdemo && !(gametic%ticdup) ) 
@@ -653,8 +653,8 @@ void G_Ticker (void)
 		    break; 
 					 
 		  case BTS_SAVEGAME: 
-		    if (!savedescription[0]) 
-			strcpy (savedescription, "NET GAME"); 
+		    if (savedescription.empty())
+				savedescription = "NET GAME"; 
 		    savegameslot =  
 			(players[i].cmd.buttons & BTS_SAVEMASK)>>BTS_SAVESHIFT; 
 		    gameaction = ga_savegame; 
@@ -838,7 +838,7 @@ G_CheckSpot
 void G_DeathMatchSpawnPlayer (int playernum) 
 { 
     int             i,j; 
-    int				selections; 
+    intptr_t		selections; 
 	 
     selections = deathmatch_p - deathmatchstarts; 
     if (selections < 4) 
@@ -1130,7 +1130,6 @@ void G_LoadGame (const std::string& name)
 
 void G_DoLoadGame (void) 
 { 
-    int		length; 
     int		i; 
     int		a,b,c;
     std::vector<char> saveFileData;
@@ -1188,30 +1187,24 @@ void G_DoLoadGame (void)
 void
 G_SaveGame
 ( int	slot,
-  char*	description ) 
+  const std::string& description ) 
 { 
     savegameslot = slot; 
-    strcpy (savedescription, description); 
+    savedescription = description; 
     sendsave = true; 
 } 
  
 void G_DoSaveGame (void) 
 { 
-    char	name[100]; 
     char	name2[VERSIONSIZE]; 
-    char*	description; 
-    int		length; 
     int		i; 
 	
-    if (CmdParameters::M_CheckParm("-cdrom"))
-	sprintf(name,"c:\\doomdata\\\"SAVEGAMENAME\"%d.dsg",savegameslot);
-    else
-	sprintf (name,SAVEGAMENAME"%d.dsg",savegameslot); 
-    description = savedescription; 
+	auto name = SAVEGAMENAME + std::to_string(savegameslot) + ".dsg";
+    auto& description = savedescription; 
 	 
     save_p = savebuffer = screens[1]+0x4000; 
 	 
-    memcpy (save_p, description, SAVESTRINGSIZE); 
+    memcpy (save_p, description.data(), SAVESTRINGSIZE); 
     save_p += SAVESTRINGSIZE; 
     memset (name2,0,sizeof(name2)); 
     memcpy (save_p, name2, VERSIONSIZE); 
@@ -1233,9 +1226,9 @@ void G_DoSaveGame (void)
 	 
     *save_p++ = 0x1d;		// consistancy marker 
 	 
-    length = save_p - savebuffer; 
+    auto length = save_p - savebuffer; 
     if (length > SAVEGAMESIZE) 
-	I_Error ("Savegame buffer overrun"); 
+		I_Error ("Savegame buffer overrun"); 
     std::ofstream file;
     file.open(name, std::ios::binary | std::ios::trunc);
     file.write(reinterpret_cast<char*>(savebuffer), length);
@@ -1463,8 +1456,8 @@ void G_RecordDemo (char* name)
     int				maxsize;
 	
     usergame = false; 
-    strcpy (demoname, name); 
-    strcat (demoname, ".lmp"); 
+    demoname = name; 
+    demoname += ".lmp"; 
     maxsize = 0x20000;
     i = CmdParameters::M_CheckParm ("-maxdemo");
     if (i && i<CmdParameters::myargc-1)

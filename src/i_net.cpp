@@ -129,7 +129,7 @@ void PacketGet(void)
     {
         //if we've received something on a blocking socket, but the status isn't done, something's gone awry
         if (insocket.isBlocking())
-            I_Error("GetPacket: %s", strerror(errno));
+            I_Error("GetPacket failed, sf::Socket::Status: %s", c);
         doomcom->remotenode = -1;		// no packet
         return;
     }
@@ -154,7 +154,7 @@ void PacketGet(void)
     }
 
     doomcom->remotenode = i;			// good packet from a game player
-    doomcom->datalength = fromlen;
+    doomcom->datalength = static_cast<short>(fromlen);
 
     // byte swap
     netbuffer->checksum = ntohl(sw.checksum);
@@ -190,7 +190,6 @@ void I_InitNetwork(void)
     bool		trueval = true;
     int			i;
     int			p;
-    struct hostent*	hostentry;	// host information entry
 
     doomcom = static_cast<doomcom_t*>(malloc(sizeof(*doomcom)));
     memset(doomcom, 0, sizeof(*doomcom));

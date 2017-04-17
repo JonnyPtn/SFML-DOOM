@@ -110,8 +110,6 @@ void I_InitGraphics(void)
 {
 
 	std::string	displayname;
-	int			n;
-	int			pnum;
 	int			x = 0;
 	int			y = 0;
 
@@ -128,31 +126,6 @@ void I_InitGraphics(void)
 
 	X_width = SCREENWIDTH * 2;
 	X_height = SCREENHEIGHT * 2;
-
-	// check for command-line display name
-	if ((pnum = CmdParameters::M_CheckParm("-disp"))) // suggest parentheses around assignment
-		displayname = CmdParameters::myargv[pnum + 1];
-	else
-		displayname = "";
-
-	// check for command-line geometry
-	if ((pnum = CmdParameters::M_CheckParm("-geom"))) // suggest parentheses around assignment
-	{
-		// warning: char format, different type arg 3,5
-		n = sscanf(CmdParameters::myargv[pnum + 1].c_str(), "%c%d%c%d", &xsign, &x, &ysign, &y);
-
-		if (n == 2)
-			x = y = 0;
-		else if (n == 6)
-		{
-			if (xsign == '-')
-				x = -x;
-			if (ysign == '-')
-				y = -y;
-		}
-		else
-			I_Error("bad -geom parameter");
-	}
 
 	window.reset(new sf::RenderWindow());
 	window->create(sf::VideoMode(X_width, X_height), displayname); //quick double size for now

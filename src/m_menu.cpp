@@ -87,7 +87,7 @@ int			saveStringEnter;
 int             	saveSlot;	// which slot to save in
 int			saveCharIndex;	// which char we're editing
 // old save description before edit
-char			saveOldString[SAVESTRINGSIZE];  
+std::string			saveOldString;  
 
 bool			inhelpscreens;
 bool			menuactive;
@@ -96,7 +96,7 @@ bool			menuactive;
 #define LINEHEIGHT		16
 
 extern bool		sendpause;
-char			savegamestrings[10][SAVESTRINGSIZE];
+std::string		savegamestrings[10];
 
 std::string	endstring;
 
@@ -476,24 +476,23 @@ menu_t  SaveDef =
 //
 void M_ReadSaveStrings(void)
 {
-    int             handle;
-    int             count;
     int             i;
-    char    name[256];
 	
     for (i = 0;i < load_end;i++)
     {
-		sprintf(name,SAVEGAMENAME"%d.dsg",i);
+		auto name = SAVEGAMENAME + std::to_string(i) + ".dsg";
 
         std::ifstream handle;
         handle.open(name, std::ios::binary);
 		if (!handle.good())
 		{
-		    strcpy(&savegamestrings[i][0],s_EmptySlot.c_str());
+		    savegamestrings[i] = s_EmptySlot;
 		    LoadMenu[i].status = 0;
 		    continue;
 		}
-		handle.read (savegamestrings[i], SAVESTRINGSIZE);
+		char buffer[SAVESTRINGSIZE] = { {0} };
+		handle.read (buffer, SAVESTRINGSIZE);
+		savegamestrings[i] = buffer;
 		LoadMenu[i].status = 1;
     }
 }
@@ -510,7 +509,7 @@ void M_DrawLoad(void)
     for (i = 0;i < load_end; i++)
     {
 		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,const_cast<char*>(savegamestrings[i].c_str()));
     }
 }
 
@@ -540,10 +539,8 @@ void M_DrawSaveLoadBorder(int x,int y)
 // User wants to load this game
 //
 void M_LoadSelect(int choice)
-{
-    char    name[256];
-	
-	sprintf(name,SAVEGAMENAME"%d.dsg",choice);
+{	
+	auto name = SAVEGAMENAME + std::to_string(choice) + ".dsg";
     G_LoadGame (name);
     M_ClearMenus ();
 }
@@ -575,12 +572,12 @@ void M_DrawSave(void)
     for (i = 0;i < load_end; i++)
     {
 		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,const_cast<char*>(savegamestrings[i].c_str()));
     }
 	
     if (saveStringEnter)
     {
-		i = M_StringWidth(savegamestrings[saveSlot]);
+		i = M_StringWidth(const_cast<char*>(savegamestrings[saveSlot].c_str()));
 		M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
     }
 }
@@ -607,10 +604,10 @@ void M_SaveSelect(int choice)
     saveStringEnter = 1;
     
     saveSlot = choice;
-    strcpy(saveOldString,savegamestrings[choice]);
-    if (!strcmp(savegamestrings[choice],s_EmptySlot.c_str()))
-		savegamestrings[choice][0] = 0;
-	saveCharIndex = strlen(savegamestrings[choice]);
+    saveOldString = savegamestrings[choice];
+    if (savegamestrings[choice] == s_EmptySlot)
+		savegamestrings[choice] = "";
+	saveCharIndex = static_cast<int>(savegamestrings[choice].length());
 }
 
 //
@@ -1390,7 +1387,7 @@ bool M_Responder (sf::Event* ev)
 				
 	  case sf::Keyboard::Escape:
 	    saveStringEnter = 0;
-	    strcpy(&savegamestrings[saveSlot][0],saveOldString);
+	    savegamestrings[saveSlot] = saveOldString;
 	    break;
 				
 	  case sf::Keyboard::Return:
@@ -1406,7 +1403,7 @@ bool M_Responder (sf::Event* ev)
 		    break;
 	    if (ch >= 32 && ch <= 127 &&
 		saveCharIndex < SAVESTRINGSIZE-1 &&
-		M_StringWidth(savegamestrings[saveSlot]) <
+		M_StringWidth(const_cast<char*>(savegamestrings[saveSlot].c_str())) <
 		(SAVESTRINGSIZE-2)*8)
 	    {
 		savegamestrings[saveSlot][saveCharIndex++] = ch;

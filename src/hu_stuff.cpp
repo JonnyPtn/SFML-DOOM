@@ -370,9 +370,8 @@ char ForeignTranslation(unsigned char ch)
 void HU_Init(void)
 {
 
-    int		i;
-    int		j;
-    char	buffer[9];
+    int			i;
+    int			j;
 
 	shiftxform = english_shiftxform;
 
@@ -380,8 +379,8 @@ void HU_Init(void)
     j = HU_FONTSTART;
     for (i=0;i<HU_FONTSIZE;i++)
     {
-		sprintf(buffer, "STCFN%.3d", j++);
-		hu_font[i] = (patch_t *) WadManager::getLump(buffer);
+		auto fontName = "STCFN" + std::to_string(j++);
+		hu_font[i] = (patch_t *) WadManager::getLump(fontName);
     }
 
 }
@@ -583,7 +582,7 @@ char HU_dequeueChatChar(void)
 bool HU_Responder(sf::Event *ev)
 {
 
-    static char		lastmessage[HU_MAXLINELENGTH+1];
+    static std::string		lastmessage;
     const char*		macromessage;
     bool		eatkey = false;
     static bool	shiftdown = false;
@@ -688,8 +687,8 @@ bool HU_Responder(sf::Event *ev)
 	    
 	    // leave chat mode and notify that it was sent
 	    chat_on = false;
-	    strcpy(lastmessage, chat_macros[c]);
-	    plr->message = lastmessage;
+	    lastmessage =  chat_macros[c];
+	    plr->message = lastmessage.c_str();
 	    eatkey = true;
 	}
 	else
@@ -710,8 +709,8 @@ bool HU_Responder(sf::Event *ev)
 		chat_on = false;
 		if (w_chat.l.len)
 		{
-		    strcpy(lastmessage, w_chat.l.l);
-		    plr->message = lastmessage;
+		    lastmessage = w_chat.l.l;
+		    plr->message = lastmessage.c_str();
 		}
 	    }
 	    else if (c == sf::Keyboard::Escape)

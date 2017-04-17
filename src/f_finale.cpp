@@ -567,8 +567,7 @@ void F_BunnyScroll (void)
     int		scrolled;
     int		x;
     patch_t*	p1;
-    patch_t*	p2;
-    char	name[10];
+	patch_t*	p2;
     int		stage;
     static int	laststage;
 		
@@ -610,7 +609,7 @@ void F_BunnyScroll (void)
 		laststage = stage;
     }
 	
-    sprintf (name,"END%i",stage);
+    auto name = "END" + stage;
     V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, (patch_t*)WadManager::getLump (name));
 }
 
