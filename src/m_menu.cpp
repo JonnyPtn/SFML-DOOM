@@ -490,9 +490,9 @@ void M_ReadSaveStrings(void)
 		    LoadMenu[i].status = 0;
 		    continue;
 		}
-		char buffer[SAVESTRINGSIZE] = { {0} };
-		handle.read (buffer, SAVESTRINGSIZE);
-		savegamestrings[i] = buffer;
+		std::array<char, SAVESTRINGSIZE> buffer = { {0} };
+		handle.read (buffer.data(), SAVESTRINGSIZE);
+		savegamestrings[i] = buffer.data();
 		LoadMenu[i].status = 1;
     }
 }
