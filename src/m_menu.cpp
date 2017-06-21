@@ -663,7 +663,7 @@ void M_QuickSave(void)
 		quickSaveSlot = -2;	// means to pick a slot now
 		return;
     }
-    sprintf(tempstring,s_QsaveConfirm.c_str(),savegamestrings[quickSaveSlot]);
+    sprintf(tempstring,s_QsaveConfirm.c_str(),savegamestrings[quickSaveSlot].c_str());
     M_StartMessage(tempstring,M_QuickSaveResponse,true);
 }
 
@@ -695,7 +695,7 @@ void M_QuickLoad(void)
 		M_StartMessage(s_HaventPickedQsaveSlot,NULL,false);
 		return;
     }
-    sprintf(tempstring,s_QloadConfirm.c_str(),savegamestrings[quickSaveSlot]);
+    sprintf(tempstring,s_QloadConfirm.c_str(),savegamestrings[quickSaveSlot].c_str());
     M_StartMessage(tempstring,M_QuickLoadResponse,true);
 }
 

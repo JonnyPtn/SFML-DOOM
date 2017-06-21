@@ -1599,7 +1599,7 @@ bool G_CheckDemoStatus (void)
         file.write(reinterpret_cast<char*>(demobuffer), demo_p - demobuffer);
 		free (demobuffer); 
 		demorecording = false; 
-		I_Error ("Demo %s recorded",demoname); 
+		I_Error ("Demo %s recorded",demoname.c_str()); 
     } 
     return false; 
 } 
