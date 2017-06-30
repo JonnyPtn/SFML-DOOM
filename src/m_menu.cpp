@@ -188,8 +188,8 @@ void M_SetupNextMenu(menu_t *menudef);
 void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
 void M_DrawEmptyCell(menu_t *menu,int item);
 void M_DrawSelCell(menu_t *menu,int item);
-void M_WriteText(int x, int y, char *string);
-int  M_StringWidth(char *string);
+void M_WriteText(int x, int y, const std::string& string);
+int  M_StringWidth(const std::string& string);
 int  M_StringHeight(const std::string& string);
 void M_StartControlPanel(void);
 void M_StartMessage(const std::string& string, void(*routine)(int),bool input);
@@ -857,7 +857,7 @@ void M_VerifyNightmare(int ch)
     if (ch != 'y')
 	return;
 		
-    G_DeferedInitNew((skill_t)nightmare,epi+1,1);
+    G_DeferredInitNew((skill_t)nightmare,epi+1,1);
     M_ClearMenus ();
 }
 
@@ -869,7 +869,7 @@ void M_ChooseSkill(int choice)
 	return;
     }
 	
-    G_DeferedInitNew((skill_t)choice,epi+1,1);
+    G_DeferredInitNew((skill_t)choice,epi+1,1);
     M_ClearMenus ();
 }
 
@@ -1199,13 +1199,13 @@ void M_StopMessage(void)
 //
 // Find string width from hu_font chars
 //
-int M_StringWidth(char* string)
+int M_StringWidth(const std::string& string)
 {
     unsigned int             i;
     int             w = 0;
     int             c;
 	
-    for (i = 0;i < strlen(string);i++)
+    for (i = 0;i < string.length();i++)
     {
 	c = toupper(string[i]) - HU_FONTSTART;
 	if (c < 0 || c >= HU_FONTSIZE)
@@ -1240,47 +1240,32 @@ int M_StringHeight(const std::string& string)
 //
 //      Write a string using the hu_font
 //
-void
-M_WriteText
-( int		x,
-  int		y,
-  char*		string)
+void M_WriteText(int x, int y, const std::string& string)
 {
-    int		w;
-    char*	ch;
-    int		c;
-    int		cx;
-    int		cy;
-		
+    int cx(x), cy(y);
 
-    ch = string;
-    cx = x;
-    cy = y;
-	
-    while(1)
+    for (auto c : string)
     {
-	c = *ch++;
-	if (!c)
-	    break;
-	if (c == '\n')
-	{
-	    cx = x;
-	    cy += 12;
-	    continue;
-	}
-		
-	c = toupper(c) - HU_FONTSTART;
-	if (c < 0 || c>= HU_FONTSIZE)
-	{
-	    cx += 4;
-	    continue;
-	}
-		
-	w = hu_font[c]->width;
-	if (cx+w > SCREENWIDTH)
-	    break;
-	V_DrawPatchDirect(cx, cy, 0, hu_font[c]);
-	cx+=w;
+        if(c == '\n')
+        {
+            cx = x;
+            cy += 12; // Abracadabra
+            continue;
+        }
+
+        c = toupper(c) - HU_FONTSTART;
+        if(c < 0 || c >= HU_FONTSIZE)
+        {
+            cx += 4;
+            continue;
+        }
+
+        auto w = hu_font[c]->width;
+        if(cx + w > SCREENWIDTH)
+            break;
+        
+        V_DrawPatchDirect(cx, cy, 0, hu_font[c]);
+	    cx += w;
     }
 }
 

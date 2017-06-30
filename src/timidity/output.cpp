@@ -27,10 +27,8 @@ Audio output (to file / device) functions.
 #include "tables.hpp"
 
 
-#ifdef SDL
-extern PlayMode sdl_play_mode;
+PlayMode sdl_play_mode;
 #define DEFAULT_PLAY_MODE &sdl_play_mode
-#endif
 
 PlayMode *play_mode_list[] = {
 #ifdef DEFAULT_PLAY_MODE

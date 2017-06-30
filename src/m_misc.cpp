@@ -293,7 +293,9 @@ typedef struct
 //
 void M_ScreenShot (void)
 {
-    auto ss = window->capture();
+    sf::Texture screenTexture;
+    screenTexture.update(*window);
+    auto ss = screenTexture.copyToImage();
     
     // Use the current time for a unique file name
     std::string fileName = "DOOM-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) + ".png";

@@ -314,7 +314,7 @@ void D_DoomLoop (void)
 //
 int             demosequence;
 int             pagetic;
-char                    *pagename;
+std::string     pagename;
 
 //
 // D_PageTicker
@@ -377,7 +377,7 @@ void D_AdvanceDemo (void)
             I_Sound::playMusic(mus_intro);
 		break;
     case 1:
-		G_DeferedPlayDemo ("demo1");
+		G_DeferredPlayDemo ("demo1");
 		break;
     case 2:
 		pagetic = 200;
@@ -385,7 +385,7 @@ void D_AdvanceDemo (void)
 		pagename = "CREDIT";
 		break;
     case 3:
-		G_DeferedPlayDemo ("demo2");
+		G_DeferredPlayDemo ("demo2");
 		break;
     case 4:
 		gamestate = GS_DEMOSCREEN;
@@ -406,11 +406,11 @@ void D_AdvanceDemo (void)
 		}
 		break;
     case 5:
-		G_DeferedPlayDemo ("demo3");
+		G_DeferredPlayDemo ("demo3");
 		break;
     // THE DEFINITIVE DOOM Special Edition demo
     case 6:
-		G_DeferedPlayDemo ("demo4");
+		G_DeferredPlayDemo ("demo4");
 		break;
     }
 }
@@ -444,13 +444,13 @@ void D_AddFile (const std::string& file)
 //
 void IdentifyVersion (void)
 {
-    char*	doom1wad;
-    char*	doomwad;
-    char*	doomuwad;
-    char*	doom2wad;
+    std::string	doom1wad;
+    std::string	doomwad;
+    std::string	doomuwad;
+    std::string	doom2wad;
 
-    char*	plutoniawad;
-    char*	tntwad;
+    std::string	plutoniawad;
+    std::string	tntwad;
 
     // Commercial.
     doom2wad = "doom2.wad";
@@ -762,7 +762,7 @@ void D_DoomMain (void)
     if (p && p < CmdParameters::myargc-1)
     {
 		singledemo = true;              // quit after one demo
-		G_DeferedPlayDemo (const_cast<char*>(CmdParameters::myargv[p+1].c_str()));
+		G_DeferredPlayDemo (const_cast<char*>(CmdParameters::myargv[p+1].c_str()));
 		D_DoomLoop ();  // never returns
     }
 	

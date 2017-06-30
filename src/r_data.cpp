@@ -356,10 +356,10 @@ R_GetColumn
     ofs = texturecolumnofs[tex][col];
     
     if (lump > 0)
-	return (unsigned char *)WadManager::getLump(lump)+ofs;
+	    return (unsigned char *)WadManager::getLump(lump)+ofs;
 
     if (!texturecomposite[tex])
-	R_GenerateComposite (tex);
+	    R_GenerateComposite (tex);
 
     return texturecomposite[tex] + ofs;
 }
@@ -646,7 +646,7 @@ int R_FlatNumForName (const std::string& name)
 // Check whether texture is available.
 // Filter out NoTexture indicator.
 //
-int	R_CheckTextureNumForName (char *name)
+int	R_CheckTextureNumForName (const std::string& name)
 {
     int		i;
 
@@ -668,7 +668,7 @@ int	R_CheckTextureNumForName (char *name)
 // Calls R_CheckTextureNumForName,
 //  aborts with error message.
 //
-int	R_TextureNumForName (char* name)
+int	R_TextureNumForName (const std::string& name)
 {
     int		i;
 	
@@ -676,9 +676,8 @@ int	R_TextureNumForName (char* name)
 
     if (i==-1)
     {
-		//JONNY// ...bad idea?
-	/*I_Error ("R_TextureNumForName: %s not found",
-		 name);*/
+	    I_Error ("R_TextureNumForName: %s not found",
+		 name.c_str());
     }
     return i;
 }

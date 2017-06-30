@@ -24,7 +24,6 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <string.h>
 #include <fstream>
 
-//#include "SDL.h"
 #include <timidity/config.h>
 #include <timidity/common.h>
 #include <timidity/instrum.h>

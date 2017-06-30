@@ -24,17 +24,13 @@ controls.c
 #include <timidity/config.h>
 #include <timidity/controls.h>
 
-#ifdef SDL
-extern ControlMode sdl_control_mode;
+ControlMode sdl_control_mode;
 # ifndef DEFAULT_CONTROL_MODE
 #  define DEFAULT_CONTROL_MODE &sdl_control_mode
 # endif
-#endif
 
 ControlMode *ctl_list[]={
-#ifdef SDL
 	&sdl_control_mode,
-#endif
 		0
 };
 
