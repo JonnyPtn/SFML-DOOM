@@ -230,7 +230,6 @@ static Instrument *load_instrument(const char *name, int percussion,
     std::vector<char> file;
     char c;
     fp->seekg(std::ios::end);
-    auto boop = fp->tellg();
     fp->seekg(std::ios::beg);
     while (fp->good())
     {
@@ -273,7 +272,6 @@ static Instrument *load_instrument(const char *name, int percussion,
         uint8_t fractions;
         int32_t tmplong;
         uint16_t tmpshort;
-        uint8_t tmpchar;
 
         auto  READ_CHAR = [&](uint8_t& thing)
         {

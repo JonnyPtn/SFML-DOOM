@@ -202,7 +202,7 @@ void M_ClearMenus (void);
 //
 // DOOM MENU
 //
-enum
+enum main_e
 {
     newgame = 0,
     options,
@@ -211,7 +211,7 @@ enum
     readthis,
     quitdoom,
     main_end
-} main_e;
+};
 
 menuitem_t MainMenu[]=
 {
@@ -238,14 +238,14 @@ menu_t  MainDef =
 //
 // EPISODE SELECT
 //
-enum
+enum episodes_e
 {
     ep1,
     ep2,
     ep3,
     ep4,
     ep_end
-} episodes_e;
+};
 
 menuitem_t EpisodeMenu[]=
 {
@@ -268,7 +268,7 @@ menu_t  EpiDef =
 //
 // NEW GAME
 //
-enum
+enum newgame_e
 {
     killthings,
     toorough,
@@ -276,7 +276,7 @@ enum
     violence,
     nightmare,
     newg_end
-} newgame_e;
+};
 
 menuitem_t NewGameMenu[]=
 {
@@ -302,7 +302,7 @@ menu_t  NewDef =
 //
 // OPTIONS MENU
 //
-enum
+enum options_e
 {
     endgame,
     messages,
@@ -313,7 +313,7 @@ enum
     option_empty2,
     soundvol,
     opt_end
-} options_e;
+};
 
 menuitem_t OptionsMenu[]=
 {
@@ -340,11 +340,11 @@ menu_t  OptionsDef =
 //
 // Read This! MENU 1 & 2
 //
-enum
+enum read_e
 {
     rdthsempty1,
     read1_end
-} read_e;
+};
 
 menuitem_t ReadMenu1[] =
 {
@@ -361,11 +361,11 @@ menu_t  ReadDef1 =
     0
 };
 
-enum
+enum read_e2
 {
     rdthsempty2,
     read2_end
-} read_e2;
+};
 
 menuitem_t ReadMenu2[]=
 {
@@ -385,14 +385,14 @@ menu_t  ReadDef2 =
 //
 // SOUND VOLUME MENU
 //
-enum
+enum sound_e
 {
     sfx_vol,
     sfx_empty1,
     music_vol,
     sfx_empty2,
     sound_end
-} sound_e;
+};
 
 menuitem_t SoundMenu[]=
 {
@@ -415,7 +415,7 @@ menu_t  SoundDef =
 //
 // LOAD GAME MENU
 //
-enum
+enum load_e
 {
     load1,
     load2,
@@ -424,7 +424,7 @@ enum
     load5,
     load6,
     load_end
-} load_e;
+};
 
 menuitem_t LoadMenu[]=
 {
@@ -1224,7 +1224,6 @@ int M_StringWidth(const std::string& string)
 //
 int M_StringHeight(const std::string& string)
 {
-    unsigned int    i;
     int             h;
     int             height = hu_font[0]->height;
 	
@@ -1260,11 +1259,11 @@ void M_WriteText(int x, int y, const std::string& string)
             continue;
         }
 
-        auto w = hu_font[c]->width;
+        auto w = hu_font[static_cast<int>(c)]->width;
         if(cx + w > SCREENWIDTH)
             break;
         
-        V_DrawPatchDirect(cx, cy, 0, hu_font[c]);
+        V_DrawPatchDirect(cx, cy, 0, hu_font[static_cast<int>(c)]);
 	    cx += w;
     }
 }
@@ -1282,12 +1281,6 @@ bool M_Responder (sf::Event* ev)
 {
     int             ch;
     int             i;
-    static  int     joywait = 0;
-    static  int     mousewait = 0;
-    static  int     mousey = 0;
-    static  int     lasty = 0;
-    static  int     mousex = 0;
-    static  int     lastx = 0;
 	
     ch = -1;
 	
@@ -1503,6 +1496,8 @@ bool M_Responder (sf::Event* ev)
 	    I_SetPalette ((unsigned char*)WadManager::getLump ("PLAYPAL"));
 	    return true;
 				
+      default:
+        break;
 	}
 
     
@@ -1647,7 +1642,6 @@ void M_Drawer (void)
     unsigned short		i;
     short		max;
     std::string		string;
-    int			start;
 
     inhelpscreens = false;
 
@@ -1655,7 +1649,6 @@ void M_Drawer (void)
     // Horiz. & Vertically center string and print it.
     if (messageToPrint)
     {
-		start = 0;
 		y = 100 - M_StringHeight(messageString)/2;
 		for (auto character : messageString)
 		{

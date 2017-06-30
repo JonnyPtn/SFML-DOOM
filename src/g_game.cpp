@@ -472,6 +472,9 @@ bool G_Responder (sf::Event* ev)
 		  case sf::Mouse::Middle:
 			  mousebuttons[2] = true;
 			  break;
+		
+		  default:
+		  	break;
 		  }
 		  break;
 	  case sf::Event::MouseButtonReleased:
@@ -486,6 +489,8 @@ bool G_Responder (sf::Event* ev)
 		  case sf::Mouse::Middle:
 			  mousebuttons[2] = false;
 			  break;
+		  default:
+		  	  break;
 		  }
 		  break; 
 	  case sf::Event::MouseMoved:
@@ -507,9 +512,14 @@ bool G_Responder (sf::Event* ev)
 
 		case sf::Joystick::Axis::V:
 			rightStickYMove = ev->joystickMove.position;
+			break;
 
 		case sf::Joystick::Axis::Z:
 			TriggerMove = ev->joystickMove.position;
+			break;
+		
+		default:
+			break;
 		}
 		break;    // eat events 
 
@@ -700,15 +710,9 @@ void G_Ticker (void)
 // Called by the game initialization functions.
 //
 void G_InitPlayer (int player) 
-{ 
-    player_t*	p; 
- 
-    // set up the saved info         
-    p = &players[player]; 
-	 
+{ 	 
     // clear everything else to defaults 
     G_PlayerReborn (player); 
-	 
 } 
  
  

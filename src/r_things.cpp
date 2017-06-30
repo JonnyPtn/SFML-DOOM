@@ -146,7 +146,6 @@ R_InstallSpriteLump
 //
 void R_InitSpriteDefs (const std::vector<std::string>& namelist) 
 { 
-    char**	check = 0;
     int		i;
     int		l;
     int		intname;

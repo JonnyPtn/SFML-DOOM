@@ -116,6 +116,14 @@ unsigned char* WriteByte(void* buf, char b)
 	return buffer;
 }
 
+unsigned char* WriteString(void* buf, const std::string& str)
+{
+	unsigned char* buffer = (unsigned char*)buf;
+	for (auto c : str)
+		*buffer++ = c;
+	return buffer;
+}	
+
 unsigned char* WriteShort(void* b, unsigned short s)
 {
 	unsigned char* buffer = (unsigned char*)b;
@@ -137,7 +145,7 @@ unsigned char* WriteInt(void* b, unsigned int i)
 // Format - 0(1 track only), 1(1 or more tracks, each play same time), 2(1 or more, each play seperatly)
 void Midi_CreateHeader(MidiHeaderChunk_t* header, short format, short track_count,  short division)
 {
-	WriteInt(header->name, 'MThd');
+	WriteString(header->name, "MThd");
 	WriteInt(&header->length, 6);
 	WriteShort(&header->format, format);
 	WriteShort(&header->ntracks, track_count);
@@ -215,7 +223,6 @@ int I_Sound::Mus2Midi(unsigned char* bytes, unsigned char* out, int* len)
 	int channel_volume[MIDI_MAXCHANNELS] = {0};
 	int bytes_written = 0;
 	int channelMap[MIDI_MAXCHANNELS], currentChannel = 0;
-	char last_status = 0;
 
 	// read the mus header
 	std::memcpy(&header, cur, sizeof(header));
@@ -268,7 +275,7 @@ int I_Sound::Mus2Midi(unsigned char* bytes, unsigned char* out, int* len)
 	
 	// Main Loop
 	while (cur < end) {
-		char channel; 
+		uint8_t channel; 
 		char event;
 		unsigned char temp_buffer[32];	// temp buffer for current iterator
 		unsigned char *out_local = temp_buffer;
@@ -377,7 +384,7 @@ int I_Sound::Mus2Midi(unsigned char* bytes, unsigned char* out, int* len)
 	}
 
 	// Write out track header
-	WriteInt(midiTrackHeader.name, 'MTrk');
+	WriteString(midiTrackHeader.name, "MTrk");
 	WriteInt(&midiTrackHeader.length, out - midiTrackHeaderOut - sizeof(midiTrackHeader));
 	memcpy(midiTrackHeaderOut, &midiTrackHeader, sizeof(midiTrackHeader));
 	

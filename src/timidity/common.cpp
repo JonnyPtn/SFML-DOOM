@@ -117,14 +117,14 @@ void close_file(std::ifstream * fp)
 /* This is meant for skipping a few bytes in a file or fifo. */
 void skip(std::ifstream * fp, size_t len)
 {
-    size_t c;
+    long int c;
     char tmp[1024];
     while (len>0)
     {
         c = len;
         if (c>1024) c = 1024;
         len -= c;
-        size_t before = fp->tellg();
+        auto before = fp->tellg();
         fp->read(tmp, c);
         if ((before + c) != fp->tellg())
             printf( "%s: skip: %s\n",
@@ -141,12 +141,12 @@ void *safe_malloc(size_t count)
     {
         printf(
             "Strange, I feel like allocating %d bytes. This must be a bug.\n",
-            count);
+            static_cast<int>(count));
     }
     else if ((p = Real_Tim_Malloc(count)))
         return p;
     else
-        printf( "Sorry. Couldn't malloc %d bytes.", count);
+        printf( "Sorry. Couldn't malloc %d bytes.", static_cast<int>(count));
 
     //exit(10);
     return(NULL);

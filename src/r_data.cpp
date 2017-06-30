@@ -162,9 +162,6 @@ R_DrawColumnInCache
     int		count;
     int		position;
     unsigned char*	source;
-    unsigned char*	dest;
-	
-    dest = (unsigned char *)cache + 3;
 	
     while (patch->topdelta != 0xff)
     {
@@ -764,10 +761,12 @@ void R_PrecacheLevel (void)
 	{
 	    lump = texture->patches[j].patch;
 	    texturememory += WadManager::getLumpLength(lump);
-	    auto data = WadManager::getLump(lump);
+	    //JONNY//	extracts and saves texture
+		/*
+        
+        auto data = WadManager::getLump(lump);
 
-		//JONNY//	extracts and saves texture
-		/*unsigned short* header = (unsigned short*)data;
+		unsigned short* header = (unsigned short*)data;
 		//get the patch header data
 		unsigned short width = *header++;
 		unsigned short height = *header++;
@@ -826,10 +825,11 @@ void R_PrecacheLevel (void)
 		for (k = 0; k < 8; k++)
 		{
 			lump = firstspritelump + sf->lump[k];
-			auto data = WadManager::getLump(lump);
-			
 			//JONNY//	this extracts the texture data
 			/*
+            
+            auto data = WadManager::getLump(lump);
+			
 			//adapt pixels to 32bit colour
 			unsigned short* header = (unsigned short*)data;
 			//get the patch header data

@@ -515,7 +515,6 @@ void AM_maxOutWindowScale(void)
 bool AM_Responder( sf::Event& ev )
 {
     int rc;
-    int cheatstate=0;
     int bigstate=0;
     std::string buffer;
 
@@ -594,7 +593,6 @@ bool AM_Responder( sf::Event& ev )
 		    plr->message = s_MarksCleared.c_str();
 		    break;
 		  default:
-		    cheatstate=0;
 		    rc = false;
 		}
     }
@@ -620,6 +618,8 @@ bool AM_Responder( sf::Event& ev )
 		    mtof_zoommul = FRACUNIT;
 		    ftom_zoommul = FRACUNIT;
 		    break;
+		  default:
+		  	break;
 		}
     }
     return rc!=0;

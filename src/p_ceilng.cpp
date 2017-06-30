@@ -133,6 +133,9 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	    }
 	}
 	break;
+
+	default:
+		break;
     }
 }
 

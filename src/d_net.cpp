@@ -141,14 +141,14 @@ HSendPacket
         else
             realretrans = -1;
 
-        /*fprintf(debugfile, "send (%i + %i, R %i) [%i] ",
+        printf("send (%i + %i, R %i) [%i] ",
             ExpandTics(netbuffer->starttic),
             netbuffer->numtics, realretrans, doomcom->datalength);
 
-        for (i = 0; i<doomcom->datalength; i++)
-            fprintf(debugfile, "%i ", ((byte *)netbuffer)[i]);
+        for (auto i = 0; i<doomcom->datalength; i++)
+            printf("%i ", ((unsigned char *)netbuffer)[i]);
 
-        fprintf(debugfile, "\n");*/
+        printf("\n");
     }
 
     I_NetCmd();
@@ -207,14 +207,14 @@ bool HGetPacket(void)
             else
                 realretrans = -1;
 
-            /*fprintf(debugfile, "get %i = (%i + %i, R %i)[%i] ",
+            printf("get %i = (%i + %i, R %i)[%i] ",
                 doomcom->remotenode,
                 ExpandTics(netbuffer->starttic),
                 netbuffer->numtics, realretrans, doomcom->datalength);
 
-            for (i = 0; i<doomcom->datalength; i++)
-                fprintf(debugfile, "%i ", ((byte *)netbuffer)[i]);
-            fprintf(debugfile, "\n");*/
+            for (auto i = 0; i<doomcom->datalength; i++)
+                printf( "%i ", ((unsigned char *)netbuffer)[i]);
+            printf("\n");
         }
     }
     return true;

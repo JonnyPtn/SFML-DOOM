@@ -15,8 +15,6 @@ void WadManager::addFile (const std::string& filename)
     int			    length = 0;
     int			    startlump;
     std::vector<filelump_t>		fileinfo;
-    filelump_t		singleinfo;
-    int			    storehandle;
     
     // open the file and add to directory
     fileHandle.open(filename.c_str(), std::ios::binary);
@@ -102,9 +100,7 @@ void WadManager::addFile (const std::string& filename)
 //  does override all earlier ones.
 //
 void WadManager::initMultipleFiles (std::vector<std::string> filenames)
-{	
-    int		size;
-    
+{	    
     // open all the files, load headers and lumps
     numlumps = 0;
 
@@ -196,7 +192,7 @@ int WadManager::getLumpLength (int lump)
 //
 // WadManager::W_CacheLumpNum
 //
-void* WadManager::getLump( int lump)
+void* WadManager::getLump( std::size_t lump)
 {
     if (lumpinfo.size() < lump)
         I_Error("Lump %d requested when only %d lumps available", lump, lumpinfo.size());

@@ -95,6 +95,9 @@ T_MovePlane
 		}
 	    }
 	    break;
+
+		default:
+			break;
 	}
 	break;
 									
@@ -167,9 +170,14 @@ T_MovePlane
 #endif
 	    }
 	    break;
+
+		default:
+			break;
 	}
 	break;
-		
+	
+	default:
+		break;
     }
     return ok;
 }

@@ -187,7 +187,6 @@ sf::IpAddress GetLocalAddress(void)
 //
 void I_InitNetwork(void)
 {
-    bool		trueval = true;
     int			i;
     int			p;
 

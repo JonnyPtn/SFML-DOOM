@@ -33,8 +33,6 @@ void I_ShutdownGraphics(void)
 	window.release();
 }
 
-static int	lastmousex = 0;
-static int	lastmousey = 0;
 bool		mousemoved = false;
 bool		shmFinished;
 
@@ -108,14 +106,8 @@ void I_SetPalette (unsigned char* palette)
 
 void I_InitGraphics(void)
 {
-
 	std::string	displayname;
-	int			x = 0;
-	int			y = 0;
 
-	// warning: char format, different type arg
-	char		xsign = ' ';
-	char		ysign = ' ';
 	static int		firsttime = 1;
 
 	if (!firsttime)

@@ -162,7 +162,6 @@ void I_Sound::startSound(void * origin_p, int sfx_id, int volume)
         auto dataSize(WadManager::getLumpLength(sfx->lumpnum) - 8);
         unsigned char* data((unsigned char*)WadManager::getLump(sfx->lumpnum) + 8);
         std::vector<sf::Int16> newData(dataSize);
-        auto lastSample = 0;
         int i = 0;
         while (i < dataSize)
         {
@@ -308,7 +307,6 @@ void I_Sound::playMusic(const std::string& songname, bool looping)
 
         //convert to correct format for SFML
         std::vector<sf::Int16> newData(MIDI_CHANNELS * MIDI_FORMAT_BYTES * doomMusic->samples);
-        auto lastSample = 0;
         int i = 0;
         while (i < MIDI_CHANNELS * MIDI_FORMAT_BYTES * doomMusic->samples)
         {
