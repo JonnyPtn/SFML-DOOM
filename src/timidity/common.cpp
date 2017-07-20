@@ -124,7 +124,7 @@ void skip(std::ifstream * fp, size_t len)
         c = len;
         if (c>1024) c = 1024;
         len -= c;
-        auto before = fp->tellg();
+        long before = fp->tellg();
         fp->read(tmp, c);
         if ((before + c) != fp->tellg())
             printf( "%s: skip: %s\n",
