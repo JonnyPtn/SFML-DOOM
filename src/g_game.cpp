@@ -934,7 +934,7 @@ int cpars[32] =
 // G_DoCompleted 
 //
 bool		secretexit; 
-extern std::string	pagename; 
+extern char*	pagename; 
  
 void G_ExitLevel (void) 
 { 
@@ -1256,7 +1256,7 @@ int     d_episode;
 int     d_map; 
  
 void
-G_DeferredInitNew
+G_DeferedInitNew
 ( skill_t	skill,
   int		episode,
   int		map) 
@@ -1454,7 +1454,7 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
 //
 // G_RecordDemo 
 // 
-void G_RecordDemo (const std::string& name) 
+void G_RecordDemo (char* name) 
 { 
     int             i; 
     int				maxsize;
@@ -1492,9 +1492,9 @@ void G_BeginRecording (void)
 		*demo_p++ = playeringame[i]; 		 
 } 
 
-std::string	defdemoname; 
+char*	defdemoname; 
  
-void G_DeferredPlayDemo (const std::string& name) 
+void G_DeferedPlayDemo (char* name) 
 { 
     defdemoname = name; 
     gameaction = ga_playdemo; 
@@ -1544,7 +1544,7 @@ void G_DoPlayDemo (void)
 //
 // G_TimeDemo 
 //
-void G_TimeDemo (const std::string& name) 
+void G_TimeDemo (char* name) 
 { 	 
     nodrawers = CmdParameters::M_CheckParm ("-nodraw")!=0;
     noblit = CmdParameters::M_CheckParm ("-noblit")!=0;

@@ -17,20 +17,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
+/* This is for use with the SDL library */
+#define SDL
 #if (defined(WIN32) || defined(_WIN32)) && !defined(__WIN32__)
 #define __WIN32__
 #endif
 
-#ifndef LITTLE_ENDIAN
 #define LITTLE_ENDIAN
-#endif
 
 #include <stdint.h>
 
 /* When a patch file can't be opened, one of these extensions is
 appended to the filename and the open is tried again.
 */
-#define PATCH_EXT_LIST ".pat"
+#define PATCH_EXT_LIST { ".pat", 0 }
 
 /* Acoustic Grand Piano seems to be the usual default instrument. */
 #define DEFAULT_PROGRAM 0

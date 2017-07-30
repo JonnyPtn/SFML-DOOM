@@ -688,7 +688,7 @@ ST_Responder (sf::Event* ev)
 		
 			// So be it.
 			plyr->message = s_ChangeLevel.c_str();
-			G_DeferredInitNew(gameskill, epsd, map);
+			G_DeferedInitNew(gameskill, epsd, map);
 		}    
 	}
 	return false;

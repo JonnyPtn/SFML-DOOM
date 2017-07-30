@@ -184,7 +184,7 @@ For other parameters, 1 means yes, 0 means no, other values are
 undefined.
 
 TODO: do reverse loops right */
-static Instrument *load_instrument(const char *name, int percussion,
+static Instrument *load_instrument(char *name, int percussion,
     int panning, int amp, int note_to_use,
     int strip_loop, int strip_envelope,
     int strip_tail)
@@ -193,8 +193,11 @@ static Instrument *load_instrument(const char *name, int percussion,
     Sample *sp;
     std::ifstream * fp;
     int i, j, noluck = 0;
-    std::string path;
+    char *path;
     char filename[1024];
+#ifdef PATCH_EXT_LIST
+    static char *patch_ext[] = PATCH_EXT_LIST;
+#endif
 
     if (!name) 
         return 0;
@@ -204,7 +207,7 @@ static Instrument *load_instrument(const char *name, int percussion,
     std::string instName = name;
     //instName.ToUpper();
 
-    strcpy(filename, path.c_str());
+    strcpy(filename, path);
     strcat(filename, instName.c_str());
     strcat(filename, ".PAT");
 
@@ -212,6 +215,23 @@ static Instrument *load_instrument(const char *name, int percussion,
     if ((fp = open_file(filename, 1, 0)) == NULL)
     {
         noluck = 1;
+#ifdef PATCH_EXT_LIST
+        /* Try with various extensions */
+        for (i = 0; patch_ext[i]; i++)
+        {
+            if (strlen(name) + strlen(patch_ext[i])<1024)
+            {
+                strcpy(filename, path);
+                strcat(filename, name);
+                strcat(filename, patch_ext[i]);
+                if ((fp = open_file(filename, 1, 0)) != NULL)
+                {
+                    noluck = 0;
+                    break;
+                }
+            }
+        }
+#endif
     }
 
     if (noluck)

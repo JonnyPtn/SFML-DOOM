@@ -17,25 +17,43 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-controls.c
+sdl_a.c
+
+Functions to output RIFF WAVE format data to a file or stdout.
 
 */
 
 #include <timidity/config.h>
-#include <timidity/controls.h>
+#include <timidity/output.h>
 
-#ifdef SDL
-extern ControlMode sdl_control_mode;
-# ifndef DEFAULT_CONTROL_MODE
-#  define DEFAULT_CONTROL_MODE &sdl_control_mode
-# endif
-#endif
+/* export the playback mode */
 
-ControlMode *ctl_list[]={
-#ifdef SDL
-	&sdl_control_mode,
-#endif
-		0
+#define dpm sdl_play_mode
+
+static int open_output(void); /* 0=success, 1=warning, -1=fatal error */
+static void close_output(void);
+static void output_data(int *buf, int count, int* bytes_written);
+static void flush_output(void);
+static void purge_output(void);
+
+
+PlayMode dpm = {
+	DEFAULT_RATE, PE_16BIT|PE_SIGNED,
+		"SDL audio", 0, "d:\\out.wav",
+
+		open_output,
+		close_output,
+		output_data,
+		flush_output,
+		purge_output  
 };
 
-ControlMode *ctl=DEFAULT_CONTROL_MODE;
+/* Dummies */
+static int open_output(void){
+	return 0;
+}
+
+static void output_data(int *buf, int count, int* bytes_written){}
+static void close_output(void){}
+static void flush_output(void) { }
+static void purge_output(void) { }

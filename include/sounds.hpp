@@ -8,7 +8,7 @@ typedef struct sfxinfo_struct	sfxinfo_t;
 struct sfxinfo_struct
 {
     // up to 6-character name
-    const char*	name;
+    char*	name;
 
     // lump number of sfx
     int		lumpnum;		
@@ -23,7 +23,7 @@ struct sfxinfo_struct
 typedef struct
 {
     // up to 6-character name
-    const char*	name;
+    char*	name;
 
     // lump number of music
     int		lumpnum;

@@ -3,7 +3,6 @@ static const char
 rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 
 #include <ctype.h>
-#include <iomanip>
 
 #include "doomdef.hpp"
 
@@ -380,9 +379,8 @@ void HU_Init(void)
     j = HU_FONTSTART;
     for (i=0;i<HU_FONTSIZE;i++)
     {
-        std::stringstream fontStream;
-        fontStream << "STCFN" << std::setfill('0') << std::setw(3) << j++;
-		hu_font[i] = (patch_t *) WadManager::getLump(fontStream.str());
+		auto fontName = "STCFN" + std::to_string(j++);
+		hu_font[i] = (patch_t *) WadManager::getLump(fontName);
     }
 
 }
