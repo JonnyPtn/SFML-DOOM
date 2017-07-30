@@ -18,10 +18,10 @@ bool		segtextured;
 bool		markfloor;	
 bool		markceiling;
 
-bool		maskedtexture;
-int		toptexture;
-int		bottomtexture;
-int		midtexture;
+static bool		maskedtexture = false;
+static int		toptexture = 0;
+static int		bottomtexture = 0;
+static int		midtexture = 0;
 
 
 angle_t		rw_normalangle;

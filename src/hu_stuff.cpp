@@ -366,7 +366,7 @@ char ForeignTranslation(unsigned char ch)
 {
     return ch < 128 ? frenchKeyMap[ch] : ch;
 }
-
+#include <iomanip>
 void HU_Init(void)
 {
 
@@ -379,8 +379,9 @@ void HU_Init(void)
     j = HU_FONTSTART;
     for (i=0;i<HU_FONTSIZE;i++)
     {
-		auto fontName = "STCFN" + std::to_string(j++);
-		hu_font[i] = (patch_t *) WadManager::getLump(fontName);
+        std::stringstream fontStream;
+        fontStream << "STCFN" << std::setfill('0') << std::setw(3) << j++;
+        hu_font[i] = (patch_t *)WadManager::getLump(fontStream.str());
     }
 
 }

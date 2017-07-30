@@ -857,7 +857,7 @@ void M_VerifyNightmare(int ch)
     if (ch != 'y')
 	return;
 		
-    G_DeferredInitNew((skill_t)nightmare,epi+1,1);
+    G_InitNew((skill_t)nightmare,epi+1,1);
     M_ClearMenus ();
 }
 
@@ -869,7 +869,7 @@ void M_ChooseSkill(int choice)
 	return;
     }
 	
-    G_DeferredInitNew((skill_t)choice,epi+1,1);
+    G_InitNew((skill_t)choice,epi+1,1);
     M_ClearMenus ();
 }
 
