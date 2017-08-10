@@ -17,6 +17,10 @@
 #include <stdlib.h>
 #include <cstring>
 
+#ifdef __linux__
+#define strnicmp strncasecmp
+#endif
+
 //
 // Graphics.
 // DOOM graphics for walls and sprites
@@ -652,8 +656,10 @@ int	R_CheckTextureNumForName (char *name)
 	return 0;
 		
     for (i=0 ; i<numtextures ; i++)
-	if (std::string(textures[i]->name,8) == std::string(name,8))
-	    return i;
+    {
+	    if (!strnicmp(textures[i]->name,name,8))
+	        return i;
+    }
 		
     return -1;
 }
