@@ -3,35 +3,64 @@
     "configurations": [
         {
             "name": "x86-Debug",
-            "generator": "Visual Studio 15 2017",
+            "generator": "Ninja",
             "configurationType": "Debug",
-            "buildRoot": "${env.LOCALAPPDATA}\\CMakeBuild\\${workspaceHash}\\build\\${name}",
-            "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=D:/projects/vcpkg/scripts/buildsystems/vcpkg.cmake",
-            "buildCommandArgs": "-m -v:minimal"
+            "inheritEnvironments": [ "msvc_x86" ],
+            "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "-v",
+            "ctestCommandArgs": "",
+            "variables": [
+                {
+                    "name": "CMAKE_TOOLCHAIN_FILE",
+                    "value": "D:\\projects\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+                }
         },
         {
             "name": "x86-Release",
-            "generator": "Visual Studio 15 2017",
-            "configurationType": "Release",
-            "buildRoot": "${env.LOCALAPPDATA}\\CMakeBuild\\${workspaceHash}\\build\\${name}",
-            "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=D:/projects/vcpkg/scripts/buildsystems/vcpkg.cmake",
-            "buildCommandArgs": "-m -v:minimal"
+            "generator": "Ninja",
+            "configurationType": "RelWithDebInfo",
+            "inheritEnvironments": [ "msvc_x86" ],
+            "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "-v",
+            "ctestCommandArgs": "",
+            "variables": [
+                {
+                    "name": "CMAKE_TOOLCHAIN_FILE",
+                    "value": "D:\\projects\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+                }
         },
         {
             "name": "x64-Debug",
-            "generator": "Visual Studio 15 2017 Win64",
+            "generator": "Ninja",
             "configurationType": "Debug",
-            "buildRoot": "${env.LOCALAPPDATA}\\CMakeBuild\\${workspaceHash}\\build\\${name}",
-            "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=D:/projects/vcpkg/scripts/buildsystems/vcpkg.cmake",
-            "buildCommandArgs": "-m -v:minimal"
+            "inheritEnvironments": [ "msvc_x64" ],
+            "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "-v",
+            "ctestCommandArgs": "",
+            "variables": [
+                {
+                    "name": "CMAKE_TOOLCHAIN_FILE",
+                    "value": "D:\\projects\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+                }
+            ]
         },
         {
             "name": "x64-Release",
-            "generator": "Visual Studio 15 2017 Win64",
-            "configurationType": "Release",
-            "buildRoot": "${env.LOCALAPPDATA}\\CMakeBuild\\${workspaceHash}\\build\\${name}",
-            "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=D:/projects/vcpkg/scripts/buildsystems/vcpkg.cmake",
-            "buildCommandArgs": "-m -v:minimal"
+            "generator": "Ninja",
+            "configurationType": "RelWithDebInfo",
+            "inheritEnvironments": [ "msvc_x64" ],
+            "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "-v",
+            "ctestCommandArgs": "",
+            "variables": [
+                {
+                    "name": "CMAKE_TOOLCHAIN_FILE",
+                    "value": "D:\\projects\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+                }
         }
     ]
 }

@@ -10,12 +10,7 @@ file(GLOB INCLUDE "include/*.h" "include/*.hpp" "include/timidity/*.h")
 file(GLOB SOURCE "src/*.cpp" "src/timidity/*.cpp")
 
 set (CMAKE_CXX_STANDARD 11)
-
-#for backwards compatibility
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR
-    CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set(CMAKE_CXX_FLAGS "-std=c++11 -fno-strict-aliasing")
-endif()
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${SFML_INCLUDE_DIR})
 add_executable(SFML-DOOM ${INCLUDE} ${SOURCE})
