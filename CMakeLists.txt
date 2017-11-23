@@ -15,3 +15,9 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${SFML_INCLUDE_DIR})
 add_executable(SFML-DOOM ${INCLUDE} ${SOURCE})
 target_link_libraries(SFML-DOOM ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+
+install(TARGETS SFML-DOOM  DESTINATION .)
+install(FILES doom1.wad DESTINATION .)
+install(DIRECTORY eawpats DESTINATION .)
+
+include(cpack)
