@@ -49,6 +49,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef __APPLE__
+#include "ResourcePath.hpp"
+#endif
+
 //
 // D-DoomLoop()
 // Not a globally visible function,
@@ -444,35 +448,42 @@ void D_AddFile (const std::string& file)
 //
 void IdentifyVersion (void)
 {
-    char*	doom1wad;
-    char*	doomwad;
-    char*	doomuwad;
-    char*	doom2wad;
+    std::string	doom1wad;
+    std::string	doomwad;
+    std::string	doomuwad;
+    std::string doom2wad;
 
-    char*	plutoniawad;
-    char*	tntwad;
+    std::string plutoniawad;
+    std::string tntwad;
+    
+    std::string rPath = "./";
+    
+#ifdef __APPLE__
+    rPath = resourcePath();
+#endif
 
     // Commercial.
-    doom2wad = "doom2.wad";
+    doom2wad = rPath + "doom2.wad";
 
     // Retail.
-    doomuwad = "doomu.wad";
+    doomuwad = rPath + "doomu.wad";
     
     // Registered.
-    doomwad = "doom.wad";
+    doomwad = rPath + "doom.wad";
     
     // Shareware.
-    doom1wad = "doom1.wad";
+    doom1wad = rPath + "doom1.wad";
 
     // Plutonia
-    plutoniawad = "plutonia.wad";
+    plutoniawad = rPath + "plutonia.wad";
 
     // TNT
-    tntwad = "tnt.wad";
+    tntwad = rPath + "tnt.wad";
 
     // See which file we can open
     std::ifstream file;
 
+    std::cout << "Looking for " << doom2wad << std::endl;
     file.open(doom2wad);
     if (file.good())
     {
@@ -481,6 +492,7 @@ void IdentifyVersion (void)
 		return;
     }
 
+    std::cout << "Looking for " << plutoniawad << std::endl;
     file.open(plutoniawad);
     if (file.good())
     {
@@ -489,6 +501,7 @@ void IdentifyVersion (void)
 		return;
     }
 
+    std::cout << "Looking for " << tntwad << std::endl;
     file.open(tntwad);
     if (file.good())
     {
@@ -497,6 +510,7 @@ void IdentifyVersion (void)
 		return;
     }
 
+    std::cout << "Looking for " << doomuwad << std::endl;
     file.open(doomuwad);
     if (file.good())
     {
@@ -505,6 +519,7 @@ void IdentifyVersion (void)
 		return;
     }
 
+    std::cout << "Looking for " << doomwad << std::endl;
     file.open(doomwad);
     if (file.good())
     {
@@ -513,6 +528,7 @@ void IdentifyVersion (void)
 		return;
     }
 
+    std::cout << "Looking for " << doom1wad << std::endl;
     file.open(doom1wad);
     if (file.good())
     {
