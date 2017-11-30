@@ -197,7 +197,7 @@ static MidiEventList *read_midi_event(void)
 
                 default:
                     printf(
-                        "(Meta event type 0x%02x, length %ld)\n", type, len);
+                        "(Meta event type 0x%02x, length %d)\n", type, len);
                     skip_local(len);
                     break;
                 }
@@ -268,7 +268,7 @@ static MidiEventList *read_midi_event(void)
                         if (nrpn)
                         {
                             printf(
-                                "(Data entry (MSB) for NRPN %02x,%02x: %ld)\n",
+                                "(Data entry (MSB) for NRPN %02x,%02x: %d)\n",
                                 rpn_msb[lastchan], rpn_lsb[lastchan],
                                 b);
                             break;
@@ -286,7 +286,7 @@ static MidiEventList *read_midi_event(void)
 
                         default:
                             printf(
-                                "(Data entry (MSB) for RPN %02x,%02x: %ld)\n",
+                                "(Data entry (MSB) for RPN %02x,%02x: %d)\n",
                                 rpn_msb[lastchan], rpn_lsb[lastchan],
                                 b);
                             break;
@@ -613,7 +613,7 @@ MidiEvent *read_midi_buffer(unsigned char* buffer, size_t length, int32_t *count
     if (len > 6)
     {
         printf(
-            "%s: MIDI file header size %ld bytes\n",
+            "%s: MIDI file header size %d bytes\n",
             current_filename.c_str(), len);
         skip_local(len - 6); /* skip_local the excess */
     }
