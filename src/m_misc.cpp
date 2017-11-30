@@ -293,12 +293,14 @@ typedef struct
 //
 void M_ScreenShot (void)
 {
-    auto ss = window->capture();
+    sf::Texture screen;
+    screen.update(*window);
+    auto image = screen.copyToImage();
     
     // Use the current time for a unique file name
     std::string fileName = "DOOM-" + std::to_string(std::chrono::system_clock::now().time_since_epoch().count()) + ".png";
 
-    if (!ss.saveToFile(fileName))
+    if (!image.saveToFile(fileName))
     {
         I_Error(("M_ScreenShot: Couldn't save file " + fileName).c_str());
     }

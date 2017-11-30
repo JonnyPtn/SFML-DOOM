@@ -723,9 +723,9 @@ bool AM_clipMline( mline_t*	ml, fline_t*	fl )
 		TOP	= 8
     };
     
-    register	int outcode1 = 0;
-    register	int outcode2 = 0;
-    register	int outside;
+    int outcode1 = 0;
+    int outcode2 = 0;
+    int outside;
     
     sf::Vector2i	tmp;
     int		dx;
@@ -843,15 +843,15 @@ bool AM_clipMline( mline_t*	ml, fline_t*	fl )
 //
 void AM_drawFline ( fline_t* fl, int color )
 {
-    register int x;
-    register int y;
-    register int dx;
-    register int dy;
-    register int sx;
-    register int sy;
-    register int ax;
-    register int ay;
-    register int d;
+    int x;
+    int y;
+    int dx;
+    int dy;
+    int sx;
+    int sy;
+    int ax;
+    int ay;
+    int d;
     
 
 #define PUTDOT(xx,yy,cc) fb[(yy)*f_w+(xx)]=(cc)
