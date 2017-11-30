@@ -934,7 +934,6 @@ int cpars[32] =
 // G_DoCompleted 
 //
 bool		secretexit; 
-extern char*	pagename; 
  
 void G_ExitLevel (void) 
 { 
@@ -1492,9 +1491,9 @@ void G_BeginRecording (void)
 		*demo_p++ = playeringame[i]; 		 
 } 
 
-char*	defdemoname; 
+std::string	defdemoname;
  
-void G_DeferedPlayDemo (char* name) 
+void G_DeferedPlayDemo (const std::string& name)
 { 
     defdemoname = name; 
     gameaction = ga_playdemo; 

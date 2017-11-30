@@ -318,7 +318,7 @@ void D_DoomLoop (void)
 //
 int             demosequence;
 int             pagetic;
-char                    *pagename;
+std::string     pagename;
 
 //
 // D_PageTicker

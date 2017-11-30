@@ -20,7 +20,7 @@ typedef struct
 
 bool cht_CheckCheat(cheatseq_t& sequence, sf::Event* ev);
 
-
+// Needs refactor
 void
 cht_GetParam
 ( cheatseq_t*		cht,

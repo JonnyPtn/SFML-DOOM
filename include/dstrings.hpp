@@ -11,7 +11,7 @@
 // QuitDOOM messages
 #define NUM_QUITMESSAGES   22
 const std::array<std::string, NUM_QUITMESSAGES + 1> endmsg =
-{
+{{
     // DOOM1
     s_QuitMsg,
     "please don't leave, there's more\ndemons to toast!",
@@ -42,4 +42,4 @@ const std::array<std::string, NUM_QUITMESSAGES + 1> endmsg =
 
     // Internal debug. Different style, too.
     "THIS IS NO MESSAGE!\nPage intentionally left blank."
-};
+}};
