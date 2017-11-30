@@ -20,7 +20,7 @@
 
 
 
-// For some odd reason...
+#ifdef __WIN32__
 #define ntohl(x) \
         ((unsigned long int)((((unsigned long int)(x) & 0x000000ffU) << 24) | \
                              (((unsigned long int)(x) & 0x0000ff00U) <<  8) | \
@@ -33,6 +33,7 @@
 
 #define htonl(x) ntohl(x)
 #define htons(x) ntohs(x)
+#endif
 
 void	NetSend(void);
 bool    NetListen(void);

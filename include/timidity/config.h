@@ -23,8 +23,6 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #define __WIN32__
 #endif
 
-#define LITTLE_ENDIAN
-
 #include <stdint.h>
 
 /* When a patch file can't be opened, one of these extensions is
