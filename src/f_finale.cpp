@@ -609,7 +609,7 @@ void F_BunnyScroll (void)
 		laststage = stage;
     }
 	
-    auto name = "END" + stage;
+    auto name = "END" + std::to_string(stage);
     V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, (patch_t*)WadManager::getLump (name));
 }
 

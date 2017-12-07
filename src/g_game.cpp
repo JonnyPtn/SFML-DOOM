@@ -245,7 +245,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 		dclicks = 0;                   
     } 
 
-    static std::array<sf::Keyboard::Key, NUMWEAPONS+1> weaponButtons = {
+    static std::array<sf::Keyboard::Key, NUMWEAPONS+1> weaponButtons = {{
         sf::Keyboard::Num0,
         sf::Keyboard::Num1,
         sf::Keyboard::Num2,
@@ -256,7 +256,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
         sf::Keyboard::Num7,
         sf::Keyboard::Num8,
         sf::Keyboard::Num9
-    };
+    }};
     // chainsaw overrides 
 	for (i = 0; i < NUMWEAPONS - 1; i++)
 	{
@@ -451,12 +451,12 @@ bool G_Responder (sf::Event* ev)
 		    sendpause = true; 
 		    return true; 
 		} 
-		if (ev->key.code <NUMKEYS && ev->key.code >= 0)
+		if (ev->key.code < NUMKEYS && ev->key.code >= 0)
 		    gamekeydown[ev->key.code] = true;
 		return true;    // eat key down events 
  
       case sf::Event::KeyReleased:
-		if (ev->key.code <NUMKEYS && ev->key.code>=0)
+		if (ev->key.code < NUMKEYS && ev->key.code>=0)
 			gamekeydown[ev->key.code] = false;
 		return false;   // always let key up events filter down 
 		 
