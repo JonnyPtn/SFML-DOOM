@@ -20,7 +20,7 @@
 
 
 
-#ifdef __WIN32__
+#ifdef _WIN32
 #define ntohl(x) \
         ((unsigned long int)((((unsigned long int)(x) & 0x000000ffU) << 24) | \
                              (((unsigned long int)(x) & 0x0000ff00U) <<  8) | \
