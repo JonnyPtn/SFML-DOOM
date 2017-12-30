@@ -2,6 +2,26 @@
 language: c++
 sudo: true
 
+matrix:
+ include:
+    - os: linux
+      compiler: gcc
+
+    - os: linux
+      compiler: clang
+
+    - os: osx
+      osx_image: xcode6.4
+
+    - os: osx
+      osx_image: xcode7.3
+
+    - os: osx
+      osx_image: xcode8.3
+
+    - os: osx
+      osx_image: xcode9
+
 addons:
  apt:
    packages:
@@ -25,28 +45,9 @@ before_script:
 
  - git clone https://github.com/sfml/sfml && cd sfml
  - git checkout tags/2.4.2
- - cmake . && sudo cmake --build . --target install && cd ..
+
+ - cmake .  && sudo cmake --build . --target install && cd ..
 
 script:
- - cmake . && cmake --build .
-
-matrix:
- include:
-
-    - os: linux
-      compiler: gcc
-
-    - os: linux
-      compiler: clang
-
-    - os: osx
-      osx_image: xcode6.4
-
-    - os: osx
-      osx_image: xcode7.3
-
-    - os: osx
-      osx_image: xcode8.3
-
-    - os: osx
-      osx_image: xcode9
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake . && cmake --build .; fi
+ - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake . -GXcode && cmake --build .; fi
