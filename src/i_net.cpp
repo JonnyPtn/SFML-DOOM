@@ -17,6 +17,10 @@
 #include "i_net.hpp"
 #include <assert.h>
 
+#if defined(__linux__)
+#include <arpa/inet.h>
+#endif
+
 
 
 
