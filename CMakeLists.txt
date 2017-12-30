@@ -2,15 +2,24 @@ cmake_minimum_required(VERSION 2.8)
 
 project(SFML-DOOM)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 
-find_package(SFML 2.4 COMPONENTS graphics audio window system network)
+# Only works with SFML version 2.4 and above
+SET(SFML_MIN_VERSION 2.4)
+if (IOS)
+  # I'm not sure right now why audio isn't available
+  set(SFML_STATIC_LIBRARIES TRUE)
+  set(SFML_IOS TRUE)
+  find_host_package(SFML REQUIRED graphics audio window system network main)
+else()
+  find_package(SFML REQUIRED graphics audio window system network)
+endif()
 
 file(GLOB INCLUDE "include/*.h" "include/*.hpp" "include/timidity/*.h")
 file(GLOB SOURCE "src/*.cpp" "src/timidity/*.cpp")
 
-if (APPLE)
-    set(SOURCE "${SOURCE} src/*.mm")
+if (APPLE AND NOT IOS)
+    set(SOURCE "${SOURCE} src/ResourcePath.mm")
 endif()
 
 set (CMAKE_CXX_STANDARD 11)
