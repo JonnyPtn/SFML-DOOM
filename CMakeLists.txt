@@ -19,7 +19,7 @@ file(GLOB INCLUDE "include/*.h" "include/*.hpp" "include/timidity/*.h")
 file(GLOB SOURCE "src/*.cpp" "src/timidity/*.cpp")
 
 if (APPLE AND NOT IOS)
-    set(SOURCE "${SOURCE} src/ResourcePath.mm")
+    set(SOURCE ${SOURCE} src/ResourcePath.mm)
 endif()
 
 set (CMAKE_CXX_STANDARD 11)
