@@ -34,13 +34,26 @@ if(APPLE)
     ${CMAKE_SOURCE_DIR}/doom1.wad
     ${CMAKE_SOURCE_DIR}/eawpats)
     set_target_properties( SFML-DOOM PROPERTIES MACOSX_BUNDLE_ICON_FILE sfml-doom.icns )
+    include(BundleUtilities)
 else()
     add_executable(SFML-DOOM ${INCLUDE} ${SOURCE})
 endif()
 target_link_libraries(SFML-DOOM ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 
-install(TARGETS SFML-DOOM  DESTINATION .)
-install(FILES doom1.wad DESTINATION .)
-install(DIRECTORY eawpats DESTINATION .)
+install(TARGETS SFML-DOOM BUNDLE DESTINATION ".")
+
+#Platform specific packaging
+if(APPLE)
+	set(CPACK_PACKAGE_FILE_NAME "SFML-DOOM")
+    install(CODE " include(BundleUtilities)
+		 fixup_bundle(${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/SFML-DOOM.app \"\" \"\")
+		 verify_app(${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/SFML-DOOM.app)")
+    SET(CPACK_GENERATOR "DragNDrop")
+elseif(UNIX)
+	set(CPACK_GENERATOR "DEB")
+endif()
+
+
+
 
 include(CPack)
