@@ -1,45 +1,52 @@
-language:
-- cpp
-os:
-- linux
-- osx
+
+language: c++
+sudo: true
+
 addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - libopenal-dev
-    - libjpeg-dev
-    - libudev-dev
+ apt:
+   packages:
+    - cmake
     - libxrandr-dev
-    - libfreetype6-dev
-    - libvorbis-dev
+    - libudev-dev
+    - libopenal-dev
     - libflac-dev
-    - gcc-5
-    - g++-5
-install:
-- if [ "$TRAVIS_OS_NAME" == "linux" ]; then export CXX="g++-5"; fi
-- git clone https://github.com/jonnyptn/sfml
-- cd sfml
-- curl https://gitlab.peach-bun.com/pinion/SFML/commit/3383b4a472f0bd16a8161fb8760cd3e6333f1782.patch
-  | patch -p1
-- mkdir install
-- cmake . -DCMAKE_INSTALL_PREFIX=./install -DCMAKE_INSTALL_FRAMEWORK_PREFIX=./install
-  -DSFML_BUILD_FRAMEWORKS=FALSE -DBUILD_SHARED_LIBS=TRUE
-- make install
-- cd ../
+    - libvorbis-dev
+    - libgtk-3-dev
+    - g++-7
+    - gcc-7
+    - clang
+   sources:
+    - ubuntu-toolchain-r-test
+
+# Install SFML from git for consistent version
+before_script:
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 90; fi
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90; fi
+
+ - git clone https://github.com/sfml/sfml && cd sfml
+ - git checkout tags/2.4.2
+ - cmake . && sudo cmake --build . --target install && cd ..
+
 script:
-- cmake . -DSFML_ROOT=./sfml/install
-- make
-before_deploy:
-  - zip SFML-DOOM_$TRAVIS_OS_NAME ./SFML-DOOM ./doom1.wad ./eawpats -r
-  - ls # To check the zip file is created correctly
-deploy:
-  skip_cleanup: true
-  provider: releases
-  api_key:
-    secure: gAxBTg9xwuf5ZrWnB8V+g0xue8kswJGxyI4gEQPRIcLlrZDTMVyaNm7LR8lisf0alnoFCeHw5x7TBAYBg57lHnIx05egkoQUwBywtHgTkqawWoPepaZeB6kRkKBASn7xoD2ypoC3NS6+WLJQdVW+ndw/LYThJmDvu0HJe81msSIQrWcCqLAGpwJxIR1H17+sX2GGLr4XomYayjy9RbAmPDpxcnf5l2dgMIOVCocSyefn8FFR0gI4H9PdBpRjq5YpJEcj+7FHSPqrfhKRcG8EXMCSWIQjyeHAGd88awbnNjU9QUqcSqK/s833SoKd1cLNNTUYhlawc7pyy4HsQDJIqkU1KZ6Dp23UlUeKav2ur0WhEekpd+iRuNZFig7SdKir8XF4JmnmeEPvOJDDKmx+/TeA1j8Q+GIL6FpU+UGcnx8hUWajd3Gxec4qR/IEWO+6OpFJ8SOf54glkx9dPpdjwUQ3ud0A04NsvY3/oMe5NXzsi+LDo31/6bbIG/OHsJRxxOVdi9s99QTRVS7HSt+SIU8de6JddWeu+bpFUB0PFGqaUOMzd1LnV1B6B6b/AlaB8RSGeNKSU9+DT+cdr78TwkMYDzhps+eyQk86ONrnPAJwL46Uz9g6QVd4i0a6xphMxKrBdhRLRM0H+bcjgu8F7GGKL/FBC/JBW9D+nXhU+94=
-  file: 
-    - ./SFML-DOOM_$TRAVIS_OS_NAME.zip
-  on:
-    tags: true
+ - cmake . && cmake --build .
+
+matrix:
+ include:
+
+    - os: linux
+      compiler: gcc
+
+    - os: linux
+      compiler: clang
+
+    - os: osx
+      osx_image: xcode6.4
+
+    - os: osx
+      osx_image: xcode7.3
+
+    - os: osx
+      osx_image: xcode8.3
+
+    - os: osx
+      osx_image: xcode9
