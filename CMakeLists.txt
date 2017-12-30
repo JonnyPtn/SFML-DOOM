@@ -43,4 +43,4 @@ install(TARGETS SFML-DOOM  DESTINATION .)
 install(FILES doom1.wad DESTINATION .)
 install(DIRECTORY eawpats DESTINATION .)
 
-include(cpack)
+include(CPack)
