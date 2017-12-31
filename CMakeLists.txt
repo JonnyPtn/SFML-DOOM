@@ -52,6 +52,7 @@ if(APPLE)
     SET(CPACK_GENERATOR "DragNDrop")
 elseif(UNIX)
 	set(CPACK_GENERATOR "DEB")
+	set(CPACK_PACKAGE_CONTACT Jonny@JonnyPaton.com)
 endif()
 
 
