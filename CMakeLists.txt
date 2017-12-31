@@ -40,7 +40,8 @@ else()
 endif()
 target_link_libraries(SFML-DOOM ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 
-install(TARGETS SFML-DOOM BUNDLE DESTINATION ".")
+install(TARGETS SFML-DOOM BUNDLE DESTINATION .
+			  RUNTIME DESTINATION .)
 
 #Platform specific packaging
 if(APPLE)
