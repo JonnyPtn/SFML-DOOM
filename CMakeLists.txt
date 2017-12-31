@@ -44,7 +44,7 @@ install(TARGETS SFML-DOOM BUNDLE DESTINATION ".")
 
 #Platform specific packaging
 if(APPLE)
-	set(CPACK_PACKAGE_FILE_NAME "SFML-DOOM")
+	set(CPACK_PACKAGE_FILE_NAME)
     install(CODE " include(BundleUtilities)
 		 fixup_bundle(${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/SFML-DOOM.app \"\" \"\")
 		 verify_app(${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/SFML-DOOM.app)")

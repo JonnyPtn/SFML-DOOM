@@ -49,5 +49,6 @@ before_script:
  - cmake .  && sudo cmake --build . --target install && cd ..
 
 script:
- - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake . && cmake --build .; fi
- - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake . -GXcode && cmake --build .; fi
+ - mkdir build && cd build
+ - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake .. -DCMAKE_BUILD_TYPE="Release" && cmake --build . --target package; fi
+ - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -DCMAKE_BUILD_TYPE="Release" -GXcode && sudo cmake --build . --target package --config Release; fi
