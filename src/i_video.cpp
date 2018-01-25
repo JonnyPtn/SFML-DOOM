@@ -21,6 +21,7 @@ bool	isFullscreen(false);
 
 std::unique_ptr<sf::Texture>	texture;
 std::unique_ptr<sf::Sprite>		sprite;
+std::unique_ptr<sf::RectangleShape> debugRect;
 sf::Color	colors[256];
 int		X_screen;
 int		X_width;
@@ -52,6 +53,7 @@ void I_FinishUpdate(void)
 	texture->update(colouredPixels);
 	window->clear();
 	window->draw(*sprite);
+    window->draw(*debugRect);
 	window->display();
 }
 
@@ -121,13 +123,16 @@ void I_InitGraphics(void)
 
 	window.reset(new sf::RenderWindow());
 	window->create(sf::VideoMode(X_width, X_height), displayname); //quick double size for now
-	window->setVerticalSyncEnabled(true);
+	window->setFramerateLimit(TICRATE);
 	//window->setMouseCursorGrabbed(true);
 	texture.reset(new sf::Texture);
 	texture->create(SCREENWIDTH, SCREENHEIGHT);
 	sprite.reset(new sf::Sprite());
 	sprite->setTexture(*texture);
-	sprite->setScale(sf::Vector2f(2.f,2.f));
+	//sprite->setScale(sf::Vector2f(2.f,2.f));
+    
+    debugRect.reset(new sf::RectangleShape());
+    debugRect->setFillColor(sf::Color::Red);
 
 	screens[0] = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
 
@@ -137,6 +142,8 @@ void I_InitGraphics(void)
 
 bool pollEvent(sf::Event& ev)
 {
+    auto ws = window->getSize();
+    
     if (window && window->isOpen())
         return window->pollEvent(ev);
     else
@@ -147,7 +154,7 @@ void toggleFullscreen()
 {
 	if (isFullscreen)
 	{
-		window->create(sf::VideoMode(X_width, X_height), "SFML-DOOM", sf::Style::Default);
+        window->create(sf::VideoMode(X_width, X_height), "SFML-DOOM", sf::Style::Default);
 		isFullscreen = false;
 		sprite->setScale(2.f, 2.f);
 	}

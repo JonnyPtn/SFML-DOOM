@@ -103,8 +103,22 @@ void D_ProcessEvents (void)
 	
     while(pollEvent(ev))
     {
-		if (ev.type == sf::Event::Closed)
-			I_Error("Window Closed");
+		switch(ev.type)
+        {
+            case sf::Event::Closed:
+                I_Error("Window Closed");
+                break;
+                
+            case sf::Event::Resized:
+                auto view = window->getView();
+                view.setSize(ev.size.width, ev.size.height);
+                view.setCenter(ev.size.width/2, ev.size.height/2);
+                //window->setView(view);
+                auto ws = window->getSize();
+                std::cout << "size = " + std::to_string(ev.size.width) + "," + std::to_string(ev.size.height) << std::endl;
+                break;
+        
+        }
 
 		if (M_Responder (&ev))
 		    continue;               // menu ate the event

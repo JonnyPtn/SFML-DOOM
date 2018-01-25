@@ -9,7 +9,8 @@ SET(SFML_MIN_VERSION 2.4)
 if (IOS)
   # I'm not sure right now why audio isn't available
   set(SFML_STATIC_LIBRARIES TRUE)
-  set(SFML_IOS TRUE)
+  set(SFML_DOOM_IOS TRUE)
+  add_definitions(-DSFML_DOOM_IOS)
   find_host_package(SFML REQUIRED graphics audio window system network main)
 else()
   find_package(SFML REQUIRED graphics audio window system network)
@@ -18,7 +19,7 @@ endif()
 file(GLOB INCLUDE "include/*.h" "include/*.hpp" "include/timidity/*.h")
 file(GLOB SOURCE "src/*.cpp" "src/timidity/*.cpp")
 
-if (APPLE AND NOT IOS)
+if (APPLE)
     set(SOURCE ${SOURCE} src/ResourcePath.mm)
 endif()
 

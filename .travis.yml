@@ -20,13 +20,16 @@ addons:
 before_script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 90; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install sfml enet; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clone https://github.com/sfml/sfml && cd sfml && cmake . && sudo cmake --build . --target install && cd ..; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install enet; fi
+- git clone https://github.com/sfml/sfml && cd sfml && mkdir build && cd build && cmake .. -G"$GENERATOR"
+- sudo cmake --build . --target install
+- rm -rf * && cmake .. -DCMAKE_INSTALL_PREFIX=./install -G"$GENERATOR"
+- cmake --build . --target install
+- cd ../..
 
 script:
 - mkdir build && cd build
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake .. -GXcode -DMACOS_BUNDLE=TRUE -DCMAKE_BUILD_TYPE=Release; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake .. -DCMAKE_BUILD_TYPE=Release; fi
+- cmake .. -DCMAKE_BUILD_TYPE=Release -G"$GENERATOR"
 - sudo cmake --build . --target package --config Release
 
 # Copy anything for deployment into the deploy folder
@@ -37,27 +40,39 @@ matrix:
   include:
   - os: linux
     compiler: gcc
+    env: 
+     - GENERATOR="Unix Makefiles"
 
   - os: linux
     compiler: clang
+    env: 
+     - GENERATOR="Unix Makefiles"
 
   - os: osx
     osx_image: xcode8.3
+    env: 
+     - GENERATOR="Xcode"
 
   - os: osx
     osx_image: xcode9
+    env: 
+     - GENERATOR="Xcode"
     
 deploy:
-  provider: s3
-  access_key_id: $ARTIFACTS_KEY
-  secret_access_key: $ARTIFACTS_SECRET
-  bucket: sfml-doom-builds
-  region: us-east-1
-  skip_cleanup: true
-  local_dir: deploy
+  - provider: s3
+    access_key_id: $ARTIFACTS_KEY
+    secret_access_key: $ARTIFACTS_SECRET
+    bucket: sfml-doom-builds
+    region: us-east-1
+    skip_cleanup: true
+    local_dir: deploy
+    upload-dir: "$TRAVIS_BUILD_NUMBER/$TRAVIS_PLATFORM/$CXX"
 
- # For some reason enabling this causes it to stop deploying because the repo isn't in the list :S
- # on:
- #   repo: 
- #   - fallahn/xygine 
- #   - JonnyPtn/xygine
+  - provider: s3
+    access_key_id: $ARTIFACTS_KEY
+    secret_access_key: $ARTIFACTS_SECRET
+    bucket: sfml-builds
+    region: us-east-1
+    skip_cleanup: true
+    local_dir: sfml/build/install
+    upload-dir: "$TRAVIS_BUILD_NUMBER/$TRAVIS_PLATFORM/$CXX"

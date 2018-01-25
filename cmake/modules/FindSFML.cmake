@@ -233,7 +233,11 @@ if(SFML_STATIC_LIBRARIES)
     elseif(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
         set(FIND_SFML_OS_FREEBSD 1)
     elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-        set(FIND_SFML_OS_MACOSX 1)
+        if (DEFINED IOS)
+            set(FIND_SFML_OS_IOS 1)
+        else()
+            set(FIND_SFML_OS_MACOSX 1)
+        endif()
     endif()
 
     # start with an empty list
@@ -255,7 +259,7 @@ if(SFML_STATIC_LIBRARIES)
     if(NOT ${FIND_SFML_SYSTEM_COMPONENT} EQUAL -1)
 
         # update the list -- these are only system libraries, no need to find them
-        if(FIND_SFML_OS_LINUX OR FIND_SFML_OS_FREEBSD OR FIND_SFML_OS_MACOSX)
+        if(FIND_SFML_OS_LINUX OR FIND_SFML_OS_FREEBSD OR FIND_SFML_OS_MACOSX OR FIND_SFML_OS_IOS)
             set(SFML_SYSTEM_DEPENDENCIES "pthread")
         endif()
         if(FIND_SFML_OS_LINUX)
@@ -300,7 +304,9 @@ if(SFML_STATIC_LIBRARIES)
         elseif(FIND_SFML_OS_FREEBSD)
             set(SFML_WINDOW_DEPENDENCIES ${SFML_WINDOW_DEPENDENCIES} "GL" ${X11_LIBRARY} ${XRANDR_LIBRARY} "usbhid")
         elseif(FIND_SFML_OS_MACOSX)
-            set(SFML_WINDOW_DEPENDENCIES ${SFML_WINDOW_DEPENDENCIES} "-framework OpenGLES -framework Foundation -framework IOKit -framework UIKit -framework QuartzCore -framework CoreMotion")
+            set(SFML_WINDOW_DEPENDENCIES ${SFML_WINDOW_DEPENDENCIES} "-framework OpenGL -framework Foundation -framework AppKit -framework IOKit -framework Carbon")
+        elseif(FIND_SFML_OS_IOS)
+            set(SFML_WINDOW_DEPENDENCIES ${SFML_WINDOW_DEPENDENCIES} "-framework OpenGLES -framework Foundation -framework IOKit -framework UIKit -framework CoreMotion  -framework QuartzCore")
         endif()
         set(SFML_DEPENDENCIES ${SFML_WINDOW_DEPENDENCIES} ${SFML_DEPENDENCIES})
     endif()
@@ -324,13 +330,23 @@ if(SFML_STATIC_LIBRARIES)
         # find libraries
         find_sfml_dependency(OPENAL_LIBRARY "OpenAL" openal openal32)
         find_sfml_dependency(OGG_LIBRARY "Ogg" ogg)
-        find_sfml_dependency(VORBIS_LIBRARY "Vorbis" vorbis)
-#find_sfml_dependency(VORBISFILE_LIBRARY "VorbisFile" vorbisfile)
-#find_sfml_dependency(VORBISENC_LIBRARY "VorbisEnc" vorbisenc)
         find_sfml_dependency(FLAC_LIBRARY "FLAC" FLAC)
+        find_sfml_dependency(VORBIS_LIBRARY "Vorbis" vorbis)
+
+        # on iOS libvorbis has these two bundled in it
+        if (NOT FIND_SFML_OS_IOS)
+            find_sfml_dependency(VORBISFILE_LIBRARY "VorbisFile" vorbisfile)
+            find_sfml_dependency(VORBISENC_LIBRARY "VorbisEnc" vorbisenc)
+            set(SFML_AUDIO_DEPENDENCIES ${VORBISENC_LIBRARY} ${VORBISFILE_LIBRARY})
+        endif()
 
         # update the list
-        set(SFML_AUDIO_DEPENDENCIES ${OPENAL_LIBRARY} ${FLAC_LIBRARY} ${VORBIS_LIBRARY} ${OGG_LIBRARY})
+        set(SFML_AUDIO_DEPENDENCIES ${SFML_AUDIO_DEPENDENCIES}
+            ${OPENAL_LIBRARY}
+            ${FLAC_LIBRARY}
+            ${VORBIS_LIBRARY}
+            ${OGG_LIBRARY})
+
         set(SFML_DEPENDENCIES ${SFML_DEPENDENCIES} ${SFML_AUDIO_DEPENDENCIES})
     endif()
 
