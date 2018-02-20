@@ -28,6 +28,11 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${SFML_INCLUDE_DIR})
 if(APPLE)
+
+    # Set some details for the app bundle. Without these my xcode crashes when debugging ios :S
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER SFML-DOOM)
+    set(MACOSX_BUNDLE_BUNDLE_NAME SFML-DOOM)
+
     set_source_files_properties( ${CMAKE_SOURCE_DIR}/apple/sfml-doom.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
     set_source_files_properties( ${CMAKE_SOURCE_DIR}/eawpats PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
     set_source_files_properties( ${CMAKE_SOURCE_DIR}/doom1.wad PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
@@ -48,15 +53,15 @@ install(TARGETS SFML-DOOM BUNDLE DESTINATION .
 if(APPLE)
 	set(CPACK_PACKAGE_FILE_NAME)
     install(CODE " include(BundleUtilities)
-		 fixup_bundle(${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/SFML-DOOM.app \"\" \"\")
-		 verify_app(${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}/SFML-DOOM.app)")
-    SET(CPACK_GENERATOR "DragNDrop")
+		 fixup_bundle(${CMAKE_INSTALL_PREFIX}/SFML-DOOM.app \"\" \"\")
+		 verify_app(${CMAKE_INSTALL_PREFIX}/SFML-DOOM.app)")
+    SET(CPACK_GENERATOR DragNDrop)
 elseif(UNIX)
-	set(CPACK_GENERATOR "DEB")
+	set(CPACK_GENERATOR DEB)
 	set(CPACK_PACKAGE_CONTACT Jonny@JonnyPaton.com)
+elseif(WIN32)
+	set(CPACK_GENERATOR NSIS)
 endif()
-
-
 
 
 include(CPack)
