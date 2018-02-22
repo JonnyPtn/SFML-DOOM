@@ -34,6 +34,7 @@ script:
 - cd ../ && mkdir deploy
 - cp build/$PACKAGE_NAME deploy
 matrix:
+  fast_finish: true
   include:
   - os: linux
     compiler: gcc
@@ -67,6 +68,14 @@ matrix:
      - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
      - COMPILER_FLAGS="-arch arm64 -sdk iphoneos"
      - PACKAGE_NAME="*.dmg"
+
+   # Let iOS builds fail for now, until I work out the codesigning stuff...
+    allow_failures:
+     - env: 
+      - GENERATOR="Xcode"
+      - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
+      - COMPILER_FLAGS="-arch arm64 -sdk iphoneos"
+      - PACKAGE_NAME="*.dmg"
 
 before_deploy:
   - git config --local user.name "JonnyPtn"
