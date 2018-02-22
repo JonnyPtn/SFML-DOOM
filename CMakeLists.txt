@@ -53,7 +53,7 @@ install(TARGETS SFML-DOOM BUNDLE DESTINATION .
 if(APPLE)
 	set(CPACK_PACKAGE_FILE_NAME)
     install(CODE " include(BundleUtilities)
-		 fixup_bundle(${CMAKE_INSTALL_PREFIX}/SFML-DOOM.app \"\" \"\")
+		 fixup_bundle(${CMAKE_INSTALL_PREFIX}/SFML-DOOM.app \"\" \"/Library/Frameworks\")
 		 verify_app(${CMAKE_INSTALL_PREFIX}/SFML-DOOM.app)")
     SET(CPACK_GENERATOR DragNDrop)
 elseif(UNIX)
