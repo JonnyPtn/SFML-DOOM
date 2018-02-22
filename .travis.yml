@@ -71,11 +71,13 @@ matrix:
 
    # Let iOS builds fail for now, until I work out the codesigning stuff...
   allow_failures:
-    - env: 
-    - GENERATOR="Xcode"
-    - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
-    - COMPILER_FLAGS="-arch arm64 -sdk iphoneos"
-    - PACKAGE_NAME="*.dmg"
+    - os: osx
+      osx_image: xcode9
+      env: 
+       - GENERATOR="Xcode"
+       - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
+       - COMPILER_FLAGS="-arch arm64 -sdk iphoneos"
+       - PACKAGE_NAME="*.dmg"
 
 before_deploy:
   - git config --local user.name "JonnyPtn"
