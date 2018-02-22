@@ -78,12 +78,7 @@ matrix:
        - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
        - COMPILER_FLAGS="-arch arm64 -sdk iphoneos"
        - PACKAGE_NAME="*.dmg"
-
-before_deploy:
-  - git config --local user.name "JonnyPtn"
-  - git config --local user.email "Jonathan.r.paton@googlemail.com"
-  - if [[ $TRAVIS_TAG == "" ]]; then git tag -f "Latest"; fi
-
+       
 deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
@@ -92,3 +87,5 @@ deploy:
   overwrite: true
   skip_cleanup: true
   prerelease: true
+  on:
+   tags: true
