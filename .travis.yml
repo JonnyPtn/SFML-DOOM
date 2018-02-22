@@ -28,6 +28,7 @@ before_script:
 script:
 - mkdir build && cd build
 - cmake .. -DCMAKE_BUILD_TYPE=Release -G"$GENERATOR" $CMAKE_FLAGS
+- sudo cmake --build . --target install --config Release -- $COMPILER_FLAGS
 - sudo cmake --build . --target package --config Release -- $COMPILER_FLAGS
 
 - cd ../ && mkdir deploy
