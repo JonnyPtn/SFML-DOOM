@@ -22,7 +22,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: Uh9bW+VtZC5N7CVz5UpuxZvPJ58SpbsXBvEz6Q4vQhLcjZEFzYMhH+bS9VAPV+S8
-  artifact: build/*.exe
+  artifact: *.exe
   prerelease: true
   on:
     branch: master                 # release from master branch only
