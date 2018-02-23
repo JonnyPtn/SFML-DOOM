@@ -17,11 +17,14 @@ build_script:
     cmake . -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
 
     cmake --build . --target package
+
+artifacts:
+  - path: C:/projects/sfml-doom/*.exe
 deploy:
   provider: GitHub
   auth_token:
     secure: Uh9bW+VtZC5N7CVz5UpuxZvPJ58SpbsXBvEz6Q4vQhLcjZEFzYMhH+bS9VAPV+S8
-  artifact: c:/projects/sfml-doom/*.exe
+  artifact: C:/projects/sfml-doom/*.exe
   prerelease: true
   force_update: true
   on:
