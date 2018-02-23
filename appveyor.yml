@@ -18,7 +18,6 @@ build_script:
 
     cmake --build . --target package
 deploy:
-  release: SFML-DOOM-v$(appveyor_build_version)
   provider: GitHub
   auth_token:
     secure: Uh9bW+VtZC5N7CVz5UpuxZvPJ58SpbsXBvEz6Q4vQhLcjZEFzYMhH+bS9VAPV+S8
