@@ -49,6 +49,14 @@ target_link_libraries(SFML-DOOM ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 install(TARGETS SFML-DOOM BUNDLE DESTINATION .
 			  RUNTIME DESTINATION .)
 
+# If not on apple, we need to install the resources
+if (NOT APPLE)
+    install(DIRECTORY $CMAKE_SOURCE_DIR}/eawpats
+	    DESTINATION .)
+    install(FILES doom1.wad
+            DESTINATION .)
+endif()
+
 #Platform specific packaging
 if(APPLE)
 	set(CPACK_PACKAGE_FILE_NAME)
