@@ -129,7 +129,7 @@ void I_InitGraphics(void)
 	texture->create(SCREENWIDTH, SCREENHEIGHT);
 	sprite.reset(new sf::Sprite());
 	sprite->setTexture(*texture);
-	//sprite->setScale(sf::Vector2f(2.f,2.f));
+	sprite->setScale(sf::Vector2f(2.f,2.f));
     
     debugRect.reset(new sf::RectangleShape());
     debugRect->setFillColor(sf::Color::Red);
@@ -142,8 +142,6 @@ void I_InitGraphics(void)
 
 bool pollEvent(sf::Event& ev)
 {
-    auto ws = window->getSize();
-    
     if (window && window->isOpen())
         return window->pollEvent(ev);
     else

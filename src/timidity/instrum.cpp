@@ -40,7 +40,7 @@ Code to load and unload GUS-compatible instrument patches.
 #include <tables.hpp>
 #include <timidity/filter.h>
 
-
+#include <ResourcePath.hpp>
 
 //void Real_Tim_Free( void *pt );
 
@@ -193,45 +193,19 @@ static Instrument *load_instrument(char *name, int percussion,
     Sample *sp;
     std::ifstream * fp;
     int i, j, noluck = 0;
-    char *path;
-    char filename[1024];
-#ifdef PATCH_EXT_LIST
-    static char *patch_ext[] = PATCH_EXT_LIST;
-#endif
+    std::string filename;
 
     if (!name) 
         return 0;
 
-    path = "eawpats/";
+    auto path = resourcePath() + "eawpats/";
 
-    std::string instName = name;
-    //instName.ToUpper();
-
-    strcpy(filename, path);
-    strcat(filename, instName.c_str());
-    strcat(filename, ".PAT");
+    filename = path + std::string(name) + ".pat";
 
     /* Open patch file */
-    if ((fp = open_file(filename, 1, 0)) == NULL)
+    if ((fp = open_file(filename.c_str(), 1, 0)) == NULL)
     {
         noluck = 1;
-#ifdef PATCH_EXT_LIST
-        /* Try with various extensions */
-        for (i = 0; patch_ext[i]; i++)
-        {
-            if (strlen(name) + strlen(patch_ext[i])<1024)
-            {
-                strcpy(filename, path);
-                strcat(filename, name);
-                strcat(filename, patch_ext[i]);
-                if ((fp = open_file(filename, 1, 0)) != NULL)
-                {
-                    noluck = 0;
-                    break;
-                }
-            }
-        }
-#endif
     }
 
     if (noluck)
@@ -249,8 +223,7 @@ static Instrument *load_instrument(char *name, int percussion,
     //just load the whole damn file
     std::vector<char> file;
     char c;
-    fp->seekg(std::ios::end);
-    fp->seekg(std::ios::beg);
+    fp->seekg(0);
     while (fp->good())
     {
         fp->get(c);

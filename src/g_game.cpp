@@ -450,14 +450,12 @@ bool G_Responder (sf::Event* ev)
 		{ 
 		    sendpause = true; 
 		    return true; 
-		} 
-		if (ev->key.code < NUMKEYS && ev->key.code >= 0)
-		    gamekeydown[ev->key.code] = true;
+		}
+        gamekeydown[ev->key.code] = true;
 		return true;    // eat key down events 
  
       case sf::Event::KeyReleased:
-		if (ev->key.code < NUMKEYS && ev->key.code>=0)
-			gamekeydown[ev->key.code] = false;
+        gamekeydown[ev->key.code] = false;
 		return false;   // always let key up events filter down 
 		 
 	  case sf::Event::MouseButtonPressed:
@@ -1431,7 +1429,7 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 
 void G_WriteDemoTiccmd (ticcmd_t* cmd) 
 { 
-    if (gamekeydown['q'])           // press q to end demo recording 
+    if (gamekeydown[sf::Keyboard::Q])           // press q to end demo recording 
 		G_CheckDemoStatus (); 
     *demo_p++ = cmd->forwardmove; 
     *demo_p++ = cmd->sidemove; 

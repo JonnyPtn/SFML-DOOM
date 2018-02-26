@@ -35,6 +35,8 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <timidity/timidity.h>
 #include "tables.hpp"
 
+#include <ResourcePath.hpp>
+
 
 //void *Real_Tim_Malloc( int sz );
 //void Real_Tim_Free( void *pt );
@@ -64,7 +66,7 @@ static int read_config_file(const char *name)
 		return (-1);
 	}
 
-    fp.open(name,std::ios::binary);
+    fp.open(resourcePath() + name,std::ios::binary);
 	if (!fp.good())
 		return -2;
 	

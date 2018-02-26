@@ -110,12 +110,15 @@ void D_ProcessEvents (void)
                 break;
                 
             case sf::Event::Resized:
+            {
                 auto view = window->getView();
                 view.setSize(ev.size.width, ev.size.height);
                 view.setCenter(ev.size.width/2, ev.size.height/2);
-                //window->setView(view);
-                auto ws = window->getSize();
                 std::cout << "size = " + std::to_string(ev.size.width) + "," + std::to_string(ev.size.height) << std::endl;
+                break;
+            }
+                
+            default:
                 break;
         
         }

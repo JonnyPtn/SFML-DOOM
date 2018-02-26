@@ -28,7 +28,7 @@ cht_GetParam
 ( cheatseq_t*	cht,
   char*		buffer )
 {
-    char *p, c;
+    /*char *p, c;
 
     p = const_cast<char*>(cht->sequence.data());
     while (*(p++) != 1);
@@ -43,6 +43,7 @@ cht_GetParam
 
     if (*p==0xff)
 	    *buffer = 0;
+     */
 }
 
 
