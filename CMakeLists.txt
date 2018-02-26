@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 2.8)
 
 project(SFML-DOOM)
 
+# Version number
+SET(CPACK_PACKAGE_VERSION_MAJOR 0)
+SET(CPACK_PACKAGE_VERSION_MINOR 2)
+SET(CPACK_PACKAGE_VERSION_PATCH 0)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake/modules")
 
 # Only works with SFML version 2.4 and above
