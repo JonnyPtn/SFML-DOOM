@@ -35,9 +35,9 @@ if(APPLE)
 
     set_source_files_properties( ${CMAKE_SOURCE_DIR}/apple/sfml-doom.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
     set_source_files_properties( ${CMAKE_SOURCE_DIR}/eawpats PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
-    set_source_files_properties( ${CMAKE_SOURCE_DIR}/doomu.wad PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
+    set_source_files_properties( ${CMAKE_SOURCE_DIR}/doom1.wad PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
     add_executable(SFML-DOOM MACOSX_BUNDLE ${INCLUDE} ${SOURCE} ${CMAKE_SOURCE_DIR}/apple/sfml-doom.icns
-    ${CMAKE_SOURCE_DIR}/doomu.wad
+    ${CMAKE_SOURCE_DIR}/doom1.wad
     ${CMAKE_SOURCE_DIR}/eawpats)
     set_target_properties( SFML-DOOM PROPERTIES MACOSX_BUNDLE_ICON_FILE sfml-doom.icns )
     include(BundleUtilities)
@@ -53,7 +53,7 @@ install(TARGETS SFML-DOOM BUNDLE DESTINATION .
 if (NOT APPLE)
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/eawpats
 	    DESTINATION .)
-    install(FILES ${CMAKE_SOURCE_DIR}/doomu.wad
+    install(FILES ${CMAKE_SOURCE_DIR}/doom1.wad
             DESTINATION .)
 endif()
 
