@@ -16,21 +16,21 @@ addons:
     - clang
     sources:
     - ubuntu-toolchain-r-test
-
 before_script:
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 90; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo update-alternatives --install /usr/bin/gcc
+  gcc /usr/bin/gcc-7 90; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo update-alternatives --install /usr/bin/g++
+  g++ /usr/bin/g++-7 90; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install sfml enet; fi
-- git clone https://github.com/sfml/sfml && cd sfml && mkdir build && cd build && cmake .. -G"$GENERATOR" $CMAKE_FLAGS
+- git clone https://github.com/sfml/sfml && cd sfml && mkdir build && cd build &&
+  cmake .. -G"$GENERATOR" $CMAKE_FLAGS
 - sudo cmake --build . --target install
 - cd ../..
-
 script:
 - mkdir build && cd build
 - cmake .. -DCMAKE_BUILD_TYPE=Release -G"$GENERATOR" $CMAKE_FLAGS
 - sudo cmake --build . --target install --config Release
 - sudo cmake --build . --target package --config Release
-
 - cd ../ && mkdir deploy
 - cp build/$PACKAGE_NAME deploy
 matrix:
@@ -38,49 +38,44 @@ matrix:
   include:
   - os: linux
     compiler: gcc
-    env: 
-     - GENERATOR="Unix Makefiles"
-     - CMAKE_FLAGS=""
-     - PACKAGE_NAME="*.deb"
-
+    env:
+    - GENERATOR="Unix Makefiles"
+    - CMAKE_FLAGS=""
+    - PACKAGE_NAME="*.deb"
   - os: linux
     compiler: clang
-    env: 
-     - GENERATOR="Unix Makefiles"
-     - CMAKE_FLAGS=""
-     - PACKAGE_NAME="*.deb"
-
+    env:
+    - GENERATOR="Unix Makefiles"
+    - CMAKE_FLAGS=""
+    - PACKAGE_NAME="*.deb"
   - os: osx
     osx_image: xcode9
-    env: 
-     - GENERATOR="Xcode"
-     - CMAKE_FLAGS=""
-     - PACKAGE_NAME="*.dmg"
-
-  # actually ios...
+    env:
+    - GENERATOR="Xcode"
+    - CMAKE_FLAGS=""
+    - PACKAGE_NAME="*.dmg"
   - os: osx
     osx_image: xcode9
-    env: 
-     - GENERATOR="Xcode"
-     - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
-     - PACKAGE_NAME="*.dmg"
-
-   # Let iOS builds fail for now, until I work out the codesigning stuff...
+    env:
+    - GENERATOR="Xcode"
+    - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
+    - PACKAGE_NAME="*.dmg"
   allow_failures:
-    - os: osx
-      osx_image: xcode9
-      env: 
-       - GENERATOR="Xcode"
-       - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
-       - PACKAGE_NAME="*.dmg"
-       
+  - os: osx
+    osx_image: xcode9
+    env:
+    - GENERATOR="Xcode"
+    - CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=../cmake/toolchains/iOS.toolchain.cmake"
+    - PACKAGE_NAME="*.dmg"
 deploy:
   provider: releases
-  api_key: "$GITHUB_TOKEN"
-  file_glob: true
-  file: deploy/$PACKAGE_NAME
+  api_key:
+    secure: IdrgwqHbcqX+bhsWDuywNDaJ1gNQtKUzw9WQPat9oOntJlzTr4NHvpZQpHoa8INMC9HhqUz/VgnemD4OE9DDvXa88fvSe+SmxoMNzGPkpsCxtZQZwfA0IMdletiZ37UJGjFZBjNoK3xYQtEQ9sP8v5ZLP7NIAMb7Zfp8NCq1cvnOgBWQJNX38Q0lWO58dxuXQ2QPoyHI0B74uy4VQzkjImwVTy42HMsuqrMLfThJ1gWDlTNIaWnPU13C5hroZJUU3JN5OS1AQtRgLmPTpYfH4Oi5JQeXBaR4j34SsEx2zOT6Wefbc54u1KNHWtUTxjNdR39BL8PKArUzsiR8UsZTF5cs3r3FbtNjzA+RinqPncHFMC7HwrYXhBRv34MoBMYb+FI/14N/Gx7SC3Cx1vI/RtGd+ZFyWeZl5U/CgHfLB5eKP1tyZCjFwVC2ACd5p9tkFEvwZ/ProwXJM6GdCvv9Gb5IudkcmY3XTyCPvnuJEFd0NfUQKs6NvHWbDH9jbBz9Ei63Qdy8xA39tQ/MU8NQkISmZQaC0ptfZaWOYKJFG2v8S5QzZz8NJoQfAkHYht297yj/sLyNPO3DPVurB4snJbMkL0ulROTlDXaleNk0e6pvwnGRXq2L0VddhSyybtcTdn6xpwaA8aHq4ALSUkpyFGGb9FxLNpfFR00qumfuQbY=
+  file: "deploy/$PACKAGE_NAME"
   overwrite: true
   skip_cleanup: true
   prerelease: true
   on:
    tags: true
+
+    
