@@ -9,7 +9,7 @@ build_script:
 
     bootstrap-vcpkg.bat
 
-    vcpkg install sfml:x86-windows
+    vcpkg install sfml:x86-windows --head
 
     cd C:/projects/sfml-doom
 
