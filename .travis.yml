@@ -52,7 +52,7 @@ matrix:
     osx_image: xcode9
     env:
     - GENERATOR="Xcode"
-    - CMAKE_FLAGS=""
+    - CMAKE_FLAGS="-DSFML_BUILD_FRAMEWORKS=TRUE"
     - PACKAGE_NAME="*.dmg"
   - os: osx
     osx_image: xcode9

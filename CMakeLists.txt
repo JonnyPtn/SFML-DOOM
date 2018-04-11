@@ -36,6 +36,7 @@ if(APPLE)
     set(MACOSX_BUNDLE_GUI_IDENTIFIER SFML-DOOM)
     set(MACOSX_BUNDLE_BUNDLE_NAME SFML-DOOM)
 
+    set(MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/apple.Info.plist)
     set_source_files_properties( ${CMAKE_SOURCE_DIR}/apple/sfml-doom.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
     set_source_files_properties( ${CMAKE_SOURCE_DIR}/eawpats PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
     set_source_files_properties( ${CMAKE_SOURCE_DIR}/doom1.wad PROPERTIES MACOSX_PACKAGE_LOCATION Resources )
