@@ -114,7 +114,13 @@ void D_ProcessEvents (void)
                 auto view = window->getView();
                 view.setSize(ev.size.width, ev.size.height);
                 view.setCenter(ev.size.width/2, ev.size.height/2);
-                std::cout << "size = " + std::to_string(ev.size.width) + "," + std::to_string(ev.size.height) << std::endl;
+                window->setView(view);
+                auto xScale = ev.size.width / float(SCREENWIDTH);
+                auto yScale = ev.size.height / float(SCREENHEIGHT);
+                auto scale = std::min(xScale, yScale);
+                sprite->setScale(scale, scale);
+                sprite->setPosition(ev.size.width/2.f - (SCREENWIDTH * scale)/2.f, ev.size.height/2.f - (SCREENHEIGHT * scale)/2.f);
+                std::cout << "size = " + std::to_string(ev.size.width) + "," + std::to_string(ev.size.height) << std::endl; 
                 break;
             }
                 

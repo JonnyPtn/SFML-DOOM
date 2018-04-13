@@ -10,11 +10,10 @@ SET(CPACK_PACKAGE_VERSION_PATCH 0)
 # Only works with SFML version 2.4 and above
 SET(SFML_MIN_VERSION 2.4)
 if (IOS)
-  # I'm not sure right now why audio isn't available
-  set(SFML_STATIC_LIBRARIES TRUE) 
   add_definitions(-DSFML_DOOM_IOS)
-  set(CMAKE_FIND_FRAMEWORK LAST)
-  find_host_package(SFML REQUIRED COMPONENTS graphics audio window system network main)
+  #set(CMAKE_FIND_FRAMEWORK LAST)
+  set (SFML_STATIC_LIBRARIES=TRUE)
+  find_host_package(SFML REQUIRED COMPONENTS main graphics audio window system network)
 else()
   find_package(SFML REQUIRED COMPONENTS graphics audio window system network)
 endif()
@@ -26,14 +25,14 @@ if (APPLE)
     set(SOURCE ${SOURCE} src/ResourcePath.mm)
 endif()
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${SFML_INCLUDE_DIR})
 if(APPLE)
 
     # Set some details for the app bundle. Without these my xcode crashes when debugging ios :S
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER SFML-DOOM)
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER com.jonny.SFML-DOOM)
     set(MACOSX_BUNDLE_BUNDLE_NAME SFML-DOOM)
 
     set(MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/apple.Info.plist)
@@ -49,7 +48,7 @@ else()
     add_executable(SFML-DOOM ${INCLUDE} ${SOURCE})
 endif()
 
-target_link_libraries(SFML-DOOM PRIVATE sfml-graphics sfml-audio sfml-network)
+target_link_libraries(SFML-DOOM PRIVATE sfml-main sfml-graphics sfml-audio sfml-network)
 
 install(TARGETS SFML-DOOM BUNDLE DESTINATION .
 			  RUNTIME DESTINATION .)

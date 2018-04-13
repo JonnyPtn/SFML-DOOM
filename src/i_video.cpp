@@ -129,7 +129,6 @@ void I_InitGraphics(void)
 	texture->create(SCREENWIDTH, SCREENHEIGHT);
 	sprite.reset(new sf::Sprite());
 	sprite->setTexture(*texture);
-	sprite->setScale(sf::Vector2f(2.f,2.f));
     
     debugRect.reset(new sf::RectangleShape());
     debugRect->setFillColor(sf::Color::Red);
@@ -154,7 +153,6 @@ void toggleFullscreen()
 	{
         window->create(sf::VideoMode(X_width, X_height), "SFML-DOOM", sf::Style::Default);
 		isFullscreen = false;
-		sprite->setScale(2.f, 2.f);
 	}
 	else
 	{
