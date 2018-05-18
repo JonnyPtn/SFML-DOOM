@@ -48,7 +48,7 @@ else()
     add_executable(SFML-DOOM ${INCLUDE} ${SOURCE})
 endif()
 
-target_link_libraries(SFML-DOOM PRIVATE sfml-main sfml-graphics sfml-audio sfml-network)
+target_link_libraries(SFML-DOOM PRIVATE sfml-graphics sfml-audio sfml-network)
 
 install(TARGETS SFML-DOOM BUNDLE DESTINATION .
 			  RUNTIME DESTINATION .)
