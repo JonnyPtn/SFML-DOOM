@@ -207,8 +207,8 @@ private:
     /// \brief  The sound music volume
     static int                                     snd_MusicVolume;
     /// \brief  The sound buffers
-    static std::map<std::string, sf::SoundBuffer> soundBuffers;
+    static std::map<std::string, std::unique_ptr<sf::SoundBuffer>> soundBuffers;
     /// \brief  The sounds and their origins
-    static std::list<std::pair<sf::Sound,void*> >	sounds;
+    static std::list<std::pair<std::unique_ptr<sf::Sound>,void*> >	sounds;
 
 };

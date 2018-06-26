@@ -129,6 +129,7 @@ void I_InitGraphics(void)
 	texture->create(SCREENWIDTH, SCREENHEIGHT);
 	sprite.reset(new sf::Sprite());
 	sprite->setTexture(*texture);
+    sprite->setScale(2.f, 2.f);
     
     debugRect.reset(new sf::RectangleShape());
     debugRect->setFillColor(sf::Color::Red);

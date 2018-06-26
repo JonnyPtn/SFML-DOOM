@@ -42,9 +42,9 @@
 /// \brief  The sound music volume
  int                                I_Sound::snd_MusicVolume = 8;
  /// \brief  The sound buffers
- std::map<std::string, sf::SoundBuffer> I_Sound::soundBuffers;
+std::map<std::string, std::unique_ptr<sf::SoundBuffer>> I_Sound::soundBuffers;
  /// \brief  The sounds and their origins
- std::list<std::pair<sf::Sound, void*> >	I_Sound::sounds;
+std::list<std::pair<std::unique_ptr<sf::Sound>, void*> >	I_Sound::sounds;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
  void I_Sound::initialise()
@@ -83,7 +83,7 @@ void I_Sound::setSfxVolume(int volume)
   snd_SfxVolume = volume;
   for (auto& s : sounds)
   {
-      s.first.setVolume(volume / 15.f*100.f);
+      s.first->setVolume(volume / 15.f*100.f);
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,35 +170,36 @@ void I_Sound::startSound(void * origin_p, int sfx_id, int volume)
             newData[i] = newSample;
             i++;
         }
-
-        if (!soundBuffers[sfx->name].loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
+        
+        soundBuffers[sfx->name] = std::make_unique<sf::SoundBuffer>();
+        if (!soundBuffers[sfx->name]->loadFromSamples(newData.data(), dataSize, 1, SAMPLERATE))
             fprintf(stderr, "Failed to load sound");
     }
 
-    sounds.push_back(std::make_pair( sf::Sound() , origin));
-    sounds.back().first.setBuffer(soundBuffers[sfx->name]);
-    sounds.back().first.play();
+    sounds.push_back(std::make_pair( std::make_unique<sf::Sound>() , origin));
+    sounds.back().first->setBuffer(*soundBuffers[sfx->name]);
+    sounds.back().first->play();
     if (origin && origin != players[consoleplayer].mo)
     {
-        sounds.back().first.setPosition(static_cast<float>(origin->x), static_cast<float>(origin->y), static_cast<float>(origin->z));
+        sounds.back().first->setPosition(static_cast<float>(origin->x), static_cast<float>(origin->y), static_cast<float>(origin->z));
 
         //some numbers to frig it a little
-        sounds.back().first.setMinDistance(S_CLOSE_DIST);
-        sounds.back().first.setAttenuation(S_ATTENUATOR);
-        sounds.back().first.setPitch(float(pitch) / 255.f);
+        sounds.back().first->setMinDistance(S_CLOSE_DIST);
+        sounds.back().first->setAttenuation(S_ATTENUATOR);
+        sounds.back().first->setPitch(float(pitch) / 255.f);
     }
     else
     {
-        sounds.back().first.setRelativeToListener(true);
+        sounds.back().first->setRelativeToListener(true);
     }
-    sounds.back().first.setVolume(snd_SfxVolume / 15.f*100.f);
+    sounds.back().first->setVolume(snd_SfxVolume / 15.f*100.f);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 void I_Sound::pauseSound()
 {
     //pause all sounds
     for (auto& sound : sounds)
-        sound.first.pause();
+        sound.first->pause();
 
     musicSound->pause();
 }
@@ -207,7 +208,7 @@ void I_Sound::resumeSound()
 {
     //resume all sounds
     for (auto& sound : sounds)
-        sound.first.play();
+        sound.first->play();
 
     musicSound->play();
 }
