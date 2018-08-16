@@ -640,7 +640,7 @@ void M_QuickSaveResponse(int ch)
     if (ch == 'y')
     {
 	M_DoSave(quickSaveSlot);
-	I_Sound::startSound(NULL,sfx_swtchx);
+	I_Sound::getInstance()->startSound(NULL,sfx_swtchx);
     }
 }
 
@@ -648,7 +648,7 @@ void M_QuickSave(void)
 {
     if (!usergame)
     {
-		I_Sound::startSound(NULL,sfx_oof);
+		I_Sound::getInstance()->startSound(NULL,sfx_oof);
 		return;
     }
 
@@ -677,7 +677,7 @@ void M_QuickLoadResponse(int ch)
     if (ch == 'y')
     {
 		M_LoadSelect(quickSaveSlot);
-        I_Sound::startSound(NULL,sfx_swtchx);
+        I_Sound::getInstance()->startSound(NULL,sfx_swtchx);
     }
 }
 
@@ -759,10 +759,10 @@ void M_DrawSound(void)
     V_DrawPatchDirect (60,38,0, (patch_t*)WadManager::getLump("M_SVOL"));
 
     M_DrawThermo(SoundDef.x, SoundDef.y + LINEHEIGHT*(sfx_vol + 1),
-        16, I_Sound::getSfxVolume());
+        16, I_Sound::getInstance()->getSfxVolume());
 
     M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(music_vol+1),
-		 16,I_Sound::getMusicVolume());
+		 16,I_Sound::getInstance()->getMusicVolume());
 }
 
 void M_Sound(int choice)
@@ -772,7 +772,7 @@ void M_Sound(int choice)
 
 void M_SfxVol(int choice)
 {
-    auto currentSfxVol = I_Sound::getSfxVolume();
+    auto currentSfxVol = I_Sound::getInstance()->getSfxVolume();
     switch(choice)
     {
       case 0:
@@ -786,12 +786,12 @@ void M_SfxVol(int choice)
 	    break;
     }
 	
-    I_Sound::setSfxVolume(currentSfxVol);
+    I_Sound::getInstance()->setSfxVolume(currentSfxVol);
 }
 
 void M_MusicVol(int choice)
 {
-    auto currentMusVol = I_Sound::getMusicVolume();
+    auto currentMusVol = I_Sound::getInstance()->getMusicVolume();
     switch(choice)
     {
       case 0:
@@ -804,7 +804,7 @@ void M_MusicVol(int choice)
 	break;
     }
 	
-    I_Sound::setMusicVolume(currentMusVol);
+    I_Sound::getInstance()->setMusicVolume(currentMusVol);
 }
 
 
@@ -964,7 +964,7 @@ void M_EndGame(int choice)
     choice = 0;
     if (!usergame)
     {
-        I_Sound::startSound(NULL,sfx_oof);
+        I_Sound::getInstance()->startSound(NULL,sfx_oof);
 	    return;
     }
 	
@@ -1040,9 +1040,9 @@ void M_QuitResponse(int ch)
     if (!netgame)
     {
 	if (Game::gamemode == GameMode_t::commercial)
-        I_Sound::startSound(NULL,quitsounds2[(gametic>>2)&7]);
+        I_Sound::getInstance()->startSound(NULL,quitsounds2[(gametic>>2)&7]);
 	else
-        I_Sound::startSound(NULL,quitsounds[(gametic>>2)&7]);
+        I_Sound::getInstance()->startSound(NULL,quitsounds[(gametic>>2)&7]);
 	I_WaitVBL(105);
     }
     I_Quit ();
@@ -1405,7 +1405,7 @@ bool M_Responder (sf::Event* ev)
 	    messageRoutine(ch);
 			
 	menuactive = false;
-    I_Sound::startSound(NULL,sfx_swtchx);
+    I_Sound::getInstance()->startSound(NULL,sfx_swtchx);
 	return true;
     }
 
@@ -1417,14 +1417,14 @@ bool M_Responder (sf::Event* ev)
 	    if (automapactive || chat_on)
 		return false;
 	    M_SizeDisplay(0);
-        I_Sound::startSound(NULL,sfx_stnmov);
+        I_Sound::getInstance()->startSound(NULL,sfx_stnmov);
 	    return true;
 				
 	case sf::Keyboard::Equal:        // Screen size up
 	    if (automapactive || chat_on)
 		return false;
 	    M_SizeDisplay(1);
-        I_Sound::startSound(NULL,sfx_stnmov);
+        I_Sound::getInstance()->startSound(NULL,sfx_stnmov);
 	    return true;
 				
 	case sf::Keyboard::F1:            // Help key
@@ -1436,18 +1436,18 @@ bool M_Responder (sf::Event* ev)
 	      currentMenu = &ReadDef1;
 	    
 	    itemOn = 0;
-        I_Sound::startSound(NULL,sfx_swtchn);
+        I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 				
 	case sf::Keyboard::F2:            // Save
 	    M_StartControlPanel();
-        I_Sound::startSound(NULL,sfx_swtchn);
+        I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_SaveGame(0);
 	    return true;
 				
 	case sf::Keyboard::F3:            // Load
 	    M_StartControlPanel();
-        I_Sound::startSound(NULL,sfx_swtchn);
+        I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_LoadGame(0);
 	    return true;
 				
@@ -1455,36 +1455,36 @@ bool M_Responder (sf::Event* ev)
 	    M_StartControlPanel ();
 	    currentMenu = &SoundDef;
 	    itemOn = sfx_vol;
-        I_Sound::startSound(NULL,sfx_swtchn);
+        I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 				
 	  case sf::Keyboard::F5:            // Detail toggle
 	    M_ChangeDetail(0);
-        I_Sound::startSound(NULL,sfx_swtchn);
+        I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 				
 	  case sf::Keyboard::F6:            // Quicksave
-          I_Sound::startSound(NULL,sfx_swtchn);
+          I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_QuickSave();
 	    return true;
 				
 	  case sf::Keyboard::F7:            // End game
-          I_Sound::startSound(NULL,sfx_swtchn);
+          I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_EndGame(0);
 	    return true;
 				
 	  case sf::Keyboard::F8:            // Toggle messages
 	    M_ChangeMessages(0);
-        I_Sound::startSound(NULL,sfx_swtchn);
+        I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 				
 	  case sf::Keyboard::F9:            // Quickload
-          I_Sound::startSound(NULL,sfx_swtchn);
+          I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_QuickLoad();
 	    return true;
 				
 	  case sf::Keyboard::F10:           // Quit DOOM
-          I_Sound::startSound(NULL,sfx_swtchn);
+          I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_QuitDOOM(0);
 	    return true;
 				
@@ -1507,7 +1507,7 @@ bool M_Responder (sf::Event* ev)
 	if (ch == sf::Keyboard::Escape)
 	{
 	    M_StartControlPanel ();
-        I_Sound::startSound(NULL,sfx_swtchn);
+        I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 	}
 	return false;
@@ -1525,7 +1525,7 @@ bool M_Responder (sf::Event* ev)
 				if (itemOn + 1 > currentMenu->numitems - 1)
 					itemOn = 0;
 				else itemOn++;
-                I_Sound::startSound(NULL, sfx_pstop);
+                I_Sound::getInstance()->startSound(NULL, sfx_pstop);
 			} while (currentMenu->menuitems[itemOn].status == -1);
 			return true;
 
@@ -1535,7 +1535,7 @@ bool M_Responder (sf::Event* ev)
 				if (!itemOn)
 					itemOn = currentMenu->numitems - 1;
 				else itemOn--;
-                I_Sound::startSound(NULL, sfx_pstop);
+                I_Sound::getInstance()->startSound(NULL, sfx_pstop);
 			} while (currentMenu->menuitems[itemOn].status == -1);
 			return true;
 
@@ -1543,7 +1543,7 @@ bool M_Responder (sf::Event* ev)
 			if (currentMenu->menuitems[itemOn].routine &&
 				currentMenu->menuitems[itemOn].status == 2)
 			{
-                I_Sound::startSound(NULL, sfx_stnmov);
+                I_Sound::getInstance()->startSound(NULL, sfx_stnmov);
 				currentMenu->menuitems[itemOn].routine(0);
 			}
 			return true;
@@ -1552,7 +1552,7 @@ bool M_Responder (sf::Event* ev)
 			if (currentMenu->menuitems[itemOn].routine &&
 				currentMenu->menuitems[itemOn].status == 2)
 			{
-                I_Sound::startSound(NULL, sfx_stnmov);
+                I_Sound::getInstance()->startSound(NULL, sfx_stnmov);
 				currentMenu->menuitems[itemOn].routine(1);
 			}
 			return true;
@@ -1565,12 +1565,12 @@ bool M_Responder (sf::Event* ev)
 				if (currentMenu->menuitems[itemOn].status == 2)
 				{
 					currentMenu->menuitems[itemOn].routine(1);      // right arrow
-                    I_Sound::startSound(NULL, sfx_stnmov);
+                    I_Sound::getInstance()->startSound(NULL, sfx_stnmov);
 				}
 				else
 				{
 					currentMenu->menuitems[itemOn].routine(itemOn);
-                    I_Sound::startSound(NULL, sfx_pistol);
+                    I_Sound::getInstance()->startSound(NULL, sfx_pistol);
 				}
 			}
 			return true;
@@ -1578,7 +1578,7 @@ bool M_Responder (sf::Event* ev)
 		case sf::Keyboard::Escape:
 			currentMenu->lastOn = itemOn;
 			M_ClearMenus();
-            I_Sound::startSound(NULL, sfx_swtchx);
+            I_Sound::getInstance()->startSound(NULL, sfx_swtchx);
 			return true;
 
 		case sf::Keyboard::BackSpace:
@@ -1587,7 +1587,7 @@ bool M_Responder (sf::Event* ev)
 			{
 				currentMenu = currentMenu->prevMenu;
 				itemOn = currentMenu->lastOn;
-                I_Sound::startSound(NULL, sfx_swtchn);
+                I_Sound::getInstance()->startSound(NULL, sfx_swtchn);
 			}
 			return true;
 
@@ -1596,14 +1596,14 @@ bool M_Responder (sf::Event* ev)
 				if (currentMenu->menuitems[i].alphaKey == ev->key.code)
 				{
 					itemOn = i;
-                    I_Sound::startSound(NULL, sfx_pstop);
+                    I_Sound::getInstance()->startSound(NULL, sfx_pstop);
 					return true;
 				}
 			for (i = 0; i <= itemOn; i++)
 				if (currentMenu->menuitems[i].alphaKey == ev->key.code)
 				{
 					itemOn = i;
-                    I_Sound::startSound(NULL, sfx_pstop);
+                    I_Sound::getInstance()->startSound(NULL, sfx_pstop);
 					return true;
 				}
 			break;

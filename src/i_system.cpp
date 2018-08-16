@@ -92,7 +92,7 @@ void I_Init (void)
 void I_Quit (void)
 {
     D_QuitNetGame ();
-    I_Sound::shutdown();
+    I_Sound::getInstance()->shutdown();
     M_SaveDefaults ();
     I_ShutdownGraphics();
     exit(0);

@@ -1115,7 +1115,7 @@ void P_UpdateSpecials (void)
 			buttonlist[i].btexture;
 		    break;
 		}
-		I_Sound::startSound((mobj_t *)&buttonlist[i].soundorg,sfx_swtchn);
+		I_Sound::getInstance()->startSound((mobj_t *)&buttonlist[i].soundorg,sfx_swtchn);
 		memset(&buttonlist[i],0,sizeof(button_t));
 	    }
 	}

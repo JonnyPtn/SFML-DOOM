@@ -53,7 +53,7 @@ void F_StartFinale (void)
       case GameMode_t::registered:
       case GameMode_t::retail:
       {
-          I_Sound::playMusic(mus_victor, true);
+          I_Sound::getInstance()->playMusic(mus_victor, true);
 		
 		switch (gameepisode)
 		{
@@ -83,7 +83,7 @@ void F_StartFinale (void)
       // DOOM II and missions packs with E1, M34
       case GameMode_t::commercial:
       {
-          I_Sound::playMusic(mus_read_m, true);
+          I_Sound::getInstance()->playMusic(mus_read_m, true);
 
 		switch (gamemap)
 		{
@@ -120,7 +120,7 @@ void F_StartFinale (void)
 
       // Indeterminate.
       default:
-          I_Sound::playMusic(mus_read_m, true);
+          I_Sound::getInstance()->playMusic(mus_read_m, true);
 		finaleflat = "F_SKY1"; // Not used anywhere else.
 		finaletext = s_C1Text.c_str();  // FIXME - other text, music?
 		break;
@@ -179,7 +179,7 @@ void F_Ticker (void)
 		finalestage = 1;
 		wipegamestate = (gamestate_t)-1;		// force a wipe
 		if (gameepisode == 3)
-            I_Sound::playMusic(mus_bunny);
+            I_Sound::getInstance()->playMusic(mus_bunny);
     }
 }
 
@@ -316,7 +316,7 @@ void F_StartCast (void)
     castframes = 0;
     castonmelee = 0;
     castattacking = false;
-    I_Sound::playMusic(mus_evil, true);
+    I_Sound::getInstance()->playMusic(mus_evil, true);
 }
 
 //
@@ -338,7 +338,7 @@ void F_CastTicker (void)
 		if (castorder[castnum].name == NULL)
 		    castnum = 0;
 		if (mobjinfo[castorder[castnum].type].seesound)
-		    I_Sound::startSound (NULL, mobjinfo[castorder[castnum].type].seesound);
+		    I_Sound::getInstance()->startSound (NULL, mobjinfo[castorder[castnum].type].seesound);
 		caststate = &states[mobjinfo[castorder[castnum].type].seestate];
 		castframes = 0;
     }
@@ -384,7 +384,7 @@ void F_CastTicker (void)
 	}
 		
 	if (sfx)
-        I_Sound::startSound(NULL, sfx);
+        I_Sound::getInstance()->startSound(NULL, sfx);
     }
 	
     if (castframes == 12)
@@ -442,7 +442,7 @@ bool F_CastResponder (sf::Event* ev)
     castframes = 0;
     castattacking = false;
     if (mobjinfo[castorder[castnum].type].deathsound)
-        I_Sound::startSound(NULL, mobjinfo[castorder[castnum].type].deathsound);
+        I_Sound::getInstance()->startSound(NULL, mobjinfo[castorder[castnum].type].deathsound);
 	
     return true;
 }
@@ -605,7 +605,7 @@ void F_BunnyScroll (void)
 		stage = 6;
     if (stage > laststage)
     {
-        I_Sound::startSound(NULL, sfx_pistol);
+        I_Sound::getInstance()->startSound(NULL, sfx_pistol);
 		laststage = stage;
     }
 	

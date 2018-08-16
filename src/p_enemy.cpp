@@ -624,10 +624,10 @@ void A_Look (mobj_t* actor)
 	    || actor->type == MT_CYBORG)
 	{
 	    // full volume
-        I_Sound::startSound(NULL, sound);
+        I_Sound::getInstance()->startSound(NULL, sound);
 	}
 	else
-	    I_Sound::startSound (actor, sound);
+	    I_Sound::getInstance()->startSound (actor, sound);
     }
 
     P_SetMobjState (actor, (statenum_t)actor->info->seestate);
@@ -696,7 +696,7 @@ void A_Chase (mobj_t*	actor)
 	&& P_CheckMeleeRange (actor))
     {
 	if (actor->info->attacksound)
-	    I_Sound::startSound (actor, actor->info->attacksound);
+	    I_Sound::getInstance()->startSound (actor, actor->info->attacksound);
 
 	P_SetMobjState (actor, (statenum_t)actor->info->meleestate);
 	return;
@@ -741,7 +741,7 @@ void A_Chase (mobj_t*	actor)
     if (actor->info->activesound
 	&& P_Random () < 3)
     {
-	I_Sound::startSound (actor, actor->info->activesound);
+	I_Sound::getInstance()->startSound (actor, actor->info->activesound);
     }
 }
 
@@ -782,7 +782,7 @@ void A_PosAttack (mobj_t* actor)
     angle = actor->angle;
     slope = P_AimLineAttack (actor, angle, MISSILERANGE);
 
-    I_Sound::startSound (actor, sfx_pistol);
+    I_Sound::getInstance()->startSound (actor, sfx_pistol);
     angle += (P_Random()-P_Random())<<20;
     damage = ((P_Random()%5)+1)*3;
     P_LineAttack (actor, angle, MISSILERANGE, slope, damage);
@@ -799,7 +799,7 @@ void A_SPosAttack (mobj_t* actor)
     if (!actor->target)
 	return;
 
-    I_Sound::startSound (actor, sfx_shotgn);
+    I_Sound::getInstance()->startSound (actor, sfx_shotgn);
     A_FaceTarget (actor);
     bangle = actor->angle;
     slope = P_AimLineAttack (actor, bangle, MISSILERANGE);
@@ -822,7 +822,7 @@ void A_CPosAttack (mobj_t* actor)
     if (!actor->target)
 	return;
 
-    I_Sound::startSound (actor, sfx_shotgn);
+    I_Sound::getInstance()->startSound (actor, sfx_shotgn);
     A_FaceTarget (actor);
     bangle = actor->angle;
     slope = P_AimLineAttack (actor, bangle, MISSILERANGE);
@@ -890,7 +890,7 @@ void A_TroopAttack (mobj_t* actor)
     A_FaceTarget (actor);
     if (P_CheckMeleeRange (actor))
     {
-	I_Sound::startSound (actor, sfx_claw);
+	I_Sound::getInstance()->startSound (actor, sfx_claw);
 	damage = (P_Random()%8+1)*3;
 	P_DamageMobj (actor->target, actor, actor, damage);
 	return;
@@ -955,7 +955,7 @@ void A_BruisAttack (mobj_t* actor)
 		
     if (P_CheckMeleeRange (actor))
     {
-	I_Sound::startSound (actor, sfx_claw);
+	I_Sound::getInstance()->startSound (actor, sfx_claw);
 	damage = (P_Random()%8+1)*10;
 	P_DamageMobj (actor->target, actor, actor, damage);
 	return;
@@ -1065,7 +1065,7 @@ void A_SkelWhoosh (mobj_t*	actor)
     if (!actor->target)
 	return;
     A_FaceTarget (actor);
-    I_Sound::startSound (actor,sfx_skeswg);
+    I_Sound::getInstance()->startSound (actor,sfx_skeswg);
 }
 
 void A_SkelFist (mobj_t*	actor)
@@ -1080,7 +1080,7 @@ void A_SkelFist (mobj_t*	actor)
     if (P_CheckMeleeRange (actor))
     {
 	damage = ((P_Random()%10)+1)*6;
-	I_Sound::startSound (actor, sfx_skepch);
+	I_Sound::getInstance()->startSound (actor, sfx_skepch);
 	P_DamageMobj (actor->target, actor, actor, damage);
     }
 }
@@ -1177,7 +1177,7 @@ void A_VileChase (mobj_t* actor)
 		    actor->target = temp;
 					
 		    P_SetMobjState (actor, S_VILE_HEAL1);
-		    I_Sound::startSound (corpsehit, sfx_slop);
+		    I_Sound::getInstance()->startSound (corpsehit, sfx_slop);
 		    info = corpsehit->info;
 		    
 		    P_SetMobjState (corpsehit, (statenum_t)info->raisestate);
@@ -1202,7 +1202,7 @@ void A_VileChase (mobj_t* actor)
 //
 void A_VileStart (mobj_t* actor)
 {
-    I_Sound::startSound (actor, sfx_vilatk);
+    I_Sound::getInstance()->startSound (actor, sfx_vilatk);
 }
 
 
@@ -1214,13 +1214,13 @@ void A_Fire (mobj_t* actor);
 
 void A_StartFire (mobj_t* actor)
 {
-    I_Sound::startSound(actor,sfx_flamst);
+    I_Sound::getInstance()->startSound(actor,sfx_flamst);
     A_Fire(actor);
 }
 
 void A_FireCrackle (mobj_t* actor)
 {
-    I_Sound::startSound(actor,sfx_flame);
+    I_Sound::getInstance()->startSound(actor,sfx_flame);
     A_Fire(actor);
 }
 
@@ -1290,7 +1290,7 @@ void A_VileAttack (mobj_t* actor)
     if (!P_CheckSight (actor, actor->target) )
 	return;
 
-    I_Sound::startSound (actor, sfx_barexp);
+    I_Sound::getInstance()->startSound (actor, sfx_barexp);
     P_DamageMobj (actor->target, actor, actor, 20);
     actor->target->momz = 1000*FRACUNIT/actor->target->info->mass;
 	
@@ -1321,7 +1321,7 @@ void A_VileAttack (mobj_t* actor)
 void A_FatRaise (mobj_t *actor)
 {
     A_FaceTarget (actor);
-    I_Sound::startSound (actor, sfx_manatk);
+    I_Sound::getInstance()->startSound (actor, sfx_manatk);
 }
 
 
@@ -1398,7 +1398,7 @@ void A_SkullAttack (mobj_t* actor)
     dest = actor->target;	
     actor->flags |= MF_SKULLFLY;
 
-    I_Sound::startSound (actor, actor->info->attacksound);
+    I_Sound::getInstance()->startSound (actor, actor->info->attacksound);
     A_FaceTarget (actor);
     an = actor->angle >> ANGLETOFINESHIFT;
     actor->momx = FixedMul (SKULLSPEED, finecosine[an]);
@@ -1532,22 +1532,22 @@ void A_Scream (mobj_t* actor)
 	|| actor->type == MT_CYBORG)
     {
 	// full volume
-	I_Sound::startSound (NULL, sound);
+	I_Sound::getInstance()->startSound (NULL, sound);
     }
     else
-	I_Sound::startSound (actor, sound);
+	I_Sound::getInstance()->startSound (actor, sound);
 }
 
 
 void A_XScream (mobj_t* actor)
 {
-    I_Sound::startSound (actor, sfx_slop);	
+    I_Sound::getInstance()->startSound (actor, sfx_slop);
 }
 
 void A_Pain (mobj_t* actor)
 {
     if (actor->info->painsound)
-	I_Sound::startSound (actor, actor->info->painsound);	
+	I_Sound::getInstance()->startSound (actor, actor->info->painsound);
 }
 
 
@@ -1728,19 +1728,19 @@ void A_BossDeath (mobj_t* mo)
 
 void A_Hoof (mobj_t* mo)
 {
-    I_Sound::startSound (mo, sfx_hoof);
+    I_Sound::getInstance()->startSound (mo, sfx_hoof);
     A_Chase (mo);
 }
 
 void A_Metal (mobj_t* mo)
 {
-    I_Sound::startSound (mo, sfx_metal);
+    I_Sound::getInstance()->startSound (mo, sfx_metal);
     A_Chase (mo);
 }
 
 void A_BabyMetal (mobj_t* mo)
 {
-    I_Sound::startSound (mo, sfx_bspwlk);
+    I_Sound::getInstance()->startSound (mo, sfx_bspwlk);
     A_Chase (mo);
 }
 
@@ -1749,7 +1749,7 @@ A_OpenShotgun2
 ( player_t*	player,
   pspdef_t*	psp )
 {
-    I_Sound::startSound (player->mo, sfx_dbopn);
+    I_Sound::getInstance()->startSound (player->mo, sfx_dbopn);
 }
 
 void
@@ -1757,7 +1757,7 @@ A_LoadShotgun2
 ( player_t*	player,
   pspdef_t*	psp )
 {
-    I_Sound::startSound (player->mo, sfx_dbload);
+    I_Sound::getInstance()->startSound (player->mo, sfx_dbload);
 }
 
 void
@@ -1770,7 +1770,7 @@ A_CloseShotgun2
 ( player_t*	player,
   pspdef_t*	psp )
 {
-    I_Sound::startSound (player->mo, sfx_dbcls);
+    I_Sound::getInstance()->startSound (player->mo, sfx_dbcls);
     A_ReFire(player,psp);
 }
 
@@ -1806,13 +1806,13 @@ void A_BrainAwake (mobj_t* mo)
 	}
     }
 	
-    I_Sound::startSound (NULL,sfx_bossit);
+    I_Sound::getInstance()->startSound (NULL,sfx_bossit);
 }
 
 
 void A_BrainPain (mobj_t*	mo)
 {
-    I_Sound::startSound (NULL,sfx_bospn);
+    I_Sound::getInstance()->startSound (NULL,sfx_bospn);
 }
 
 
@@ -1837,7 +1837,7 @@ void A_BrainScream (mobj_t*	mo)
 	    th->tics = 1;
     }
 	
-    I_Sound::startSound (NULL,sfx_bosdth);
+    I_Sound::getInstance()->startSound (NULL,sfx_bosdth);
 }
 
 
@@ -1889,7 +1889,7 @@ void A_BrainSpit (mobj_t*	mo)
     newmobj->reactiontime =
 	((targ->y - mo->y)/newmobj->momy) / newmobj->state->tics;
 
-    I_Sound::startSound(NULL, sfx_bospit);
+    I_Sound::getInstance()->startSound(NULL, sfx_bospit);
 }
 
 
@@ -1899,7 +1899,7 @@ void A_SpawnFly (mobj_t* mo);
 // travelling cube sound
 void A_SpawnSound (mobj_t* mo)	
 {
-    I_Sound::startSound (mo,sfx_boscub);
+    I_Sound::getInstance()->startSound (mo,sfx_boscub);
     A_SpawnFly(mo);
 }
 
@@ -1918,7 +1918,7 @@ void A_SpawnFly (mobj_t* mo)
 
     // First spawn teleport fog.
     fog = P_SpawnMobj (targ->x, targ->y, targ->z, MT_SPAWNFIRE);
-    I_Sound::startSound (fog, sfx_telept);
+    I_Sound::getInstance()->startSound (fog, sfx_telept);
 
     // Randomly select monster to spawn.
     r = P_Random ();
@@ -1974,5 +1974,5 @@ void A_PlayerScream (mobj_t* mo)
 	sound = sfx_pdiehi;
     }
     
-    I_Sound::startSound (mo, sound);
+    I_Sound::getInstance()->startSound (mo, sound);
 }

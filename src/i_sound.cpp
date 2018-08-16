@@ -11,6 +11,7 @@
 #include "w_wad.hpp"
 #include "timidity/controls.h"
 #include "g_game.hpp"
+#include "i_system.hpp"
 
 #define	MIDI_CHANNELS		2
 #if 1 //8bit
@@ -26,25 +27,9 @@
 #endif
 
 #define SAMPLERATE		11025	// Hz
-#define SAMPLESIZE		2   	// 16bit	
+#define SAMPLESIZE		2   	// 16bit
 
-//STATICS
-/// \brief  The doom music
- MidiSong*				            I_Sound::doomMusic;
-/// \brief  The music sound
- std::unique_ptr<sf::Sound>         I_Sound::musicSound;
-/// \brief  Buffer for music sound data
- std::unique_ptr<sf::SoundBuffer>   I_Sound::musicSoundBuffer;
-/// \brief  Buffer for music data
- char*                              I_Sound::musicBuffer;
-/// \brief  The sound sfx volume
- int                                I_Sound::snd_SfxVolume = 8;
-/// \brief  The sound music volume
- int                                I_Sound::snd_MusicVolume = 8;
- /// \brief  The sound buffers
-std::map<std::string, std::unique_ptr<sf::SoundBuffer>> I_Sound::soundBuffers;
- /// \brief  The sounds and their origins
-std::list<std::pair<std::unique_ptr<sf::Sound>, void*> >	I_Sound::sounds;
+std::unique_ptr<I_Sound> I_Sound::instance;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
  void I_Sound::initialise()
@@ -75,6 +60,7 @@ std::list<std::pair<std::unique_ptr<sf::Sound>, void*> >	I_Sound::sounds;
  {
      musicSound->stop();
      Timidity_Shutdown();
+     instance.release();
  }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -345,4 +331,13 @@ void I_Sound::playMusic(const int musicNum, bool looping)
     auto& music = S_music[musicNum];
 
     playMusic(music.name, looping);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+I_Sound* I_Sound::getInstance()
+{
+    if (!instance)
+        instance = std::make_unique<I_Sound>();g
+    
+    return instance.get();
 }

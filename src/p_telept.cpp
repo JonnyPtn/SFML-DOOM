@@ -81,13 +81,13 @@ EV_Teleport
 				
 		// spawn teleport fog at source and destination
 		fog = P_SpawnMobj (oldx, oldy, oldz, MT_TFOG);
-		I_Sound::startSound (fog, sfx_telept);
+		I_Sound::getInstance()->startSound (fog, sfx_telept);
 		an = m->angle >> ANGLETOFINESHIFT;
 		fog = P_SpawnMobj (m->x+20*finecosine[an], m->y+20*finesine[an]
 				   , thing->z, MT_TFOG);
 
 		// emit sound, where?
-		I_Sound::startSound (fog, sfx_telept);
+		I_Sound::getInstance()->startSound (fog, sfx_telept);
 		
 		// don't move for a bit
 		if (thing->player)

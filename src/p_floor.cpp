@@ -196,7 +196,7 @@ void T_MoveFloor(floormove_t* floor)
 		      floor->crush,0,floor->direction);
     
     if (!(leveltime&7))
-	I_Sound::startSound((mobj_t *)&floor->sector->soundorg,
+	I_Sound::getInstance()->startSound((mobj_t *)&floor->sector->soundorg,
 		     sfx_stnmov);
     
     if (res == pastdest)
@@ -227,7 +227,7 @@ void T_MoveFloor(floormove_t* floor)
 	}
 	P_RemoveThinker(&floor->thinker);
 
-	I_Sound::startSound((mobj_t *)&floor->sector->soundorg,
+	I_Sound::getInstance()->startSound((mobj_t *)&floor->sector->soundorg,
 		     sfx_pstop);
     }
 

@@ -576,7 +576,7 @@ P_TouchSpecialThing
     P_RemoveMobj (special);
     player->bonuscount += BONUSADD;
     if (player == &players[consoleplayer])
-	I_Sound::startSound (NULL, sound);
+	I_Sound::getInstance()->startSound (NULL, sound);
 }
 
 

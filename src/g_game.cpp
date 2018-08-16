@@ -655,9 +655,9 @@ void G_Ticker (void)
 		  case BTS_PAUSE: 
 		    paused ^= 1; 
 		    if (paused) 
-			    I_Sound::pauseSound (); 
+			    I_Sound::getInstance()->pauseSound ();
 		    else 
-			    I_Sound::resumeSound (); 
+			    I_Sound::getInstance()->resumeSound ();
 		    break; 
 					 
 		  case BTS_SAVEGAME: 
@@ -826,7 +826,7 @@ G_CheckSpot
 		      , MT_TFOG); 
 	 
     if (players[consoleplayer].viewz != 1) 
-        I_Sound::startSound(mo, sfx_telept);	// don't start sound on first frame 
+        I_Sound::getInstance()->startSound(mo, sfx_telept);	// don't start sound on first frame
  
     return true; 
 } 
@@ -1295,7 +1295,7 @@ G_InitNew
 	if (paused)
 	{
 		paused = false;
-		I_Sound::resumeSound();
+		I_Sound::getInstance()->resumeSound();
 	}
 
 

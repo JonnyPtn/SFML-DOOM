@@ -483,9 +483,9 @@ void HU_Ticker(void)
 			    message_on = true;
 			    message_counter = HU_MSGTIMEOUT;
 			    if (Game::gamemode == GameMode_t::commercial )
-                    I_Sound::startSound(0, sfx_radio);
+                    I_Sound::getInstance()->startSound(0, sfx_radio);
 			    else
-                    I_Sound::startSound(0, sfx_tink);
+                    I_Sound::getInstance()->startSound(0, sfx_tink);
 			}
 			HUlib_resetIText(&w_inputbuffer[i]);
 		    }

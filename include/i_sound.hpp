@@ -39,20 +39,22 @@
 class I_Sound
 {
 public:
+    
+    static I_Sound* getInstance();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::initialise();
     ///
     /// \brief  Initializes the sound module.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static void initialise();
+    void initialise();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::shutdown();
     ///
     /// \brief  Shutdown sound module.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static void shutdown();
+    void shutdown();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::playMusic( const std::string& handle, bool looping);
@@ -62,7 +64,7 @@ public:
     /// \param  handle  The music name.
     /// \param  looping Loop flag.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static void playMusic( const std::string&   handle, bool looping);
+    void playMusic( const std::string&   handle, bool looping);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::playMusic(const int musicNum, bool looping);
@@ -73,7 +75,7 @@ public:
     /// \param  looping     True to looping.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static void playMusic(const int	musicNum, bool looping = false);
+    void playMusic(const int	musicNum, bool looping = false);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static int I_Sound::I_GetSfxLumpNum(sfxinfo_t* sfxinfo);
@@ -84,7 +86,7 @@ public:
     ///
     /// \return The sfx lump number.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static int getSfxLumpNum(sfxinfo_t* sfxinfo);
+    int getSfxLumpNum(sfxinfo_t* sfxinfo);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::setMusicVolume(int volume);
@@ -94,7 +96,7 @@ public:
     /// \param  volume  The volume.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static void setMusicVolume(int volume);
+    void setMusicVolume(int volume);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static int I_Sound::getMusicVolume();
@@ -104,7 +106,7 @@ public:
     /// \return The music volume.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static int getMusicVolume();
+    int getMusicVolume();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::stopAllSounds();
@@ -112,7 +114,7 @@ public:
     /// \brief  Stops all sounds.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static void stopAllSounds();
+    void stopAllSounds();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn void I_Sound::I_Sound::startSoundAtVolume( void* origin, int sound_id);
@@ -123,7 +125,8 @@ public:
     /// \param          sound_id    Identifier for the sound.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static void startSound( void* origin, int sound_id, int volume = snd_SfxVolume);
+    void startSound( void* origin, int sound_id, int volume);
+    void startSound( void* origin, int sound_id) {startSound(origin, sound_id, snd_SfxVolume);}
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::pauseSound();
@@ -131,7 +134,7 @@ public:
     /// \brief  Pause sound.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static void pauseSound();
+    void pauseSound();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::resumeSound();
@@ -139,7 +142,7 @@ public:
     /// \brief  Resume sound.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static void resumeSound();
+    void resumeSound();
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::stopSound(void* origin);
@@ -148,7 +151,7 @@ public:
     ///
     /// \param [in,out] origin  If non-null, the origin.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static void stopSound(void* origin);
+    void stopSound(void* origin);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::S_UpdateSounds(mobj_t*);
@@ -158,7 +161,7 @@ public:
     /// \param [in,out] parameter1  Pointer to the current listener.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static void S_UpdateSounds(mobj_t*);
+    void S_UpdateSounds(mobj_t*);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::setSfxVolume(int volume);
@@ -168,7 +171,7 @@ public:
     /// \param  volume  The volume.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static void setSfxVolume(int volume);
+    void setSfxVolume(int volume);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// \fn static void I_Sound::getSfxVolume();
@@ -176,7 +179,7 @@ public:
     /// \brief  Gets sfx volume.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    static int getSfxVolume();
+    int getSfxVolume();
 
 private:
 
@@ -192,23 +195,25 @@ private:
     ///
     /// \return An int.
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    static int Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
+    int Mus2Midi(unsigned char* bytes, unsigned char* out, int* len);
 
     /// \brief  The doom music
-    static MidiSong*				                doomMusic;
+    MidiSong*				                doomMusic;
     /// \brief  The music sound
-    static std::unique_ptr<sf::Sound>              musicSound;
+    std::unique_ptr<sf::Sound>              musicSound;
     /// \brief  Buffer for music sound data
-    static std::unique_ptr<sf::SoundBuffer>        musicSoundBuffer;
+    std::unique_ptr<sf::SoundBuffer>        musicSoundBuffer;
     /// \brief  Buffer for music data
-    static char*                                   musicBuffer;
+    char*                                   musicBuffer;
     /// \brief  The sound sfx volume
-    static int                                     snd_SfxVolume;
+    int                                     snd_SfxVolume = 8;
     /// \brief  The sound music volume
-    static int                                     snd_MusicVolume;
+    int                                     snd_MusicVolume = 8;
     /// \brief  The sound buffers
-    static std::map<std::string, std::unique_ptr<sf::SoundBuffer>> soundBuffers;
+    std::map<std::string, std::unique_ptr<sf::SoundBuffer>> soundBuffers;
     /// \brief  The sounds and their origins
-    static std::list<std::pair<std::unique_ptr<sf::Sound>,void*> >	sounds;
+    std::list<std::pair<std::unique_ptr<sf::Sound>,void*> >	sounds;
+    
+    static std::unique_ptr<I_Sound> instance;
 
 };

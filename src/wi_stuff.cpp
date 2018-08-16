@@ -854,7 +854,7 @@ void WI_updateDeathmatchStats(void)
 	}
 	
 
-	I_Sound::startSound(0, sfx_barexp);
+	I_Sound::getInstance()->startSound(0, sfx_barexp);
 	dm_state = 4;
     }
 
@@ -862,7 +862,7 @@ void WI_updateDeathmatchStats(void)
     if (dm_state == 2)
     {
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 	
 	stillticking = false;
 
@@ -901,7 +901,7 @@ void WI_updateDeathmatchStats(void)
 	}
 	if (!stillticking)
 	{
-	    I_Sound::startSound(0, sfx_barexp);
+	    I_Sound::getInstance()->startSound(0, sfx_barexp);
 	    dm_state++;
 	}
 
@@ -910,7 +910,7 @@ void WI_updateDeathmatchStats(void)
     {
 	if (acceleratestage)
 	{
-	    I_Sound::startSound(0, sfx_slop);
+	    I_Sound::getInstance()->startSound(0, sfx_slop);
 
 	    if (Game::gamemode == GameMode_t::commercial)
 		WI_initNoState();
@@ -1077,14 +1077,14 @@ void WI_updateNetgameStats(void)
 	    if (dofrags)
 		cnt_frags[i] = WI_fragSum(i);
 	}
-	I_Sound::startSound(0, sfx_barexp);
+	I_Sound::getInstance()->startSound(0, sfx_barexp);
 	ng_state = 10;
     }
 
     if (ng_state == 2)
     {
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 
 	stillticking = false;
 
@@ -1103,14 +1103,14 @@ void WI_updateNetgameStats(void)
 	
 	if (!stillticking)
 	{
-	    I_Sound::startSound(0, sfx_barexp);
+	    I_Sound::getInstance()->startSound(0, sfx_barexp);
 	    ng_state++;
 	}
     }
     else if (ng_state == 4)
     {
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 
 	stillticking = false;
 
@@ -1127,14 +1127,14 @@ void WI_updateNetgameStats(void)
 	}
 	if (!stillticking)
 	{
-	    I_Sound::startSound(0, sfx_barexp);
+	    I_Sound::getInstance()->startSound(0, sfx_barexp);
 	    ng_state++;
 	}
     }
     else if (ng_state == 6)
     {
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 
 	stillticking = false;
 
@@ -1153,14 +1153,14 @@ void WI_updateNetgameStats(void)
 	
 	if (!stillticking)
 	{
-	    I_Sound::startSound(0, sfx_barexp);
+	    I_Sound::getInstance()->startSound(0, sfx_barexp);
 	    ng_state += 1 + 2*!dofrags;
 	}
     }
     else if (ng_state == 8)
     {
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 
 	stillticking = false;
 
@@ -1179,7 +1179,7 @@ void WI_updateNetgameStats(void)
 	
 	if (!stillticking)
 	{
-	    I_Sound::startSound(0, sfx_pldeth);
+	    I_Sound::getInstance()->startSound(0, sfx_pldeth);
 	    ng_state++;
 	}
     }
@@ -1187,7 +1187,7 @@ void WI_updateNetgameStats(void)
     {
 	if (acceleratestage)
 	{
-	    I_Sound::startSound(0, sfx_sgcock);
+	    I_Sound::getInstance()->startSound(0, sfx_sgcock);
 	    if (Game::gamemode == GameMode_t::commercial )
 		WI_initNoState();
 	    else
@@ -1288,7 +1288,7 @@ void WI_updateStats(void)
 	cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
 	cnt_time = plrs[me].stime / TICRATE;
 	cnt_par = wbs->partime / TICRATE;
-	I_Sound::startSound(0, sfx_barexp);
+	I_Sound::getInstance()->startSound(0, sfx_barexp);
 	sp_state = 10;
     }
 
@@ -1297,12 +1297,12 @@ void WI_updateStats(void)
 	cnt_kills[0] += 2;
 
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 
 	if (cnt_kills[0] >= (plrs[me].skills * 100) / wbs->maxkills)
 	{
 	    cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
-	    I_Sound::startSound(0, sfx_barexp);
+	    I_Sound::getInstance()->startSound(0, sfx_barexp);
 	    sp_state++;
 	}
     }
@@ -1311,12 +1311,12 @@ void WI_updateStats(void)
 	cnt_items[0] += 2;
 
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 
 	if (cnt_items[0] >= (plrs[me].sitems * 100) / wbs->maxitems)
 	{
 	    cnt_items[0] = (plrs[me].sitems * 100) / wbs->maxitems;
-	    I_Sound::startSound(0, sfx_barexp);
+	    I_Sound::getInstance()->startSound(0, sfx_barexp);
 	    sp_state++;
 	}
     }
@@ -1325,12 +1325,12 @@ void WI_updateStats(void)
 	cnt_secret[0] += 2;
 
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 
 	if (cnt_secret[0] >= (plrs[me].ssecret * 100) / wbs->maxsecret)
 	{
 	    cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
-	    I_Sound::startSound(0, sfx_barexp);
+	    I_Sound::getInstance()->startSound(0, sfx_barexp);
 	    sp_state++;
 	}
     }
@@ -1338,7 +1338,7 @@ void WI_updateStats(void)
     else if (sp_state == 8)
     {
 	if (!(bcnt&3))
-	    I_Sound::startSound(0, sfx_pistol);
+	    I_Sound::getInstance()->startSound(0, sfx_pistol);
 
 	cnt_time += 3;
 
@@ -1353,7 +1353,7 @@ void WI_updateStats(void)
 
 	    if (cnt_time >= plrs[me].stime / TICRATE)
 	    {
-		I_Sound::startSound(0, sfx_barexp);
+		I_Sound::getInstance()->startSound(0, sfx_barexp);
 		sp_state++;
 	    }
 	}
@@ -1362,7 +1362,7 @@ void WI_updateStats(void)
     {
 	if (acceleratestage)
 	{
-	    I_Sound::startSound(0, sfx_sgcock);
+	    I_Sound::getInstance()->startSound(0, sfx_sgcock);
 
 	    if (Game::gamemode == GameMode_t::commercial)
 		WI_initNoState();
@@ -1457,9 +1457,9 @@ void WI_Ticker(void)
     {
 	// intermission music
   	if (Game::gamemode == GameMode_t::commercial )
-	  I_Sound::playMusic(mus_dm2int, true);
+	  I_Sound::getInstance()->playMusic(mus_dm2int, true);
 	else
-	  I_Sound::playMusic(mus_inter, true); 
+	  I_Sound::getInstance()->playMusic(mus_inter, true); 
     }
 
     WI_checkForAccelerate();

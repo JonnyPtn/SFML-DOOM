@@ -557,7 +557,7 @@ P_SetupLevel
     players[consoleplayer].viewz = 1; 
 
     // Make sure all sounds are stopped
-    I_Sound::stopAllSounds();
+    I_Sound::getInstance()->stopAllSounds();
 
     //start the music for the level
     int mnum;
@@ -589,7 +589,7 @@ P_SetupLevel
     }
 
 
-    I_Sound::playMusic(mnum, true);
+    I_Sound::getInstance()->playMusic(mnum, true);
 
     P_InitThinkers ();	
 	   

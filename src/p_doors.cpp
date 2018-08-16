@@ -34,19 +34,19 @@ void T_VerticalDoor (vldoor_t* door)
 		    {
             case vldoor_e::blazeRaise:
 			door->direction = Direction::DOWN; // time to go back down
-            I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+            I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_bdcls);
 			break;
 			
 		      case vldoor_e::normal:
 			door->direction = Direction::DOWN; // time to go back down
-            I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+            I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_dorcls);
 			break;
 			
 		      case vldoor_e::close30ThenOpen:
 			door->direction = Direction::UP;
-            I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+            I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_doropn);
 			break;
 			
@@ -64,7 +64,7 @@ void T_VerticalDoor (vldoor_t* door)
 		      case vldoor_e::raiseIn5Mins:
 			door->direction = Direction::UP;
 			door->type = vldoor_e::normal;
-            I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+            I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_doropn);
 			break;
 			
@@ -87,7 +87,7 @@ void T_VerticalDoor (vldoor_t* door)
 		      case vldoor_e::blazeClose:
 			door->sector->specialdata = NULL;
 			P_RemoveThinker (&door->thinker);  // unlink and free
-            I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+            I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_bdcls);
 			break;
 			
@@ -116,7 +116,7 @@ void T_VerticalDoor (vldoor_t* door)
 			
 		      default:
 			door->direction = Direction::UP;
-            I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+            I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 				     sfx_doropn);
 			break;
 		    }
@@ -183,7 +183,7 @@ EV_DoLockedDoor
 	if (!p->cards[it_bluecard] && !p->cards[it_blueskull])
 	{
 	    p->message = s_BlueKeyNeeded.c_str();
-        I_Sound::startSound(NULL,sfx_oof);
+        I_Sound::getInstance()->startSound(NULL,sfx_oof);
 	    return 0;
 	}
 	break;
@@ -195,7 +195,7 @@ EV_DoLockedDoor
 	if (!p->cards[it_redcard] && !p->cards[it_redskull])
 	{
 	    p->message = s_RedKeyNeeded.c_str();
-        I_Sound::startSound(NULL,sfx_oof);
+        I_Sound::getInstance()->startSound(NULL,sfx_oof);
 	    return 0;
 	}
 	break;
@@ -208,7 +208,7 @@ EV_DoLockedDoor
 	    !p->cards[it_yellowskull])
 	{
 	    p->message = s_YellowKeyNeeded.c_str();
-        I_Sound::startSound(NULL,sfx_oof);
+        I_Sound::getInstance()->startSound(NULL,sfx_oof);
 	    return 0;
 	}
 	break;	
@@ -256,7 +256,7 @@ EV_DoDoor
 	    door->topheight -= 4*FRACUNIT;
 	    door->direction = Direction::DOWN;
 	    door->speed = VDOORSPEED * 4;
-        I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+        I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 			 sfx_bdcls);
 	    break;
 	    
@@ -264,14 +264,14 @@ EV_DoDoor
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
 	    door->direction = Direction::DOWN;
-        I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+        I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 			 sfx_dorcls);
 	    break;
 	    
 	  case (vldoor_e::close30ThenOpen):
 	    door->topheight = sec->ceilingheight;
 	    door->direction = Direction::DOWN;
-        I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+        I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 			 sfx_dorcls);
 	    break;
 	    
@@ -282,7 +282,7 @@ EV_DoDoor
 	    door->topheight -= 4*FRACUNIT;
 	    door->speed = VDOORSPEED * 4;
 	    if (door->topheight != sec->ceilingheight)
-            I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+            I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 			     sfx_bdopn);
 	    break;
 	    
@@ -292,7 +292,7 @@ EV_DoDoor
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
 	    door->topheight -= 4*FRACUNIT;
 	    if (door->topheight != sec->ceilingheight)
-            I_Sound::startSound((mobj_t *)&door->sector->soundorg,
+            I_Sound::getInstance()->startSound((mobj_t *)&door->sector->soundorg,
 			     sfx_doropn);
 	    break;
 	    
@@ -333,7 +333,7 @@ EV_VerticalDoor
 	if (!player->cards[it_bluecard] && !player->cards[it_blueskull])
 	{
 	    player->message = s_BlueKeyNeededDoor.c_str();
-        I_Sound::startSound(NULL,sfx_oof);
+        I_Sound::getInstance()->startSound(NULL,sfx_oof);
 	    return;
 	}
 	break;
@@ -347,7 +347,7 @@ EV_VerticalDoor
 	    !player->cards[it_yellowskull])
 	{
 	    player->message = s_YellowKeyNeededDoor.c_str();
-        I_Sound::startSound(NULL,sfx_oof);
+        I_Sound::getInstance()->startSound(NULL,sfx_oof);
 	    return;
 	}
 	break;
@@ -360,7 +360,7 @@ EV_VerticalDoor
 	if (!player->cards[it_redcard] && !player->cards[it_redskull])
 	{
 	    player->message = s_RedKeyNeededDoor.c_str();
-        I_Sound::startSound(NULL,sfx_oof);
+        I_Sound::getInstance()->startSound(NULL,sfx_oof);
 	    return;
 	}
 	break;
@@ -397,16 +397,16 @@ EV_VerticalDoor
     {
       case 117:	// BLAZING DOOR RAISE
       case 118:	// BLAZING DOOR OPEN
-          I_Sound::startSound((mobj_t *)&sec->soundorg,sfx_bdopn);
+          I_Sound::getInstance()->startSound((mobj_t *)&sec->soundorg,sfx_bdopn);
 	break;
 	
       case 1:	// NORMAL DOOR SOUND
       case 31:
-          I_Sound::startSound((mobj_t *)&sec->soundorg,sfx_doropn);
+          I_Sound::getInstance()->startSound((mobj_t *)&sec->soundorg,sfx_doropn);
 	break;
 	
       default:	// LOCKED DOOR SOUND
-          I_Sound::startSound((mobj_t *)&sec->soundorg,sfx_doropn);
+          I_Sound::getInstance()->startSound((mobj_t *)&sec->soundorg,sfx_doropn);
 	break;
     }
 	

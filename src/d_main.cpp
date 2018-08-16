@@ -329,7 +329,7 @@ void D_DoomLoop (void)
 		    TryRunTics (); // will run at least one tic
 		}
 		
-		I_Sound::S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
+		I_Sound::getInstance()->S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
 
 		// Update display, next frame, with current state.
 		D_Display ();
@@ -399,9 +399,9 @@ void D_AdvanceDemo (void)
 		gamestate = GS_DEMOSCREEN;
 		pagename = "TITLEPIC";
 		if (Game::gamemode == GameMode_t::commercial )
-		    I_Sound::playMusic(mus_dm2ttl);
+		    I_Sound::getInstance()->playMusic(mus_dm2ttl);
 		else
-            I_Sound::playMusic(mus_intro);
+            I_Sound::getInstance()->playMusic(mus_intro);
 		break;
     case 1:
 		G_DeferedPlayDemo ("demo1");
@@ -420,7 +420,7 @@ void D_AdvanceDemo (void)
 		{
 		    pagetic = 35 * 11;
 		    pagename = "TITLEPIC";
-            I_Sound::playMusic(mus_dm2ttl);
+            I_Sound::getInstance()->playMusic(mus_dm2ttl);
 		}
 		else
 		{
@@ -484,6 +484,8 @@ void IdentifyVersion (void)
 #ifdef __APPLE__
     rPath = resourcePath();
 #endif
+    
+    rPath += "wads/";
 
     // Commercial.
     doom2wad = rPath + "doom2.wad";
@@ -780,7 +782,7 @@ void D_DoomMain (void)
     D_CheckNetGame ();
 
     printf ("Setting up sound.\n");
-    I_Sound::initialise ();
+    I_Sound::getInstance()->initialise();
 
     printf ("HU_Init: Setting up heads up display.\n");
     HU_Init ();
