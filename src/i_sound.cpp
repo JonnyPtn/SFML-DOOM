@@ -337,7 +337,7 @@ void I_Sound::playMusic(const int musicNum, bool looping)
 I_Sound* I_Sound::getInstance()
 {
     if (!instance)
-        instance = std::make_unique<I_Sound>();g
+        instance = std::make_unique<I_Sound>();
     
     return instance.get();
 }
