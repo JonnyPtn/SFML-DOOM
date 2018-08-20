@@ -57,7 +57,7 @@ install(TARGETS SFML-DOOM BUNDLE DESTINATION .
 if (NOT APPLE)
     install(DIRECTORY ${CMAKE_SOURCE_DIR}/eawpats
 	    DESTINATION .)
-    install(FILES ${CMAKE_SOURCE_DIR}/wads
+    install(DIRECTORY ${CMAKE_SOURCE_DIR}/wads
             DESTINATION .)
 endif()
 
