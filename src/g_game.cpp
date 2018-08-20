@@ -199,15 +199,15 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	
     cmd->consistancy = consistancy[consoleplayer][maketic%BACKUPTICS]; 
 
-    speed = gamekeydown[sf::Keyboard::LShift] || gamekeydown[sf::Keyboard::RShift] || joybuttons[joybspeed];
+    speed = gamekeydown[(int)sf::Keyboard::Key::LShift] || gamekeydown[(int)sf::Keyboard::Key::RShift] || joybuttons[joybspeed];
  
     forward = side = 0;
     
     // use two stage accelerative turning
     // on the keyboard and joystick
     if (rightStickXMove < -joyDeadZone || rightStickXMove > joyDeadZone  
-	|| gamekeydown[sf::Keyboard::Right]
-	|| gamekeydown[sf::Keyboard::Left]) 
+	|| gamekeydown[(int)sf::Keyboard::Key::Right]
+	|| gamekeydown[(int)sf::Keyboard::Key::Left])
 		turnheld += ticdup; 
     else 
 		turnheld = 0; 
@@ -217,28 +217,28 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     else 
 		tspeed = speed;
      
-	if (gamekeydown[sf::Keyboard::Right] || rightStickXMove > joyDeadZone)
+	if (gamekeydown[(int)sf::Keyboard::Key::Right] || rightStickXMove > joyDeadZone)
 	    cmd->angleturn -= angleturn[tspeed]; 
-	if (gamekeydown[sf::Keyboard::Left] || rightStickXMove < -joyDeadZone)
+	if (gamekeydown[(int)sf::Keyboard::Key::Left] || rightStickXMove < -joyDeadZone)
 	    cmd->angleturn += angleturn[tspeed]; 
  
-    if (gamekeydown[sf::Keyboard::Up] || gamekeydown[sf::Keyboard::W] || leftStickYMove < -joyDeadZone)
+    if (gamekeydown[(int)sf::Keyboard::Key::Up] || gamekeydown[(int)sf::Keyboard::Key::W] || leftStickYMove < -joyDeadZone)
 		forward += forwardmove[speed]; 
-    if (gamekeydown[sf::Keyboard::Down] || gamekeydown[sf::Keyboard::S] || leftStickYMove > joyDeadZone)
+    if (gamekeydown[(int)sf::Keyboard::Key::Down] || gamekeydown[(int)sf::Keyboard::Key::S] || leftStickYMove > joyDeadZone)
 		forward -= forwardmove[speed]; 
-	if (gamekeydown[sf::Keyboard::D] || leftStickXMove > joyDeadZone)
+	if (gamekeydown[(int)sf::Keyboard::Key::D] || leftStickXMove > joyDeadZone)
 		side += sidemove[speed];
-	if (gamekeydown[sf::Keyboard::A] || leftStickXMove < -joyDeadZone)
+	if (gamekeydown[(int)sf::Keyboard::Key::A] || leftStickXMove < -joyDeadZone)
 		side -= sidemove[speed];
     
     // buttons
     cmd->chatchar = HU_dequeueChatChar(); 
  
-    if (gamekeydown[sf::Keyboard::LControl] || mousebuttons[mousebfire] 
+    if (gamekeydown[(int)sf::Keyboard::Key::LControl] || mousebuttons[mousebfire]
 	|| TriggerMove < -joyDeadZone) 
 		cmd->buttons |= BT_ATTACK; 
  
-    if (gamekeydown[sf::Keyboard::Space] || joybuttons[joybuse] ) 
+    if (gamekeydown[(int)sf::Keyboard::Key::Space] || joybuttons[joybuse] )
     { 
 		cmd->buttons |= BT_USE;
 		// clear double clicks if hit use button 
@@ -246,21 +246,21 @@ void G_BuildTiccmd (ticcmd_t* cmd)
     } 
 
     static std::array<sf::Keyboard::Key, NUMWEAPONS+1> weaponButtons = {{
-        sf::Keyboard::Num0,
-        sf::Keyboard::Num1,
-        sf::Keyboard::Num2,
-        sf::Keyboard::Num3,
-        sf::Keyboard::Num4,
-        sf::Keyboard::Num5,
-        sf::Keyboard::Num6,
-        sf::Keyboard::Num7,
-        sf::Keyboard::Num8,
-        sf::Keyboard::Num9
+        sf::Keyboard::Key::Num0,
+        sf::Keyboard::Key::Num1,
+        sf::Keyboard::Key::Num2,
+        sf::Keyboard::Key::Num3,
+        sf::Keyboard::Key::Num4,
+        sf::Keyboard::Key::Num5,
+        sf::Keyboard::Key::Num6,
+        sf::Keyboard::Key::Num7,
+        sf::Keyboard::Key::Num8,
+        sf::Keyboard::Key::Num9
     }};
     // chainsaw overrides 
 	for (i = 0; i < NUMWEAPONS - 1; i++)
 	{
-		if (gamekeydown[weaponButtons[i]])
+		if (gamekeydown[(int)weaponButtons[i]])
 		{
 			cmd->buttons |= BT_CHANGE;
 			cmd->buttons |= i << BT_WEAPONSHIFT;
@@ -393,8 +393,8 @@ void G_DoLoadLevel (void)
 bool G_Responder (sf::Event* ev) 
 { 
     // allow spy mode changes even during the demo
-    if (gamestate == GS_LEVEL && ev->type == sf::Event::KeyPressed
-	&& ev->key.code == sf::Keyboard::F12 && (singledemo || !deathmatch) )
+    if (gamestate == GS_LEVEL && ev->type == sf::Event::EventType::KeyPressed
+	&& ev->key.code == sf::Keyboard::Key::F12 && (singledemo || !deathmatch) )
     {
 		// spy mode 
 		do 
@@ -411,9 +411,9 @@ bool G_Responder (sf::Event* ev)
 	(demoplayback || gamestate == GS_DEMOSCREEN) 
 	) 
     { 
-		if (ev->type == sf::Event::KeyPressed ||
-		    (ev->type == sf::Event::MouseButtonPressed) ||
-		    (ev->type == sf::Event::JoystickButtonPressed) )
+		if (ev->type == sf::Event::EventType::KeyPressed ||
+		    (ev->type == sf::Event::EventType::MouseButtonPressed) ||
+		    (ev->type == sf::Event::EventType::JoystickButtonPressed) )
 		{ 
 		    M_StartControlPanel (); 
 		    return true; 
@@ -439,35 +439,35 @@ bool G_Responder (sf::Event* ev)
 	 
     switch (ev->type) 
     { 
-	case sf::Event::KeyPressed:
+	case sf::Event::EventType::KeyPressed:
 		//check for full 
-		if (ev->key.code == sf::Keyboard::F &&
+		if (ev->key.code == sf::Keyboard::Key::F &&
 			ev->key.control)
 		{
 			toggleFullscreen();
 		}
-		else if (ev->key.code == sf::Keyboard::P)
+		else if (ev->key.code == sf::Keyboard::Key::P)
 		{ 
 		    sendpause = true; 
 		    return true; 
 		}
-        gamekeydown[ev->key.code] = true;
+        gamekeydown[(int)ev->key.code] = true;
 		return true;    // eat key down events 
  
-      case sf::Event::KeyReleased:
-        gamekeydown[ev->key.code] = false;
+      case sf::Event::EventType::KeyReleased:
+        gamekeydown[(int)ev->key.code] = false;
 		return false;   // always let key up events filter down 
 		 
-	  case sf::Event::MouseButtonPressed:
+	  case sf::Event::EventType::MouseButtonPressed:
 		  switch (ev->mouseButton.button)
 		  {
-		  case sf::Mouse::Left:
+              case sf::Mouse::Button::Left:
 			  mousebuttons[0] = true;
 			  break;
-		  case sf::Mouse::Right:
+              case sf::Mouse::Button::Right:
 			  mousebuttons[1] = true;
 			  break;
-		  case sf::Mouse::Middle:
+              case sf::Mouse::Button::Middle:
 			  mousebuttons[2] = true;
 			  break;
 		
@@ -475,25 +475,25 @@ bool G_Responder (sf::Event* ev)
 		  	break;
 		  }
 		  break;
-	  case sf::Event::MouseButtonReleased:
+	  case sf::Event::EventType::MouseButtonReleased:
 		  switch (ev->mouseButton.button)
 		  {
-		  case sf::Mouse::Left:
+              case sf::Mouse::Button::Left:
 			  mousebuttons[0] = false;
 			  break;
-		  case sf::Mouse::Right:
+              case sf::Mouse::Button::Right:
 			  mousebuttons[1] = false;
 			  break;
-		  case sf::Mouse::Middle:
+              case sf::Mouse::Button::Middle:
 			  mousebuttons[2] = false;
 			  break;
 		  default:
 		  	  break;
 		  }
 		  break; 
-	  case sf::Event::MouseMoved:
+	  case sf::Event::EventType::MouseMoved:
 		  break;
-	  case sf::Event::JoystickMoved:
+	  case sf::Event::EventType::JoystickMoved:
 		switch (ev->joystickMove.axis)
 		{
 		case sf::Joystick::Axis::X:
@@ -521,11 +521,11 @@ bool G_Responder (sf::Event* ev)
 		}
 		break;    // eat events 
 
-	  case sf::Event::JoystickButtonPressed:
+	  case sf::Event::EventType::JoystickButtonPressed:
 		  joybuttons[ev->joystickButton.button] = true;
 		  break;
 
-	  case sf::Event::JoystickButtonReleased:
+	  case sf::Event::EventType::JoystickButtonReleased:
 		  joybuttons[ev->joystickButton.button] = false;
 		  break;
 
@@ -1429,7 +1429,7 @@ void G_ReadDemoTiccmd (ticcmd_t* cmd)
 
 void G_WriteDemoTiccmd (ticcmd_t* cmd) 
 { 
-    if (gamekeydown[sf::Keyboard::Q])           // press q to end demo recording 
+    if (gamekeydown[(int)sf::Keyboard::Key::Q])           // press q to end demo recording
 		G_CheckDemoStatus (); 
     *demo_p++ = cmd->forwardmove; 
     *demo_p++ = cmd->sidemove; 

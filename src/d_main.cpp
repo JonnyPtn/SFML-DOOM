@@ -105,11 +105,11 @@ void D_ProcessEvents (void)
     {
 		switch(ev.type)
         {
-            case sf::Event::Closed:
+            case sf::Event::EventType::Closed:
                 I_Error("Window Closed");
                 break;
                 
-            case sf::Event::Resized:
+            case sf::Event::EventType::Resized:
             {
                 auto view = window->getView();
                 view.setSize(ev.size.width, ev.size.height);

@@ -262,7 +262,7 @@ void I_Sound::playMusic(const std::string& songname, bool looping)
     printf("I_Sound::playMusic: Playing new track: '%s'\n", songname.c_str());
 
     //Stop if it's not already
-    if (musicSound->getStatus() != sf::Sound::Stopped)
+    if (musicSound->getStatus() != sf::Sound::Status::Stopped)
     {
         musicSound->stop();
     }

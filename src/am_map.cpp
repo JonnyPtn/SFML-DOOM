@@ -375,7 +375,7 @@ void AM_initVariables(void)
     int pnum;
 
 	static sf::Event st_notify;
-	st_notify.type = sf::Event::KeyReleased;
+	st_notify.type = sf::Event::EventType::KeyReleased;
 
     automapactive = true;
     fb = screens[0];
@@ -465,7 +465,7 @@ void AM_LevelInit(void)
 void AM_Stop (void)
 {
 	static sf::Event st_notify;
-	st_notify.type = sf::Event::KeyReleased;
+	st_notify.type = sf::Event::EventType::KeyReleased;
     automapactive = false;
     ST_Responder(&st_notify);
     stopped = true;
@@ -522,7 +522,7 @@ bool AM_Responder( sf::Event& ev )
 
     if (!automapactive)
     {
-		if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Tab)
+		if (ev.type == sf::Event::EventType::KeyPressed && ev.key.code == sf::Keyboard::Key::Tab)
 		{
 		    AM_Start ();
 		    viewactive = false;
@@ -530,42 +530,42 @@ bool AM_Responder( sf::Event& ev )
 		}
     }
 
-    else if (ev.type == sf::Event::KeyPressed)
+    else if (ev.type == sf::Event::EventType::KeyPressed)
     {
 
 		rc = true;
 		switch(ev.key.code)
 		{
-		case sf::Keyboard::Right: // pan right
+		case sf::Keyboard::Key::Right: // pan right
 		    if (!followplayer) m_paninc.x = FTOM(F_PANINC);
 		    else rc = false;
 		    break;
-		  case sf::Keyboard::Left: // pan left
+		  case sf::Keyboard::Key::Left: // pan left
 		    if (!followplayer) m_paninc.x = -FTOM(F_PANINC);
 		    else rc = false;
 		    break;
-		  case sf::Keyboard::Up: // pan up
+		  case sf::Keyboard::Key::Up: // pan up
 		    if (!followplayer) m_paninc.y = FTOM(F_PANINC);
 		    else rc = false;
 		    break;
-		  case sf::Keyboard::Down: // pan down
+		  case sf::Keyboard::Key::Down: // pan down
 		    if (!followplayer) m_paninc.y = -FTOM(F_PANINC);
 		    else rc = false;
 		    break;
-		  case sf::Keyboard::Subtract: // zoom out
+		  case sf::Keyboard::Key::Subtract: // zoom out
 		    mtof_zoommul = M_ZOOMOUT;
 		    ftom_zoommul = M_ZOOMIN;
 		    break;
-		  case sf::Keyboard::Equal: // zoom in
+		  case sf::Keyboard::Key::Equal: // zoom in
 		    mtof_zoommul = M_ZOOMIN;
 		    ftom_zoommul = M_ZOOMOUT;
 		    break;
-		  case sf::Keyboard::Tab:
+		  case sf::Keyboard::Key::Tab:
 		    bigstate = 0;
 		    viewactive = true;
 		    AM_Stop ();
 		    break;
-		  case sf::Keyboard::Num0:
+		  case sf::Keyboard::Key::Num0:
 		    bigstate = !bigstate;
 		    if (bigstate)
 		    {
@@ -574,21 +574,21 @@ bool AM_Responder( sf::Event& ev )
 		    }
 		    else AM_restoreScaleAndLoc();
 		    break;
-		  case sf::Keyboard::F:
+		  case sf::Keyboard::Key::F:
 		    followplayer = !followplayer;
 		    f_oldloc.x = std::numeric_limits<int>::max();
 		    plr->message = followplayer ? s_FollowOn.c_str() : s_FollowOff.c_str();
 		    break;
-		  case sf::Keyboard::G:
+		  case sf::Keyboard::Key::G:
 		    grid = !grid;
 		    plr->message = grid ? s_GridOn.c_str() : s_GridOff.c_str();
 		    break;
-		  case sf::Keyboard::M:
+		  case sf::Keyboard::Key::M:
 		    buffer = s_MarkedSpot + std::to_string(markpointnum);
 		    plr->message = buffer.c_str();
 		    AM_addMark();
 		    break;
-		  case sf::Keyboard::C:
+		  case sf::Keyboard::Key::C:
 		    AM_clearMarks();
 		    plr->message = s_MarksCleared.c_str();
 		    break;
@@ -596,25 +596,25 @@ bool AM_Responder( sf::Event& ev )
 		    rc = false;
 		}
     }
-    else if (ev.type == sf::Event::KeyReleased)
+    else if (ev.type == sf::Event::EventType::KeyReleased)
     {
 		rc = false;
 		switch (ev.key.code)
 		{
-		case sf::Keyboard::Right:
+		case sf::Keyboard::Key::Right:
 		    if (!followplayer) m_paninc.x = 0;
 		    break;
-		  case sf::Keyboard::Left:
+		  case sf::Keyboard::Key::Left:
 		    if (!followplayer) m_paninc.x = 0;
 		    break;
-		  case sf::Keyboard::Up:
+		  case sf::Keyboard::Key::Up:
 		    if (!followplayer) m_paninc.y = 0;
 		    break;
-		  case sf::Keyboard::Down:
+		  case sf::Keyboard::Key::Down:
 		    if (!followplayer) m_paninc.y = 0;
 		    break;
-		  case sf::Keyboard::Subtract:
-		  case sf::Keyboard::Equal:
+		  case sf::Keyboard::Key::Subtract:
+		  case sf::Keyboard::Key::Equal:
 		    mtof_zoommul = FRACUNIT;
 		    ftom_zoommul = FRACUNIT;
 		    break;

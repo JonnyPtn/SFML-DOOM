@@ -469,7 +469,7 @@ void HU_Ticker(void)
 		    if (c >= 'a' && c <= 'z')
 			c = (char) shiftxform[(unsigned char) c];
 		    rc = HUlib_keyInIText(&w_inputbuffer[i], c);
-		    if (rc && c == sf::Keyboard::Return)
+		    if (rc && c == (int)sf::Keyboard::Key::Return)
 		    {
 			if (w_inputbuffer[i].l.len
 			    && (chat_dest[i] == consoleplayer+1
@@ -561,29 +561,29 @@ bool HU_Responder(sf::Event *ev)
     for (i=0 ; i<MAXPLAYERS ; i++)
 	numplayers += playeringame[i];
 
-    if (ev->key.code == sf::Keyboard::RShift)
+    if (ev->key.code == sf::Keyboard::Key::RShift)
     {
-	shiftdown = ev->type == sf::Event::KeyPressed;
+	shiftdown = ev->type == sf::Event::EventType::KeyPressed;
 	return false;
     }
-    else if (ev->key.code == sf::Keyboard::RAlt || ev->key.code == sf::Keyboard::LAlt)
+    else if (ev->key.code == sf::Keyboard::Key::RAlt || ev->key.code == sf::Keyboard::Key::LAlt)
     {
-	altdown = ev->type == sf::Event::KeyPressed;
+	altdown = ev->type == sf::Event::EventType::KeyPressed;
 	return false;
     }
 
-    if (ev->type != sf::Event::KeyPressed)
+    if (ev->type != sf::Event::EventType::KeyPressed)
 	return false;
 
     if (!chat_on)
     {
-	if (ev->key.code == sf::Keyboard::Return)
+	if (ev->key.code == sf::Keyboard::Key::Return)
 	{
 	    message_on = true;
 	    message_counter = HU_MSGTIMEOUT;
 	    eatkey = true;
 	}
-	else if (netgame && ev->key.code == HU_INPUTTOGGLE)
+	else if (netgame && (int)ev->key.code == HU_INPUTTOGGLE)
 	{
 	    eatkey = chat_on = true;
 	    HUlib_resetIText(&w_chat);
@@ -593,7 +593,7 @@ bool HU_Responder(sf::Event *ev)
 	{
 	    for (i=0; i<MAXPLAYERS ; i++)
 	    {
-		if (ev->key.code == destination_keys[i])
+		if ((int)ev->key.code == destination_keys[i])
 		{
 		    if (playeringame[i] && i!=consoleplayer)
 		    {
@@ -622,7 +622,7 @@ bool HU_Responder(sf::Event *ev)
     }
     else
     {
-	c = ev->key.code;
+	c = (int)ev->key.code;
 	// send a macro
 	if (altdown)
 	{
@@ -633,12 +633,12 @@ bool HU_Responder(sf::Event *ev)
 	    macromessage = chat_macros[c];
 	    
 	    // kill last message with a '\n'
-	    HU_queueChatChar(sf::Keyboard::Return); // DEBUG!!!
+	    HU_queueChatChar((int)sf::Keyboard::Key::Return); // DEBUG!!!
 	    
 	    // send the macro message
 	    while (*macromessage)
 		HU_queueChatChar(*macromessage++);
-	    HU_queueChatChar(sf::Keyboard::Return);
+	    HU_queueChatChar((int)sf::Keyboard::Key::Return);
 	    
 	    // leave chat mode and notify that it was sent
 	    chat_on = false;
@@ -659,7 +659,7 @@ bool HU_Responder(sf::Event *ev)
 		// sprintf(buf, "KEY: %d => %d", ev->data1, c);
 		//      plr->message = buf;
 	    }
-	    if (c == sf::Keyboard::Return)
+	    if (c == (int)sf::Keyboard::Key::Return)
 	    {
 		chat_on = false;
 		if (w_chat.l.len)
@@ -668,7 +668,7 @@ bool HU_Responder(sf::Event *ev)
 		    plr->message = lastmessage.c_str();
 		}
 	    }
-	    else if (c == sf::Keyboard::Escape)
+	    else if (c == (int)sf::Keyboard::Key::Escape)
 		chat_on = false;
 	}
     }

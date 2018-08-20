@@ -429,7 +429,7 @@ void F_CastTicker (void)
 
 bool F_CastResponder (sf::Event* ev)
 {
-    if (ev->type != sf::Event::KeyPressed)
+    if (ev->type != sf::Event::EventType::KeyPressed)
 		return false;
 		
     if (castdeath)

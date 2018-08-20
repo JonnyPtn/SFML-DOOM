@@ -426,7 +426,7 @@ void CheckAbort(void)
     {
         while (pollEvent(ev))
         {
-            if(ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Escape)
+            if(ev.type == sf::Event::EventType::KeyPressed && ev.key.code == sf::Keyboard::Key::Escape)
                 I_Error("Network game synchronization aborted.");
         }
     }

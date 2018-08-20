@@ -83,7 +83,7 @@ void PacketSend(void)
     }
 
     //printf ("sending %i\n",gametic);		
-    c = sendsocket.send( &sw, doomcom->datalength
+    c = (int)sendsocket.send( &sw, doomcom->datalength
         , sendaddress[doomcom->remotenode],
         DOOMPORT);
 
@@ -106,7 +106,7 @@ void PacketGet(void)
     fromlen = sizeof(fromaddress);
     auto c = insocket.receive(&sw, sizeof(sw), fromlen
         , fromaddress, fromport);
-    if (c != sf::Socket::Done)
+    if (c != sf::Socket::Status::Done)
     {
         //if we've received something on a blocking socket, but the status isn't done, something's gone awry
         if (insocket.isBlocking())

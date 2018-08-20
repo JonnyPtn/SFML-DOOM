@@ -489,7 +489,7 @@ ST_Responder (sf::Event* ev)
   int		i;
     
   // Filter automap on/off.
-  /*if (ev->type == sf::Event::KeyReleased
+  /*if (ev->type == sf::Event::EventType::KeyReleased
       && ((ev->key.code & 0xffff0000) == AM_MSGHEADER))
   {
     switch(ev->key.code)
@@ -508,7 +508,7 @@ ST_Responder (sf::Event* ev)
 
   // if a user keypress...
   else*/ 
-	if (ev->type == sf::Event::TextEntered)
+	if (ev->type == sf::Event::EventType::TextEntered)
 	{
 		if (!netgame)
 		{

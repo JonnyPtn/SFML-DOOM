@@ -117,7 +117,7 @@ typedef struct
     void	(*routine)(int choice);
     
     // hotkey in menu
-    sf::Keyboard::Key	alphaKey;			
+    sf::Keyboard::Key	alphaKey;
 } menuitem_t;
 
 
@@ -215,13 +215,13 @@ enum main_e
 
 menuitem_t MainMenu[]=
 {
-    {1,"M_NGAME",M_NewGame,sf::Keyboard::N},
-    {1,"M_OPTION",M_Options,sf::Keyboard::O},
-    {1,"M_LOADG",M_LoadGame,sf::Keyboard::L},
-    {1,"M_SAVEG",M_SaveGame,sf::Keyboard::S},
+    {1,"M_NGAME",M_NewGame,sf::Keyboard::Key::N},
+    {1,"M_OPTION",M_Options,sf::Keyboard::Key::O},
+    {1,"M_LOADG",M_LoadGame,sf::Keyboard::Key::L},
+    {1,"M_SAVEG",M_SaveGame,sf::Keyboard::Key::S},
     // Another hickup with Special edition.
-    {1,"M_RDTHIS",M_ReadThis,sf::Keyboard::R},
-    {1,"M_QUITG",M_QuitDOOM,sf::Keyboard::Q}
+    {1,"M_RDTHIS",M_ReadThis,sf::Keyboard::Key::R},
+    {1,"M_QUITG",M_QuitDOOM,sf::Keyboard::Key::Q}
 };
 
 menu_t  MainDef =
@@ -249,10 +249,10 @@ enum episodes_e
 
 menuitem_t EpisodeMenu[]=
 {
-    {1,"M_EPI1", M_Episode,sf::Keyboard::K},
-    {1,"M_EPI2", M_Episode,sf::Keyboard::T},
-    {1,"M_EPI3", M_Episode,sf::Keyboard::I},
-    {1,"M_EPI4", M_Episode,sf::Keyboard::T}
+    {1,"M_EPI1", M_Episode,sf::Keyboard::Key::K},
+    {1,"M_EPI2", M_Episode,sf::Keyboard::Key::T},
+    {1,"M_EPI3", M_Episode,sf::Keyboard::Key::I},
+    {1,"M_EPI4", M_Episode,sf::Keyboard::Key::T}
 };
 
 menu_t  EpiDef =
@@ -280,11 +280,11 @@ enum newgame_e
 
 menuitem_t NewGameMenu[]=
 {
-    {1,"M_JKILL",	M_ChooseSkill, sf::Keyboard::I},
-    {1,"M_ROUGH",	M_ChooseSkill, sf::Keyboard::H},
-    {1,"M_HURT",	M_ChooseSkill, sf::Keyboard::H},
-    {1,"M_ULTRA",	M_ChooseSkill, sf::Keyboard::U},
-    {1,"M_NMARE",	M_ChooseSkill, sf::Keyboard::N}
+    {1,"M_JKILL",	M_ChooseSkill, sf::Keyboard::Key::I},
+    {1,"M_ROUGH",	M_ChooseSkill, sf::Keyboard::Key::H},
+    {1,"M_HURT",	M_ChooseSkill, sf::Keyboard::Key::H},
+    {1,"M_ULTRA",	M_ChooseSkill, sf::Keyboard::Key::U},
+    {1,"M_NMARE",	M_ChooseSkill, sf::Keyboard::Key::N}
 };
 
 menu_t  NewDef =
@@ -317,14 +317,14 @@ enum options_e
 
 menuitem_t OptionsMenu[]=
 {
-    {1,"M_ENDGAM",	M_EndGame,sf::Keyboard::E},
-    {1,"M_MESSG",	M_ChangeMessages,sf::Keyboard::M},
-    {1,"M_DETAIL",	M_ChangeDetail,sf::Keyboard::G},
-    {2,"M_SCRNSZ",	M_SizeDisplay,sf::Keyboard::S},
+    {1,"M_ENDGAM",	M_EndGame,sf::Keyboard::Key::E},
+    {1,"M_MESSG",	M_ChangeMessages,sf::Keyboard::Key::M},
+    {1,"M_DETAIL",	M_ChangeDetail,sf::Keyboard::Key::G},
+    {2,"M_SCRNSZ",	M_SizeDisplay,sf::Keyboard::Key::S},
     {-1,"",0},
-    {2,"M_MSENS",	M_ChangeSensitivity,sf::Keyboard::M},
+    {2,"M_MSENS",	M_ChangeSensitivity,sf::Keyboard::Key::M},
     {-1,"",0},
-    {1,"M_SVOL",	M_Sound,sf::Keyboard::S}
+    {1,"M_SVOL",	M_Sound,sf::Keyboard::Key::S}
 };
 
 menu_t  OptionsDef =
@@ -348,7 +348,7 @@ enum read_e
 
 menuitem_t ReadMenu1[] =
 {
-    {1,"",M_ReadThis2,sf::Keyboard::Unknown}
+    {1,"",M_ReadThis2,sf::Keyboard::Key::Unknown}
 };
 
 menu_t  ReadDef1 =
@@ -369,7 +369,7 @@ enum read_e2
 
 menuitem_t ReadMenu2[]=
 {
-    {1,"",M_FinishReadThis,sf::Keyboard::Unknown}
+    {1,"",M_FinishReadThis,sf::Keyboard::Key::Unknown}
 };
 
 menu_t  ReadDef2 =
@@ -396,9 +396,9 @@ enum sound_e
 
 menuitem_t SoundMenu[]=
 {
-    {2,"M_SFXVOL",M_SfxVol,sf::Keyboard::S},
+    {2,"M_SFXVOL",M_SfxVol,sf::Keyboard::Key::S},
     {-1,"",0},
-    {2,"M_MUSVOL",M_MusicVol,sf::Keyboard::M},
+    {2,"M_MUSVOL",M_MusicVol,sf::Keyboard::Key::M},
     {-1,"",0}
 };
 
@@ -428,12 +428,12 @@ enum load_e
 
 menuitem_t LoadMenu[]=
 {
-    {1,"", M_LoadSelect,sf::Keyboard::Num1},
-    {1,"", M_LoadSelect,sf::Keyboard::Num2},
-    {1,"", M_LoadSelect,sf::Keyboard::Num3},
-    {1,"", M_LoadSelect,sf::Keyboard::Num4},
-    {1,"", M_LoadSelect,sf::Keyboard::Num5},
-    {1,"", M_LoadSelect,sf::Keyboard::Num6}
+    {1,"", M_LoadSelect,sf::Keyboard::Key::Num1},
+    {1,"", M_LoadSelect,sf::Keyboard::Key::Num2},
+    {1,"", M_LoadSelect,sf::Keyboard::Key::Num3},
+    {1,"", M_LoadSelect,sf::Keyboard::Key::Num4},
+    {1,"", M_LoadSelect,sf::Keyboard::Key::Num5},
+    {1,"", M_LoadSelect,sf::Keyboard::Key::Num6}
 };
 
 menu_t  LoadDef =
@@ -451,12 +451,12 @@ menu_t  LoadDef =
 //
 menuitem_t SaveMenu[]=
 {
-    {1,"", M_SaveSelect,sf::Keyboard::Num1},
-    {1,"", M_SaveSelect,sf::Keyboard::Num2},
-    {1,"", M_SaveSelect,sf::Keyboard::Num3},
-    {1,"", M_SaveSelect,sf::Keyboard::Num4},
-    {1,"", M_SaveSelect,sf::Keyboard::Num5},
-    {1,"", M_SaveSelect,sf::Keyboard::Num6}
+    {1,"", M_SaveSelect,sf::Keyboard::Key::Num1},
+    {1,"", M_SaveSelect,sf::Keyboard::Key::Num2},
+    {1,"", M_SaveSelect,sf::Keyboard::Key::Num3},
+    {1,"", M_SaveSelect,sf::Keyboard::Key::Num4},
+    {1,"", M_SaveSelect,sf::Keyboard::Key::Num5},
+    {1,"", M_SaveSelect,sf::Keyboard::Key::Num6}
 };
 
 menu_t  SaveDef =
@@ -1285,26 +1285,26 @@ bool M_Responder (sf::Event* ev)
     ch = -1;
 	
 	//JONNY//
-	if (ev->type != sf::Event::KeyPressed 
-		&& ev->type != sf::Event::TextEntered 
-		&& ev->type != sf::Event::JoystickMoved
-		&& ev->type != sf::Event::JoystickButtonPressed)
+	if (ev->type != sf::Event::EventType::KeyPressed 
+		&& ev->type != sf::Event::EventType::TextEntered 
+		&& ev->type != sf::Event::EventType::JoystickMoved
+		&& ev->type != sf::Event::EventType::JoystickButtonPressed)
 		return false;
-	else if (ev->type == sf::Event::TextEntered)
+	else if (ev->type == sf::Event::EventType::TextEntered)
 		ch = ev->text.unicode;
 
-	if (ev->type == sf::Event::KeyPressed)
+	if (ev->type == sf::Event::EventType::KeyPressed)
 	{
-		ch = ev->key.code;
+		ch = (int)ev->key.code;
 		//always check for fullscreen toggle first
-		if (ev->key.code == sf::Keyboard::F &&
+		if (ev->key.code == sf::Keyboard::Key::F &&
 			ev->key.control)
 		{
 			toggleFullscreen();
 			return true;
 		}
 	}
-	else if (ev->type == sf::Event::JoystickMoved)
+	else if (ev->type == sf::Event::EventType::JoystickMoved)
 	{
 		static bool joystickHeld(false);
 		static const float joyDeadZone(40.f);
@@ -1315,7 +1315,7 @@ bool M_Responder (sf::Event* ev)
 			{
 				if (!joystickHeld)
 				{
-					ch = sf::Keyboard::Up;
+					ch = (int)sf::Keyboard::Key::Up;
 					joystickHeld = true;
 				}
 			}
@@ -1323,7 +1323,7 @@ bool M_Responder (sf::Event* ev)
 			{
 				if (!joystickHeld)
 				{
-					ch = sf::Keyboard::Down;
+					ch = (int)sf::Keyboard::Key::Down;
 					joystickHeld = true;
 				}
 			}
@@ -1337,12 +1337,12 @@ bool M_Responder (sf::Event* ev)
 			break;
 		}
 	}
-	else if (ev->type == sf::Event::JoystickButtonPressed)
+	else if (ev->type == sf::Event::EventType::JoystickButtonPressed)
 	{
 		if (ev->joystickButton.button == 0) //a
-			ch = sf::Keyboard::Return;
+			ch = (int)sf::Keyboard::Key::Return;
 		else if (ev->joystickButton.button == 1) //b
-			ch = sf::Keyboard::BackSpace;
+			ch = (int)sf::Keyboard::Key::BackSpace;
 
 	}
     
@@ -1355,7 +1355,7 @@ bool M_Responder (sf::Event* ev)
     {
 	switch(ev->key.code)
 	{
-	  case sf::Keyboard::BackSpace:
+	  case sf::Keyboard::Key::BackSpace:
 	    if (saveCharIndex > 0)
 	    {
 			saveCharIndex--;
@@ -1363,12 +1363,12 @@ bool M_Responder (sf::Event* ev)
 	    }
 	    break;
 				
-	  case sf::Keyboard::Escape:
+	  case sf::Keyboard::Key::Escape:
 	    saveStringEnter = 0;
 	    savegamestrings[saveSlot] = saveOldString;
 	    break;
 				
-	  case sf::Keyboard::Return:
+	  case sf::Keyboard::Key::Return:
 	    saveStringEnter = 0;
 	    if (savegamestrings[saveSlot][0])
 		M_DoSave(saveSlot);
@@ -1396,7 +1396,7 @@ bool M_Responder (sf::Event* ev)
     if (messageToPrint)
     {
 	if (messageNeedsInput == true &&
-	    !(ch == ' ' || ch == 'n' || ch == 'y' || ch == sf::Keyboard::Escape))
+	    !(ch == ' ' || ch == 'n' || ch == 'y' || ch == (int)sf::Keyboard::Key::Escape))
 	    return false;
 		
 	menuactive = messageLastMenuActive!=0;
@@ -1410,24 +1410,24 @@ bool M_Responder (sf::Event* ev)
     }
 
     // F-Keys
-    if (!menuactive && ev->type == sf::Event::KeyPressed)
+    if (!menuactive && ev->type == sf::Event::EventType::KeyPressed)
 	switch(ev->key.code)
 	{
-	case sf::Keyboard::Dash:         // Screen size down
+	case sf::Keyboard::Key::Dash:         // Screen size down
 	    if (automapactive || chat_on)
 		return false;
 	    M_SizeDisplay(0);
         I_Sound::getInstance()->startSound(NULL,sfx_stnmov);
 	    return true;
 				
-	case sf::Keyboard::Equal:        // Screen size up
+	case sf::Keyboard::Key::Equal:        // Screen size up
 	    if (automapactive || chat_on)
 		return false;
 	    M_SizeDisplay(1);
         I_Sound::getInstance()->startSound(NULL,sfx_stnmov);
 	    return true;
 				
-	case sf::Keyboard::F1:            // Help key
+	case sf::Keyboard::Key::F1:            // Help key
 	    M_StartControlPanel ();
 
 	    if (Game::gamemode == GameMode_t::retail )
@@ -1439,56 +1439,56 @@ bool M_Responder (sf::Event* ev)
         I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 				
-	case sf::Keyboard::F2:            // Save
+	case sf::Keyboard::Key::F2:            // Save
 	    M_StartControlPanel();
         I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_SaveGame(0);
 	    return true;
 				
-	case sf::Keyboard::F3:            // Load
+	case sf::Keyboard::Key::F3:            // Load
 	    M_StartControlPanel();
         I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_LoadGame(0);
 	    return true;
 				
-	case sf::Keyboard::F4:            // Sound Volume
+	case sf::Keyboard::Key::F4:            // Sound Volume
 	    M_StartControlPanel ();
 	    currentMenu = &SoundDef;
 	    itemOn = sfx_vol;
         I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 				
-	  case sf::Keyboard::F5:            // Detail toggle
+	  case sf::Keyboard::Key::F5:            // Detail toggle
 	    M_ChangeDetail(0);
         I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 				
-	  case sf::Keyboard::F6:            // Quicksave
+	  case sf::Keyboard::Key::F6:            // Quicksave
           I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_QuickSave();
 	    return true;
 				
-	  case sf::Keyboard::F7:            // End game
+	  case sf::Keyboard::Key::F7:            // End game
           I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_EndGame(0);
 	    return true;
 				
-	  case sf::Keyboard::F8:            // Toggle messages
+	  case sf::Keyboard::Key::F8:            // Toggle messages
 	    M_ChangeMessages(0);
         I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    return true;
 				
-	  case sf::Keyboard::F9:            // Quickload
+	  case sf::Keyboard::Key::F9:            // Quickload
           I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_QuickLoad();
 	    return true;
 				
-	  case sf::Keyboard::F10:           // Quit DOOM
+	  case sf::Keyboard::Key::F10:           // Quit DOOM
           I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
 	    M_QuitDOOM(0);
 	    return true;
 				
-	  case sf::Keyboard::F11:           // gamma toggle
+	  case sf::Keyboard::Key::F11:           // gamma toggle
 	    usegamma++;
 	    if (usegamma > 4)
 		usegamma = 0;
@@ -1504,7 +1504,7 @@ bool M_Responder (sf::Event* ev)
     // Pop-up menu?
     if (!menuactive)
     {
-	if (ch == sf::Keyboard::Escape)
+	if (ch == (int)sf::Keyboard::Key::Escape)
 	{
 	    M_StartControlPanel ();
         I_Sound::getInstance()->startSound(NULL,sfx_swtchn);
@@ -1515,11 +1515,11 @@ bool M_Responder (sf::Event* ev)
 
     
     // Keys usable within menu
-	if (menuactive && ev->type == sf::Event::KeyPressed)
+	if (menuactive && ev->type == sf::Event::EventType::KeyPressed)
 	{
 		switch (ev->key.code)
 		{
-		case sf::Keyboard::Down:
+		case sf::Keyboard::Key::Down:
 			do
 			{
 				if (itemOn + 1 > currentMenu->numitems - 1)
@@ -1529,7 +1529,7 @@ bool M_Responder (sf::Event* ev)
 			} while (currentMenu->menuitems[itemOn].status == -1);
 			return true;
 
-		case sf::Keyboard::Up:
+		case sf::Keyboard::Key::Up:
 			do
 			{
 				if (!itemOn)
@@ -1539,7 +1539,7 @@ bool M_Responder (sf::Event* ev)
 			} while (currentMenu->menuitems[itemOn].status == -1);
 			return true;
 
-		case sf::Keyboard::Left:
+		case sf::Keyboard::Key::Left:
 			if (currentMenu->menuitems[itemOn].routine &&
 				currentMenu->menuitems[itemOn].status == 2)
 			{
@@ -1548,7 +1548,7 @@ bool M_Responder (sf::Event* ev)
 			}
 			return true;
 
-		case sf::Keyboard::Right:
+		case sf::Keyboard::Key::Right:
 			if (currentMenu->menuitems[itemOn].routine &&
 				currentMenu->menuitems[itemOn].status == 2)
 			{
@@ -1557,7 +1557,7 @@ bool M_Responder (sf::Event* ev)
 			}
 			return true;
 
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Return:
 			if (currentMenu->menuitems[itemOn].routine &&
 				currentMenu->menuitems[itemOn].status)
 			{
@@ -1575,13 +1575,13 @@ bool M_Responder (sf::Event* ev)
 			}
 			return true;
 
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			currentMenu->lastOn = itemOn;
 			M_ClearMenus();
             I_Sound::getInstance()->startSound(NULL, sfx_swtchx);
 			return true;
 
-		case sf::Keyboard::BackSpace:
+		case sf::Keyboard::Key::BackSpace:
 			currentMenu->lastOn = itemOn;
 			if (currentMenu->prevMenu)
 			{
