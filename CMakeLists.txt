@@ -2,24 +2,18 @@ cmake_minimum_required(VERSION 2.8)
 
 project(SFML-DOOM)
 
-# Version number
-SET(CPACK_PACKAGE_VERSION_MAJOR 0)
-SET(CPACK_PACKAGE_VERSION_MINOR 2)
-SET(CPACK_PACKAGE_VERSION_PATCH 0)
-
 # Only works with SFML version 2.4 and above
-SET(SFML_MIN_VERSION 2.4)
+SET(SFML_MIN_VERSION 2.5.1)
 if (IOS)
   add_definitions(-DSFML_DOOM_IOS)
-  #set(CMAKE_FIND_FRAMEWORK LAST)
   set (SFML_STATIC_LIBRARIES=TRUE)
   find_host_package(SFML REQUIRED COMPONENTS main graphics audio window system network)
 else()
   find_package(SFML REQUIRED COMPONENTS graphics audio window system network)
 endif()
 
-file(GLOB INCLUDE "include/*.h" "include/*.hpp" "include/timidity/*.h")
-file(GLOB SOURCE "src/*.cpp" "src/timidity/*.cpp")
+file(GLOB INCLUDE CONFIGURE_DEPENDS "include/*.h" "include/*.hpp" "include/timidity/*.h")
+file(GLOB SOURCE CONFIGURE_DEPENDS "src/*.cpp" "src/timidity/*.cpp")
 
 if (APPLE)
     set(SOURCE ${SOURCE} src/ResourcePath.mm)

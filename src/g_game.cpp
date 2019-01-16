@@ -393,7 +393,7 @@ void G_DoLoadLevel (void)
 bool G_Responder (sf::Event* ev) 
 { 
     // allow spy mode changes even during the demo
-    if (gamestate == GS_LEVEL && ev->type == sf::Event::EventType::KeyPressed
+    if (gamestate == GS_LEVEL && ev->type == sf::Event::KeyPressed
 	&& ev->key.code == sf::Keyboard::Key::F12 && (singledemo || !deathmatch) )
     {
 		// spy mode 
@@ -411,9 +411,9 @@ bool G_Responder (sf::Event* ev)
 	(demoplayback || gamestate == GS_DEMOSCREEN) 
 	) 
     { 
-		if (ev->type == sf::Event::EventType::KeyPressed ||
-		    (ev->type == sf::Event::EventType::MouseButtonPressed) ||
-		    (ev->type == sf::Event::EventType::JoystickButtonPressed) )
+		if (ev->type == sf::Event::KeyPressed ||
+		    (ev->type == sf::Event::MouseButtonPressed) ||
+		    (ev->type == sf::Event::JoystickButtonPressed) )
 		{ 
 		    M_StartControlPanel (); 
 		    return true; 
@@ -439,7 +439,7 @@ bool G_Responder (sf::Event* ev)
 	 
     switch (ev->type) 
     { 
-	case sf::Event::EventType::KeyPressed:
+	case sf::Event::KeyPressed:
 		//check for full 
 		if (ev->key.code == sf::Keyboard::Key::F &&
 			ev->key.control)
@@ -454,11 +454,11 @@ bool G_Responder (sf::Event* ev)
         gamekeydown[(int)ev->key.code] = true;
 		return true;    // eat key down events 
  
-      case sf::Event::EventType::KeyReleased:
+      case sf::Event::KeyReleased:
         gamekeydown[(int)ev->key.code] = false;
 		return false;   // always let key up events filter down 
 		 
-	  case sf::Event::EventType::MouseButtonPressed:
+	  case sf::Event::MouseButtonPressed:
 		  switch (ev->mouseButton.button)
 		  {
               case sf::Mouse::Button::Left:
@@ -475,7 +475,7 @@ bool G_Responder (sf::Event* ev)
 		  	break;
 		  }
 		  break;
-	  case sf::Event::EventType::MouseButtonReleased:
+	  case sf::Event::MouseButtonReleased:
 		  switch (ev->mouseButton.button)
 		  {
               case sf::Mouse::Button::Left:
@@ -491,9 +491,9 @@ bool G_Responder (sf::Event* ev)
 		  	  break;
 		  }
 		  break; 
-	  case sf::Event::EventType::MouseMoved:
+	  case sf::Event::MouseMoved:
 		  break;
-	  case sf::Event::EventType::JoystickMoved:
+	  case sf::Event::JoystickMoved:
 		switch (ev->joystickMove.axis)
 		{
 		case sf::Joystick::Axis::X:
@@ -521,11 +521,11 @@ bool G_Responder (sf::Event* ev)
 		}
 		break;    // eat events 
 
-	  case sf::Event::EventType::JoystickButtonPressed:
+	  case sf::Event::JoystickButtonPressed:
 		  joybuttons[ev->joystickButton.button] = true;
 		  break;
 
-	  case sf::Event::EventType::JoystickButtonReleased:
+	  case sf::Event::JoystickButtonReleased:
 		  joybuttons[ev->joystickButton.button] = false;
 		  break;
 

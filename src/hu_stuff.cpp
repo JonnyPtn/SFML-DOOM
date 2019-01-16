@@ -563,16 +563,16 @@ bool HU_Responder(sf::Event *ev)
 
     if (ev->key.code == sf::Keyboard::Key::RShift)
     {
-	shiftdown = ev->type == sf::Event::EventType::KeyPressed;
+	shiftdown = ev->type == sf::Event::KeyPressed;
 	return false;
     }
     else if (ev->key.code == sf::Keyboard::Key::RAlt || ev->key.code == sf::Keyboard::Key::LAlt)
     {
-	altdown = ev->type == sf::Event::EventType::KeyPressed;
+	altdown = ev->type == sf::Event::KeyPressed;
 	return false;
     }
 
-    if (ev->type != sf::Event::EventType::KeyPressed)
+    if (ev->type != sf::Event::KeyPressed)
 	return false;
 
     if (!chat_on)

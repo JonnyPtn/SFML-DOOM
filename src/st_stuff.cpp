@@ -508,7 +508,7 @@ ST_Responder (sf::Event* ev)
 
   // if a user keypress...
   else*/ 
-	if (ev->type == sf::Event::EventType::TextEntered)
+	if (ev->type == sf::Event::TextEntered)
 	{
 		if (!netgame)
 		{

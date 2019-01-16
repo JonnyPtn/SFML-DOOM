@@ -1285,15 +1285,15 @@ bool M_Responder (sf::Event* ev)
     ch = -1;
 	
 	//JONNY//
-	if (ev->type != sf::Event::EventType::KeyPressed 
-		&& ev->type != sf::Event::EventType::TextEntered 
-		&& ev->type != sf::Event::EventType::JoystickMoved
-		&& ev->type != sf::Event::EventType::JoystickButtonPressed)
+	if (ev->type != sf::Event::KeyPressed 
+		&& ev->type != sf::Event::TextEntered 
+		&& ev->type != sf::Event::JoystickMoved
+		&& ev->type != sf::Event::JoystickButtonPressed)
 		return false;
-	else if (ev->type == sf::Event::EventType::TextEntered)
+	else if (ev->type == sf::Event::TextEntered)
 		ch = ev->text.unicode;
 
-	if (ev->type == sf::Event::EventType::KeyPressed)
+	if (ev->type == sf::Event::KeyPressed)
 	{
 		ch = (int)ev->key.code;
 		//always check for fullscreen toggle first
@@ -1304,7 +1304,7 @@ bool M_Responder (sf::Event* ev)
 			return true;
 		}
 	}
-	else if (ev->type == sf::Event::EventType::JoystickMoved)
+	else if (ev->type == sf::Event::JoystickMoved)
 	{
 		static bool joystickHeld(false);
 		static const float joyDeadZone(40.f);
@@ -1337,7 +1337,7 @@ bool M_Responder (sf::Event* ev)
 			break;
 		}
 	}
-	else if (ev->type == sf::Event::EventType::JoystickButtonPressed)
+	else if (ev->type == sf::Event::JoystickButtonPressed)
 	{
 		if (ev->joystickButton.button == 0) //a
 			ch = (int)sf::Keyboard::Key::Return;
@@ -1410,7 +1410,7 @@ bool M_Responder (sf::Event* ev)
     }
 
     // F-Keys
-    if (!menuactive && ev->type == sf::Event::EventType::KeyPressed)
+    if (!menuactive && ev->type == sf::Event::KeyPressed)
 	switch(ev->key.code)
 	{
 	case sf::Keyboard::Key::Dash:         // Screen size down
@@ -1515,7 +1515,7 @@ bool M_Responder (sf::Event* ev)
 
     
     // Keys usable within menu
-	if (menuactive && ev->type == sf::Event::EventType::KeyPressed)
+	if (menuactive && ev->type == sf::Event::KeyPressed)
 	{
 		switch (ev->key.code)
 		{

@@ -375,7 +375,7 @@ void AM_initVariables(void)
     int pnum;
 
 	static sf::Event st_notify;
-	st_notify.type = sf::Event::EventType::KeyReleased;
+	st_notify.type = sf::Event::KeyReleased;
 
     automapactive = true;
     fb = screens[0];
@@ -465,7 +465,7 @@ void AM_LevelInit(void)
 void AM_Stop (void)
 {
 	static sf::Event st_notify;
-	st_notify.type = sf::Event::EventType::KeyReleased;
+	st_notify.type = sf::Event::KeyReleased;
     automapactive = false;
     ST_Responder(&st_notify);
     stopped = true;
@@ -522,7 +522,7 @@ bool AM_Responder( sf::Event& ev )
 
     if (!automapactive)
     {
-		if (ev.type == sf::Event::EventType::KeyPressed && ev.key.code == sf::Keyboard::Key::Tab)
+		if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Key::Tab)
 		{
 		    AM_Start ();
 		    viewactive = false;
@@ -530,7 +530,7 @@ bool AM_Responder( sf::Event& ev )
 		}
     }
 
-    else if (ev.type == sf::Event::EventType::KeyPressed)
+    else if (ev.type == sf::Event::KeyPressed)
     {
 
 		rc = true;
@@ -596,7 +596,7 @@ bool AM_Responder( sf::Event& ev )
 		    rc = false;
 		}
     }
-    else if (ev.type == sf::Event::EventType::KeyReleased)
+    else if (ev.type == sf::Event::KeyReleased)
     {
 		rc = false;
 		switch (ev.key.code)
