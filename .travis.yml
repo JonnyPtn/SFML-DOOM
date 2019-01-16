@@ -12,13 +12,13 @@ addons:
 
 before_script:
 - git clone https://github.com/sfml/sfml && cd sfml && mkdir build && cd build &&
-  cmake .. $CMAKE_FLAGS -DCMAKE_BUILD_TYPE=Release
+  cmake .. $CMAKE_FLAGS -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../install
 - cmake --build . --target install
 - cd ../..
 
 script:
 - mkdir build && cd build
-- cmake .. -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS
+- cmake .. -DCMAKE_BUILD_TYPE=Release $CMAKE_FLAGS -DSFML_DIR=../install/libs/cmake/SFML
 - cmake --build . --target install --config Release
 - cmake --build . --target package --config Release
 
