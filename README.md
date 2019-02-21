@@ -7,7 +7,7 @@ Makes use of SFML for the window, graphics, input, audio and networking.
 
 ## Building
 
-SFML is the only dependency, so get it from your package manager or pre-built binaries from www.sfml-dev.org
+SFML 2.5+ is the only dependency, so get it from your package manager or pre-built binaries from www.sfml-dev.org
 
 Typical CMake process:
 ```
