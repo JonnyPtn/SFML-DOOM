@@ -77,6 +77,8 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 
 #include "d_main.h"
 
+#include <filesystem>
+
 //
 // D-DoomLoop()
 // Not a globally visible function,
@@ -655,7 +657,7 @@ void IdentifyVersion (void)
 	return;
     }
 
-    if ( !access (doom2fwad,R_OK) )
+    if ( std::filesystem::exists(doom2fwad) )
     {
 	gamemode = commercial;
 	// C'est ridicule!
@@ -666,42 +668,42 @@ void IdentifyVersion (void)
 	return;
     }
 
-    if ( !access (doom2wad,R_OK) )
+    if ( std::filesystem::exists(doom2wad) )
     {
 	gamemode = commercial;
 	D_AddFile (doom2wad);
 	return;
     }
 
-    if ( !access (plutoniawad, R_OK ) )
+    if ( std::filesystem::exists(plutoniawad) )
     {
       gamemode = commercial;
       D_AddFile (plutoniawad);
       return;
     }
 
-    if ( !access ( tntwad, R_OK ) )
+    if ( std::filesystem::exists(tntwad) )
     {
       gamemode = commercial;
       D_AddFile (tntwad);
       return;
     }
 
-    if ( !access (doomuwad,R_OK) )
+    if ( std::filesystem::exists(doomuwad) )
     {
       gamemode = retail;
       D_AddFile (doomuwad);
       return;
     }
 
-    if ( !access (doomwad,R_OK) )
+    if ( std::filesystem::exists(doomwad) )
     {
       gamemode = registered;
       D_AddFile (doomwad);
       return;
     }
 
-    if ( !access (doom1wad,R_OK) )
+    if ( std::filesystem::exists(doom1wad) )
     {
       gamemode = shareware;
       D_AddFile (doom1wad);
