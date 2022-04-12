@@ -198,7 +198,7 @@ void D_Display (void)
     static  boolean		menuactivestate = false;
     static  boolean		inhelpscreensstate = false;
     static  boolean		fullscreen = false;
-    static  gamestate_t		oldgamestate = -1;
+    static  gamestate_t		oldgamestate = static_cast<gamestate_t>(-1);
     static  int			borderdrawcount;
     int				nowtime;
     int				tics;
@@ -217,7 +217,7 @@ void D_Display (void)
     if (setsizeneeded)
     {
 	R_ExecuteSetViewSize ();
-	oldgamestate = -1;                      // force background redraw
+	oldgamestate = static_cast<gamestate_t>(-1);                      // force background redraw
 	borderdrawcount = 3;
     }
 
@@ -274,7 +274,7 @@ void D_Display (void)
     
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-	I_SetPalette (W_CacheLumpName ("PLAYPAL",PU_CACHE));
+	I_SetPalette(static_cast<byte*>(W_CacheLumpName ("PLAYPAL",PU_CACHE)));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -309,7 +309,7 @@ void D_Display (void)
 	else
 	    y = viewwindowy+4;
 	V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68)/2,
-			  y,0,W_CacheLumpName ("M_PAUSE", PU_CACHE));
+			  y,0,static_cast<patch_t*>(W_CacheLumpName ("M_PAUSE", PU_CACHE)));
     }
 
 
@@ -435,7 +435,7 @@ void D_PageTicker (void)
 //
 void D_PageDrawer (void)
 {
-    V_DrawPatch (0,0, 0, W_CacheLumpName(pagename, PU_CACHE));
+    V_DrawPatch (0,0, 0, static_cast<patch_t*>(W_CacheLumpName(pagename, PU_CACHE)));
 }
 
 
@@ -550,7 +550,7 @@ void D_AddFile (char *file)
     for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
 	;
 
-    newfile = malloc (strlen(file)+1);
+    newfile = static_cast<char*>(malloc (strlen(file)+1));
     strcpy (newfile, file);
 	
     wadfiles[numwadfiles] = newfile;
@@ -750,7 +750,7 @@ void FindResponseFile (void)
 	    fseek (handle,0,SEEK_END);
 	    size = ftell(handle);
 	    fseek (handle,0,SEEK_SET);
-	    file = malloc (size);
+	    file = static_cast<char*>(malloc (size));
 	    fread (file,size,1,handle);
 	    fclose (handle);
 			
@@ -759,7 +759,7 @@ void FindResponseFile (void)
 		moreargs[index++] = myargv[k];
 			
 	    firstargv = myargv[0];
-	    myargv = malloc(sizeof(char *)*MAXARGVS);
+	    myargv = static_cast<char**>(malloc(sizeof(char *)*MAXARGVS));
 	    memset(myargv,0,sizeof(char *)*MAXARGVS);
 	    myargv[0] = firstargv;
 			
