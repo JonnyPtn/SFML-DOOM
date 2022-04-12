@@ -912,7 +912,7 @@ void D_DoomMain (void)
 	  case shareware:
 	  case retail:
 	  case registered:
-	    sprintf (file,"~"DEVMAPS"E%cM%c.wad",
+	    sprintf (file,"~" DEVMAPS "E%cM%c.wad",
 		     myargv[p+1][0], myargv[p+2][0]);
 	    printf("Warping to Episode %s, Map %s.\n",
 		   myargv[p+1],myargv[p+2]);
@@ -922,9 +922,9 @@ void D_DoomMain (void)
 	  default:
 	    p = atoi (myargv[p+1]);
 	    if (p<10)
-	      sprintf (file,"~"DEVMAPS"cdata/map0%i.wad", p);
+	      sprintf (file,"~" DEVMAPS "cdata/map0%i.wad", p);
 	    else
-	      sprintf (file,"~"DEVMAPS"cdata/map%i.wad", p);
+	      sprintf (file,"~" DEVMAPS "cdata/map%i.wad", p);
 	    break;
 	}
 	D_AddFile (file);
