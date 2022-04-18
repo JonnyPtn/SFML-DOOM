@@ -470,7 +470,7 @@ void G_DoLoadLevel (void)
     levelstarttic = gametic;        // for time calculation
     
     if (wipegamestate == GS_LEVEL) 
-	wipegamestate = -1;             // force a wipe 
+	wipegamestate = static_cast<gamestate_t>(-1);             // force a wipe 
 
     gamestate = GS_LEVEL; 
 
@@ -501,11 +501,11 @@ void G_DoLoadLevel (void)
 // G_Responder  
 // Get info needed to make ticcmd_ts for the players.
 // 
-boolean G_Responder (event_t* ev) 
+boolean G_Responder (const sf::Event& ev) 
 { 
     // allow spy mode changes even during the demo
-    if (gamestate == GS_LEVEL && ev->type == ev_keydown 
-	&& ev->data1 == KEY_F12 && (singledemo || !deathmatch) )
+    if (gamestate == GS_LEVEL && ev.type == sf::Event::KeyPressed 
+	&& ev.key.code == sf::Keyboard::Key::F12 && (singledemo || !deathmatch) )
     {
 	// spy mode 
 	do 
@@ -522,9 +522,9 @@ boolean G_Responder (event_t* ev)
 	(demoplayback || gamestate == GS_DEMOSCREEN) 
 	) 
     { 
-	if (ev->type == ev_keydown ||  
-	    (ev->type == ev_mouse && ev->data1) || 
-	    (ev->type == ev_joystick && ev->data1) ) 
+	if (ev.type == sf::Event::KeyPressed ||  
+	    (ev.type == sf::Event::MouseMoved) || 
+	    (ev.type == sf::Event::JoystickButtonPressed) ) 
 	{ 
 	    M_StartControlPanel (); 
 	    return true; 
@@ -555,38 +555,61 @@ boolean G_Responder (event_t* ev)
 	    return true;	// finale ate the event 
     } 
 	 
-    switch (ev->type) 
+    switch (ev.type) 
     { 
-      case ev_keydown: 
-	if (ev->data1 == KEY_PAUSE) 
+      case sf::Event::KeyPressed: 
+      // JONNY TODO
+	if (ev.key.code == KEY_PAUSE) 
 	{ 
 	    sendpause = true; 
 	    return true; 
 	} 
-	if (ev->data1 <NUMKEYS) 
-	    gamekeydown[ev->data1] = true; 
+	if (ev.key.code <NUMKEYS) 
+	    gamekeydown[ev.key.code] = true; 
 	return true;    // eat key down events 
  
-      case ev_keyup: 
-	if (ev->data1 <NUMKEYS) 
-	    gamekeydown[ev->data1] = false; 
+      case sf::Event::KeyReleased: 
+	if (ev.key.code <NUMKEYS) 
+	    gamekeydown[ev.key.code] = false; 
 	return false;   // always let key up events filter down 
 		 
-      case ev_mouse: 
-	mousebuttons[0] = ev->data1 & 1; 
-	mousebuttons[1] = ev->data1 & 2; 
-	mousebuttons[2] = ev->data1 & 4; 
-	mousex = ev->data2*(mouseSensitivity+5)/10; 
-	mousey = ev->data3*(mouseSensitivity+5)/10; 
+      case sf::Event::MouseButtonPressed: 
+      case sf::Event::MouseButtonReleased:
+      switch(ev.mouseButton.button)
+      {
+          case sf::Mouse::Button::Left:
+          mousebuttons[0] = ev.type == sf::Event::MouseButtonPressed;
+          break;
+          case sf::Mouse::Button::Right:
+          mousebuttons[1] = ev.type == sf::Event::MouseButtonPressed;
+          break;
+          case sf::Mouse::Button::Middle:
+          mousebuttons[2] = ev.type == sf::Event::MouseButtonPressed;
+          break;
+      }
+      break;
+      case sf::Event::MouseMoved:
+	mousex = ev.mouseMove.x *(mouseSensitivity+5)/10; 
+	mousey = ev.mouseMove.y *(mouseSensitivity+5)/10; 
 	return true;    // eat events 
  
-      case ev_joystick: 
-	joybuttons[0] = ev->data1 & 1; 
-	joybuttons[1] = ev->data1 & 2; 
-	joybuttons[2] = ev->data1 & 4; 
-	joybuttons[3] = ev->data1 & 8; 
-	joyxmove = ev->data2; 
-	joyymove = ev->data3; 
+      case sf::Event::JoystickButtonPressed:
+      joybuttons[ev.joystickButton.button] = true;
+      break;
+      case sf::Event::JoystickButtonReleased: 
+          joybuttons[ev.joystickButton.button] = false;
+          break;
+
+    case sf::Event::JoystickMoved:
+    switch(ev.joystickMove.axis)
+    {
+        case sf::Joystick::Axis::X:
+        joyxmove = ev.joystickMove.position;
+        break;
+        case sf::Joystick::Axis::Y:
+        joyymove = ev.joystickMove.position;
+        break; 
+    }
 	return true;    // eat events 
  
       default: 
@@ -1213,11 +1236,12 @@ void G_DoLoadGame (void)
     // skip the description field 
     memset (vcheck,0,sizeof(vcheck)); 
     sprintf (vcheck,"version %i",VERSION); 
-    if (strcmp (save_p, vcheck)) 
-	return;				// bad version 
+    // JONNY TODO
+    //if (strcmp (save_p, vcheck)) 
+	//return;				// bad version 
     save_p += VERSIONSIZE; 
 			 
-    gameskill = *save_p++; 
+    gameskill = static_cast<skill_t>(*save_p++); 
     gameepisode = *save_p++; 
     gamemap = *save_p++; 
     for (i=0 ; i<MAXPLAYERS ; i++) 
@@ -1536,7 +1560,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParm ("-maxdemo");
     if (i && i<myargc-1)
 	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = Z_Malloc (maxsize,PU_STATIC,NULL); 
+    demobuffer = static_cast<byte*>(Z_Malloc (maxsize,PU_STATIC,NULL)); 
     demoend = demobuffer + maxsize;
 	
     demorecording = true; 
@@ -1582,7 +1606,7 @@ void G_DoPlayDemo (void)
     int             i, episode, map; 
 	 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = W_CacheLumpName (defdemoname, PU_STATIC); 
+    demobuffer = demo_p = static_cast<byte*>(W_CacheLumpName (defdemoname, PU_STATIC)); 
     if ( *demo_p++ != VERSION)
     {
       fprintf( stderr, "Demo is from a different game version!\n");
@@ -1590,7 +1614,7 @@ void G_DoPlayDemo (void)
       return;
     }
     
-    skill = *demo_p++; 
+    skill = static_cast<skill_t>(*demo_p++); 
     episode = *demo_p++; 
     map = *demo_p++; 
     deathmatch = *demo_p++;
