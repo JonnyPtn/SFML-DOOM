@@ -26,12 +26,14 @@
 
 #include "doomtype.h"
 #include "d_event.h"
+
+#include <SFML/Window.hpp>
 //
 // FINALE
 //
 
 // Called by main loop.
-boolean F_Responder (event_t* ev);
+boolean F_Responder (const sf::Event& ev);
 
 // Called by main loop.
 void F_Ticker (void);
