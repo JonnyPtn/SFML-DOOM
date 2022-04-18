@@ -27,6 +27,11 @@
 #include "doomtype.h"
 #include "d_event.h"
 
+namespace sf
+{
+    class Event;
+}
+
 // Size of statusbar.
 // Now sensitive for scaling.
 #define ST_HEIGHT	32*SCREEN_MUL

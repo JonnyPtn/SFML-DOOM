@@ -11,5 +11,5 @@ find_package(SFML REQUIRED COMPONENTS Graphics)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE SFML::Graphics)
 
 if (UNIX)
-    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -w)
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -w -Wno-c++11-narrowing)
 endif()

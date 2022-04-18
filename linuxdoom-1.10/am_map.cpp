@@ -47,6 +47,8 @@ static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
 
 #include "am_map.h"
 
+#include <SFML/Window.hpp>
+
 
 // For use if I do walls with outsides/insides
 #define REDS		(256-5*16)
@@ -93,7 +95,6 @@ static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
 #define AM_PANLEFTKEY	KEY_LEFTARROW
 #define AM_ZOOMINKEY	'='
 #define AM_ZOOMOUTKEY	'-'
-#define AM_STARTKEY	KEY_TAB
 #define AM_ENDKEY	KEY_TAB
 #define AM_GOBIGKEY	'0'
 #define AM_FOLLOWKEY	'f'
@@ -458,7 +459,8 @@ void AM_changeWindowLoc(void)
 void AM_initVariables(void)
 {
     int pnum;
-    static event_t st_notify = { ev_keyup, AM_MSGENTERED };
+	// JONNY TODO
+    //static sf::Event st_notify = { ev_keyup, AM_MSGENTERED };
 
     automapactive = true;
     fb = screens[0];
@@ -492,7 +494,8 @@ void AM_initVariables(void)
     old_m_h = m_h;
 
     // inform the status bar of the change
-    ST_Responder(&st_notify);
+	// JONNY TODO
+    //ST_Responder(&st_notify);
 
 }
 
@@ -507,7 +510,7 @@ void AM_loadPics(void)
     for (i=0;i<10;i++)
     {
 	sprintf(namebuf, "AMMNUM%d", i);
-	marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
+	marknums[i] = static_cast<patch_t*>(W_CacheLumpName(namebuf, PU_STATIC));
     }
 
 }
@@ -559,11 +562,13 @@ void AM_LevelInit(void)
 //
 void AM_Stop (void)
 {
-    static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
+	// JONNY TODO
+    //static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
 
     AM_unloadPics();
     automapactive = false;
-    ST_Responder(&st_notify);
+	// JONNY TODO
+    //ST_Responder(&st_notify);
     stopped = true;
 }
 
@@ -610,9 +615,7 @@ void AM_maxOutWindowScale(void)
 //
 // Handle events (user inputs) in automap mode
 //
-boolean
-AM_Responder
-( event_t*	ev )
+boolean AM_Responder( const sf::Event&	ev )
 {
 
     int rc;
@@ -624,7 +627,7 @@ AM_Responder
 
     if (!automapactive)
     {
-	if (ev->type == ev_keydown && ev->data1 == AM_STARTKEY)
+	if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Key::Tab)
 	{
 	    AM_Start ();
 	    viewactive = false;
@@ -632,42 +635,42 @@ AM_Responder
 	}
     }
 
-    else if (ev->type == ev_keydown)
+    else if (ev.type == sf::Event::KeyPressed)
     {
 
 	rc = true;
-	switch(ev->data1)
+	switch(ev.key.code)
 	{
-	  case AM_PANRIGHTKEY: // pan right
+	  case sf::Keyboard::Key::Right: // pan right
 	    if (!followplayer) m_paninc.x = FTOM(F_PANINC);
 	    else rc = false;
 	    break;
-	  case AM_PANLEFTKEY: // pan left
+	  case sf::Keyboard::Key::Left: // pan left
 	    if (!followplayer) m_paninc.x = -FTOM(F_PANINC);
 	    else rc = false;
 	    break;
-	  case AM_PANUPKEY: // pan up
+	  case sf::Keyboard::Key::Up: // pan up
 	    if (!followplayer) m_paninc.y = FTOM(F_PANINC);
 	    else rc = false;
 	    break;
-	  case AM_PANDOWNKEY: // pan down
+	  case sf::Keyboard::Key::Down: // pan down
 	    if (!followplayer) m_paninc.y = -FTOM(F_PANINC);
 	    else rc = false;
 	    break;
-	  case AM_ZOOMOUTKEY: // zoom out
+	  case sf::Keyboard::Key::Subtract: // zoom out
 	    mtof_zoommul = M_ZOOMOUT;
 	    ftom_zoommul = M_ZOOMIN;
 	    break;
-	  case AM_ZOOMINKEY: // zoom in
+	  case sf::Keyboard::Key::Equal: // zoom in
 	    mtof_zoommul = M_ZOOMIN;
 	    ftom_zoommul = M_ZOOMOUT;
 	    break;
-	  case AM_ENDKEY:
+	  case sf::Keyboard::Key::Tab: // end
 	    bigstate = 0;
 	    viewactive = true;
 	    AM_Stop ();
 	    break;
-	  case AM_GOBIGKEY:
+	  case sf::Keyboard::Key::Num0: // go big
 	    bigstate = !bigstate;
 	    if (bigstate)
 	    {
@@ -676,21 +679,21 @@ AM_Responder
 	    }
 	    else AM_restoreScaleAndLoc();
 	    break;
-	  case AM_FOLLOWKEY:
+	  case sf::Keyboard::Key::F: // follow
 	    followplayer = !followplayer;
 	    f_oldloc.x = MAXINT;
 	    plr->message = followplayer ? AMSTR_FOLLOWON : AMSTR_FOLLOWOFF;
 	    break;
-	  case AM_GRIDKEY:
+	  case sf::Keyboard::Key::G: // grid
 	    grid = !grid;
 	    plr->message = grid ? AMSTR_GRIDON : AMSTR_GRIDOFF;
 	    break;
-	  case AM_MARKKEY:
+	  case sf::Keyboard::Key::M: // mark
 	    sprintf(buffer, "%s %d", AMSTR_MARKEDSPOT, markpointnum);
 	    plr->message = buffer;
 	    AM_addMark();
 	    break;
-	  case AM_CLEARMARKKEY:
+	  case sf::Keyboard::Key::C: // clear mark
 	    AM_clearMarks();
 	    plr->message = AMSTR_MARKSCLEARED;
 	    break;
@@ -698,32 +701,29 @@ AM_Responder
 	    cheatstate=0;
 	    rc = false;
 	}
-	if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data1))
-	{
-	    rc = false;
-	    cheating = (cheating+1) % 3;
-	}
+	// JONNY TODO
+	// if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data1))
+	// {
+	//     rc = false;
+	//     cheating = (cheating+1) % 3;
+	// }
     }
 
-    else if (ev->type == ev_keyup)
+    else if (ev.type == sf::Event::KeyReleased)
     {
 	rc = false;
-	switch (ev->data1)
+	switch (ev.key.code)
 	{
-	  case AM_PANRIGHTKEY:
+	  case sf::Keyboard::Key::Right:
+	  case sf::Keyboard::Key::Left:
 	    if (!followplayer) m_paninc.x = 0;
 	    break;
-	  case AM_PANLEFTKEY:
-	    if (!followplayer) m_paninc.x = 0;
-	    break;
-	  case AM_PANUPKEY:
+	  case sf::Keyboard::Key::Up:
+	  case sf::Keyboard::Key::Down:
 	    if (!followplayer) m_paninc.y = 0;
 	    break;
-	  case AM_PANDOWNKEY:
-	    if (!followplayer) m_paninc.y = 0;
-	    break;
-	  case AM_ZOOMOUTKEY:
-	  case AM_ZOOMINKEY:
+	  case sf::Keyboard::Key::Subtract:
+	  case sf::Keyboard::Key::Equal:
 	    mtof_zoommul = FRACUNIT;
 	    ftom_zoommul = FRACUNIT;
 	    break;
@@ -783,7 +783,7 @@ void AM_doFollowPlayer(void)
 //
 void AM_updateLightLev(void)
 {
-    static nexttic = 0;
+    static int32_t nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
     static int litelevels[] = { 0, 4, 7, 10, 12, 14, 15, 15 };
     static int litelevelscnt = 0;
@@ -856,9 +856,9 @@ AM_clipMline
 	TOP	=8
     };
     
-    register	outcode1 = 0;
-    register	outcode2 = 0;
-    register	outside;
+    int32_t	outcode1 = 0;
+    int32_t	outcode2 = 0;
+    int32_t	outside;
     
     fpoint_t	tmp;
     int		dx;
@@ -979,17 +979,17 @@ AM_drawFline
 ( fline_t*	fl,
   int		color )
 {
-    register int x;
-    register int y;
-    register int dx;
-    register int dy;
-    register int sx;
-    register int sy;
-    register int ax;
-    register int ay;
-    register int d;
+    int32_t x;
+    int32_t y;
+    int32_t dx;
+    int32_t dy;
+    int32_t sx;
+    int32_t sy;
+    int32_t ax;
+    int32_t ay;
+    int32_t d;
     
-    static fuck = 0;
+    static int32_t fuck = 0;
 
     // For debugging only
     if (      fl->a.x < 0 || fl->a.x >= f_w
