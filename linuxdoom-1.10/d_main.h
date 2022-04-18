@@ -27,6 +27,8 @@
 
 #include "d_event.h"
 
+#include <SFML/Window.hpp>
+
 #ifdef __GNUG__
 #pragma interface
 #endif

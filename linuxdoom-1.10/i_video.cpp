@@ -60,7 +60,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 sf::Window	mainWindow;
 sf::Event	event;
 int			screen;
-sf::Image*	image;
+sf::Image	image;
 int			width;
 int			height;
 
@@ -175,60 +175,54 @@ void I_GetEvent(void)
 	}
 }
 
-Cursor
-createnullcursor
-( Display*	display,
-  Window	root )
-{
-    Pixmap cursormask;
-    XGCValues xgc;
-    GC gc;
-    XColor dummycolour;
-    Cursor cursor;
-
-    cursormask = XCreatePixmap(display, root, 1, 1, 1/*depth*/);
-    xgc.function = GXclear;
-    gc =  XCreateGC(display, cursormask, GCFunction, &xgc);
-    XFillRectangle(display, cursormask, gc, 0, 0, 1, 1);
-    dummycolour.pixel = 0;
-    dummycolour.red = 0;
-    dummycolour.flags = 04;
-    cursor = XCreatePixmapCursor(display, cursormask, cursormask,
-				 &dummycolour,&dummycolour, 0,0);
-    XFreePixmap(display,cursormask);
-    XFreeGC(display,gc);
-    return cursor;
-}
+// JONNY TODO
+//sf::Cursor createnullcursor( Display*	display, Window	root )
+//{
+//    Pixmap cursormask;
+//    XGCValues xgc;
+//    GC gc;
+//    XColor dummycolour;
+//    Cursor cursor;
+//
+//    cursormask = XCreatePixmap(display, root, 1, 1, 1/*depth*/);
+//    xgc.function = GXclear;
+//    gc =  XCreateGC(display, cursormask, GCFunction, &xgc);
+//    XFillRectangle(display, cursormask, gc, 0, 0, 1, 1);
+//    dummycolour.pixel = 0;
+//    dummycolour.red = 0;
+//    dummycolour.flags = 04;
+//    cursor = XCreatePixmapCursor(display, cursormask, cursormask,
+//				 &dummycolour,&dummycolour, 0,0);
+//    XFreePixmap(display,cursormask);
+//    XFreeGC(display,gc);
+//    return cursor;
+//}
 
 //
 // I_StartTic
 //
 void I_StartTic (void)
 {
-
-    if (!X_display)
-	return;
-
-    while (XPending(X_display))
 	I_GetEvent();
 
     // Warp the pointer back to the middle of the window
     //  or it will wander off - that is, the game will
     //  loose input focus within X11.
-    if (grabMouse)
-    {
-	if (!--doPointerWarp)
-	{
-	    XWarpPointer( X_display,
-			  None,
-			  mainWindow,
-			  0, 0,
-			  0, 0,
-			  X_width/2, X_height/2);
-
-	    doPointerWarp = POINTER_WARP_COUNTDOWN;
-	}
-    }
+	// JONNY TODO
+    //if (grabMouse)
+    //{
+	//if (!--doPointerWarp)
+	//{
+	//    XWarpPointer( X_display,
+	//		  None,
+	//		  mainWindow,
+	//		  0, 0,
+	//		  0, 0,
+	//		  X_width/2, X_height/2);
+//
+	//    doPointerWarp = POINTER_WARP_COUNTDOWN;
+	//}
+    //}
 
     mousemoved = false;
 
@@ -281,8 +275,10 @@ void I_FinishUpdate (void)
 	unsigned int fouripixels;
 
 	ilineptr = (unsigned int *) (screens[0]);
-	for (i=0 ; i<2 ; i++)
-	    olineptrs[i] = (unsigned int *) &image->data[i*X_width];
+
+	// TODO JONNY
+	//for (i=0 ; i<2 ; i++)
+	//    olineptrs[i] = (unsigned int *) &image->data[i*X_width];
 
 	y = SCREENHEIGHT;
 	while (y--)
@@ -309,8 +305,8 @@ void I_FinishUpdate (void)
 		*olineptrs[1]++ = twoopixels;
 #endif
 	    } while (x-=4);
-	    olineptrs[0] += X_width/4;
-	    olineptrs[1] += X_width/4;
+	    olineptrs[0] += width/4;
+	    olineptrs[1] += width/4;
 	}
 
     }
@@ -323,8 +319,10 @@ void I_FinishUpdate (void)
 	unsigned int fouripixels;
 
 	ilineptr = (unsigned int *) (screens[0]);
-	for (i=0 ; i<3 ; i++)
-	    olineptrs[i] = (unsigned int *) &image->data[i*X_width];
+
+	// JONNY TODO
+	//for (i=0 ; i<3 ; i++)
+	//    olineptrs[i] = (unsigned int *) &image->data[i*X_width];
 
 	y = SCREENHEIGHT;
 	while (y--)
@@ -364,31 +362,33 @@ void I_FinishUpdate (void)
 		*olineptrs[2]++ = fouropixels[0];
 #endif
 	    } while (x-=4);
-	    olineptrs[0] += 2*X_width/4;
-	    olineptrs[1] += 2*X_width/4;
-	    olineptrs[2] += 2*X_width/4;
+	    olineptrs[0] += 2*width/4;
+	    olineptrs[1] += 2*width/4;
+	    olineptrs[2] += 2*width/4;
 	}
 
     }
     else if (multiply == 4)
     {
 	// Broken. Gotta fix this some day.
-	void Expand4(unsigned *, double *);
-  	Expand4 ((unsigned *)(screens[0]), (double *) (image->data));
+	// TODO JONNY
+	// void Expand4(unsigned *, double *);
+  	// Expand4 ((unsigned *)(screens[0]), (double *) (image->data));
     }
 
     if (doShm)
     {
 
-	if (!XShmPutImage(	X_display,
-				mainWindow,
-				X_gc,
-				image,
-				0, 0,
-				0, 0,
-				X_width, X_height,
-				True ))
-	    I_Error("XShmPutImage() failed\n");
+	// TODO JONNY
+	//if (!XShmPutImage(	X_display,
+	//			mainWindow,
+	//			X_gc,
+	//			image,
+	//			0, 0,
+	//			0, 0,
+	//			X_width, X_height,
+	//			True ))
+	//    I_Error("XShmPutImage() failed\n");
 
 	// wait for it to finish and processes all input events
 	shmFinished = false;
@@ -402,16 +402,17 @@ void I_FinishUpdate (void)
     {
 
 	// draw the image
-	XPutImage(	X_display,
-			mainWindow,
-			X_gc,
-			image,
-			0, 0,
-			0, 0,
-			X_width, X_height );
-
-	// sync up with server
-	XSync(X_display, False);
+	// TODO JONNY
+	//XPutImage(	X_display,
+	//		mainWindow,
+	//		X_gc,
+	//		image,
+	//		0, 0,
+	//		0, 0,
+	//		X_width, X_height );
+//
+	//// sync up with server
+	//XSync(X_display, False);
 
     }
 
@@ -430,161 +431,59 @@ void I_ReadScreen (byte* scr)
 //
 // Palette stuff.
 //
-static XColor	colors[256];
+static sf::Color	colors[256];
 
-void UploadNewPalette(Colormap cmap, byte *palette)
-{
-
-    register int	i;
-    register int	c;
-    static boolean	firstcall = true;
-
-#ifdef __cplusplus
-    if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
-#else
-    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
-#endif
-	{
-	    // initialize the colormap
-	    if (firstcall)
-	    {
-		firstcall = false;
-		for (i=0 ; i<256 ; i++)
-		{
-		    colors[i].pixel = i;
-		    colors[i].flags = DoRed|DoGreen|DoBlue;
-		}
-	    }
-
-	    // set the X colormap entries
-	    for (i=0 ; i<256 ; i++)
-	    {
-		c = gammatable[usegamma][*palette++];
-		colors[i].red = (c<<8) + c;
-		c = gammatable[usegamma][*palette++];
-		colors[i].green = (c<<8) + c;
-		c = gammatable[usegamma][*palette++];
-		colors[i].blue = (c<<8) + c;
-	    }
-
-	    // store the colors to the current colormap
-	    XStoreColors(X_display, cmap, colors, 256);
-
-	}
-}
+// JONNY TODO
+//void UploadNewPalette(Colormap cmap, byte *palette)
+//{
+//
+//    register int	i;
+//    register int	c;
+//    static boolean	firstcall = true;
+//
+//#ifdef __cplusplus
+//    if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
+//#else
+//    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
+//#endif
+//	{
+//	    // initialize the colormap
+//	    if (firstcall)
+//	    {
+//		firstcall = false;
+//		for (i=0 ; i<256 ; i++)
+//		{
+//		    colors[i].pixel = i;
+//		    colors[i].flags = DoRed|DoGreen|DoBlue;
+//		}
+//	    }
+//
+//	    // set the X colormap entries
+//	    for (i=0 ; i<256 ; i++)
+//	    {
+//		c = gammatable[usegamma][*palette++];
+//		colors[i].red = (c<<8) + c;
+//		c = gammatable[usegamma][*palette++];
+//		colors[i].green = (c<<8) + c;
+//		c = gammatable[usegamma][*palette++];
+//		colors[i].blue = (c<<8) + c;
+//	    }
+//
+//	    // store the colors to the current colormap
+//	    XStoreColors(X_display, cmap, colors, 256);
+//
+//	}
+//}
 
 //
 // I_SetPalette
 //
-void I_SetPalette (byte* palette)
-{
-    UploadNewPalette(X_cmap, palette);
-}
+// JONNY TODO
+//void I_SetPalette (byte* palette)
+//{
+//    UploadNewPalette(X_cmap, palette);
+//}
 
-
-//
-// This function is probably redundant,
-//  if XShmDetach works properly.
-// ddt never detached the XShm memory,
-//  thus there might have been stale
-//  handles accumulating.
-//
-void grabsharedmemory(int size)
-{
-
-  int			key = ('d'<<24) | ('o'<<16) | ('o'<<8) | 'm';
-  struct shmid_ds	shminfo;
-  int			minsize = 320*200;
-  int			id;
-  int			rc;
-  // UNUSED int done=0;
-  int			pollution=5;
-  
-  // try to use what was here before
-  do
-  {
-    id = shmget((key_t) key, minsize, 0777); // just get the id
-    if (id != -1)
-    {
-      rc=shmctl(id, IPC_STAT, &shminfo); // get stats on it
-      if (!rc) 
-      {
-	if (shminfo.shm_nattch)
-	{
-	  fprintf(stderr, "User %d appears to be running "
-		  "DOOM.  Is that wise?\n", shminfo.shm_cpid);
-	  key++;
-	}
-	else
-	{
-	  if (getuid() == shminfo.shm_perm.cuid)
-	  {
-	    rc = shmctl(id, IPC_RMID, 0);
-	    if (!rc)
-	      fprintf(stderr,
-		      "Was able to kill my old shared memory\n");
-	    else
-	      I_Error("Was NOT able to kill my old shared memory");
-	    
-	    id = shmget((key_t)key, size, IPC_CREAT|0777);
-	    if (id==-1)
-	      I_Error("Could not get shared memory");
-	    
-	    rc=shmctl(id, IPC_STAT, &shminfo);
-	    
-	    break;
-	    
-	  }
-	  if (size >= shminfo.shm_segsz)
-	  {
-	    fprintf(stderr,
-		    "will use %d's stale shared memory\n",
-		    shminfo.shm_cpid);
-	    break;
-	  }
-	  else
-	  {
-	    fprintf(stderr,
-		    "warning: can't use stale "
-		    "shared memory belonging to id %d, "
-		    "key=0x%x\n",
-		    shminfo.shm_cpid, key);
-	    key++;
-	  }
-	}
-      }
-      else
-      {
-	I_Error("could not get stats on key=%d", key);
-      }
-    }
-    else
-    {
-      id = shmget((key_t)key, size, IPC_CREAT|0777);
-      if (id==-1)
-      {
-	extern int errno;
-	fprintf(stderr, "errno=%d\n", errno);
-	I_Error("Could not get any shared memory");
-      }
-      break;
-    }
-  } while (--pollution);
-  
-  if (!pollution)
-  {
-    I_Error("Sorry, system too polluted with stale "
-	    "shared memory segments.\n");
-    }	
-  
-  X_shminfo.shmid = id;
-  
-  // attach to the shared memory segment
-  image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
-  
-  fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id,
-	  (int) (image->data));
-}
 
 void I_InitGraphics(void)
 {
@@ -602,8 +501,6 @@ void I_InitGraphics(void)
     
     int			oktodraw;
     unsigned long	attribmask;
-    XSetWindowAttributes attribs;
-    XGCValues		xgcvalues;
     int			valuemask;
     static int		firsttime=1;
 
@@ -622,8 +519,8 @@ void I_InitGraphics(void)
     if (M_CheckParm("-4"))
 	multiply = 4;
 
-    X_width = SCREENWIDTH * multiply;
-    X_height = SCREENHEIGHT * multiply;
+    width = SCREENWIDTH * multiply;
+    height = SCREENHEIGHT * multiply;
 
     // check for command-line display name
     if ( (pnum=M_CheckParm("-disp")) ) // suggest parentheses around assignment
@@ -653,161 +550,23 @@ void I_InitGraphics(void)
 	    I_Error("bad -geom parameter");
     }
 
-    // open the display
-    X_display = XOpenDisplay(displayname);
-    if (!X_display)
-    {
-	if (displayname)
-	    I_Error("Could not open display [%s]", displayname);
-	else
-	    I_Error("Could not open display (DISPLAY=[%s])", getenv("DISPLAY"));
-    }
+    // open the window
+    mainWindow.create({width,height},displayname);
 
-    // use the default visual 
-    X_screen = DefaultScreen(X_display);
-    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
-	I_Error("xdoom currently only supports 256-color PseudoColor screens");
-    X_visual = X_visualinfo.visual;
+	// TODO JONNY
+    //XDefineCursor(X_display, mainWindow,
+	//	  createnullcursor( X_display, mainWindow ) );
 
-    // check for the MITSHM extension
-    doShm = XShmQueryExtension(X_display);
+	mainWindow.setMouseCursorGrabbed(grabMouse);
 
-    // even if it's available, make sure it's a local connection
-    if (doShm)
-    {
-	if (!displayname) displayname = (char *) getenv("DISPLAY");
-	if (displayname)
-	{
-	    d = displayname;
-	    while (*d && (*d != ':')) d++;
-	    if (*d) *d = 0;
-	    if (!(!strcasecmp(displayname, "unix") || !*displayname)) doShm = false;
-	}
-    }
-
-    fprintf(stderr, "Using MITSHM extension\n");
-
-    // create the colormap
-    X_cmap = XCreateColormap(X_display, RootWindow(X_display,
-						   X_screen), X_visual, AllocAll);
-
-    // setup attributes for main window
-    attribmask = CWEventMask | CWColormap | CWBorderPixel;
-    attribs.event_mask =
-	KeyPressMask
-	| KeyReleaseMask
-	// | PointerMotionMask | ButtonPressMask | ButtonReleaseMask
-	| ExposureMask;
-
-    attribs.colormap = X_cmap;
-    attribs.border_pixel = 0;
-
-    // create the main window
-    mainWindow = XCreateWindow(	X_display,
-					RootWindow(X_display, X_screen),
-					x, y,
-					X_width, X_height,
-					0, // borderwidth
-					8, // depth
-					InputOutput,
-					X_visual,
-					attribmask,
-					&attribs );
-
-    XDefineCursor(X_display, mainWindow,
-		  createnullcursor( X_display, mainWindow ) );
-
-    // create the GC
-    valuemask = GCGraphicsExposures;
-    xgcvalues.graphics_exposures = False;
-    X_gc = XCreateGC(	X_display,
-  			mainWindow,
-  			valuemask,
-  			&xgcvalues );
-
-    // map the window
-    XMapWindow(X_display, mainWindow);
-
-    // wait until it is OK to draw
-    oktodraw = 0;
-    while (!oktodraw)
-    {
-	XNextEvent(X_display, &X_event);
-	if (X_event.type == Expose
-	    && !X_event.xexpose.count)
-	{
-	    oktodraw = 1;
-	}
-    }
-
-    // grabs the pointer so it is restricted to this window
-    if (grabMouse)
-	XGrabPointer(X_display, mainWindow, True,
-		     ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
-		     GrabModeAsync, GrabModeAsync,
-		     mainWindow, None, CurrentTime);
-
-    if (doShm)
-    {
-
-	X_shmeventtype = XShmGetEventBase(X_display) + ShmCompletion;
-
-	// create the image
-	image = XShmCreateImage(	X_display,
-					X_visual,
-					8,
-					ZPixmap,
-					0,
-					&X_shminfo,
-					X_width,
-					X_height );
-
-	grabsharedmemory(image->bytes_per_line * image->height);
+	image.create(width,height);
 
 
-	// UNUSED
-	// create the shared memory segment
-	// X_shminfo.shmid = shmget (IPC_PRIVATE,
-	// image->bytes_per_line * image->height, IPC_CREAT | 0777);
-	// if (X_shminfo.shmid < 0)
-	// {
-	// perror("");
-	// I_Error("shmget() failed in InitGraphics()");
-	// }
-	// fprintf(stderr, "shared memory id=%d\n", X_shminfo.shmid);
-	// attach to the shared memory segment
-	// image->data = X_shminfo.shmaddr = shmat(X_shminfo.shmid, 0, 0);
-	
-
-	if (!image->data)
-	{
-	    perror("");
-	    I_Error("shmat() failed in InitGraphics()");
-	}
-
-	// get the X server to attach to it
-	if (!XShmAttach(X_display, &X_shminfo))
-	    I_Error("XShmAttach() failed in InitGraphics()");
-
-    }
-    else
-    {
-	image = XCreateImage(	X_display,
-    				X_visual,
-    				8,
-    				ZPixmap,
-    				0,
-    				(char*)malloc(X_width * X_height),
-    				X_width, X_height,
-    				8,
-    				X_width );
-
-    }
-
-    if (multiply == 1)
-	screens[0] = (unsigned char *) (image->data);
-    else
-	screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
+	// JONNY TODO
+    //if (multiply == 1)
+	//screens[0] = (unsigned char *) (image->data);
+    //else
+	//screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
 
 }
 
@@ -882,56 +641,64 @@ Expand4
 	do
 	{
 	    fourpixels = lineptr[0];
-			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
+
+		//JONNY TODO	
+	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
 	    xline[0] = dpixel;
 	    xline[160] = dpixel;
 	    xline[320] = dpixel;
 	    xline[480] = dpixel;
-			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
+		
+		// JONNY TODO
+	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
 	    xline[1] = dpixel;
 	    xline[161] = dpixel;
 	    xline[321] = dpixel;
 	    xline[481] = dpixel;
 
 	    fourpixels = lineptr[1];
-			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
+		
+		// JONNY TODO
+	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
 	    xline[2] = dpixel;
 	    xline[162] = dpixel;
 	    xline[322] = dpixel;
 	    xline[482] = dpixel;
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
+		// JONNY TODO 
+	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
 	    xline[3] = dpixel;
 	    xline[163] = dpixel;
 	    xline[323] = dpixel;
 	    xline[483] = dpixel;
 
 	    fourpixels = lineptr[2];
-			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
+		
+		// JONNY TODO
+	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
 	    xline[4] = dpixel;
 	    xline[164] = dpixel;
 	    xline[324] = dpixel;
 	    xline[484] = dpixel;
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
+		// JONNY TODO 
+	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
 	    xline[5] = dpixel;
 	    xline[165] = dpixel;
 	    xline[325] = dpixel;
 	    xline[485] = dpixel;
 
 	    fourpixels = lineptr[3];
-			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
+
+		// JONNY TODO	
+	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
 	    xline[6] = dpixel;
 	    xline[166] = dpixel;
 	    xline[326] = dpixel;
 	    xline[486] = dpixel;
-			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
+
+		// JONNY TODO			
+	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
 	    xline[7] = dpixel;
 	    xline[167] = dpixel;
 	    xline[327] = dpixel;
