@@ -515,16 +515,17 @@ void ST_refreshBackground(void)
 // Respond to keyboard input events,
 //  intercept cheats.
 boolean
-ST_Responder (event_t* ev)
+ST_Responder (const sf::Event& event)
 {
   int		i;
     
   // Filter automap on/off.
-  if (ev->type == ev_keyup
+  if (ev.type == sf::Event::KeyReleased
       && ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
   {
     switch(ev->data1)
     {
+		// JONNY TODO
       case AM_MSGENTERED:
 	st_gamestate = AutomapState;
 	st_firsttime = true;

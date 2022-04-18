@@ -29,11 +29,6 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/keysym.h>
-
-#include <X11/extensions/XShm.h>
 // Had to dig up XShm.c for this one.
 // It is in the libXext, but not in the XFree86 headers.
 #ifdef LINUX
@@ -46,7 +41,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 #include <sys/socket.h>
 
 #include <netinet/in.h>
-#include <errnos.h>
+#include <errno.h>
 #include <signal.h>
 
 #include "doomstat.h"
@@ -57,25 +52,20 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 #include "doomdef.h"
 
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+
 #define POINTER_WARP_COUNTDOWN	1
 
-Display*	X_display=0;
-Window		X_mainWindow;
-Colormap	X_cmap;
-Visual*		X_visual;
-GC		X_gc;
-XEvent		X_event;
-int		X_screen;
-XVisualInfo	X_visualinfo;
-XImage*		image;
-int		X_width;
-int		X_height;
+sf::Window	mainWindow;
+sf::Event	event;
+int			screen;
+sf::Image*	image;
+int			width;
+int			height;
 
 // MIT SHared Memory extension.
 boolean		doShm;
-
-XShmSegmentInfo	X_shminfo;
-int		X_shmeventtype;
 
 // Fake mouse handling.
 // This cannot work properly w/o DGA.
@@ -91,67 +81,65 @@ static int	multiply=1;
 
 
 //
-//  Translates the key currently in X_event
+//  Translates the event key into a doom key
 //
 
-int xlatekey(void)
+int xlatekey(const sf::Event& event)
 {
 
     int rc;
 
-    switch(rc = XKeycodeToKeysym(X_display, X_event.xkey.keycode, 0))
+    switch(rc = event.key.code)
     {
-      case XK_Left:	rc = KEY_LEFTARROW;	break;
-      case XK_Right:	rc = KEY_RIGHTARROW;	break;
-      case XK_Down:	rc = KEY_DOWNARROW;	break;
-      case XK_Up:	rc = KEY_UPARROW;	break;
-      case XK_Escape:	rc = KEY_ESCAPE;	break;
-      case XK_Return:	rc = KEY_ENTER;		break;
-      case XK_Tab:	rc = KEY_TAB;		break;
-      case XK_F1:	rc = KEY_F1;		break;
-      case XK_F2:	rc = KEY_F2;		break;
-      case XK_F3:	rc = KEY_F3;		break;
-      case XK_F4:	rc = KEY_F4;		break;
-      case XK_F5:	rc = KEY_F5;		break;
-      case XK_F6:	rc = KEY_F6;		break;
-      case XK_F7:	rc = KEY_F7;		break;
-      case XK_F8:	rc = KEY_F8;		break;
-      case XK_F9:	rc = KEY_F9;		break;
-      case XK_F10:	rc = KEY_F10;		break;
-      case XK_F11:	rc = KEY_F11;		break;
-      case XK_F12:	rc = KEY_F12;		break;
+      case sf::Keyboard::Key::Left:	rc = KEY_LEFTARROW;	break;
+      case sf::Keyboard::Key::Right:	rc = KEY_RIGHTARROW;	break;
+      case sf::Keyboard::Key::Down:	rc = KEY_DOWNARROW;	break;
+      case sf::Keyboard::Key::Up:	rc = KEY_UPARROW;	break;
+      case sf::Keyboard::Key::Escape:	rc = KEY_ESCAPE;	break;
+      case sf::Keyboard::Key::Enter:	rc = KEY_ENTER;		break;
+      case sf::Keyboard::Key::Tab:	rc = KEY_TAB;		break;
+      case sf::Keyboard::Key::F1:	rc = KEY_F1;		break;
+      case sf::Keyboard::Key::F2:	rc = KEY_F2;		break;
+      case sf::Keyboard::Key::F3:	rc = KEY_F3;		break;
+      case sf::Keyboard::Key::F4:	rc = KEY_F4;		break;
+      case sf::Keyboard::Key::F5:	rc = KEY_F5;		break;
+      case sf::Keyboard::Key::F6:	rc = KEY_F6;		break;
+      case sf::Keyboard::Key::F7:	rc = KEY_F7;		break;
+      case sf::Keyboard::Key::F8:	rc = KEY_F8;		break;
+      case sf::Keyboard::Key::F9:	rc = KEY_F9;		break;
+      case sf::Keyboard::Key::F10:	rc = KEY_F10;		break;
+      case sf::Keyboard::Key::F11:	rc = KEY_F11;		break;
+      case sf::Keyboard::Key::F12:	rc = KEY_F12;		break;
 	
-      case XK_BackSpace:
-      case XK_Delete:	rc = KEY_BACKSPACE;	break;
+      case sf::Keyboard::Key::Backspace:
+      case sf::Keyboard::Key::Delete:	rc = KEY_BACKSPACE;	break;
 
-      case XK_Pause:	rc = KEY_PAUSE;		break;
+      case sf::Keyboard::Key::Pause:	rc = KEY_PAUSE;		break;
 
-      case XK_KP_Equal:
-      case XK_equal:	rc = KEY_EQUALS;	break;
+      case sf::Keyboard::Key::Equal:	rc = KEY_EQUALS;	break;
 
-      case XK_KP_Subtract:
-      case XK_minus:	rc = KEY_MINUS;		break;
+      case sf::Keyboard::Key::Subtract:	rc = KEY_MINUS;		break;
 
-      case XK_Shift_L:
-      case XK_Shift_R:
+      case sf::Keyboard::Key::LShift:
+      case sf::Keyboard::Key::RShift:
 	rc = KEY_RSHIFT;
 	break;
 	
-      case XK_Control_L:
-      case XK_Control_R:
+      case sf::Keyboard::Key::LControl:
+      case sf::Keyboard::Key::RControl:
 	rc = KEY_RCTRL;
 	break;
 	
-      case XK_Alt_L:
-      case XK_Meta_L:
-      case XK_Alt_R:
-      case XK_Meta_R:
+      case sf::Keyboard::Key::LAlt:
+      case sf::Keyboard::Key::LSystem:
+      case sf::Keyboard::Key::RAlt:
+      case sf::Keyboard::Key::RSystem:
 	rc = KEY_RALT;
 	break;
 	
       default:
-	if (rc >= XK_space && rc <= XK_asciitilde)
-	    rc = rc - XK_space + ' ';
+	if (rc >= sf::Keyboard::Key::Space && rc <= sf::Keyboard::Key::Tilde)
+	    rc = rc - sf::Keyboard::Key::Space + ' ';
 	if (rc >= 'A' && rc <= 'Z')
 	    rc = rc - 'A' + 'a';
 	break;
@@ -160,21 +148,6 @@ int xlatekey(void)
     return rc;
 
 }
-
-void I_ShutdownGraphics(void)
-{
-  // Detach from X server
-  if (!XShmDetach(X_display, &X_shminfo))
-	    I_Error("XShmDetach() failed in I_ShutdownGraphics()");
-
-  // Release shared memory.
-  shmdt(X_shminfo.shmaddr);
-  shmctl(X_shminfo.shmid, IPC_RMID, 0);
-
-  // Paranoia.
-  image->data = NULL;
-}
-
 
 
 //
@@ -193,89 +166,13 @@ boolean		shmFinished;
 
 void I_GetEvent(void)
 {
-
-    event_t event;
+	sf::Event event;
 
     // put event-grabbing stuff in here
-    XNextEvent(X_display, &X_event);
-    switch (X_event.type)
-    {
-      case KeyPress:
-	event.type = ev_keydown;
-	event.data1 = xlatekey();
-	D_PostEvent(&event);
-	// fprintf(stderr, "k");
-	break;
-      case KeyRelease:
-	event.type = ev_keyup;
-	event.data1 = xlatekey();
-	D_PostEvent(&event);
-	// fprintf(stderr, "ku");
-	break;
-      case ButtonPress:
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xbutton.state & Button1Mask)
-	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0)
-	    | (X_event.xbutton.button == Button1)
-	    | (X_event.xbutton.button == Button2 ? 2 : 0)
-	    | (X_event.xbutton.button == Button3 ? 4 : 0);
-	event.data2 = event.data3 = 0;
-	D_PostEvent(&event);
-	// fprintf(stderr, "b");
-	break;
-      case ButtonRelease:
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xbutton.state & Button1Mask)
-	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0);
-	// suggest parentheses around arithmetic in operand of |
-	event.data1 =
-	    event.data1
-	    ^ (X_event.xbutton.button == Button1 ? 1 : 0)
-	    ^ (X_event.xbutton.button == Button2 ? 2 : 0)
-	    ^ (X_event.xbutton.button == Button3 ? 4 : 0);
-	event.data2 = event.data3 = 0;
-	D_PostEvent(&event);
-	// fprintf(stderr, "bu");
-	break;
-      case MotionNotify:
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xmotion.state & Button1Mask)
-	    | (X_event.xmotion.state & Button2Mask ? 2 : 0)
-	    | (X_event.xmotion.state & Button3Mask ? 4 : 0);
-	event.data2 = (X_event.xmotion.x - lastmousex) << 2;
-	event.data3 = (lastmousey - X_event.xmotion.y) << 2;
-
-	if (event.data2 || event.data3)
+	while(mainWindow.pollEvent(event))
 	{
-	    lastmousex = X_event.xmotion.x;
-	    lastmousey = X_event.xmotion.y;
-	    if (X_event.xmotion.x != X_width/2 &&
-		X_event.xmotion.y != X_height/2)
-	    {
-		D_PostEvent(&event);
-		// fprintf(stderr, "m");
-		mousemoved = false;
-	    } else
-	    {
-		mousemoved = true;
-	    }
+		D_PostEvent(event);
 	}
-	break;
-	
-      case Expose:
-      case ConfigureNotify:
-	break;
-	
-      default:
-	if (doShm && X_event.type == X_shmeventtype) shmFinished = true;
-	break;
-    }
-
 }
 
 Cursor
@@ -324,7 +221,7 @@ void I_StartTic (void)
 	{
 	    XWarpPointer( X_display,
 			  None,
-			  X_mainWindow,
+			  mainWindow,
 			  0, 0,
 			  0, 0,
 			  X_width/2, X_height/2);
@@ -484,7 +381,7 @@ void I_FinishUpdate (void)
     {
 
 	if (!XShmPutImage(	X_display,
-				X_mainWindow,
+				mainWindow,
 				X_gc,
 				image,
 				0, 0,
@@ -506,7 +403,7 @@ void I_FinishUpdate (void)
 
 	// draw the image
 	XPutImage(	X_display,
-			X_mainWindow,
+			mainWindow,
 			X_gc,
 			image,
 			0, 0,
@@ -806,7 +703,7 @@ void I_InitGraphics(void)
     attribs.border_pixel = 0;
 
     // create the main window
-    X_mainWindow = XCreateWindow(	X_display,
+    mainWindow = XCreateWindow(	X_display,
 					RootWindow(X_display, X_screen),
 					x, y,
 					X_width, X_height,
@@ -817,19 +714,19 @@ void I_InitGraphics(void)
 					attribmask,
 					&attribs );
 
-    XDefineCursor(X_display, X_mainWindow,
-		  createnullcursor( X_display, X_mainWindow ) );
+    XDefineCursor(X_display, mainWindow,
+		  createnullcursor( X_display, mainWindow ) );
 
     // create the GC
     valuemask = GCGraphicsExposures;
     xgcvalues.graphics_exposures = False;
     X_gc = XCreateGC(	X_display,
-  			X_mainWindow,
+  			mainWindow,
   			valuemask,
   			&xgcvalues );
 
     // map the window
-    XMapWindow(X_display, X_mainWindow);
+    XMapWindow(X_display, mainWindow);
 
     // wait until it is OK to draw
     oktodraw = 0;
@@ -845,10 +742,10 @@ void I_InitGraphics(void)
 
     // grabs the pointer so it is restricted to this window
     if (grabMouse)
-	XGrabPointer(X_display, X_mainWindow, True,
+	XGrabPointer(X_display, mainWindow, True,
 		     ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
 		     GrabModeAsync, GrabModeAsync,
-		     X_mainWindow, None, CurrentTime);
+		     mainWindow, None, CurrentTime);
 
     if (doShm)
     {
