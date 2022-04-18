@@ -23,6 +23,7 @@
 
 #include "d_event.h"
 
+#include <SFML/Window.hpp>
 
 //
 // Globally visible constants.
