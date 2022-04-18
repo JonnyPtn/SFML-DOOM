@@ -28,6 +28,8 @@
 #pragma interface
 #endif
 
+#include <stdint.h>
+
 
 //
 // Fixed point, 32bit as 16.16.
