@@ -63,6 +63,8 @@ rcsid[] = "$Id: m_menu.c,v 1.7 1997/02/03 22:45:10 b1 Exp $";
 
 #include "m_menu.h"
 
+#include <functional>
+
 
 
 extern patch_t*		hu_font[HU_FONTSIZE];
@@ -102,7 +104,7 @@ int			messageLastMenuActive;
 // timed message = no input from user
 boolean			messageNeedsInput;     
 
-void    (*messageRoutine)(int response);
+std::function<void(int)>    messageRoutine;
 
 #define SAVESTRINGSIZE 	24
 
@@ -226,7 +228,7 @@ void M_WriteText(int x, int y, char *string);
 int  M_StringWidth(char *string);
 int  M_StringHeight(char *string);
 void M_StartControlPanel(void);
-void M_StartMessage(char *string,void *routine,boolean input);
+void M_StartMessage(char *string,std::function<void(int)> routine,boolean input);
 void M_StopMessage(void);
 void M_ClearMenus (void);
 
@@ -540,7 +542,7 @@ void M_DrawLoad(void)
 {
     int             i;
 	
-    V_DrawPatchDirect (72,28,0,W_CacheLumpName("M_LOADG",PU_CACHE));
+    V_DrawPatchDirect (72,28,0,static_cast<patch_t*>(W_CacheLumpName("M_LOADG",PU_CACHE)));
     for (i = 0;i < load_end; i++)
     {
 	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
@@ -557,15 +559,15 @@ void M_DrawSaveLoadBorder(int x,int y)
 {
     int             i;
 	
-    V_DrawPatchDirect (x-8,y+7,0,W_CacheLumpName("M_LSLEFT",PU_CACHE));
+    V_DrawPatchDirect (x-8,y+7,0,static_cast<patch_t*>(W_CacheLumpName("M_LSLEFT",PU_CACHE)));
 	
     for (i = 0;i < 24;i++)
     {
-	V_DrawPatchDirect (x,y+7,0,W_CacheLumpName("M_LSCNTR",PU_CACHE));
+	V_DrawPatchDirect (x,y+7,0,static_cast<patch_t*>(W_CacheLumpName("M_LSCNTR",PU_CACHE)));
 	x += 8;
     }
 
-    V_DrawPatchDirect (x,y+7,0,W_CacheLumpName("M_LSRGHT",PU_CACHE));
+    V_DrawPatchDirect (x,y+7,0,static_cast<patch_t*>(W_CacheLumpName("M_LSRGHT",PU_CACHE)));
 }
 
 
@@ -604,7 +606,7 @@ void M_DrawSave(void)
 {
     int             i;
 	
-    V_DrawPatchDirect (72,28,0,W_CacheLumpName("M_SAVEG",PU_CACHE));
+    V_DrawPatchDirect (72,28,0,static_cast<patch_t*>(W_CacheLumpName("M_SAVEG",PU_CACHE)));
     for (i = 0;i < load_end; i++)
     {
 	M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
@@ -748,12 +750,12 @@ void M_DrawReadThis1(void)
     switch ( gamemode )
     {
       case commercial:
-	V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP",PU_CACHE));
+	V_DrawPatchDirect (0,0,0,static_cast<patch_t*>(W_CacheLumpName("HELP",PU_CACHE)));
 	break;
       case shareware:
       case registered:
       case retail:
-	V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP1",PU_CACHE));
+	V_DrawPatchDirect (0,0,0,static_cast<patch_t*>(W_CacheLumpName("HELP1",PU_CACHE)));
 	break;
       default:
 	break;
@@ -774,11 +776,11 @@ void M_DrawReadThis2(void)
       case retail:
       case commercial:
 	// This hack keeps us from having to change menus.
-	V_DrawPatchDirect (0,0,0,W_CacheLumpName("CREDIT",PU_CACHE));
+	V_DrawPatchDirect (0,0,0,static_cast<patch_t*>(W_CacheLumpName("CREDIT",PU_CACHE)));
 	break;
       case shareware:
       case registered:
-	V_DrawPatchDirect (0,0,0,W_CacheLumpName("HELP2",PU_CACHE));
+	V_DrawPatchDirect (0,0,0,static_cast<patch_t*>(W_CacheLumpName("HELP2",PU_CACHE)));
 	break;
       default:
 	break;
@@ -792,7 +794,7 @@ void M_DrawReadThis2(void)
 //
 void M_DrawSound(void)
 {
-    V_DrawPatchDirect (60,38,0,W_CacheLumpName("M_SVOL",PU_CACHE));
+    V_DrawPatchDirect (60,38,0,static_cast<patch_t*>(W_CacheLumpName("M_SVOL",PU_CACHE)));
 
     M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
 		 16,snd_SfxVolume);
@@ -848,7 +850,7 @@ void M_MusicVol(int choice)
 //
 void M_DrawMainMenu(void)
 {
-    V_DrawPatchDirect (94,2,0,W_CacheLumpName("M_DOOM",PU_CACHE));
+    V_DrawPatchDirect (94,2,0,static_cast<patch_t*>(W_CacheLumpName("M_DOOM",PU_CACHE)));
 }
 
 
@@ -859,8 +861,8 @@ void M_DrawMainMenu(void)
 //
 void M_DrawNewGame(void)
 {
-    V_DrawPatchDirect (96,14,0,W_CacheLumpName("M_NEWG",PU_CACHE));
-    V_DrawPatchDirect (54,38,0,W_CacheLumpName("M_SKILL",PU_CACHE));
+    V_DrawPatchDirect (96,14,0,static_cast<patch_t*>(W_CacheLumpName("M_NEWG",PU_CACHE)));
+    V_DrawPatchDirect (54,38,0,static_cast<patch_t*>(W_CacheLumpName("M_SKILL",PU_CACHE)));
 }
 
 void M_NewGame(int choice)
@@ -885,7 +887,7 @@ int     epi;
 
 void M_DrawEpisode(void)
 {
-    V_DrawPatchDirect (54,38,0,W_CacheLumpName("M_EPISOD",PU_CACHE));
+    V_DrawPatchDirect (54,38,0,static_cast<patch_t*>(W_CacheLumpName("M_EPISOD",PU_CACHE)));
 }
 
 void M_VerifyNightmare(int ch)
@@ -893,7 +895,7 @@ void M_VerifyNightmare(int ch)
     if (ch != 'y')
 	return;
 		
-    G_DeferedInitNew(nightmare,epi+1,1);
+    G_DeferedInitNew(static_cast<skill_t>(nightmare),epi+1,1);
     M_ClearMenus ();
 }
 
@@ -905,7 +907,7 @@ void M_ChooseSkill(int choice)
 	return;
     }
 	
-    G_DeferedInitNew(choice,epi+1,1);
+    G_DeferedInitNew(static_cast<skill_t>(choice),epi+1,1);
     M_ClearMenus ();
 }
 
@@ -943,13 +945,13 @@ char	msgNames[2][9]		= {"M_MSGOFF","M_MSGON"};
 
 void M_DrawOptions(void)
 {
-    V_DrawPatchDirect (108,15,0,W_CacheLumpName("M_OPTTTL",PU_CACHE));
+    V_DrawPatchDirect (108,15,0,static_cast<patch_t*>(W_CacheLumpName("M_OPTTTL",PU_CACHE)));
 	
     V_DrawPatchDirect (OptionsDef.x + 175,OptionsDef.y+LINEHEIGHT*detail,0,
-		       W_CacheLumpName(detailNames[detailLevel],PU_CACHE));
+		      static_cast<patch_t*>(W_CacheLumpName(detailNames[detailLevel],PU_CACHE)));
 
     V_DrawPatchDirect (OptionsDef.x + 120,OptionsDef.y+LINEHEIGHT*messages,0,
-		       W_CacheLumpName(msgNames[showMessages],PU_CACHE));
+		      static_cast<patch_t*>(W_CacheLumpName(msgNames[showMessages],PU_CACHE)));
 
     M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(mousesens+1),
 		 10,mouseSensitivity);
@@ -1093,9 +1095,9 @@ void M_QuitDOOM(int choice)
   // We pick index 0 which is language sensitive,
   //  or one at random, between 1 and maximum number.
   if (language != english )
-    sprintf(endstring,"%s\n\n"DOSY, endmsg[0] );
+    sprintf(endstring,"%s\n\n" DOSY, endmsg[0] );
   else
-    sprintf(endstring,"%s\n\n"DOSY, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
+    sprintf(endstring,"%s\n\n" DOSY, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
   
   M_StartMessage(endstring,M_QuitResponse,true);
 }
@@ -1183,17 +1185,17 @@ M_DrawThermo
     int		i;
 
     xx = x;
-    V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERML",PU_CACHE));
+    V_DrawPatchDirect (xx,y,0,static_cast<patch_t*>(W_CacheLumpName("M_THERML",PU_CACHE)));
     xx += 8;
     for (i=0;i<thermWidth;i++)
     {
-	V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERMM",PU_CACHE));
+	V_DrawPatchDirect (xx,y,0,static_cast<patch_t*>(W_CacheLumpName("M_THERMM",PU_CACHE)));
 	xx += 8;
     }
-    V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERMR",PU_CACHE));
+    V_DrawPatchDirect (xx,y,0,static_cast<patch_t*>(W_CacheLumpName("M_THERMR",PU_CACHE)));
 
     V_DrawPatchDirect ((x+8) + thermDot*8,y,
-		       0,W_CacheLumpName("M_THERMO",PU_CACHE));
+		       0,static_cast<patch_t*>(W_CacheLumpName("M_THERMO",PU_CACHE)));
 }
 
 
@@ -1204,7 +1206,7 @@ M_DrawEmptyCell
   int		item )
 {
     V_DrawPatchDirect (menu->x - 10,        menu->y+item*LINEHEIGHT - 1, 0,
-		       W_CacheLumpName("M_CELL1",PU_CACHE));
+		      static_cast<patch_t*>(W_CacheLumpName("M_CELL1",PU_CACHE)));
 }
 
 void
@@ -1213,14 +1215,14 @@ M_DrawSelCell
   int		item )
 {
     V_DrawPatchDirect (menu->x - 10,        menu->y+item*LINEHEIGHT - 1, 0,
-		       W_CacheLumpName("M_CELL2",PU_CACHE));
+		      static_cast<patch_t*>(W_CacheLumpName("M_CELL2",PU_CACHE)));
 }
 
 
 void
 M_StartMessage
 ( char*		string,
-  void*		routine,
+  std::function<void(int)>		routine,
   boolean	input )
 {
     messageLastMenuActive = menuactive;
@@ -1339,7 +1341,7 @@ M_WriteText
 //
 // M_Responder
 //
-boolean M_Responder (event_t* ev)
+boolean M_Responder (const sf::Event& ev)
 {
     int             ch;
     int             i;
@@ -1351,7 +1353,7 @@ boolean M_Responder (event_t* ev)
     static  int     lastx = 0;
 	
     ch = -1;
-	
+	/* TODO JONNY
     if (ev->type == ev_joystick && joywait < I_GetTime())
     {
 	if (ev->data3 == -1)
@@ -1438,7 +1440,7 @@ boolean M_Responder (event_t* ev)
 	    }
     }
     
-    if (ch == -1)
+    if (ch == -1)*/
 	return false;
 
     
@@ -1592,7 +1594,8 @@ boolean M_Responder (event_t* ev)
 	    if (usegamma > 4)
 		usegamma = 0;
 	    players[consoleplayer].message = gammamsg[usegamma];
-	    I_SetPalette (W_CacheLumpName ("PLAYPAL",PU_CACHE));
+        // JONNY TODO
+	    //I_SetPalette (static_cast<patch_t*>(W_CacheLumpName ("PLAYPAL",PU_CACHE)));
 	    return true;
 				
 	}
@@ -1786,14 +1789,14 @@ void M_Drawer (void)
     {
 	if (currentMenu->menuitems[i].name[0])
 	    V_DrawPatchDirect (x,y,0,
-			       W_CacheLumpName(currentMenu->menuitems[i].name ,PU_CACHE));
+			      static_cast<patch_t*>(W_CacheLumpName(currentMenu->menuitems[i].name ,PU_CACHE)));
 	y += LINEHEIGHT;
     }
 
     
     // DRAW SKULL
     V_DrawPatchDirect(x + SKULLXOFF,currentMenu->y - 5 + itemOn*LINEHEIGHT, 0,
-		      W_CacheLumpName(skullName[whichSkull],PU_CACHE));
+		     static_cast<patch_t*>(W_CacheLumpName(skullName[whichSkull],PU_CACHE)));
 
 }
 
