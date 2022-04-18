@@ -614,7 +614,7 @@ char HU_dequeueChatChar(void)
     return c;
 }
 
-boolean HU_Responder(event_t *ev)
+boolean HU_Responder(const sf::Event& ev)
 {
 
     static char		lastmessage[HU_MAXLINELENGTH+1];
@@ -640,29 +640,29 @@ boolean HU_Responder(event_t *ev)
     for (i=0 ; i<MAXPLAYERS ; i++)
 	numplayers += playeringame[i];
 
-    if (ev->data1 == KEY_RSHIFT)
+    if (ev.key.code == sf::Keyboard::Key::RShift)
     {
-	shiftdown = ev->type == ev_keydown;
+	shiftdown = ev.type == sf::Event::KeyPressed;
 	return false;
     }
-    else if (ev->data1 == KEY_RALT || ev->data1 == KEY_LALT)
+    else if (ev.key.code == sf::Keyboard::Key::RAlt || ev.key.code == sf::Keyboard::Key::LAlt)
     {
-	altdown = ev->type == ev_keydown;
+	altdown = ev.type == sf::Event::KeyPressed;
 	return false;
     }
 
-    if (ev->type != ev_keydown)
+    if (ev.type != sf::Event::KeyPressed)
 	return false;
 
     if (!chat_on)
     {
-	if (ev->data1 == HU_MSGREFRESH)
+	if (ev.key.code == sf::Keyboard::Key::Enter)
 	{
 	    message_on = true;
 	    message_counter = HU_MSGTIMEOUT;
 	    eatkey = true;
 	}
-	else if (netgame && ev->data1 == HU_INPUTTOGGLE)
+	else if (netgame && ev.key.code == sf::Keyboard::Key::T)
 	{
 	    eatkey = chat_on = true;
 	    HUlib_resetIText(&w_chat);
@@ -672,7 +672,7 @@ boolean HU_Responder(event_t *ev)
 	{
 	    for (i=0; i<MAXPLAYERS ; i++)
 	    {
-		if (ev->data1 == destination_keys[i])
+		if (ev.key.code == destination_keys[i])
 		{
 		    if (playeringame[i] && i!=consoleplayer)
 		    {
@@ -701,7 +701,7 @@ boolean HU_Responder(event_t *ev)
     }
     else
     {
-	c = ev->data1;
+	c = ev.key.code;
 	// send a macro
 	if (altdown)
 	{
