@@ -27,6 +27,7 @@
 #define AM_MSGENTERED (AM_MSGHEADER | ('e'<<8))
 #define AM_MSGEXITED (AM_MSGHEADER | ('x'<<8))
 
+#include <SFML/Window.hpp>
 
 // Called by main loop.
 boolean AM_Responder (const sf::Event& event);
