@@ -515,15 +515,16 @@ void ST_refreshBackground(void)
 // Respond to keyboard input events,
 //  intercept cheats.
 boolean
-ST_Responder (const sf::Event& event)
+ST_Responder (const sf::Event& ev)
 {
   int		i;
     
+  /* JONNY TODO
   // Filter automap on/off.
   if (ev.type == sf::Event::KeyReleased
-      && ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
+      && ((ev.data1 & 0xffff0000) == AM_MSGHEADER))
   {
-    switch(ev->data1)
+    switch(ev.data1)
     {
 		// JONNY TODO
       case AM_MSGENTERED:
@@ -721,7 +722,7 @@ ST_Responder (const sf::Event& event)
       plyr->message = STSTR_CLEV;
       G_DeferedInitNew(gameskill, epsd, map);
     }    
-  }
+  }*/
   return false;
 }
 
@@ -1181,21 +1182,21 @@ void ST_loadGraphics(void)
 	for (j=0;j<ST_NUMSTRAIGHTFACES;j++)
 	{
 	    sprintf(namebuf, "STFST%d%d", i, j);
-	    faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	    faces[facenum++] = static_cast<patch_t*>(W_CacheLumpName(namebuf, PU_STATIC));
 	}
 	sprintf(namebuf, "STFTR%d0", i);	// turn right
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = static_cast<patch_t*>(W_CacheLumpName(namebuf, PU_STATIC));
 	sprintf(namebuf, "STFTL%d0", i);	// turn left
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = static_cast<patch_t*>(W_CacheLumpName(namebuf, PU_STATIC));
 	sprintf(namebuf, "STFOUCH%d", i);	// ouch!
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = static_cast<patch_t*>(W_CacheLumpName(namebuf, PU_STATIC));
 	sprintf(namebuf, "STFEVL%d", i);	// evil grin ;)
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = static_cast<patch_t*>(W_CacheLumpName(namebuf, PU_STATIC));
 	sprintf(namebuf, "STFKILL%d", i);	// pissed off
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = static_cast<patch_t*>(W_CacheLumpName(namebuf, PU_STATIC));
     }
-    faces[facenum++] = W_CacheLumpName("STFGOD0", PU_STATIC);
-    faces[facenum++] = W_CacheLumpName("STFDEAD0", PU_STATIC);
+    faces[facenum++] = static_cast<patch_t*>(W_CacheLumpName("STFGOD0", PU_STATIC));
+    faces[facenum++] = static_cast<patch_t*>(W_CacheLumpName("STFDEAD0", PU_STATIC));
 
 }
 
@@ -1459,7 +1460,7 @@ void ST_Stop (void)
     if (st_stopped)
 	return;
 
-    I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
+    I_SetPalette (static_cast<byte*>(W_CacheLumpNum (lu_palette, PU_CACHE)));
 
     st_stopped = true;
 }
