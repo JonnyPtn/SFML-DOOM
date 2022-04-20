@@ -151,7 +151,7 @@ M_ReadFile
     if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Couldn't read file %s", name);
     length = fileinfo.st_size;
-    buf = Z_Malloc (length, PU_STATIC, NULL);
+    buf = static_cast<byte*>(Z_Malloc (length, PU_STATIC, NULL));
     count = read (handle, buf, length);
     close (handle);
 	
@@ -285,16 +285,16 @@ default_t	defaults[] =
 
     {"usegamma",&usegamma, 0},
 
-    {"chatmacro0", (int *) &chat_macros[0], (int) HUSTR_CHATMACRO0 },
-    {"chatmacro1", (int *) &chat_macros[1], (int) HUSTR_CHATMACRO1 },
-    {"chatmacro2", (int *) &chat_macros[2], (int) HUSTR_CHATMACRO2 },
-    {"chatmacro3", (int *) &chat_macros[3], (int) HUSTR_CHATMACRO3 },
-    {"chatmacro4", (int *) &chat_macros[4], (int) HUSTR_CHATMACRO4 },
-    {"chatmacro5", (int *) &chat_macros[5], (int) HUSTR_CHATMACRO5 },
-    {"chatmacro6", (int *) &chat_macros[6], (int) HUSTR_CHATMACRO6 },
-    {"chatmacro7", (int *) &chat_macros[7], (int) HUSTR_CHATMACRO7 },
-    {"chatmacro8", (int *) &chat_macros[8], (int) HUSTR_CHATMACRO8 },
-    {"chatmacro9", (int *) &chat_macros[9], (int) HUSTR_CHATMACRO9 }
+    {"chatmacro0", (int *) &chat_macros[0], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO0) },
+    {"chatmacro1", (int *) &chat_macros[1], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO1) },
+    {"chatmacro2", (int *) &chat_macros[2], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO2) },
+    {"chatmacro3", (int *) &chat_macros[3], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO3) },
+    {"chatmacro4", (int *) &chat_macros[4], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO4) },
+    {"chatmacro5", (int *) &chat_macros[5], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO5) },
+    {"chatmacro6", (int *) &chat_macros[6], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO6) },
+    {"chatmacro7", (int *) &chat_macros[7], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO7) },
+    {"chatmacro8", (int *) &chat_macros[8], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO8) },
+    {"chatmacro9", (int *) &chat_macros[9], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO9) }
 
 };
 
@@ -392,7 +392,7 @@ void M_LoadDefaults (void)
 			    *defaults[i].location = parm;
 			else
 			    *defaults[i].location =
-				(int) newstring;
+				reinterpret_cast<intptr_t>(newstring);
 			break;
 		    }
 	    }
@@ -451,7 +451,7 @@ WritePCXfile
     pcx_t*	pcx;
     byte*	pack;
 	
-    pcx = Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
+    pcx = static_cast<pcx_t*>(Z_Malloc (width*height*2+1000, PU_STATIC, NULL));
 
     pcx->manufacturer = 0x0a;		// PCX id
     pcx->version = 5;			// 256 color
@@ -526,7 +526,7 @@ void M_ScreenShot (void)
     // save the pcx file
     WritePCXfile (lbmname, linear,
 		  SCREENWIDTH, SCREENHEIGHT,
-		  W_CacheLumpName ("PLAYPAL",PU_CACHE));
+		  static_cast<byte*>(W_CacheLumpName ("PLAYPAL",PU_CACHE)));
 	
     players[consoleplayer].message = "screen shot";
 }
