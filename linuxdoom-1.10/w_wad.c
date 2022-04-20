@@ -73,12 +73,13 @@ void strupr (char* s)
 
 int filelength (int handle) 
 { 
-    struct stat	fileinfo;
-    
-    if (fstat (handle,&fileinfo) == -1)
-	I_Error ("Error fstating");
-
-    return fileinfo.st_size;
+    // JONNY TODO
+    //struct stat	fileinfo;
+    //
+    //if (fstat (handle,&fileinfo) == -1)
+	//I_Error ("Error fstating");
+//
+    //return fileinfo.st_size;
 }
 
 
@@ -159,12 +160,13 @@ void W_AddFile (char *filename)
 	reloadname = filename;
 	reloadlump = numlumps;
     }
-		
-    if ( (handle = open (filename,O_RDONLY | O_BINARY)) == -1)
-    {
-	printf (" couldn't open %s\n",filename);
-	return;
-    }
+
+    // JONNY TODO	
+    //if ( (handle = open (filename,O_RDONLY | O_BINARY)) == -1)
+    //{
+	//printf (" couldn't open %s\n",filename);
+	//return;
+    //}
 
     printf (" adding %s\n",filename);
     startlump = numlumps;
@@ -245,9 +247,10 @@ void W_Reload (void)
 	
     if (!reloadname)
 	return;
-		
-    if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
-	I_Error ("W_Reload: couldn't open %s",reloadname);
+
+    // JONNY TODO	
+    //if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
+	//I_Error ("W_Reload: couldn't open %s",reloadname);
 
     read (handle, &header, sizeof(header));
     lumpcount = LONG(header.numlumps);
@@ -447,8 +450,9 @@ W_ReadLump
     if (l->handle == -1)
     {
 	// reloadable file, so use open / read / close
-	if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
-	    I_Error ("W_ReadLump: couldn't open %s",reloadname);
+    // JONNY TODO
+	//if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
+	//    I_Error ("W_ReadLump: couldn't open %s",reloadname);
     }
     else
 	handle = l->handle;
