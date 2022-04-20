@@ -420,9 +420,9 @@ void R_DrawPlanes (void)
 	}
 	
 	// regular flat
-	ds_source = W_CacheLumpNum(firstflat +
+	ds_source = static_cast<byte*>(W_CacheLumpNum(firstflat +
 				   flattranslation[pl->picnum],
-				   PU_STATIC);
+				   PU_STATIC));
 	
 	planeheight = abs(pl->height-viewz);
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;

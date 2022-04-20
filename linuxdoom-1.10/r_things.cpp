@@ -196,7 +196,7 @@ void R_InitSpriteDefs (char** namelist)
     if (!numsprites)
 	return;
 		
-    sprites = Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
+    sprites = static_cast<spritedef_t*>(Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL));
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -274,7 +274,7 @@ void R_InitSpriteDefs (char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes = 
-	    Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+	    static_cast<spriteframe_t*>(Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL));
 	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
     }
 
@@ -405,7 +405,7 @@ R_DrawVisSprite
     patch_t*		patch;
 	
 	
-    patch = W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+    patch = static_cast<patch_t*>(W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE));
 
     dc_colormap = vis->colormap;
     
