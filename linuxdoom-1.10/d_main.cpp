@@ -542,7 +542,7 @@ char            title[128];
 //
 // D_AddFile
 //
-void D_AddFile (char *file)
+void D_AddFile (const char *file)
 {
     int     numwadfiles;
     char    *newfile;
@@ -564,57 +564,39 @@ void D_AddFile (char *file)
 //
 void IdentifyVersion (void)
 {
-
-    char*	doom1wad;
-    char*	doomwad;
-    char*	doomuwad;
-    char*	doom2wad;
-
-    char*	doom2fwad;
-    char*	plutoniawad;
-    char*	tntwad;
-
-#ifdef NORMALUNIX
     char *home;
-    char *doomwaddir;
-    doomwaddir = getenv("DOOMWADDIR");
+    std::string waddir = ".";
+    auto doomwaddir = getenv("DOOMWADDIR");
     if (!doomwaddir)
-	doomwaddir = ".";
+    {
+        waddir = doomwaddir;
+    }
 
     // Commercial.
-    doom2wad = malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(doom2wad, "%s/doom2.wad", doomwaddir);
+    const auto doom2wad = waddir + "/doom2.wad";
 
     // Retail.
-    doomuwad = malloc(strlen(doomwaddir)+1+8+1);
-    sprintf(doomuwad, "%s/doomu.wad", doomwaddir);
+    const auto doomuwad = waddir + "/doomu.wad";
     
     // Registered.
-    doomwad = malloc(strlen(doomwaddir)+1+8+1);
-    sprintf(doomwad, "%s/doom.wad", doomwaddir);
+    const auto doomwad = waddir + "/doom.wad";
     
     // Shareware.
-    doom1wad = malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(doom1wad, "%s/doom1.wad", doomwaddir);
+    const auto doom1wad = waddir + "/doom1.wad";
 
-     // Bug, dear Shawn.
-    // Insufficient malloc, caused spurious realloc errors.
-    plutoniawad = malloc(strlen(doomwaddir)+1+/*9*/12+1);
-    sprintf(plutoniawad, "%s/plutonia.wad", doomwaddir);
+    // Plutonia.
+    const auto plutoniawad = waddir + "/plutonia.wad";
 
-    tntwad = malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(tntwad, "%s/tnt.wad", doomwaddir);
-
+    // TNT.
+    const auto tntwad = waddir + "/tnt.wad";
 
     // French stuff.
-    doom2fwad = malloc(strlen(doomwaddir)+1+10+1);
-    sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
+    const auto doom2fwad = waddir + "/doom2f.wad";
 
     home = getenv("HOME");
     if (!home)
       I_Error("Please set $HOME to your home directory");
     sprintf(basedefault, "%s/.doomrc", home);
-#endif
 
     if (M_CheckParm ("-shdev"))
     {
@@ -664,49 +646,49 @@ void IdentifyVersion (void)
 	// Let's handle languages in config files, okay?
 	language = french;
 	printf("French version\n");
-	D_AddFile (doom2fwad);
+	D_AddFile (doom2fwad.c_str());
 	return;
     }
 
     if ( std::filesystem::exists(doom2wad) )
     {
 	gamemode = commercial;
-	D_AddFile (doom2wad);
+	D_AddFile (doom2wad.c_str());
 	return;
     }
 
     if ( std::filesystem::exists(plutoniawad) )
     {
       gamemode = commercial;
-      D_AddFile (plutoniawad);
+      D_AddFile (plutoniawad.c_str());
       return;
     }
 
     if ( std::filesystem::exists(tntwad) )
     {
       gamemode = commercial;
-      D_AddFile (tntwad);
+      D_AddFile (tntwad.c_str());
       return;
     }
 
     if ( std::filesystem::exists(doomuwad) )
     {
       gamemode = retail;
-      D_AddFile (doomuwad);
+      D_AddFile (doomuwad.c_str());
       return;
     }
 
     if ( std::filesystem::exists(doomwad) )
     {
       gamemode = registered;
-      D_AddFile (doomwad);
+      D_AddFile (doomwad.c_str());
       return;
     }
 
     if ( std::filesystem::exists(doom1wad) )
     {
       gamemode = shareware;
-      D_AddFile (doom1wad);
+      D_AddFile (doom1wad.c_str());
       return;
     }
 
