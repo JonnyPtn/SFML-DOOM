@@ -73,7 +73,7 @@ void Z_ClearZone (memzone_t* zone)
 	zone->blocklist.prev =
 	block = (memblock_t *)( (byte *)zone + sizeof(memzone_t) );
     
-    zone->blocklist.user = (void *)zone;
+    zone->blocklist.user = static_cast<void**>(static_cast<void*>(zone));
     zone->blocklist.tag = PU_STATIC;
     zone->rover = block;
 	
@@ -103,7 +103,7 @@ void Z_Init (void)
 	mainzone->blocklist.prev =
 	block = (memblock_t *)( (byte *)mainzone + sizeof(memzone_t) );
 
-    mainzone->blocklist.user = (void *)mainzone;
+    mainzone->blocklist.user = static_cast<void**>(static_cast<void*>(mainzone));
     mainzone->blocklist.tag = PU_STATIC;
     mainzone->rover = block;
 	
@@ -267,7 +267,7 @@ Z_Malloc
     if (user)
     {
 	// mark as an in use block
-	base->user = user;			
+	base->user = static_cast<void**>(static_cast<void*>(user));			
 	*(void **)user = (void *) ((byte *)base + sizeof(memblock_t));
     }
     else
@@ -276,7 +276,8 @@ Z_Malloc
 	    I_Error ("Z_Malloc: an owner is required for purgable blocks");
 
 	// mark as in use, but unowned	
-	base->user = (void *)2;		
+    // JONNY TODO 
+	//base->user = 2;		
     }
     base->tag = tag;
 
@@ -437,7 +438,7 @@ Z_ChangeTag2
     if (block->id != ZONEID)
 	I_Error ("Z_ChangeTag: freed a pointer without ZONEID");
 
-    if (tag >= PU_PURGELEVEL && (unsigned)block->user < 0x100)
+    if (tag >= PU_PURGELEVEL && reinterpret_cast<intptr_t>(block->user) < 0x100)
 	I_Error ("Z_ChangeTag: an owner is required for purgable blocks");
 
     block->tag = tag;
