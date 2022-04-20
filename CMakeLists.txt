@@ -8,14 +8,31 @@ add_executable(${CMAKE_PROJECT_NAME} ${SOURCE})
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
 
 include(FetchContent)
+
 FetchContent_Declare(
   sfml
   GIT_REPOSITORY    https://github.com/sfml/sfml
-  GIT_TAG           c7705a8d9a79bb2c8868518c32ae54f14220793c
+  GIT_TAG           2.5.1
 )
 FetchContent_MakeAvailable(sfml)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE SFML::Graphics)
+FetchContent_Declare(
+  imgui
+  GIT_REPOSITORY    https://github.com/ocornut/imgui
+  GIT_TAG           v1.87
+)
+FetchContent_MakeAvailable(imgui)
+
+set(IMGUI_SFML_FIND_SFML OFF)
+set(IMGUI_DIR ${imgui_SOURCE_DIR})
+FetchContent_Declare(
+  imgui-sfml
+  GIT_REPOSITORY    https://github.com/eliasdaler/imgui-sfml
+  GIT_TAG           v2.5
+)
+FetchContent_MakeAvailable(imgui-sfml)
+
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics ImGui-SFML::ImGui-SFML)
 
 if (UNIX)
     target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -w -Wno-c++11-narrowing)
