@@ -543,9 +543,9 @@ void I_UpdateSound( void )
   
   // Mix current sound data.
   // Data, from raw sound, for right and left.
-  register unsigned int	sample;
-  register int		dl;
-  register int		dr;
+  unsigned int	sample;
+  int		dl;
+  int		dr;
   
   // Pointers in global mixbuffer, left, right, end.
   signed short*		leftout;
