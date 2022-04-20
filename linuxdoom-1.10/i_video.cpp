@@ -479,10 +479,10 @@ static sf::Color	colors[256];
 // I_SetPalette
 //
 // JONNY TODO
-//void I_SetPalette (byte* palette)
-//{
+void I_SetPalette (byte* palette)
+{
 //    UploadNewPalette(X_cmap, palette);
-//}
+}
 
 
 void I_InitGraphics(void)

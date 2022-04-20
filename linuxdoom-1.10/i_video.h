@@ -36,9 +36,6 @@
 // and sets up the video mode
 void I_InitGraphics (void);
 
-
-void I_ShutdownGraphics(void);
-
 // Takes full 8 bit values.
 void I_SetPalette (byte* palette);
 

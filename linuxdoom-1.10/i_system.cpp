@@ -119,7 +119,6 @@ void I_Quit (void)
     I_ShutdownSound();
     I_ShutdownMusic();
     M_SaveDefaults ();
-    I_ShutdownGraphics();
     exit(0);
 }
 
@@ -177,7 +176,6 @@ void I_Error (char *error, ...)
 	G_CheckDemoStatus();
 
     D_QuitNetGame ();
-    I_ShutdownGraphics();
     
     exit(-1);
 }
