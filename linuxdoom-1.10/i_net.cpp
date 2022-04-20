@@ -114,9 +114,9 @@ BindToLocalPort
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = port;
-			
-    v = bind (s, (void *)&address, sizeof(address));
-    if (v == -1)
+	// JONNY TODO	
+    //v = bind (s, (void *)&address, sizeof(address));
+    //if (v == -1)
 	I_Error ("BindToPort: bind: %s", strerror(errno));
 }
 
@@ -145,10 +145,11 @@ void PacketSend (void)
 	sw.cmds[c].buttons = netbuffer->cmds[c].buttons;
     }
 		
-    //printf ("sending %i\n",gametic);		
-    c = sendto (sendsocket , &sw, doomcom->datalength
-		,0,(void *)&sendaddress[doomcom->remotenode]
-		,sizeof(sendaddress[doomcom->remotenode]));
+    //printf ("sending %i\n",gametic);
+    // JONNY TODO		
+    //c = sendto (sendsocket , &sw, doomcom->datalength
+	//	,0,(void *)&sendaddress[doomcom->remotenode]
+	//	,sizeof(sendaddress[doomcom->remotenode]));
 	
     //	if (c == -1)
     //		I_Error ("SendPacket error: %s",strerror(errno));
@@ -167,8 +168,9 @@ void PacketGet (void)
     doomdata_t		sw;
 				
     fromlen = sizeof(fromaddress);
-    c = recvfrom (insocket, &sw, sizeof(sw), 0
-		  , (struct sockaddr *)&fromaddress, &fromlen );
+    // JONNY TODO
+    //c = recvfrom (insocket, &sw, sizeof(sw), 0
+	//	  , (struct sockaddr *)&fromaddress, &fromlen );
     if (c == -1 )
     {
 	if (errno != EWOULDBLOCK)
@@ -248,7 +250,7 @@ void I_InitNetwork (void)
     int			p;
     struct hostent*	hostentry;	// host information entry
 	
-    doomcom = malloc (sizeof (*doomcom) );
+    doomcom = static_cast<doomcom_t*>(malloc (sizeof (*doomcom) ));
     memset (doomcom, 0, sizeof(*doomcom) );
     
     // set up for network
