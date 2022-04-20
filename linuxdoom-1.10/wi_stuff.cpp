@@ -373,7 +373,8 @@ static patch_t*		items;
 static patch_t*		frags;
 
 // Time sucks.
-static patch_t*		time;
+// JONNY TODO
+//static patch_t*		time;
 static patch_t*		par;
 static patch_t*		sucks;
 
@@ -411,7 +412,7 @@ void WI_slamBackground(void)
 
 // The ticker is used to detect keys
 //  because of timing issues in netgames.
-boolean WI_Responder(event_t* ev)
+boolean WI_Responder(const sf::Event& ev)
 {
     return false;
 }
@@ -1456,7 +1457,8 @@ void WI_drawStats(void)
     V_DrawPatch(SP_STATSX, SP_STATSY+2*lh, FB, sp_secret);
     WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY+2*lh, cnt_secret[0]);
 
-    V_DrawPatch(SP_TIMEX, SP_TIMEY, FB, time);
+	// JONNY TODO
+    //V_DrawPatch(SP_TIMEX, SP_TIMEY, FB, time);
     WI_drawTime(SCREENWIDTH/2 - SP_TIMEX, SP_TIMEY, cnt_time);
 
     if (wbs->epsd < 3)
@@ -1554,7 +1556,7 @@ void WI_loadData(void)
     }
 
     // background
-    bg = W_CacheLumpName(name, PU_CACHE);    
+    bg = static_cast<patch_t*>(W_CacheLumpName(name, PU_CACHE));    
     V_DrawPatch(0, 0, 1, bg);
 
 
@@ -1577,7 +1579,7 @@ void WI_loadData(void)
 	for (i=0 ; i<NUMCMAPS ; i++)
 	{								
 	    sprintf(name, "CWILV%2.2d", i);
-	    lnames[i] = W_CacheLumpName(name, PU_STATIC);
+	    lnames[i] = static_cast<patch_t*>(W_CacheLumpName(name, PU_STATIC));
 	}					
     }
     else
@@ -1587,17 +1589,17 @@ void WI_loadData(void)
 	for (i=0 ; i<NUMMAPS ; i++)
 	{
 	    sprintf(name, "WILV%d%d", wbs->epsd, i);
-	    lnames[i] = W_CacheLumpName(name, PU_STATIC);
+	    lnames[i] = static_cast<patch_t*>(W_CacheLumpName(name, PU_STATIC));
 	}
 
 	// you are here
-	yah[0] = W_CacheLumpName("WIURH0", PU_STATIC);
+	yah[0] = static_cast<patch_t*>(W_CacheLumpName("WIURH0", PU_STATIC));
 
 	// you are here (alt.)
-	yah[1] = W_CacheLumpName("WIURH1", PU_STATIC);
+	yah[1] = static_cast<patch_t*>(W_CacheLumpName("WIURH1", PU_STATIC));
 
 	// splat
-	splat = W_CacheLumpName("WISPLAT", PU_STATIC); 
+	splat = static_cast<patch_t*>(W_CacheLumpName("WISPLAT", PU_STATIC)); 
 	
 	if (wbs->epsd < 3)
 	{
@@ -1611,7 +1613,7 @@ void WI_loadData(void)
 		    {
 			// animations
 			sprintf(name, "WIA%d%.2d%.2d", wbs->epsd, j, i);  
-			a->p[i] = W_CacheLumpName(name, PU_STATIC);
+			a->p[i] = static_cast<patch_t*>(W_CacheLumpName(name, PU_STATIC));
 		    }
 		    else
 		    {
@@ -1624,83 +1626,84 @@ void WI_loadData(void)
     }
 
     // More hacks on minus sign.
-    wiminus = W_CacheLumpName("WIMINUS", PU_STATIC); 
+    wiminus = static_cast<patch_t*>(W_CacheLumpName("WIMINUS", PU_STATIC)); 
 
     for (i=0;i<10;i++)
     {
 	 // numbers 0-9
 	sprintf(name, "WINUM%d", i);     
-	num[i] = W_CacheLumpName(name, PU_STATIC);
+	num[i] = static_cast<patch_t*>(W_CacheLumpName(name, PU_STATIC));
     }
 
     // percent sign
-    percent = W_CacheLumpName("WIPCNT", PU_STATIC);
+    percent = static_cast<patch_t*>(W_CacheLumpName("WIPCNT", PU_STATIC));
 
     // "finished"
-    finished = W_CacheLumpName("WIF", PU_STATIC);
+    finished = static_cast<patch_t*>(W_CacheLumpName("WIF", PU_STATIC));
 
     // "entering"
-    entering = W_CacheLumpName("WIENTER", PU_STATIC);
+    entering = static_cast<patch_t*>(W_CacheLumpName("WIENTER", PU_STATIC));
 
     // "kills"
-    kills = W_CacheLumpName("WIOSTK", PU_STATIC);   
+    kills = static_cast<patch_t*>(W_CacheLumpName("WIOSTK", PU_STATIC));   
 
     // "scrt"
-    secret = W_CacheLumpName("WIOSTS", PU_STATIC);
+    secret = static_cast<patch_t*>(W_CacheLumpName("WIOSTS", PU_STATIC));
 
      // "secret"
-    sp_secret = W_CacheLumpName("WISCRT2", PU_STATIC);
+    sp_secret = static_cast<patch_t*>(W_CacheLumpName("WISCRT2", PU_STATIC));
 
     // Yuck. 
     if (french)
     {
 	// "items"
 	if (netgame && !deathmatch)
-	    items = W_CacheLumpName("WIOBJ", PU_STATIC);    
+	    items = static_cast<patch_t*>(W_CacheLumpName("WIOBJ", PU_STATIC));    
   	else
-	    items = W_CacheLumpName("WIOSTI", PU_STATIC);
+	    items = static_cast<patch_t*>(W_CacheLumpName("WIOSTI", PU_STATIC));
     } else
-	items = W_CacheLumpName("WIOSTI", PU_STATIC);
+	items = static_cast<patch_t*>(W_CacheLumpName("WIOSTI", PU_STATIC));
 
     // "frgs"
-    frags = W_CacheLumpName("WIFRGS", PU_STATIC);    
+    frags = static_cast<patch_t*>(W_CacheLumpName("WIFRGS", PU_STATIC));    
 
     // ":"
-    colon = W_CacheLumpName("WICOLON", PU_STATIC); 
+    colon = static_cast<patch_t*>(W_CacheLumpName("WICOLON", PU_STATIC)); 
 
     // "time"
-    time = W_CacheLumpName("WITIME", PU_STATIC);   
+	// JONNY TODO 
+    //time = W_CacheLumpName("WITIME", PU_STATIC);   
 
     // "sucks"
-    sucks = W_CacheLumpName("WISUCKS", PU_STATIC);  
+    sucks = static_cast<patch_t*>(W_CacheLumpName("WISUCKS", PU_STATIC));  
 
     // "par"
-    par = W_CacheLumpName("WIPAR", PU_STATIC);   
+    par = static_cast<patch_t*>(W_CacheLumpName("WIPAR", PU_STATIC));   
 
     // "killers" (vertical)
-    killers = W_CacheLumpName("WIKILRS", PU_STATIC);
+    killers = static_cast<patch_t*>(W_CacheLumpName("WIKILRS", PU_STATIC));
 
     // "victims" (horiz)
-    victims = W_CacheLumpName("WIVCTMS", PU_STATIC);
+    victims = static_cast<patch_t*>(W_CacheLumpName("WIVCTMS", PU_STATIC));
 
     // "total"
-    total = W_CacheLumpName("WIMSTT", PU_STATIC);   
+    total = static_cast<patch_t*>(W_CacheLumpName("WIMSTT", PU_STATIC));   
 
     // your face
-    star = W_CacheLumpName("STFST01", PU_STATIC);
+    star = static_cast<patch_t*>(W_CacheLumpName("STFST01", PU_STATIC));
 
     // dead face
-    bstar = W_CacheLumpName("STFDEAD0", PU_STATIC);    
+    bstar = static_cast<patch_t*>(W_CacheLumpName("STFDEAD0", PU_STATIC));    
 
     for (i=0 ; i<MAXPLAYERS ; i++)
     {
 	// "1,2,3,4"
 	sprintf(name, "STPB%d", i);      
-	p[i] = W_CacheLumpName(name, PU_STATIC);
+	p[i] = static_cast<patch_t*>(W_CacheLumpName(name, PU_STATIC));
 
 	// "1,2,3,4"
 	sprintf(name, "WIBP%d", i+1);     
-	bp[i] = W_CacheLumpName(name, PU_STATIC);
+	bp[i] = static_cast<patch_t*>(W_CacheLumpName(name, PU_STATIC));
     }
 
 }
@@ -1752,7 +1755,8 @@ void WI_unloadData(void)
     Z_ChangeTag(sp_secret, PU_CACHE);
     Z_ChangeTag(items, PU_CACHE);
     Z_ChangeTag(frags, PU_CACHE);
-    Z_ChangeTag(time, PU_CACHE);
+	// JONNY TODO 
+    //Z_ChangeTag(time, PU_CACHE);
     Z_ChangeTag(sucks, PU_CACHE);
     Z_ChangeTag(par, PU_CACHE);
 
