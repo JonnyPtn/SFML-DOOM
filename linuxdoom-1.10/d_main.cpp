@@ -567,7 +567,7 @@ void IdentifyVersion (void)
     char *home;
     std::string waddir = ".";
     auto doomwaddir = getenv("DOOMWADDIR");
-    if (!doomwaddir)
+    if (doomwaddir)
     {
         waddir = doomwaddir;
     }
