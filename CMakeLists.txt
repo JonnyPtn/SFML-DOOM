@@ -32,6 +32,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(imgui-sfml)
 
+file(DOWNLOAD https://distro.ibiblio.org/slitaz/sources/packages/d/doom1.wad doom1.wad 
+     SHOW_PROGRESS EXPECTED_MD5 f0cefca49926d00903cf57551d901abe)
+
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics ImGui-SFML::ImGui-SFML)
 
 if (UNIX)
