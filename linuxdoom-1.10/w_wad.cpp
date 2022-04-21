@@ -307,8 +307,7 @@ void W_InitMultipleFiles (char** filenames)
     
     // set up caching
     size = numlumps * sizeof(*lumpcache);
-    // JONNY TODO
-    //lumpcache = malloc (size);
+    lumpcache = static_cast<void**>(malloc (size));
     
     if (!lumpcache)
 	I_Error ("Couldn't allocate lumpcache");
