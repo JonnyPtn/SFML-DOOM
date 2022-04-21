@@ -171,7 +171,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     printf (" adding %s\n",filename.c_str());
     startlump = numlumps;
 	
-    if (filename.extension() == ".wad")
+    if (filename.extension() != ".wad")
     {
         // single lump file
         fileinfo = &singleinfo;
@@ -198,7 +198,7 @@ void W_AddFile (const std::filesystem::path& filepath)
         header.infotableofs = LONG(header.infotableofs);
         length = header.numlumps*sizeof(filelump_t);
         fileinfo = static_cast<filelump_t*>(alloca (length));
-        file.seekg(header.infotableofs);
+        file.seekg(header.infotableofs, std::ios::beg);
         file.read(reinterpret_cast<char*>(&fileinfo), length);
         numlumps += header.numlumps;
     }
