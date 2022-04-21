@@ -44,8 +44,8 @@ typedef struct
 
 typedef struct
 {
-    int			filepos;
-    int			size;
+    int32_t		filepos;
+    int32_t		size;
     char		name[8];
     
 } filelump_t;
