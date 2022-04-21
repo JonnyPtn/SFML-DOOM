@@ -52,6 +52,8 @@ rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
 #include <cstring>
 #include <string>
 #include <fstream>
+#include <vector>
+
 
 //
 // GLOBALS
@@ -148,7 +150,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     unsigned		i;
     int			    length;
     int			    startlump;
-    filelump_t*		fileinfo;
+    std::vector<filelump_t> fileinfo;
     filelump_t		singleinfo;
     
     // open the file and add to directory
@@ -174,7 +176,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     if (filename.extension() != ".wad")
     {
         // single lump file
-        fileinfo = &singleinfo;
+        fileinfo = {singleinfo};
         singleinfo.filepos = 0;
         singleinfo.size = std::filesystem::file_size(filepath);
         ExtractFileBase (filename.c_str(), singleinfo.name);
@@ -197,9 +199,9 @@ void W_AddFile (const std::filesystem::path& filepath)
         header.numlumps = LONG(header.numlumps);
         header.infotableofs = LONG(header.infotableofs);
         length = header.numlumps*sizeof(filelump_t);
-        fileinfo = static_cast<filelump_t*>(alloca (length));
+        fileinfo.resize(header.numlumps);
         file.seekg(header.infotableofs, std::ios::beg);
-        file.read(reinterpret_cast<char*>(&fileinfo), length);
+        file.read(reinterpret_cast<char*>(fileinfo.data()), length);
         numlumps += header.numlumps;
     }
 
@@ -212,12 +214,12 @@ void W_AddFile (const std::filesystem::path& filepath)
 
     lump_p = &lumpinfo[startlump];
 	
-    for (i=startlump ; i<numlumps ; i++,lump_p++, fileinfo++)
+    for (int fileinfoindex = 0, i=startlump ; i<numlumps ; i++,lump_p++, fileinfoindex++)
     {
         lump_p->handle = -1;
-        lump_p->position = LONG(fileinfo->filepos);
-        lump_p->size = LONG(fileinfo->size);
-        strncpy (lump_p->name, fileinfo->name, 8);
+        lump_p->position = LONG(fileinfo[fileinfoindex].filepos);
+        lump_p->size = LONG(fileinfo[fileinfoindex].size);
+        strncpy (lump_p->name, fileinfo[fileinfoindex].name, 8);
     }
 }
 
