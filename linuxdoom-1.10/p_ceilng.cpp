@@ -37,6 +37,8 @@ rcsid[] = "$Id: p_ceilng.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
 // Data.
 #include "sounds.h"
 
+#include <stdlib.h>
+
 //
 // CEILINGS
 //
@@ -200,7 +202,7 @@ EV_DoCeiling
 	
 	// new door thinker
 	rtn = 1;
-	ceiling = static_cast<ceiling_t*>(Z_Malloc (sizeof(*ceiling), PU_LEVSPEC, 0));
+	ceiling = static_cast<ceiling_t*>(malloc (sizeof(*ceiling)));
 	P_AddThinker (&ceiling->thinker);
 	sec->specialdata = ceiling;
 	ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;

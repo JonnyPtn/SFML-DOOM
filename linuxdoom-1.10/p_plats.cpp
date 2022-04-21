@@ -41,6 +41,8 @@ rcsid[] = "$Id: p_plats.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
 // Data.
 #include "sounds.h"
 
+#include <stdlib.h>
+
 
 plat_t*		activeplats[MAXPLATS];
 
@@ -170,7 +172,7 @@ EV_DoPlat
 	
 	// Find lowest & highest floors around sector
 	rtn = 1;
-	plat = static_cast<plat_t*>(Z_Malloc( sizeof(*plat), PU_LEVSPEC, 0));
+	plat = static_cast<plat_t*>(malloc( sizeof(*plat) ));
 	P_AddThinker(&plat->thinker);
 		
 	plat->type = type;

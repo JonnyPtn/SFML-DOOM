@@ -265,7 +265,7 @@ void W_Reload (void)
 	 i++,lump_p++, fileinfo++)
     {
 	if (lumpcache[i])
-	    Z_Free (lumpcache[i]);
+	    free (lumpcache[i]);
 
 	lump_p->position = LONG(fileinfo->filepos);
 	lump_p->size = LONG(fileinfo->size);
@@ -491,7 +491,7 @@ W_CacheLumpNum
 	// read the lump in
 	
 	//printf ("cache miss on lump %i\n",lump);
-	ptr = static_cast<byte*>(Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]));
+	ptr = static_cast<byte*>(malloc (W_LumpLength (lump)));
 	W_ReadLump (lump, lumpcache[lump]);
     }
     else

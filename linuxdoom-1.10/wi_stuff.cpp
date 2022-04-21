@@ -1574,8 +1574,7 @@ void WI_loadData(void)
     if (gamemode == commercial)
     {
 	NUMCMAPS = 32;								
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMCMAPS,
-				       PU_STATIC, 0);
+	lnames = (patch_t **) malloc(sizeof(patch_t*) * NUMCMAPS);
 	for (i=0 ; i<NUMCMAPS ; i++)
 	{								
 	    sprintf(name, "CWILV%2.2d", i);
@@ -1584,8 +1583,7 @@ void WI_loadData(void)
     }
     else
     {
-	lnames = (patch_t **) Z_Malloc(sizeof(patch_t*) * NUMMAPS,
-				       PU_STATIC, 0);
+	lnames = (patch_t **) malloc(sizeof(patch_t*) * NUMMAPS);
 	for (i=0 ; i<NUMMAPS ; i++)
 	{
 	    sprintf(name, "WILV%d%d", wbs->epsd, i);
@@ -1744,7 +1742,7 @@ void WI_unloadData(void)
 	}
     }
     
-    Z_Free(lnames);
+    free(lnames);
 
     Z_ChangeTag(percent, PU_CACHE);
     Z_ChangeTag(colon, PU_CACHE);

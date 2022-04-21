@@ -32,6 +32,8 @@ rcsid[] = "$Id: p_tick.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 #include "doomstat.h"
 #include "r_state.h"
 
+#include <stdlib.h>
+
 byte*		save_p;
 
 
@@ -281,7 +283,7 @@ void P_UnArchiveThinkers (void)
 	if (currentthinker->function.acp1 == (actionf_p1)P_MobjThinker)
 	    P_RemoveMobj ((mobj_t *)currentthinker);
 	else
-	    Z_Free (currentthinker);
+	    free (currentthinker);
 
 	currentthinker = next;
     }
@@ -298,7 +300,7 @@ void P_UnArchiveThinkers (void)
 			
 	  case tc_mobj:
 	    PADSAVEP();
-	    mobj = static_cast<mobj_t*>(Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL));
+	    mobj = static_cast<mobj_t*>(malloc (sizeof(*mobj) ));
 	    memcpy (mobj, save_p, sizeof(*mobj));
 	    save_p += sizeof(*mobj);
 		// JONNY TODO
@@ -499,7 +501,7 @@ void P_UnArchiveSpecials (void)
 			
 	  case tc_ceiling:
 	    PADSAVEP();
-	    ceiling = static_cast<ceiling_t*>(Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL));
+	    ceiling = static_cast<ceiling_t*>(malloc (sizeof(*ceiling) ));
 	    memcpy (ceiling, save_p, sizeof(*ceiling));
 	    save_p += sizeof(*ceiling);
 	    ceiling->sector = &sectors[reinterpret_cast<intptr_t>(ceiling->sector)];
@@ -514,7 +516,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_door:
 	    PADSAVEP();
-	    door = static_cast<vldoor_t*>(Z_Malloc (sizeof(*door), PU_LEVEL, NULL));
+	    door = static_cast<vldoor_t*>(malloc (sizeof(*door) ));
 	    memcpy (door, save_p, sizeof(*door));
 	    save_p += sizeof(*door);
 	    door->sector = &sectors[reinterpret_cast<intptr_t>(door->sector)];
@@ -525,7 +527,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_floor:
 	    PADSAVEP();
-	    floor = static_cast<floormove_t*>(Z_Malloc (sizeof(*floor), PU_LEVEL, NULL));
+	    floor = static_cast<floormove_t*>(malloc (sizeof(*floor) ));
 	    memcpy (floor, save_p, sizeof(*floor));
 	    save_p += sizeof(*floor);
 	    floor->sector = &sectors[reinterpret_cast<intptr_t>(floor->sector)];
@@ -536,7 +538,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_plat:
 	    PADSAVEP();
-	    plat = static_cast<plat_t*>(Z_Malloc (sizeof(*plat), PU_LEVEL, NULL));
+	    plat = static_cast<plat_t*>(malloc (sizeof(*plat) ));
 	    memcpy (plat, save_p, sizeof(*plat));
 	    save_p += sizeof(*plat);
 	    plat->sector = &sectors[reinterpret_cast<intptr_t>(plat->sector)];
@@ -551,7 +553,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_flash:
 	    PADSAVEP();
-	    flash = static_cast<lightflash_t*>(Z_Malloc (sizeof(*flash), PU_LEVEL, NULL));
+	    flash = static_cast<lightflash_t*>(malloc (sizeof(*flash)));
 	    memcpy (flash, save_p, sizeof(*flash));
 	    save_p += sizeof(*flash);
 	    flash->sector = &sectors[reinterpret_cast<intptr_t>(flash->sector)];
@@ -561,7 +563,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_strobe:
 	    PADSAVEP();
-	    strobe = static_cast<strobe_t*>(Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL));
+	    strobe = static_cast<strobe_t*>(malloc (sizeof(*strobe)));
 	    memcpy (strobe, save_p, sizeof(*strobe));
 	    save_p += sizeof(*strobe);
 	    strobe->sector = &sectors[reinterpret_cast<intptr_t>(strobe->sector)];
@@ -571,7 +573,7 @@ void P_UnArchiveSpecials (void)
 				
 	  case tc_glow:
 	    PADSAVEP();
-	    glow = static_cast<glow_t*>(Z_Malloc (sizeof(*glow), PU_LEVEL, NULL));
+	    glow = static_cast<glow_t*>(malloc (sizeof(*glow)));
 	    memcpy (glow, save_p, sizeof(*glow));
 	    save_p += sizeof(*glow);
 	    glow->sector = &sectors[reinterpret_cast<intptr_t>(glow->sector)];

@@ -36,6 +36,8 @@ rcsid[] = "$Id: p_lights.c,v 1.5 1997/02/03 22:45:11 b1 Exp $";
 // State.
 #include "r_state.h"
 
+#include <stdlib.h>
+
 //
 // FIRELIGHT FLICKER
 //
@@ -73,7 +75,7 @@ void P_SpawnFireFlicker (sector_t*	sector)
     // Nothing special about it during gameplay.
     sector->special = 0; 
 	
-    flick = static_cast<fireflicker_t*>(Z_Malloc ( sizeof(*flick), PU_LEVSPEC, 0));
+    flick = static_cast<fireflicker_t*>(malloc ( sizeof(*flick)));
 
     P_AddThinker (&flick->thinker);
 
@@ -128,7 +130,7 @@ void P_SpawnLightFlash (sector_t*	sector)
     // nothing special about it during gameplay
     sector->special = 0;	
 	
-    flash = static_cast<lightflash_t*>(Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0));
+    flash = static_cast<lightflash_t*>(malloc ( sizeof(*flash) ));
 
     P_AddThinker (&flash->thinker);
 
@@ -185,7 +187,7 @@ P_SpawnStrobeFlash
 {
     strobe_t*	flash;
 	
-    flash = static_cast<strobe_t*>(Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0));
+    flash = static_cast<strobe_t*>(malloc ( sizeof(*flash) ));
 
     P_AddThinker (&flash->thinker);
 
@@ -342,7 +344,7 @@ void P_SpawnGlowingLight(sector_t*	sector)
 {
     glow_t*	g;
 	
-    g = static_cast<glow_t*>(Z_Malloc( sizeof(*g), PU_LEVSPEC, 0));
+    g = static_cast<glow_t*>(malloc( sizeof(*g) ));
 
     P_AddThinker(&g->thinker);
 

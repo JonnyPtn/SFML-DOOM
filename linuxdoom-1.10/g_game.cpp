@@ -1266,7 +1266,7 @@ void G_DoLoadGame (void)
 	I_Error ("Bad savegame");
     
     // done 
-    Z_Free (savebuffer); 
+    free (savebuffer); 
  
     if (setsizeneeded)
 	R_ExecuteSetViewSize ();
@@ -1560,7 +1560,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParm ("-maxdemo");
     if (i && i<myargc-1)
 	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = static_cast<byte*>(Z_Malloc (maxsize,PU_STATIC,NULL)); 
+    demobuffer = static_cast<byte*>(malloc (maxsize));
     demoend = demobuffer + maxsize;
 	
     demorecording = true; 
@@ -1699,7 +1699,7 @@ boolean G_CheckDemoStatus (void)
     { 
 	*demo_p++ = DEMOMARKER; 
 	M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
-	Z_Free (demobuffer); 
+	free (demobuffer); 
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 
     } 

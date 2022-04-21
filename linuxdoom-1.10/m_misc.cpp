@@ -151,7 +151,7 @@ M_ReadFile
     if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Couldn't read file %s", name);
     length = fileinfo.st_size;
-    buf = static_cast<byte*>(Z_Malloc (length, PU_STATIC, NULL));
+    buf = static_cast<byte*>(malloc (length));
     count = read (handle, buf, length);
     close (handle);
 	
@@ -451,7 +451,7 @@ WritePCXfile
     pcx_t*	pcx;
     byte*	pack;
 	
-    pcx = static_cast<pcx_t*>(Z_Malloc (width*height*2+1000, PU_STATIC, NULL));
+    pcx = static_cast<pcx_t*>(malloc (width*height*2+1000));
 
     pcx->manufacturer = 0x0a;		// PCX id
     pcx->version = 5;			// 256 color
@@ -493,7 +493,7 @@ WritePCXfile
     length = pack - (byte *)pcx;
     M_WriteFile (filename, pcx, length);
 
-    Z_Free (pcx);
+    free (pcx);
 }
 
 

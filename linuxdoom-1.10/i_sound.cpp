@@ -227,7 +227,7 @@ getsfx
     paddedsize = ((size-8 + (SAMPLECOUNT-1)) / SAMPLECOUNT) * SAMPLECOUNT;
 
     // Allocate from zone memory.
-    paddedsfx = (unsigned char*)Z_Malloc( paddedsize+8, PU_STATIC, 0 );
+    paddedsfx = (unsigned char*)malloc( paddedsize+8 );
     // ddt: (unsigned char *) realloc(sfx, paddedsize+8);
     // This should interfere with zone memory handling,
     //  which does not kick in in the soundserver.
@@ -238,7 +238,7 @@ getsfx
         paddedsfx[i] = 128;
 
     // Remove the cached lump.
-    Z_Free( sfx );
+    free( sfx );
     
     // Preserve padded length.
     *len = paddedsize;
