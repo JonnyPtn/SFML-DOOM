@@ -91,7 +91,7 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 void D_DoomLoop (void);
 
 
-char*		wadfiles[MAXWADFILES];
+char*		wadfilenames[MAXWADFILES];
 
 
 boolean		devparm;	// started game with -devparm
@@ -547,13 +547,13 @@ void D_AddFile (const char *file)
     int     numwadfiles;
     char    *newfile;
 	
-    for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
+    for (numwadfiles = 0 ; wadfilenames[numwadfiles] ; numwadfiles++)
 	;
 
     newfile = static_cast<char*>(malloc (strlen(file)+1));
     strcpy (newfile, file);
 	
-    wadfiles[numwadfiles] = newfile;
+    wadfilenames[numwadfiles] = newfile;
 }
 
 //
@@ -995,7 +995,7 @@ void D_DoomMain (void)
     Z_Init ();
 
     printf ("W_Init: Init WADfiles.\n");
-    W_InitMultipleFiles (wadfiles);
+    W_InitMultipleFiles (wadfilenames);
     
 
     // Check for -file in shareware

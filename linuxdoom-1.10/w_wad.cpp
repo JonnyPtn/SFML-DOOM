@@ -65,6 +65,8 @@ int			numlumps;
 
 void**			lumpcache;
 
+static std::vector<std::ifstream> wadfiles;
+
 
 #define strcmpi	strcasecmp
 
@@ -163,10 +165,11 @@ void W_AddFile (const std::filesystem::path& filepath)
         reloadlump = numlumps;
     }
 
-    std::ifstream file(filepath.string(), std::ios::binary);
-    if(!file.is_open())
+    wadfiles.emplace_back(filepath.string(), std::ios::binary);
+    if(!wadfiles.back().is_open())
     {
         printf(" couldn't open %s\n",filepath.c_str());
+        wadfiles.pop_back();
         return;
     }
 
@@ -185,7 +188,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     else 
     {
         // WAD file
-        file.read(reinterpret_cast<char*>(&header), sizeof(header));
+        wadfiles.back().read(reinterpret_cast<char*>(&header), sizeof(header));
         if (strncmp(header.identification,"IWAD",4))
         {
             // Homebrew levels?
@@ -200,8 +203,8 @@ void W_AddFile (const std::filesystem::path& filepath)
         header.infotableofs = LONG(header.infotableofs);
         length = header.numlumps*sizeof(filelump_t);
         fileinfo.resize(header.numlumps);
-        file.seekg(header.infotableofs, std::ios::beg);
-        file.read(reinterpret_cast<char*>(fileinfo.data()), length);
+        wadfiles.back().seekg(header.infotableofs, std::ios::beg);
+        wadfiles.back().read(reinterpret_cast<char*>(fileinfo.data()), length);
         numlumps += header.numlumps;
     }
 
@@ -216,7 +219,7 @@ void W_AddFile (const std::filesystem::path& filepath)
 	
     for (int fileinfoindex = 0, i=startlump ; i<numlumps ; i++,lump_p++, fileinfoindex++)
     {
-        lump_p->handle = -1;
+        lump_p->handle = reloadpath.empty() ? wadfiles.size() - 1 : -1;
         lump_p->position = LONG(fileinfo[fileinfoindex].filepos);
         lump_p->size = LONG(fileinfo[fileinfoindex].size);
         strncpy (lump_p->name, fileinfo[fileinfoindex].name, 8);
@@ -435,9 +438,7 @@ W_ReadLump
 ( int		lump,
   void*		dest )
 {
-    int		c;
     lumpinfo_t*	l;
-    int		handle;
 	
     if (lump >= numlumps)
 	I_Error ("W_ReadLump: %i >= numlumps",lump);
@@ -448,26 +449,34 @@ W_ReadLump
 	
     if (l->handle == -1)
     {
-	// reloadable file, so use open / read / close
-    // JONNY TODO
-	//if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
-	//    I_Error ("W_ReadLump: couldn't open %s",reloadname);
+        // reloadable file, so use open / read / close
+        if (std::ifstream file{reloadpath.c_str(), std::ios::binary}; !file.is_open())
+        {
+            I_Error ("W_ReadLump: couldn't open %s",reloadpath.c_str());
+        }
+        else
+        {
+            file.seekg(l->position, std::ios::beg);
+            file.read (reinterpret_cast<char*>(dest), l->size);
+            
+            if (!file)
+            {
+                I_Error ("W_ReadLump: only read %i of %i on lump %i", file.gcount(),l->size,lump);
+            }
+        }
     }
     else
-	handle = l->handle;
-		
-        // JONNY TODO
-    //lseek (handle, l->position, SEEK_SET);
-    //c = read (handle, dest, l->size);
-//
-    //if (c < l->size)
-	//I_Error ("W_ReadLump: only read %i of %i on lump %i",
-	//	 c,l->size,lump);	
-//
-    //if (l->handle == -1)
-	//close (handle);
-		
-    // ??? I_EndRead ();
+    {
+        auto& file = wadfiles[l->handle];
+        
+        file.seekg(l->position, std::ios::beg);
+        file.read (reinterpret_cast<char*>(dest), l->size);
+        
+        if (!file)
+        {
+            I_Error ("W_ReadLump: only read %i of %i on lump %i", file.gcount(),l->size,lump);
+        }
+    }
 }
 
 
@@ -481,8 +490,6 @@ W_CacheLumpNum
 ( int		lump,
   int		tag )
 {
-    byte*	ptr;
-
     if ((unsigned)lump >= numlumps)
 	I_Error ("W_CacheLumpNum: %i >= numlumps",lump);
 		
@@ -491,7 +498,7 @@ W_CacheLumpNum
 	// read the lump in
 	
 	//printf ("cache miss on lump %i\n",lump);
-	ptr = static_cast<byte*>(malloc (W_LumpLength (lump)));
+	lumpcache[lump] = static_cast<byte*>(malloc (W_LumpLength (lump)));
 	W_ReadLump (lump, lumpcache[lump]);
     }
     else

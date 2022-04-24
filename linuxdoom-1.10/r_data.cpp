@@ -103,9 +103,9 @@ typedef struct
     // Block origin (allways UL),
     // which has allready accounted
     // for the internal origin of the patch.
-    int		originx;	
-    int		originy;
-    int		patch;
+    int32_t		originx;
+    int32_t		originy;
+    int32_t		patch;
 } texpatch_t;
 
 
@@ -449,8 +449,7 @@ void R_InitTextures (void)
     names = static_cast<char*>(W_CacheLumpName ("PNAMES", PU_STATIC));
     nummappatches = LONG ( *((int *)names) );
     name_p = names+4;
-    // JONNY TODO
-    //patchlookup = alloca (nummappatches*sizeof(*patchlookup));
+    patchlookup = static_cast<int*>(alloca (nummappatches*sizeof(*patchlookup)));
     
     for (i=0 ; i<nummappatches ; i++)
     {
