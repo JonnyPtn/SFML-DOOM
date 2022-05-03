@@ -515,15 +515,6 @@ void AM_loadPics(void)
 
 }
 
-void AM_unloadPics(void)
-{
-    int i;
-  
-    for (i=0;i<10;i++)
-	Z_ChangeTag(marknums[i], PU_CACHE);
-
-}
-
 void AM_clearMarks(void)
 {
     int i;
@@ -565,7 +556,6 @@ void AM_Stop (void)
 	// JONNY TODO
     //static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
 
-    AM_unloadPics();
     automapactive = false;
 	// JONNY TODO
     //ST_Responder(&st_notify);

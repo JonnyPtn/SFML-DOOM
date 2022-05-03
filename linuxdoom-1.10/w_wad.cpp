@@ -466,7 +466,6 @@ W_CacheLumpNum
     else
     {
 	//printf ("cache hit on lump %i\n",lump);
-	Z_ChangeTag (lumpcache[lump],tag);
     }
 	
     return lumpcache[lump];

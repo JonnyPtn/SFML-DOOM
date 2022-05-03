@@ -447,7 +447,5 @@ void R_DrawPlanes (void)
 			pl->top[x],
 			pl->bottom[x]);
 	}
-	
-	Z_ChangeTag (ds_source, PU_CACHE);
     }
 }

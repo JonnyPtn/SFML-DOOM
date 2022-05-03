@@ -249,31 +249,6 @@ void Z_CheckHeap (void)
 }
 
 
-
-
-//
-// Z_ChangeTag
-//
-void
-Z_ChangeTag2
-( void*		ptr,
-  int		tag )
-{
-    memblock_t*	block;
-	
-    block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
-
-    if (block->id != ZONEID)
-	I_Error ("Z_ChangeTag: freed a pointer without ZONEID");
-
-    if (tag >= PU_PURGELEVEL && reinterpret_cast<intptr_t>(block->user) < 0x100)
-	I_Error ("Z_ChangeTag: an owner is required for purgable blocks");
-
-    block->tag = tag;
-}
-
-
-
 //
 // freeMemory
 //

@@ -285,10 +285,6 @@ void R_GenerateComposite (int texnum)
 	}
 						
     }
-
-    // Now that the texture has been built in column cache,
-    //  it is purgable from zone memory.
-    Z_ChangeTag (block, PU_CACHE);
 }
 
 
