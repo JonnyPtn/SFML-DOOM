@@ -115,19 +115,14 @@ typedef struct
 // A maptexturedef_t describes a rectangular texture,
 //  which is composed of one or more mappatch_t structures
 //  that arrange graphic patches.
-typedef struct
+struct texture_t
 {
     // Keep name for switch changing, etc.
     char	name[8];		
     short	width;
     short	height;
-    
-    // All the patches[patchcount]
-    //  are drawn back to front into the cached texture.
-    short	patchcount;
-    texpatch_t	patches[1];		
-    
-} texture_t;
+    std::vector<texpatch_t>	patches;
+};
 
 
 
@@ -144,15 +139,15 @@ int		lastspritelump;
 int		numspritelumps;
 
 int		numtextures;
-texture_t**	textures;
+std::vector<texture_t>	textures;
 
 
 int*			texturewidthmask;
 // needed for texture pegging
 fixed_t*		textureheight;		
 int*			texturecompositesize;
-short**			texturecolumnlump;
-unsigned short**	texturecolumnofs;
+std::vector<std::vector<short>>			texturecolumnlump;
+std::vector<std::vector<unsigned short>>	texturecolumnofs;
 byte**			texturecomposite;
 
 // for global animation
@@ -233,33 +228,25 @@ R_DrawColumnInCache
 void R_GenerateComposite (int texnum)
 {
     byte*		block;
-    texture_t*		texture;
-    texpatch_t*		patch;	
     patch_t*		realpatch;
     int			x;
     int			x1;
     int			x2;
     int			i;
     column_t*		patchcol;
-    short*		collump;
-    unsigned short*	colofs;
 	
-    texture = textures[texnum];
+    const auto& texture = textures[texnum];
 
     block = static_cast<byte*>(malloc (texturecompositesize[texnum]));
 
-    collump = texturecolumnlump[texnum];
-    colofs = texturecolumnofs[texnum];
+    const auto& collump = texturecolumnlump[texnum];
+    const auto& colofs = texturecolumnofs[texnum];
     
     // Composite the columns together.
-    patch = texture->patches;
-		
-    for (i=0 , patch = texture->patches;
-	 i<texture->patchcount;
-	 i++, patch++)
+    for (const auto& patch : texture.patches)
     {
-	realpatch = static_cast<patch_t*>(W_CacheLumpNum (patch->patch, PU_CACHE));
-	x1 = patch->originx;
+	realpatch = static_cast<patch_t*>(W_CacheLumpNum (patch.patch, PU_CACHE));
+	x1 = patch.originx;
 	x2 = x1 + SHORT(realpatch->width);
 
 	if (x1<0)
@@ -267,8 +254,8 @@ void R_GenerateComposite (int texnum)
 	else
 	    x = x1;
 	
-	if (x2 > texture->width)
-	    x2 = texture->width;
+	if (x2 > texture.width)
+	    x2 = texture.width;
 
 	for ( ; x<x2 ; x++)
 	{
@@ -280,8 +267,8 @@ void R_GenerateComposite (int texnum)
 				    + LONG(realpatch->columnofs[x-x1]));
 	    R_DrawColumnInCache (patchcol,
 				 block + colofs[x],
-				 patch->originy,
-				 texture->height);
+				 patch.originy,
+				 texture.height);
 	}
 						
     }
@@ -294,40 +281,33 @@ void R_GenerateComposite (int texnum)
 //
 void R_GenerateLookup (int texnum)
 {
-    texture_t*		texture;
     byte*		patchcount;	// patchcount[texture->width]
-    texpatch_t*		patch;	
     patch_t*		realpatch;
     int			x;
     int			x1;
     int			x2;
     int			i;
-    short*		collump;
-    unsigned short*	colofs;
 	
-    texture = textures[texnum];
+    auto& texture = textures[texnum];
 
     // Composited texture not created yet.
     texturecomposite[texnum] = 0;
     
     texturecompositesize[texnum] = 0;
-    collump = texturecolumnlump[texnum];
-    colofs = texturecolumnofs[texnum];
+    auto& collump = texturecolumnlump[texnum];
+    auto& colofs = texturecolumnofs[texnum];
     
     // Now count the number of columns
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = (byte *)alloca (texture->width);
-    memset (patchcount, 0, texture->width);
-    patch = texture->patches;
+    patchcount = (byte *)malloc (texture.width);
+    memset (patchcount, 0, texture.width);
 		
-    for (i=0 , patch = texture->patches;
-	 i<texture->patchcount;
-	 i++, patch++)
+    for (const auto& patch : texture.patches)
     {
-	realpatch = static_cast<patch_t*>(W_CacheLumpNum (patch->patch, PU_CACHE));
-	x1 = patch->originx;
+	realpatch = static_cast<patch_t*>(W_CacheLumpNum (patch.patch, PU_CACHE));
+	x1 = patch.originx;
 	x2 = x1 + SHORT(realpatch->width);
 	
 	if (x1 < 0)
@@ -335,22 +315,22 @@ void R_GenerateLookup (int texnum)
 	else
 	    x = x1;
 
-	if (x2 > texture->width)
-	    x2 = texture->width;
+	if (x2 > texture.width)
+	    x2 = texture.width;
 	for ( ; x<x2 ; x++)
 	{
 	    patchcount[x]++;
-	    collump[x] = patch->patch;
+	    collump[x] = patch.patch;
 	    colofs[x] = LONG(realpatch->columnofs[x-x1])+3;
 	}
     }
 	
-    for (x=0 ; x<texture->width ; x++)
+    for (x=0 ; x<texture.width ; x++)
     {
 	if (!patchcount[x])
 	{
 	    printf ("R_GenerateLookup: column without a patch (%s)\n",
-		    texture->name);
+		    texture.name);
 	    return;
 	}
 	// I_Error ("R_GenerateLookup: column without a patch");
@@ -361,13 +341,13 @@ void R_GenerateLookup (int texnum)
 	    collump[x] = -1;	
 	    colofs[x] = texturecompositesize[texnum];
 	    
-	    if (texturecompositesize[texnum] > 0x10000-texture->height)
+	    if (texturecompositesize[texnum] > 0x10000-texture.height)
 	    {
 		I_Error ("R_GenerateLookup: texture %i is >64k",
 			 texnum);
 	    }
 	    
-	    texturecompositesize[texnum] += texture->height;
+	    texturecompositesize[texnum] += texture.height;
 	}
     }	
 }
@@ -410,7 +390,6 @@ R_GetColumn
 void R_InitTextures (void)
 {
     maptexture_t*	mtexture;
-    texture_t*		texture;
     mappatch_t*		mpatch;
     texpatch_t*		patch;
 
@@ -481,9 +460,9 @@ void R_InitTextures (void)
     }
     numtextures = numtextures1 + numtextures2;
 	
-    textures = static_cast<texture_t**>(malloc (numtextures*4));
-    texturecolumnlump = static_cast<short**>(malloc (numtextures*4));
-    texturecolumnofs = static_cast<unsigned short**>(malloc (numtextures*4));
+    textures.resize(numtextures*4);
+    texturecolumnlump.resize(numtextures*4);
+    texturecolumnofs.resize(numtextures*4);
     texturecomposite = static_cast<byte**>(malloc (numtextures*4));
     texturecompositesize = static_cast<int*>(malloc (numtextures*4));
     texturewidthmask = static_cast<int*>(malloc (numtextures*4));
@@ -523,19 +502,17 @@ void R_InitTextures (void)
 	
 	mtexture = (maptexture_t *) ( (byte *)maptex + offset);
 
-	texture = textures[i] =
-	    static_cast<texture_t*>(malloc (sizeof(texture_t)
-		      + sizeof(texpatch_t)*(SHORT(mtexture->patchcount)-1)));
+    auto& texture = textures[i];
 	
-	texture->width = SHORT(mtexture->width);
-	texture->height = SHORT(mtexture->height);
-	texture->patchcount = SHORT(mtexture->patchcount);
+	texture.width = SHORT(mtexture->width);
+	texture.height = SHORT(mtexture->height);
+	texture.patches.resize(SHORT(mtexture->patchcount));
 
-	memcpy (texture->name, mtexture->name, sizeof(texture->name));
+	memcpy (texture.name, mtexture->name, sizeof(texture.name));
 	mpatch = &mtexture->patches[0];
-	patch = &texture->patches[0];
+	patch = &texture.patches[0];
 
-	for (j=0 ; j<texture->patchcount ; j++, mpatch++, patch++)
+	for (j=0 ; j<texture.patches.size() ; j++, mpatch++, patch++)
 	{
 	    patch->originx = SHORT(mpatch->originx);
 	    patch->originy = SHORT(mpatch->originy);
@@ -543,20 +520,20 @@ void R_InitTextures (void)
 	    if (patch->patch == -1)
 	    {
 		I_Error ("R_InitTextures: Missing patch in texture %s",
-			 texture->name);
+			 texture.name);
 	    }
 	}		
-	texturecolumnlump[i] = static_cast<short*>(malloc (texture->width*2));
-	texturecolumnofs[i] = static_cast<unsigned short*>(malloc (texture->width*2));
+	texturecolumnlump[i].resize(texture.width*2);
+	texturecolumnofs[i].resize(texture.width*2);
 
 	j = 1;
-	while (j*2 <= texture->width)
+	while (j*2 <= texture.width)
 	    j<<=1;
 
 	texturewidthmask[i] = j-1;
-	textureheight[i] = texture->height<<FRACBITS;
+	textureheight[i] = texture.height<<FRACBITS;
 		
-	totalwidth += texture->width;
+	totalwidth += texture.width;
     }
 
     free (maptex1);
@@ -565,7 +542,9 @@ void R_InitTextures (void)
     
     // Precalculate whatever possible.	
     for (i=0 ; i<numtextures ; i++)
-	R_GenerateLookup (i);
+    {
+        R_GenerateLookup (i);
+    }
     
     // Create translation table for global animation.
     texturetranslation = static_cast<int*>(malloc ((numtextures+1)*4));
@@ -703,7 +682,7 @@ int	R_CheckTextureNumForName (char *name)
 	return 0;
 		
     for (i=0 ; i<numtextures ; i++)
-	if (!strncasecmp (textures[i]->name, name, 8) )
+	if (!strncasecmp (textures[i].name, name, 8) )
 	    return i;
 		
     return -1;
@@ -751,8 +730,7 @@ void R_PrecacheLevel (void)
     int			j;
     int			k;
     int			lump;
-    
-    texture_t*		texture;
+
     thinker_t*		th;
     spriteframe_t*	sf;
 
@@ -806,11 +784,11 @@ void R_PrecacheLevel (void)
 	if (!texturepresent[i])
 	    continue;
 
-	texture = textures[i];
+	const auto& texture = textures[i];
 	
-	for (j=0 ; j<texture->patchcount ; j++)
+	for (const auto& patch : texture.patches)
 	{
-	    lump = texture->patches[j].patch;
+	    lump = patch.patch;
 	    texturememory += lumpinfo[lump].size;
 	    W_CacheLumpNum(lump , PU_CACHE);
 	}
