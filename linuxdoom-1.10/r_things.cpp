@@ -88,10 +88,8 @@ short		screenheightarray[SCREENWIDTH];
 
 // variables used to look up
 //  and range check thing_t sprites patches
-spritedef_t*	sprites;
-int		numsprites;
-
-spriteframe_t	sprtemp[29];
+spriteframe_t    sprtemp[29];
+std::vector<spritedef_t>	sprites;
 int		maxframe;
 char*		spritename;
 
@@ -174,9 +172,9 @@ R_InstallSpriteLump
 //  letter/number appended.
 // The rotation character can be 0 to signify no rotations.
 //
-void R_InitSpriteDefs (char** namelist) 
+void R_InitSpriteDefs (const std::array<const std::string,NUMSPRITES>& namelist)
 { 
-    char**	check;
+
     int		i;
     int		l;
     int		intname;
@@ -186,17 +184,7 @@ void R_InitSpriteDefs (char** namelist)
     int		end;
     int		patched;
 		
-    // count the number of sprite names
-    check = namelist;
-    while (*check != NULL)
-	check++;
-
-    numsprites = check-namelist;
-	
-    if (!numsprites)
-	return;
-		
-    sprites = static_cast<spritedef_t*>(malloc(numsprites *sizeof(*sprites)));
+    sprites.resize(namelist.size());
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -204,13 +192,10 @@ void R_InitSpriteDefs (char** namelist)
     // scan all the lump names for each of the names,
     //  noting the highest frame letter.
     // Just compare 4 characters as ints
-    for (i=0 ; i<numsprites ; i++)
+    for(const auto spritename : namelist)
     {
-	spritename = namelist[i];
-	memset (sprtemp,-1, sizeof(sprtemp));
-		
 	maxframe = -1;
-	intname = *(int *)namelist[i];
+	intname = *(int *)&namelist[i];
 	
 	// scan the lumps,
 	//  filling in the frames for whatever is found
@@ -253,7 +238,7 @@ void R_InitSpriteDefs (char** namelist)
 	      case -1:
 		// no rotations were found for that frame at all
 		I_Error ("R_InitSprites: No patches found "
-			 "for %s frame %c", namelist[i], frame+'A');
+			 "for %s frame %c", namelist[i].c_str(), frame+'A');
 		break;
 		
 	      case 0:
@@ -266,7 +251,7 @@ void R_InitSpriteDefs (char** namelist)
 		    if (sprtemp[frame].lump[rotation] == -1)
 			I_Error ("R_InitSprites: Sprite %s frame %c "
 				 "is missing rotations",
-				 namelist[i], frame+'A');
+				 namelist[i].c_str(), frame+'A');
 		break;
 	    }
 	}
@@ -296,13 +281,13 @@ int		newvissprite;
 // R_InitSprites
 // Called at program start.
 //
-void R_InitSprites (char** namelist)
+void R_InitSprites (const std::array<const std::string,NUMSPRITES>& namelist)
 {
     int		i;
 	
     for (i=0 ; i<SCREENWIDTH ; i++)
     {
-	negonearray[i] = -1;
+        negonearray[i] = -1;
     }
 	
     R_InitSpriteDefs (namelist);
@@ -504,7 +489,7 @@ void R_ProjectSprite (mobj_t* thing)
     
     // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-    if ((unsigned)thing->sprite >= numsprites)
+    if ((unsigned)thing->sprite >= sprites.size())
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 thing->sprite);
 #endif
@@ -657,7 +642,7 @@ void R_DrawPSprite (pspdef_t* psp)
     
     // decide which patch to use
 #ifdef RANGECHECK
-    if ( (unsigned)psp->state->sprite >= numsprites)
+    if ( (unsigned)psp->state->sprite >= sprites.size())
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 psp->state->sprite);
 #endif

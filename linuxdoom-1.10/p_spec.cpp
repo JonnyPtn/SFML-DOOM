@@ -52,6 +52,8 @@ rcsid[] = "$Id: p_spec.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 // Data.
 #include "sounds.h"
 
+#include <array>
+
 
 //
 // Animating textures and planes
@@ -98,8 +100,8 @@ extern anim_t*	lastanim;
 //  and end entry, in the order found in
 //  the WAD file.
 //
-animdef_t		animdefs[] =
-{
+const std::array<animdef_t,23>		animdefs =
+{{
     {false,	"NUKAGE3",	"NUKAGE1",	8},
     {false,	"FWATER4",	"FWATER1",	8},
     {false,	"SWATER4",	"SWATER1", 	8},
@@ -127,9 +129,7 @@ animdef_t		animdefs[] =
     {true,	"SFALL4",	"SFALL1",	8},
     {true,	"WFALL4",	"WFALL1",	8},
     {true,	"DBRAIN4",	"DBRAIN1",	8},
-	
-    {-1}
-};
+}};
 
 anim_t		anims[MAXANIMS];
 anim_t*		lastanim;
@@ -149,35 +149,37 @@ void P_InitPicAnims (void)
 {
     //	Init animation
     lastanim = anims;
-    for (auto i=0 ; animdefs[i].istexture != -1 ; i++)
+    for (const auto& animdef : animdefs)
     {
-	if (animdefs[i].istexture)
+	if (animdef.istexture)
 	{
 	    // different episode ?
-	    if (R_CheckTextureNumForName(animdefs[i].startname) == -1)
+	    if (R_CheckTextureNumForName(animdef.startname) == -1)
 		continue;	
 
-	    lastanim->picnum = R_TextureNumForName (animdefs[i].endname);
-	    lastanim->basepic = R_TextureNumForName (animdefs[i].startname);
+	    lastanim->picnum = R_TextureNumForName (animdef.endname);
+	    lastanim->basepic = R_TextureNumForName (animdef.startname);
 	}
 	else
 	{
-	    if (W_CheckNumForName(animdefs[i].startname) == -1)
-		continue;
+	    if (W_CheckNumForName(animdef.startname) == -1)
+        {
+            continue;
+        }
 
-	    lastanim->picnum = R_FlatNumForName (animdefs[i].endname);
-	    lastanim->basepic = R_FlatNumForName (animdefs[i].startname);
+	    lastanim->picnum = R_FlatNumForName (animdef.endname);
+	    lastanim->basepic = R_FlatNumForName (animdef.startname);
 	}
 
-	lastanim->istexture = animdefs[i].istexture;
+	lastanim->istexture = animdef.istexture;
 	lastanim->numpics = lastanim->picnum - lastanim->basepic + 1;
 
 	if (lastanim->numpics < 2)
 	    I_Error ("P_InitPicAnims: bad cycle from %s to %s",
-		     animdefs[i].startname.c_str(),
-		     animdefs[i].endname.c_str());
+		     animdef.startname.c_str(),
+		     animdef.endname.c_str());
 	
-	lastanim->speed = animdefs[i].speed;
+	lastanim->speed = animdef.speed;
 	lastanim++;
     }
 	

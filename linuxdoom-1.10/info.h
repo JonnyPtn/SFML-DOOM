@@ -27,6 +27,8 @@
 // Needed for action function pointer handling.
 #include "d_think.h"
 
+#include <array>
+
 typedef enum
 {
     SPR_TROO,
@@ -1156,7 +1158,7 @@ typedef struct
 } state_t;
 
 extern state_t	states[NUMSTATES];
-extern char *sprnames[NUMSPRITES];
+extern std::array<const std::string,NUMSPRITES> sprnames;
 
 
 
