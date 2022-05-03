@@ -341,7 +341,6 @@ int W_CheckNumForName (const std::string& name)
     std::transform(std::begin(upper_name),std::end(upper_name),std::begin(upper_name),toupper);
     for( auto lump = lumpinfo.rbegin(); lump != lumpinfo.rend(); ++lump)
     {
-        printf("%s\n",lump->name);
         if (lump->name == upper_name)
         {
             return std::distance(lumpinfo.begin(),lump.base()) - 1;
