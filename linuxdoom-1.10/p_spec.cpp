@@ -70,13 +70,13 @@ typedef struct
 //
 //      source animation definition
 //
-typedef struct
+struct animdef_t
 {
     boolean	istexture;	// if false, it is a flat
-    char	endname[9];
-    char	startname[9];
+    std::string	endname;
+    std::string	startname;
     int		speed;
-} animdef_t;
+};
 
 
 
@@ -147,12 +147,9 @@ extern  line_t*	linespeciallist[MAXLINEANIMS];
 
 void P_InitPicAnims (void)
 {
-    int		i;
-
-    
     //	Init animation
     lastanim = anims;
-    for (i=0 ; animdefs[i].istexture != -1 ; i++)
+    for (auto i=0 ; animdefs[i].istexture != -1 ; i++)
     {
 	if (animdefs[i].istexture)
 	{
@@ -177,8 +174,8 @@ void P_InitPicAnims (void)
 
 	if (lastanim->numpics < 2)
 	    I_Error ("P_InitPicAnims: bad cycle from %s to %s",
-		     animdefs[i].startname,
-		     animdefs[i].endname);
+		     animdefs[i].startname.c_str(),
+		     animdefs[i].endname.c_str());
 	
 	lastanim->speed = animdefs[i].speed;
 	lastanim++;

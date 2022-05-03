@@ -118,7 +118,7 @@ typedef struct
 struct texture_t
 {
     // Keep name for switch changing, etc.
-    char	name[8];		
+    std::string	name;		
     short	width;
     short	height;
     std::vector<texpatch_t>	patches;
@@ -330,7 +330,7 @@ void R_GenerateLookup (int texnum)
 	if (!patchcount[x])
 	{
 	    printf ("R_GenerateLookup: column without a patch (%s)\n",
-		    texture.name);
+		    texture.name.c_str());
 	    return;
 	}
 	// I_Error ("R_GenerateLookup: column without a patch");
@@ -508,7 +508,7 @@ void R_InitTextures (void)
 	texture.height = SHORT(mtexture->height);
 	texture.patches.resize(SHORT(mtexture->patchcount));
 
-	memcpy (texture.name, mtexture->name, sizeof(texture.name));
+    texture.name = mtexture->name;
 	mpatch = &mtexture->patches[0];
 	patch = &texture.patches[0];
 
@@ -519,8 +519,7 @@ void R_InitTextures (void)
 	    patch->patch = patchlookup[SHORT(mpatch->patch)];
 	    if (patch->patch == -1)
 	    {
-		I_Error ("R_InitTextures: Missing patch in texture %s",
-			 texture.name);
+            I_Error ("R_InitTextures: Missing patch in texture %s", texture.name.c_str());
 	    }
 	}		
 	texturecolumnlump[i].resize(texture.width*2);
@@ -649,18 +648,14 @@ void R_InitData (void)
 // R_FlatNumForName
 // Retrieval, get a flat number for a flat name.
 //
-int R_FlatNumForName (char* name)
+int R_FlatNumForName (const std::string& name)
 {
     int		i;
-    char	namet[9];
-
     i = W_CheckNumForName (name);
 
     if (i == -1)
     {
-	namet[8] = 0;
-	memcpy (namet, name,8);
-	I_Error ("R_FlatNumForName: %s not found",namet);
+        I_Error ("R_FlatNumForName: %s not found",name.c_str());
     }
     return i - firstflat;
 }
@@ -673,7 +668,7 @@ int R_FlatNumForName (char* name)
 // Check whether texture is available.
 // Filter out NoTexture indicator.
 //
-int	R_CheckTextureNumForName (char *name)
+int	R_CheckTextureNumForName (const std::string& name)
 {
     int		i;
 
@@ -682,7 +677,7 @@ int	R_CheckTextureNumForName (char *name)
 	return 0;
 		
     for (i=0 ; i<numtextures ; i++)
-	if (!strncasecmp (textures[i].name, name, 8) )
+	if (!strncasecmp (textures[i].name.c_str(), name.c_str(), 8) )
 	    return i;
 		
     return -1;
@@ -695,7 +690,7 @@ int	R_CheckTextureNumForName (char *name)
 // Calls R_CheckTextureNumForName,
 //  aborts with error message.
 //
-int	R_TextureNumForName (char* name)
+int	R_TextureNumForName (const std::string& name)
 {
     int		i;
 	
@@ -703,8 +698,7 @@ int	R_TextureNumForName (char* name)
 
     if (i==-1)
     {
-	I_Error ("R_TextureNumForName: %s not found",
-		 name);
+        I_Error ("R_TextureNumForName: %s not found", name.c_str());
     }
     return i;
 }
