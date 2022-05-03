@@ -49,6 +49,8 @@ rcsid[] = "$Id: r_data.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 #include "r_data.h"
 
 #include <stdlib.h>
+#include <vector>
+#include <string>
 
 //
 // Graphics.
@@ -319,8 +321,7 @@ void R_GenerateLookup (int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    // JONNY TODO
-    //patchcount = (byte *)alloca (texture->width);
+    patchcount = (byte *)alloca (texture->width);
     memset (patchcount, 0, texture->width);
     patch = texture->patches;
 		
@@ -427,7 +428,6 @@ void R_InitTextures (void)
     char*		names;
     char*		name_p;
     
-    int*		patchlookup;
     
     int			totalwidth;
     int			nummappatches;
@@ -445,16 +445,20 @@ void R_InitTextures (void)
 
     
     // Load the patch names from pnames.lmp.
-    name[8] = 0;	
     names = static_cast<char*>(W_CacheLumpName ("PNAMES", PU_STATIC));
     nummappatches = LONG ( *((int *)names) );
     name_p = names+4;
-    patchlookup = static_cast<int*>(alloca (nummappatches*sizeof(*patchlookup)));
+    std::vector<int> patchlookup(nummappatches);
     
     for (i=0 ; i<nummappatches ; i++)
     {
-	strncpy (name,name_p+i*8, 8);
-	patchlookup[i] = W_CheckNumForName (name);
+        std::string name(name_p+i*8);
+        if(name.length() > 8)
+        {
+            name = name.substr(0,8);
+        }
+        patchlookup[i] = W_CheckNumForName (name);
+        patchlookup[i] = patchlookup[i];
     }
     free (names);
     
@@ -463,7 +467,7 @@ void R_InitTextures (void)
     //  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
     maptex = maptex1 = static_cast<int*>(W_CacheLumpName ("TEXTURE1", PU_STATIC));
     numtextures1 = LONG(*maptex);
-    maxoff = W_LumpLength (W_GetNumForName ("TEXTURE1"));
+    maxoff = W_LumpLength (W_GetNumForName ({"TEXTURE1"}));
     directory = maptex+1;
 	
     if (W_CheckNumForName ("TEXTURE2") != -1)
@@ -759,8 +763,7 @@ void R_PrecacheLevel (void)
 	return;
     
     // Precache flats.
-    // JONNY TODO 
-    //flatpresent = alloca(numflats);
+    flatpresent = static_cast<char*>(alloca(numflats));
     memset (flatpresent,0,numflats);	
 
     for (i=0 ; i<numsectors ; i++)
@@ -782,8 +785,7 @@ void R_PrecacheLevel (void)
     }
     
     // Precache textures.
-    // JONNY TODO
-    //texturepresent = alloca(numtextures);
+    texturepresent = static_cast<char*>(alloca(numtextures));
     memset (texturepresent,0, numtextures);
 	
     for (i=0 ; i<numsides ; i++)
@@ -818,8 +820,7 @@ void R_PrecacheLevel (void)
     }
     
     // Precache sprites.
-    // JONNY TODO 
-    //spritepresent = alloca(numsprites);
+    spritepresent = static_cast<char*>(alloca(numsprites));
     memset (spritepresent,0, numsprites);
 	
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)

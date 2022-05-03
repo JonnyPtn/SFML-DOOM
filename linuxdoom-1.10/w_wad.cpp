@@ -60,8 +60,7 @@ rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
 //
 
 // Location of each lump on disk.
-lumpinfo_t*		lumpinfo;		
-int			numlumps;
+std::vector<lumpinfo_t> lumpinfo;
 
 void**			lumpcache;
 
@@ -148,7 +147,6 @@ void W_AddFile (const std::filesystem::path& filepath)
     auto filename = filepath.filename();
     
     wadinfo_t		header;
-    lumpinfo_t*		lump_p;
     unsigned		i;
     int			    length;
     int			    startlump;
@@ -162,7 +160,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     {
         filename = filename.string().substr(1);
         reloadpath = filepath;
-        reloadlump = numlumps;
+        reloadlump = lumpinfo.size();
     }
 
     wadfiles.emplace_back(filepath.string(), std::ios::binary);
@@ -174,7 +172,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     }
 
     printf (" adding %s\n",filename.c_str());
-    startlump = numlumps;
+    startlump = lumpinfo.size();
 	
     if (filename.extension() != ".wad")
     {
@@ -183,7 +181,7 @@ void W_AddFile (const std::filesystem::path& filepath)
         singleinfo.filepos = 0;
         singleinfo.size = std::filesystem::file_size(filepath);
         ExtractFileBase (filename.c_str(), singleinfo.name);
-        numlumps++;
+        lumpinfo.emplace_back();
     }
     else 
     {
@@ -205,24 +203,19 @@ void W_AddFile (const std::filesystem::path& filepath)
         fileinfo.resize(header.numlumps);
         wadfiles.back().seekg(header.infotableofs, std::ios::beg);
         wadfiles.back().read(reinterpret_cast<char*>(fileinfo.data()), length);
-        numlumps += header.numlumps;
+        lumpinfo.reserve(lumpinfo.size() + header.numlumps);
     }
 
-    
-    // Fill in lumpinfo
-    lumpinfo = static_cast<lumpinfo_t*>(realloc (lumpinfo, numlumps*sizeof(lumpinfo_t)));
-
-    if (!lumpinfo)
-	I_Error ("Couldn't realloc lumpinfo");
-
-    lump_p = &lumpinfo[startlump];
+    const auto& lump = lumpinfo[startlump];
 	
-    for (int fileinfoindex = 0, i=startlump ; i<numlumps ; i++,lump_p++, fileinfoindex++)
+    for (auto i = 0; i < header.numlumps; ++i)
     {
-        lump_p->handle = reloadpath.empty() ? wadfiles.size() - 1 : -1;
-        lump_p->position = LONG(fileinfo[fileinfoindex].filepos);
-        lump_p->size = LONG(fileinfo[fileinfoindex].size);
-        strncpy (lump_p->name, fileinfo[fileinfoindex].name, 8);
+        const auto fileIndex = reloadpath.empty() ? wadfiles.size() - 1 : -1;
+        lumpinfo.emplace_back();
+        strcpy(lumpinfo.back().name, fileinfo[i].name);
+        lumpinfo.back().handle = fileIndex;
+        lumpinfo.back().position = fileinfo[i].filepos;
+        lumpinfo.back().size = fileinfo[i].size;
     }
 }
 
@@ -298,20 +291,18 @@ void W_InitMultipleFiles (char** filenames)
     int		size;
     
     // open all the files, load headers, and count lumps
-    numlumps = 0;
-
-    // will be realloced as lumps are added
-    // JONNY TODO 
-    //lumpinfo = malloc(1);	
+    lumpinfo.clear();
 
     for ( ; *filenames ; filenames++)
 	W_AddFile (*filenames);
 
-    if (!numlumps)
-	I_Error ("W_InitFiles: no files found");
+    if (lumpinfo.empty())
+    {
+        I_Error ("W_InitFiles: no files found");
+    }
     
     // set up caching
-    size = numlumps * sizeof(*lumpcache);
+    size = lumpinfo.size() * sizeof(*lumpcache);
     lumpcache = static_cast<void**>(malloc (size));
     
     if (!lumpcache)
@@ -339,55 +330,22 @@ void W_InitFile (char* filename)
 
 
 //
-// W_NumLumps
-//
-int W_NumLumps (void)
-{
-    return numlumps;
-}
-
-
-
-//
 // W_CheckNumForName
 // Returns -1 if name not found.
 //
 
-int W_CheckNumForName (char* name)
+int W_CheckNumForName (const std::string& name)
 {
-    union {
-	char	s[9];
-	int	x[2];
-	
-    } name8;
-    
-    int		v1;
-    int		v2;
-    lumpinfo_t*	lump_p;
-
-    // make the name into two integers for easy compares
-    strncpy (name8.s,name,8);
-
-    // in case the name was a fill 8 chars
-    name8.s[8] = 0;
-
-    // case insensitive
-    strupr (name8.s);		
-
-    v1 = name8.x[0];
-    v2 = name8.x[1];
-
-
     // scan backwards so patch lump files take precedence
-    lump_p = lumpinfo + numlumps;
-
-    while (lump_p-- != lumpinfo)
+    auto upper_name = name;
+    std::transform(std::begin(upper_name),std::end(upper_name),std::begin(upper_name),toupper);
+    for( auto lump = lumpinfo.rbegin(); lump != lumpinfo.rend(); ++lump)
     {
-	if ( *(int *)lump_p->name == v1
-	     && *(int *)&lump_p->name[4] == v2)
-	{
-	    return lump_p - lumpinfo;
-	}
+        printf("%s\n",lump->name);
+        if (lump->name == upper_name)
+        {
+            return std::distance(lumpinfo.begin(),lump.base()) - 1;
+        }
     }
 
     // TFB. Not found.
@@ -420,8 +378,10 @@ int W_GetNumForName (char* name)
 //
 int W_LumpLength (int lump)
 {
-    if (lump >= numlumps)
-	I_Error ("W_LumpLength: %i >= numlumps",lump);
+    if (lump >= lumpinfo.size())
+    {
+        I_Error ("W_LumpLength: %i out of bounds",lump);
+    }
 
     return lumpinfo[lump].size;
 }
@@ -438,16 +398,17 @@ W_ReadLump
 ( int		lump,
   void*		dest )
 {
-    lumpinfo_t*	l;
 	
-    if (lump >= numlumps)
-	I_Error ("W_ReadLump: %i >= numlumps",lump);
+    if (lump >= lumpinfo.size())
+    {
+        I_Error ("W_ReadLump: %i out of bounds",lump);
+    }
 
-    l = lumpinfo+lump;
+    const auto& l = lumpinfo[lump];
 	
     // ??? I_BeginRead ();
 	
-    if (l->handle == -1)
+    if (l.handle == -1)
     {
         // reloadable file, so use open / read / close
         if (std::ifstream file{reloadpath.c_str(), std::ios::binary}; !file.is_open())
@@ -456,25 +417,25 @@ W_ReadLump
         }
         else
         {
-            file.seekg(l->position, std::ios::beg);
-            file.read (reinterpret_cast<char*>(dest), l->size);
+            file.seekg(l.position, std::ios::beg);
+            file.read (reinterpret_cast<char*>(dest), l.size);
             
             if (!file)
             {
-                I_Error ("W_ReadLump: only read %i of %i on lump %i", file.gcount(),l->size,lump);
+                I_Error ("W_ReadLump: only read %i of %i on lump %i", file.gcount(),l.size,lump);
             }
         }
     }
     else
     {
-        auto& file = wadfiles[l->handle];
+        auto& file = wadfiles[l.handle];
         
-        file.seekg(l->position, std::ios::beg);
-        file.read (reinterpret_cast<char*>(dest), l->size);
+        file.seekg(l.position, std::ios::beg);
+        file.read (reinterpret_cast<char*>(dest), l.size);
         
         if (!file)
         {
-            I_Error ("W_ReadLump: only read %i of %i on lump %i", file.gcount(),l->size,lump);
+            I_Error ("W_ReadLump: only read %i of %i on lump %i", file.gcount(),l.size,lump);
         }
     }
 }
@@ -487,11 +448,13 @@ W_ReadLump
 //
 void*
 W_CacheLumpNum
-( int		lump,
+( uint32_t		lump,
   int		tag )
 {
-    if ((unsigned)lump >= numlumps)
-	I_Error ("W_CacheLumpNum: %i >= numlumps",lump);
+    if (lump >= lumpinfo.size())
+    {
+        I_Error ("W_CacheLumpNum: %i out of bounds",lump);
+    }
 		
     if (!lumpcache[lump])
     {
@@ -541,7 +504,7 @@ void W_Profile (void)
     char	name[9];
 	
 	
-    for (i=0 ; i<numlumps ; i++)
+    for (i=0 ; i<lumpinfo.size() ; i++)
     {	
 	ptr = lumpcache[i];
 	if (!ptr)
@@ -564,7 +527,7 @@ void W_Profile (void)
     f = fopen ("waddump.txt","w");
     name[8] = 0;
 
-    for (i=0 ; i<numlumps ; i++)
+    for (i=0 ; i<lumpinfo.size() ; i++)
     {
 	memcpy (name,lumpinfo[i].name,8);
 

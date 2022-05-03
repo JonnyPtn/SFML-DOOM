@@ -222,7 +222,7 @@ void R_InitSpriteDefs (char** namelist)
 		rotation = lumpinfo[l].name[5] - '0';
 
 		if (modifiedgame)
-		    patched = W_GetNumForName (lumpinfo[l].name);
+            patched = W_GetNumForName (lumpinfo[l].name);
 		else
 		    patched = l;
 

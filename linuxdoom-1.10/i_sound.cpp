@@ -55,6 +55,8 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 
 #include "doomdef.h"
 
+#include <string>
+
 // UNIX hack, to be removed.
 #ifdef SNDSERV
 // Separate sound server process.
@@ -207,7 +209,7 @@ getsfx
     // I do not do runtime patches to that
     //  variable. Instead, we will use a
     //  default sound for replacement.
-    if ( W_CheckNumForName(name) == -1 )
+    if ( W_CheckNumForName({name}) == -1 )
       sfxlump = W_GetNumForName("dspistol");
     else
       sfxlump = W_GetNumForName(name);

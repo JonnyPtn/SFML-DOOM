@@ -28,6 +28,8 @@
 #pragma interface
 #endif
 
+#include <vector>
+
 
 //
 // TYPES
@@ -53,29 +55,28 @@ typedef struct
 //
 // WADFILE I/O related stuff.
 //
-typedef struct
+struct lumpinfo_t
 {
     char	    name[8];
     int32_t		handle;
     int32_t		position;
     int32_t		size;
-} lumpinfo_t;
+};
 
 
 extern	void**		lumpcache;
-extern	lumpinfo_t*	lumpinfo;
-extern	int		numlumps;
+extern	std::vector<lumpinfo_t>	lumpinfo;
 
 void    W_InitMultipleFiles (char** filenames);
 void    W_Reload (void);
 
-int	W_CheckNumForName (char* name);
+int	W_CheckNumForName (const std::string& name);
 int	W_GetNumForName (char* name);
 
 int	W_LumpLength (int lump);
 void    W_ReadLump (int lump, void *dest);
 
-void*	W_CacheLumpNum (int lump, int tag);
+void*	W_CacheLumpNum (uint32_t lump, int tag);
 void*	W_CacheLumpName (char* name, int tag);
 
 
