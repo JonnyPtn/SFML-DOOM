@@ -429,7 +429,7 @@ typedef struct
     // If false use 0 for any position.
     // Note: as eight entries are available,
     //  we might as well insert the same name eight times.
-    boolean	rotate;
+    int32_t	rotate;
 
     // Lump to use for view angles 0-7.
     short	lump[8];
@@ -445,12 +445,7 @@ typedef struct
 // A sprite definition:
 //  a number of animation frames.
 //
-typedef struct
-{
-    int			numframes;
-    spriteframe_t*	spriteframes;
-
-} spritedef_t;
+using spritedef_t = std::vector<spriteframe_t>;
 
 
 

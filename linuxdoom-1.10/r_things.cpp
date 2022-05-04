@@ -88,10 +88,8 @@ short		screenheightarray[SCREENWIDTH];
 
 // variables used to look up
 //  and range check thing_t sprites patches
-spriteframe_t    sprtemp[29];
 std::vector<spritedef_t>	sprites;
-int		maxframe;
-char*		spritename;
+const char*		spritename;
 
 
 
@@ -100,58 +98,42 @@ char*		spritename;
 // R_InstallSpriteLump
 // Local function for R_InitSprites.
 //
-void
+spriteframe_t
 R_InstallSpriteLump
 ( int		lump,
-  unsigned	frame,
+  unsigned  frame,
   unsigned	rotation,
   boolean	flipped )
 {
-    int		r;
+    spriteframe_t sprframe{};
 	
-    if (frame >= 29 || rotation > 8)
-	I_Error("R_InstallSpriteLump: "
-		"Bad frame characters in lump %i", lump);
-	
-    if ((int)frame > maxframe)
-	maxframe = frame;
-		
-    if (rotation == 0)
+    if (rotation > 8)
     {
-	// the lump should be used for all rotations
-	if (sprtemp[frame].rotate == false)
-	    I_Error ("R_InitSprites: Sprite %s frame %c has "
-		     "multip rot=0 lump", spritename, 'A'+frame);
-
-	if (sprtemp[frame].rotate == true)
-	    I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
-		     "and a rot=0 lump", spritename, 'A'+frame);
-			
-	sprtemp[frame].rotate = false;
-	for (r=0 ; r<8 ; r++)
-	{
-	    sprtemp[frame].lump[r] = lump - firstspritelump;
-	    sprtemp[frame].flip[r] = (byte)flipped;
-	}
-	return;
+        I_Error("R_InstallSpriteLump: Bad frame characters in lump %i", lump);
     }
-	
-    // the lump is only used for one rotation
-    if (sprtemp[frame].rotate == false)
-	I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
-		 "and a rot=0 lump", spritename, 'A'+frame);
+    else if (rotation == 0)
+    {
+        sprframe.rotate = false;
+			
+        for (auto r=0 ; r<8 ; r++)
+        {
+            sprframe.lump[r] = lump - firstspritelump;
+            sprframe.flip[r] = (byte)flipped;
+        }
+        return;
+    }
 		
-    sprtemp[frame].rotate = true;
+    sprframe.rotate = true;
 
     // make 0 based
     rotation--;		
-    if (sprtemp[frame].lump[rotation] != -1)
-	I_Error ("R_InitSprites: Sprite %s : %c : %c "
-		 "has two lumps mapped to it",
-		 spritename, 'A'+frame, '1'+rotation);
+    if (sprframe.lump[rotation] != 0)
+    {
+        I_Error ("R_InitSprites: Sprite %s : %c : %c has two lumps mapped to it", spritename, 'A'+frame, '1'+rotation);
+    }
 		
-    sprtemp[frame].lump[rotation] = lump - firstspritelump;
-    sprtemp[frame].flip[rotation] = (byte)flipped;
+    sprframe.lump[rotation] = lump - firstspritelump;
+    sprframe.flip[rotation] = (byte)flipped;
 }
 
 
@@ -173,13 +155,8 @@ R_InstallSpriteLump
 // The rotation character can be 0 to signify no rotations.
 //
 void R_InitSpriteDefs (const std::array<const std::string,NUMSPRITES>& namelist)
-{ 
-
+{
     int		i;
-    int		l;
-    int		intname;
-    int		frame;
-    int		rotation;
     int		start;
     int		end;
     int		patched;
@@ -191,78 +168,70 @@ void R_InitSpriteDefs (const std::array<const std::string,NUMSPRITES>& namelist)
 	
     // scan all the lump names for each of the names,
     //  noting the highest frame letter.
-    // Just compare 4 characters as ints
-    for(const auto spritename : namelist)
+    for(auto i = 0; i < namelist.size(); ++i)
     {
-	maxframe = -1;
-	intname = *(int *)&namelist[i];
-	
-	// scan the lumps,
-	//  filling in the frames for whatever is found
-	for (l=start+1 ; l<end ; l++)
-	{
-	    if (*(int *)lumpinfo[l].name == intname)
-	    {
-		frame = lumpinfo[l].name[4] - 'A';
-		rotation = lumpinfo[l].name[5] - '0';
+        spritename = namelist[i].c_str();
+        
+        // scan the lumps,
+        //  filling in the frames for whatever is found
+        for(auto l = start + 1; l < end; ++l)
+        {
+            // Just compare 4 characters
+            if (std::string(lumpinfo[l].name).substr(0,4) == spritename)
+            {
+                const auto frame = lumpinfo[l].name[4] - 'A';
+                const auto rotation = lumpinfo[l].name[5] - '0';
 
-		if (modifiedgame)
-            patched = W_GetNumForName (lumpinfo[l].name);
-		else
-		    patched = l;
+                if (modifiedgame)
+                    patched = W_GetNumForName (lumpinfo[l].name);
+                else
+                    patched = l;
 
-		R_InstallSpriteLump (patched, frame, rotation, false);
+                if (frame >= sprites[i].size())
+                {
+                    sprites[i].resize(frame + 1);
+                }
+                sprites[i][frame] = R_InstallSpriteLump (patched, frame, rotation, false);
 
-		if (lumpinfo[l].name[6])
-		{
-		    frame = lumpinfo[l].name[6] - 'A';
-		    rotation = lumpinfo[l].name[7] - '0';
-		    R_InstallSpriteLump (l, frame, rotation, true);
-		}
-	    }
-	}
-	
-	// check the frames that were found for completeness
-	if (maxframe == -1)
-	{
-	    sprites[i].numframes = 0;
-	    continue;
-	}
-		
-	maxframe++;
-	
-	for (frame = 0 ; frame < maxframe ; frame++)
-	{
-	    switch ((int)sprtemp[frame].rotate)
-	    {
-	      case -1:
-		// no rotations were found for that frame at all
-		I_Error ("R_InitSprites: No patches found "
-			 "for %s frame %c", namelist[i].c_str(), frame+'A');
-		break;
-		
-	      case 0:
-		// only the first rotation is needed
-		break;
-			
-	      case 1:
-		// must have all 8 frames
-		for (rotation=0 ; rotation<8 ; rotation++)
-		    if (sprtemp[frame].lump[rotation] == -1)
-			I_Error ("R_InitSprites: Sprite %s frame %c "
-				 "is missing rotations",
-				 namelist[i].c_str(), frame+'A');
-		break;
-	    }
-	}
-	
-	// allocate space for the frames present and copy sprtemp to it
-	sprites[i].numframes = maxframe;
-	sprites[i].spriteframes = 
-	    static_cast<spriteframe_t*>(malloc (maxframe * sizeof(spriteframe_t)));
-	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
+                if (lumpinfo[l].name[6])
+                {
+                    const auto frame = lumpinfo[l].name[6] - 'A';
+                    const auto rotation = lumpinfo[l].name[7] - '0';
+                    if (frame >= sprites[i].size())
+                    {
+                        sprites.resize(frame + 1);
+                    }
+                    sprites[i][frame] = R_InstallSpriteLump (l, frame, rotation, true);
+                }
+            }
+        }
+            
+        
+        for (auto frame = 0; frame < sprites[i].size(); ++frame)
+        {
+            switch (sprites[i][frame].rotate)
+            {
+              case -1:
+            // no rotations were found for that frame at all
+            I_Error ("R_InitSprites: No patches found "
+                 "for %s frame %c", namelist[i].c_str(), frame+'A');
+            break;
+            
+              case 0:
+            // only the first rotation is needed
+            break;
+                
+              case 1:
+            // must have all 8 frames
+            for (auto rotation=0 ; rotation<8 ; rotation++)
+                if (sprites[i][frame].lump[rotation] == -1)
+                I_Error ("R_InitSprites: Sprite %s frame %c "
+                     "is missing rotations",
+                     namelist[i].c_str(), frame+'A');
+            break;
+            }
+        }
     }
-
 }
 
 
@@ -495,11 +464,11 @@ void R_ProjectSprite (mobj_t* thing)
 #endif
     sprdef = &sprites[thing->sprite];
 #ifdef RANGECHECK
-    if ( (thing->frame&FF_FRAMEMASK) >= sprdef->numframes )
+    if ( (thing->frame&FF_FRAMEMASK) >= sprdef->size() )
 	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
 		 thing->sprite, thing->frame);
 #endif
-    sprframe = &sprdef->spriteframes[ thing->frame & FF_FRAMEMASK];
+    sprframe = &(*sprdef)[ thing->frame & FF_FRAMEMASK];
 
     if (sprframe->rotate)
     {
@@ -648,11 +617,11 @@ void R_DrawPSprite (pspdef_t* psp)
 #endif
     sprdef = &sprites[psp->state->sprite];
 #ifdef RANGECHECK
-    if ( (psp->state->frame & FF_FRAMEMASK)  >= sprdef->numframes)
+    if ( (psp->state->frame & FF_FRAMEMASK)  >= sprdef->size())
 	I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
 		 psp->state->sprite, psp->state->frame);
 #endif
-    sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
+    sprframe = &(*sprdef)[ psp->state->frame & FF_FRAMEMASK ];
 
     lump = sprframe->lump[0];
     flip = (boolean)sprframe->flip[0];
