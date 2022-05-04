@@ -53,7 +53,6 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 sf::RenderWindow	mainWindow;
 int			        screen;
-sf::Image	        image;
 sf::Texture         texture;
 sf::Sprite          sprite;
 int			        width;
@@ -376,8 +375,8 @@ void I_InitGraphics(void)
     mainWindow.setMouseCursorVisible(false);
 	mainWindow.setMouseCursorGrabbed(grabMouse);
 
-	image.create(width*multiply,height*multiply);
-    texture.create(width*multiply,height*multiply);
+    texture.create(SCREENWIDTH,SCREENHEIGHT);
+    sprite.setScale(multiply, multiply);
     screens[0] = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
 }
 
