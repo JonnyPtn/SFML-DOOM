@@ -62,9 +62,9 @@ rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
 // Location of each lump on disk.
 std::vector<lumpinfo_t> lumpinfo;
 
-void**			lumpcache;
+std::vector<void*> lumpcache;
 
-static std::vector<std::ifstream> wadfiles;
+std::vector<std::ifstream> wadfiles;
 
 
 #define strcmpi	strcasecmp
@@ -287,9 +287,7 @@ void W_Reload (void)
 //  does override all earlier ones.
 //
 void W_InitMultipleFiles (char** filenames)
-{	
-    int		size;
-    
+{
     // open all the files, load headers, and count lumps
     lumpinfo.clear();
 
@@ -302,13 +300,7 @@ void W_InitMultipleFiles (char** filenames)
     }
     
     // set up caching
-    size = lumpinfo.size() * sizeof(*lumpcache);
-    lumpcache = static_cast<void**>(malloc (size));
-    
-    if (!lumpcache)
-	I_Error ("Couldn't allocate lumpcache");
-
-    memset (lumpcache,0, size);
+    lumpcache.resize(lumpinfo.size());
 }
 
 
@@ -457,15 +449,16 @@ W_CacheLumpNum
 		
     if (!lumpcache[lump])
     {
-	// read the lump in
-	
-	//printf ("cache miss on lump %i\n",lump);
-	lumpcache[lump] = static_cast<byte*>(malloc (W_LumpLength (lump)));
-	W_ReadLump (lump, lumpcache[lump]);
+        // read the lump in
+        
+        //printf ("cache miss on lump %i\n",lump);
+        const auto size = W_LumpLength(lump);
+        lumpcache[lump] = static_cast<void*>(malloc (size));
+        W_ReadLump (lump, lumpcache[lump]);
     }
     else
     {
-	//printf ("cache hit on lump %i\n",lump);
+        //printf ("cache hit on lump %i\n",lump);
     }
 	
     return lumpcache[lump];

@@ -873,6 +873,7 @@ void R_RenderPlayerView (player_t* player)
 
     // Clear buffers.
     R_ClearClipSegs ();
+    
     R_ClearDrawSegs ();
     R_ClearPlanes ();
     R_ClearSprites ();

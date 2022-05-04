@@ -120,7 +120,7 @@ R_InstallSpriteLump
             sprframe.lump[r] = lump - firstspritelump;
             sprframe.flip[r] = (byte)flipped;
         }
-        return;
+        return sprframe;
     }
 		
     sprframe.rotate = true;
@@ -134,6 +134,7 @@ R_InstallSpriteLump
 		
     sprframe.lump[rotation] = lump - firstspritelump;
     sprframe.flip[rotation] = (byte)flipped;
+    return sprframe;
 }
 
 
