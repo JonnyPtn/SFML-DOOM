@@ -345,8 +345,6 @@ void P_LoadThings (int lump)
 	
 	P_SpawnMapThing (mt);
     }
-	
-    free (data);
 }
 
 
