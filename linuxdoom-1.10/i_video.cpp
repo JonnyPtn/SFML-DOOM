@@ -29,12 +29,6 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
-// Had to dig up XShm.c for this one.
-// It is in the libXext, but not in the XFree86 headers.
-#ifdef LINUX
-int XShmGetEventBase( Display* dpy ); // problems with g++?
-#endif
-
 #include <stdarg.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -57,15 +51,13 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 #define POINTER_WARP_COUNTDOWN	1
 
-sf::Window	mainWindow;
-sf::Event	event;
-int			screen;
-sf::Image	image;
-int			width;
-int			height;
-
-// MIT SHared Memory extension.
-boolean		doShm;
+sf::RenderWindow	mainWindow;
+int			        screen;
+sf::Image	        image;
+sf::Texture         texture;
+sf::Sprite          sprite;
+int			        width;
+int			        height;
 
 // Fake mouse handling.
 // This cannot work properly w/o DGA.
@@ -238,6 +230,27 @@ void I_UpdateNoBlit (void)
 }
 
 //
+// Palette stuff.
+//
+static std::array<sf::Color,256>    colours;
+
+//
+// I_SetPalette
+//
+void I_SetPalette (byte* palette)
+{
+    for (int i=0 ; i<256 ; i++)
+    {
+        auto c = gammatable[usegamma][*palette++];
+        colours[i].r = (c<<8) + c;
+        c = gammatable[usegamma][*palette++];
+        colours[i].g = (c<<8) + c;
+        c = gammatable[usegamma][*palette++];
+        colours[i].b = (c<<8) + c;
+    }
+}
+
+//
 // I_FinishUpdate
 //
 void I_FinishUpdate (void)
@@ -264,158 +277,21 @@ void I_FinishUpdate (void)
     
     }
 
-    // scales the screen size before blitting it
-    if (multiply == 2)
+    sf::Uint8 colouredPixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
+    for (int i = 0; i < SCREENHEIGHT*SCREENWIDTH; i++)
     {
-	unsigned int *olineptrs[2];
-	unsigned int *ilineptr;
-	int x, y, i;
-	unsigned int twoopixels;
-	unsigned int twomoreopixels;
-	unsigned int fouripixels;
-
-	ilineptr = (unsigned int *) (screens[0]);
-
-	// TODO JONNY
-	//for (i=0 ; i<2 ; i++)
-	//    olineptrs[i] = (unsigned int *) &image->data[i*X_width];
-
-	y = SCREENHEIGHT;
-	while (y--)
-	{
-	    x = SCREENWIDTH;
-	    do
-	    {
-		fouripixels = *ilineptr++;
-		twoopixels =	(fouripixels & 0xff000000)
-		    |	((fouripixels>>8) & 0xffff00)
-		    |	((fouripixels>>16) & 0xff);
-		twomoreopixels =	((fouripixels<<16) & 0xff000000)
-		    |	((fouripixels<<8) & 0xffff00)
-		    |	(fouripixels & 0xff);
-#ifdef __BIG_ENDIAN__
-		*olineptrs[0]++ = twoopixels;
-		*olineptrs[1]++ = twoopixels;
-		*olineptrs[0]++ = twomoreopixels;
-		*olineptrs[1]++ = twomoreopixels;
-#else
-		*olineptrs[0]++ = twomoreopixels;
-		*olineptrs[1]++ = twomoreopixels;
-		*olineptrs[0]++ = twoopixels;
-		*olineptrs[1]++ = twoopixels;
-#endif
-	    } while (x-=4);
-	    olineptrs[0] += width/4;
-	    olineptrs[1] += width/4;
-	}
-
+        colouredPixels[i * 4] = colours[screens[0][i]].r;
+        colouredPixels[i * 4 + 1] = colours[screens[0][i]].g;
+        colouredPixels[i * 4 + 2] = colours[screens[0][i]].b;
+        colouredPixels[i * 4 + 3] = 255;
     }
-    else if (multiply == 3)
-    {
-	unsigned int *olineptrs[3];
-	unsigned int *ilineptr;
-	int x, y, i;
-	unsigned int fouropixels[3];
-	unsigned int fouripixels;
-
-	ilineptr = (unsigned int *) (screens[0]);
-
-	// JONNY TODO
-	//for (i=0 ; i<3 ; i++)
-	//    olineptrs[i] = (unsigned int *) &image->data[i*X_width];
-
-	y = SCREENHEIGHT;
-	while (y--)
-	{
-	    x = SCREENWIDTH;
-	    do
-	    {
-		fouripixels = *ilineptr++;
-		fouropixels[0] = (fouripixels & 0xff000000)
-		    |	((fouripixels>>8) & 0xff0000)
-		    |	((fouripixels>>16) & 0xffff);
-		fouropixels[1] = ((fouripixels<<8) & 0xff000000)
-		    |	(fouripixels & 0xffff00)
-		    |	((fouripixels>>8) & 0xff);
-		fouropixels[2] = ((fouripixels<<16) & 0xffff0000)
-		    |	((fouripixels<<8) & 0xff00)
-		    |	(fouripixels & 0xff);
-#ifdef __BIG_ENDIAN__
-		*olineptrs[0]++ = fouropixels[0];
-		*olineptrs[1]++ = fouropixels[0];
-		*olineptrs[2]++ = fouropixels[0];
-		*olineptrs[0]++ = fouropixels[1];
-		*olineptrs[1]++ = fouropixels[1];
-		*olineptrs[2]++ = fouropixels[1];
-		*olineptrs[0]++ = fouropixels[2];
-		*olineptrs[1]++ = fouropixels[2];
-		*olineptrs[2]++ = fouropixels[2];
-#else
-		*olineptrs[0]++ = fouropixels[2];
-		*olineptrs[1]++ = fouropixels[2];
-		*olineptrs[2]++ = fouropixels[2];
-		*olineptrs[0]++ = fouropixels[1];
-		*olineptrs[1]++ = fouropixels[1];
-		*olineptrs[2]++ = fouropixels[1];
-		*olineptrs[0]++ = fouropixels[0];
-		*olineptrs[1]++ = fouropixels[0];
-		*olineptrs[2]++ = fouropixels[0];
-#endif
-	    } while (x-=4);
-	    olineptrs[0] += 2*width/4;
-	    olineptrs[1] += 2*width/4;
-	    olineptrs[2] += 2*width/4;
-	}
-
-    }
-    else if (multiply == 4)
-    {
-	// Broken. Gotta fix this some day.
-	// TODO JONNY
-	// void Expand4(unsigned *, double *);
-  	// Expand4 ((unsigned *)(screens[0]), (double *) (image->data));
-    }
-
-    if (doShm)
-    {
-
-	// TODO JONNY
-	//if (!XShmPutImage(	X_display,
-	//			mainWindow,
-	//			X_gc,
-	//			image,
-	//			0, 0,
-	//			0, 0,
-	//			X_width, X_height,
-	//			True ))
-	//    I_Error("XShmPutImage() failed\n");
-
-	// wait for it to finish and processes all input events
-	shmFinished = false;
-	do
-	{
-	    I_GetEvent();
-	} while (!shmFinished);
-
-    }
-    else
-    {
-
-	// draw the image
-	// TODO JONNY
-	//XPutImage(	X_display,
-	//		mainWindow,
-	//		X_gc,
-	//		image,
-	//		0, 0,
-	//		0, 0,
-	//		X_width, X_height );
-//
-	//// sync up with server
-	//XSync(X_display, False);
-
-    }
-
+    
+    texture.update(colouredPixels);
+    sprite.setTexture(texture);
+    
+    mainWindow.clear();
+    mainWindow.draw(sprite);
+    mainWindow.display();
 }
 
 
@@ -425,63 +301,6 @@ void I_FinishUpdate (void)
 void I_ReadScreen (byte* scr)
 {
     memcpy (scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
-}
-
-
-//
-// Palette stuff.
-//
-static sf::Color	colors[256];
-
-// JONNY TODO
-//void UploadNewPalette(Colormap cmap, byte *palette)
-//{
-//
-//    register int	i;
-//    register int	c;
-//    static boolean	firstcall = true;
-//
-//#ifdef __cplusplus
-//    if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
-//#else
-//    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
-//#endif
-//	{
-//	    // initialize the colormap
-//	    if (firstcall)
-//	    {
-//		firstcall = false;
-//		for (i=0 ; i<256 ; i++)
-//		{
-//		    colors[i].pixel = i;
-//		    colors[i].flags = DoRed|DoGreen|DoBlue;
-//		}
-//	    }
-//
-//	    // set the X colormap entries
-//	    for (i=0 ; i<256 ; i++)
-//	    {
-//		c = gammatable[usegamma][*palette++];
-//		colors[i].red = (c<<8) + c;
-//		c = gammatable[usegamma][*palette++];
-//		colors[i].green = (c<<8) + c;
-//		c = gammatable[usegamma][*palette++];
-//		colors[i].blue = (c<<8) + c;
-//	    }
-//
-//	    // store the colors to the current colormap
-//	    XStoreColors(X_display, cmap, colors, 256);
-//
-//	}
-//}
-
-//
-// I_SetPalette
-//
-// JONNY TODO
-void I_SetPalette (byte* palette)
-{
-//    UploadNewPalette(X_cmap, palette);
 }
 
 
@@ -551,23 +370,15 @@ void I_InitGraphics(void)
     }
 
     // open the window
-    mainWindow.create({width,height},displayname);
+    mainWindow.create({width,height},displayname, sf::Style::Titlebar);
+    mainWindow.setFramerateLimit(TICRATE);
 
-	// TODO JONNY
-    //XDefineCursor(X_display, mainWindow,
-	//	  createnullcursor( X_display, mainWindow ) );
-
+    mainWindow.setMouseCursorVisible(false);
 	mainWindow.setMouseCursorGrabbed(grabMouse);
 
-	image.create(width,height);
-
-
-	// JONNY TODO
-    //if (multiply == 1)
-	//screens[0] = (unsigned char *) (image->data);
-    //else
-	//screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
-
+	image.create(width*multiply,height*multiply);
+    texture.create(width*multiply,height*multiply);
+    screens[0] = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
 }
 
 

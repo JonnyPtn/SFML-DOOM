@@ -4,7 +4,7 @@ project(sfml-doom)
 
 file(GLOB SOURCE CONFIGURE_DEPENDS linuxdoom-1.10/*.c linuxdoom-1.10/*.cpp linuxdoom-1.10/*.h)
 
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCE})
+add_executable(${CMAKE_PROJECT_NAME} MACOSX_BUNDLE ${SOURCE})
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
 
 include(FetchContent)
