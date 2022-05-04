@@ -1343,7 +1343,7 @@ M_WriteText
 //
 boolean M_Responder (const sf::Event& ev)
 {
-    int             ch;
+    sf::Keyboard::Key   key{sf::Keyboard::Key::Unknown};
     int             i;
     static  int     joywait = 0;
     static  int     mousewait = 0;
@@ -1352,7 +1352,6 @@ boolean M_Responder (const sf::Event& ev)
     static  int     mousex = 0;
     static  int     lastx = 0;
 	
-    ch = -1;
 	/* TODO JONNY
     if (ev->type == ev_joystick && joywait < I_GetTime())
     {
@@ -1439,17 +1438,27 @@ boolean M_Responder (const sf::Event& ev)
 		ch = ev->data1;
 	    }
     }
+     */
     
-    if (ch == -1)*/
-	return false;
+    switch(ev.type)
+    {
+        case sf::Event::KeyPressed:
+        {
+            key = ev.key.code;
+            break;
+        }
+    }
+    
+    if (key == sf::Keyboard::Key::Unknown)
+        return false;
 
     
     // Save Game string input
     if (saveStringEnter)
     {
-	switch(ch)
+	switch(key)
 	{
-	  case KEY_BACKSPACE:
+        case sf::Keyboard::Key::Backspace:
 	    if (saveCharIndex > 0)
 	    {
 		saveCharIndex--;
@@ -1457,53 +1466,55 @@ boolean M_Responder (const sf::Event& ev)
 	    }
 	    break;
 				
-	  case KEY_ESCAPE:
+        case sf::Keyboard::Key::Escape:
 	    saveStringEnter = 0;
 	    strcpy(&savegamestrings[saveSlot][0],saveOldString);
 	    break;
 				
-	  case KEY_ENTER:
+        case sf::Keyboard::Key::Enter:
 	    saveStringEnter = 0;
 	    if (savegamestrings[saveSlot][0])
 		M_DoSave(saveSlot);
 	    break;
 				
 	  default:
-	    ch = toupper(ch);
-	    if (ch != 32)
-		if (ch-HU_FONTSTART < 0 || ch-HU_FONTSTART >= HU_FONTSIZE)
-		    break;
-	    if (ch >= 32 && ch <= 127 &&
-		saveCharIndex < SAVESTRINGSIZE-1 &&
-		M_StringWidth(savegamestrings[saveSlot]) <
-		(SAVESTRINGSIZE-2)*8)
-	    {
-		savegamestrings[saveSlot][saveCharIndex++] = ch;
-		savegamestrings[saveSlot][saveCharIndex] = 0;
-	    }
+        // JONNY TODO
+//	    ch = toupper(ch);
+//	    if (ch != 32)
+//		if (ch-HU_FONTSTART < 0 || ch-HU_FONTSTART >= HU_FONTSIZE)
+//		    break;
+//	    if (ch >= 32 && ch <= 127 &&
+//		saveCharIndex < SAVESTRINGSIZE-1 &&
+//		M_StringWidth(savegamestrings[saveSlot]) <
+//		(SAVESTRINGSIZE-2)*8)
+//	    {
+//		savegamestrings[saveSlot][saveCharIndex++] = ch;
+//		savegamestrings[saveSlot][saveCharIndex] = 0;
+//	    }
 	    break;
 	}
 	return true;
     }
     
     // Take care of any messages that need input
-    if (messageToPrint)
-    {
-	if (messageNeedsInput == true &&
-	    !(ch == ' ' || ch == 'n' || ch == 'y' || ch == KEY_ESCAPE))
-	    return false;
-		
-	menuactive = messageLastMenuActive;
-	messageToPrint = 0;
-	if (messageRoutine)
-	    messageRoutine(ch);
-			
-	menuactive = false;
-	S_StartSound(NULL,sfx_swtchx);
-	return true;
-    }
+    // JONNY TODO
+//    if (messageToPrint)
+//    {
+//	if (messageNeedsInput == true &&
+//	    !(ch == ' ' || ch == 'n' || ch == 'y' || ch == KEY_ESCAPE))
+//	    return false;
+//
+//	menuactive = messageLastMenuActive;
+//	messageToPrint = 0;
+//	if (messageRoutine)
+//	    messageRoutine(ch);
+//
+//	menuactive = false;
+//	S_StartSound(NULL,sfx_swtchx);
+//	return true;
+//    }
 	
-    if (devparm && ch == KEY_F1)
+    if (devparm && key == sf::Keyboard::Key::F1)
     {
 	G_ScreenShot ();
 	return true;
@@ -1512,23 +1523,23 @@ boolean M_Responder (const sf::Event& ev)
     
     // F-Keys
     if (!menuactive)
-	switch(ch)
+	switch(key)
 	{
-	  case KEY_MINUS:         // Screen size down
+        case sf::Keyboard::Key::Subtract:         // Screen size down
 	    if (automapactive || chat_on)
 		return false;
 	    M_SizeDisplay(0);
 	    S_StartSound(NULL,sfx_stnmov);
 	    return true;
 				
-	  case KEY_EQUALS:        // Screen size up
+        case sf::Keyboard::Key::Equal:        // Screen size up
 	    if (automapactive || chat_on)
 		return false;
 	    M_SizeDisplay(1);
 	    S_StartSound(NULL,sfx_stnmov);
 	    return true;
 				
-	  case KEY_F1:            // Help key
+        case sf::Keyboard::Key::F1:            // Help key
 	    M_StartControlPanel ();
 
 	    if ( gamemode == retail )
@@ -1540,62 +1551,61 @@ boolean M_Responder (const sf::Event& ev)
 	    S_StartSound(NULL,sfx_swtchn);
 	    return true;
 				
-	  case KEY_F2:            // Save
+        case sf::Keyboard::Key::F2:            // Save
 	    M_StartControlPanel();
 	    S_StartSound(NULL,sfx_swtchn);
 	    M_SaveGame(0);
 	    return true;
 				
-	  case KEY_F3:            // Load
+        case sf::Keyboard::Key::F3:            // Load
 	    M_StartControlPanel();
 	    S_StartSound(NULL,sfx_swtchn);
 	    M_LoadGame(0);
 	    return true;
 				
-	  case KEY_F4:            // Sound Volume
+        case sf::Keyboard::Key::F4:            // Sound Volume
 	    M_StartControlPanel ();
 	    currentMenu = &SoundDef;
 	    itemOn = sfx_vol;
 	    S_StartSound(NULL,sfx_swtchn);
 	    return true;
 				
-	  case KEY_F5:            // Detail toggle
+        case sf::Keyboard::Key::F5:            // Detail toggle
 	    M_ChangeDetail(0);
 	    S_StartSound(NULL,sfx_swtchn);
 	    return true;
 				
-	  case KEY_F6:            // Quicksave
+        case sf::Keyboard::Key::F6:            // Quicksave
 	    S_StartSound(NULL,sfx_swtchn);
 	    M_QuickSave();
 	    return true;
 				
-	  case KEY_F7:            // End game
+        case sf::Keyboard::Key::F7:            // End game
 	    S_StartSound(NULL,sfx_swtchn);
 	    M_EndGame(0);
 	    return true;
 				
-	  case KEY_F8:            // Toggle messages
+        case sf::Keyboard::Key::F8:            // Toggle messages
 	    M_ChangeMessages(0);
 	    S_StartSound(NULL,sfx_swtchn);
 	    return true;
 				
-	  case KEY_F9:            // Quickload
+        case sf::Keyboard::Key::F9:            // Quickload
 	    S_StartSound(NULL,sfx_swtchn);
 	    M_QuickLoad();
 	    return true;
 				
-	  case KEY_F10:           // Quit DOOM
+        case sf::Keyboard::Key::F10:           // Quit DOOM
 	    S_StartSound(NULL,sfx_swtchn);
 	    M_QuitDOOM(0);
 	    return true;
 				
-	  case KEY_F11:           // gamma toggle
+        case sf::Keyboard::Key::F11:           // gamma toggle
 	    usegamma++;
 	    if (usegamma > 4)
 		usegamma = 0;
 	    players[consoleplayer].message = gammamsg[usegamma];
-        // JONNY TODO
-	    //I_SetPalette (static_cast<patch_t*>(W_CacheLumpName ("PLAYPAL",PU_CACHE)));
+	    I_SetPalette (static_cast<byte*>(W_CacheLumpName ("PLAYPAL",PU_CACHE)));
 	    return true;
 				
 	}
@@ -1604,7 +1614,7 @@ boolean M_Responder (const sf::Event& ev)
     // Pop-up menu?
     if (!menuactive)
     {
-	if (ch == KEY_ESCAPE)
+	if (key == sf::Keyboard::Key::Escape)
 	{
 	    M_StartControlPanel ();
 	    S_StartSound(NULL,sfx_swtchn);
@@ -1615,9 +1625,9 @@ boolean M_Responder (const sf::Event& ev)
 
     
     // Keys usable within menu
-    switch (ch)
+    switch (key)
     {
-      case KEY_DOWNARROW:
+        case sf::Keyboard::Key::Down:
 	do
 	{
 	    if (itemOn+1 > currentMenu->numitems-1)
@@ -1627,7 +1637,7 @@ boolean M_Responder (const sf::Event& ev)
 	} while(currentMenu->menuitems[itemOn].status==-1);
 	return true;
 		
-      case KEY_UPARROW:
+        case sf::Keyboard::Key::Up:
 	do
 	{
 	    if (!itemOn)
@@ -1637,7 +1647,7 @@ boolean M_Responder (const sf::Event& ev)
 	} while(currentMenu->menuitems[itemOn].status==-1);
 	return true;
 
-      case KEY_LEFTARROW:
+        case sf::Keyboard::Key::Left:
 	if (currentMenu->menuitems[itemOn].routine &&
 	    currentMenu->menuitems[itemOn].status == 2)
 	{
@@ -1646,7 +1656,7 @@ boolean M_Responder (const sf::Event& ev)
 	}
 	return true;
 		
-      case KEY_RIGHTARROW:
+        case sf::Keyboard::Key::Right:
 	if (currentMenu->menuitems[itemOn].routine &&
 	    currentMenu->menuitems[itemOn].status == 2)
 	{
@@ -1655,7 +1665,7 @@ boolean M_Responder (const sf::Event& ev)
 	}
 	return true;
 
-      case KEY_ENTER:
+        case sf::Keyboard::Key::Enter:
 	if (currentMenu->menuitems[itemOn].routine &&
 	    currentMenu->menuitems[itemOn].status)
 	{
@@ -1673,13 +1683,13 @@ boolean M_Responder (const sf::Event& ev)
 	}
 	return true;
 		
-      case KEY_ESCAPE:
+        case sf::Keyboard::Key::Escape:
 	currentMenu->lastOn = itemOn;
 	M_ClearMenus ();
 	S_StartSound(NULL,sfx_swtchx);
 	return true;
 		
-      case KEY_BACKSPACE:
+        case sf::Keyboard::Key::Backspace:
 	currentMenu->lastOn = itemOn;
 	if (currentMenu->prevMenu)
 	{
@@ -1690,20 +1700,21 @@ boolean M_Responder (const sf::Event& ev)
 	return true;
 	
       default:
-	for (i = itemOn+1;i < currentMenu->numitems;i++)
-	    if (currentMenu->menuitems[i].alphaKey == ch)
-	    {
-		itemOn = i;
-		S_StartSound(NULL,sfx_pstop);
-		return true;
-	    }
-	for (i = 0;i <= itemOn;i++)
-	    if (currentMenu->menuitems[i].alphaKey == ch)
-	    {
-		itemOn = i;
-		S_StartSound(NULL,sfx_pstop);
-		return true;
-	    }
+            // JONNY TODO
+//	for (i = itemOn+1;i < currentMenu->numitems;i++)
+//	    if (currentMenu->menuitems[i].alphaKey == ch)
+//	    {
+//		itemOn = i;
+//		S_StartSound(NULL,sfx_pstop);
+//		return true;
+//	    }
+//	for (i = 0;i <= itemOn;i++)
+//	    if (currentMenu->menuitems[i].alphaKey == ch)
+//	    {
+//		itemOn = i;
+//		S_StartSound(NULL,sfx_pstop);
+//		return true;
+//	    }
 	break;
 	
     }

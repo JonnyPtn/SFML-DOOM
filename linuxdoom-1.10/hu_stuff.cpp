@@ -549,26 +549,27 @@ void HU_Ticker(void)
 		    if (c >= 'a' && c <= 'z')
 			c = (char) shiftxform[(unsigned char) c];
 		    rc = HUlib_keyInIText(&w_inputbuffer[i], c);
-		    if (rc && c == KEY_ENTER)
-		    {
-			if (w_inputbuffer[i].l.len
-			    && (chat_dest[i] == consoleplayer+1
-				|| chat_dest[i] == HU_BROADCAST))
-			{
-			    HUlib_addMessageToSText(&w_message,
-						    player_names[i],
-						    w_inputbuffer[i].l.l);
-			    
-			    message_nottobefuckedwith = true;
-			    message_on = true;
-			    message_counter = HU_MSGTIMEOUT;
-			    if ( gamemode == commercial )
-			      S_StartSound(0, sfx_radio);
-			    else
-			      S_StartSound(0, sfx_tink);
-			}
-			HUlib_resetIText(&w_inputbuffer[i]);
-		    }
+            // JONNY TODO
+//		    if (rc && c == KEY_ENTER)
+//		    {
+//			if (w_inputbuffer[i].l.len
+//			    && (chat_dest[i] == consoleplayer+1
+//				|| chat_dest[i] == HU_BROADCAST))
+//			{
+//			    HUlib_addMessageToSText(&w_message,
+//						    player_names[i],
+//						    w_inputbuffer[i].l.l);
+//			    
+//			    message_nottobefuckedwith = true;
+//			    message_on = true;
+//			    message_counter = HU_MSGTIMEOUT;
+//			    if ( gamemode == commercial )
+//			      S_StartSound(0, sfx_radio);
+//			    else
+//			      S_StartSound(0, sfx_tink);
+//			}
+//			HUlib_resetIText(&w_inputbuffer[i]);
+//		    }
 		}
 		players[i].cmd.chatchar = 0;
 	    }
@@ -712,12 +713,14 @@ boolean HU_Responder(const sf::Event& ev)
 	    macromessage = chat_macros[c];
 	    
 	    // kill last message with a '\n'
-	    HU_queueChatChar(KEY_ENTER); // DEBUG!!!
+        // JONNY TODO
+        //HU_queueChatChar(KEY_ENTER); // DEBUG!!!
 	    
 	    // send the macro message
 	    while (*macromessage)
 		HU_queueChatChar(*macromessage++);
-	    HU_queueChatChar(KEY_ENTER);
+        // JONNY TODO
+	    //HU_queueChatChar(KEY_ENTER);
 	    
 	    // leave chat mode and notify that it was sent
 	    chat_on = false;
@@ -740,17 +743,18 @@ boolean HU_Responder(const sf::Event& ev)
 		// sprintf(buf, "KEY: %d => %d", ev->data1, c);
 		//      plr->message = buf;
 	    }
-	    if (c == KEY_ENTER)
-	    {
-		chat_on = false;
-		if (w_chat.l.len)
-		{
-		    strcpy(lastmessage, w_chat.l.l);
-		    plr->message = lastmessage;
-		}
-	    }
-	    else if (c == KEY_ESCAPE)
-		chat_on = false;
+        // JONNY TODO
+//	    if (c == KEY_ENTER)
+//	    {
+//		chat_on = false;
+//		if (w_chat.l.len)
+//		{
+//		    strcpy(lastmessage, w_chat.l.l);
+//		    plr->message = lastmessage;
+//		}
+//	    }
+//	    else if (c == KEY_ESCAPE)
+//		chat_on = false;
 	}
     }
 

@@ -559,11 +559,11 @@ boolean G_Responder (const sf::Event& ev)
     { 
       case sf::Event::KeyPressed: 
       // JONNY TODO
-	if (ev.key.code == KEY_PAUSE) 
-	{ 
-	    sendpause = true; 
-	    return true; 
-	} 
+//	if (ev.key.code == KEY_PAUSE) 
+//	{ 
+//	    sendpause = true; 
+//	    return true; 
+//	} 
 	if (ev.key.code <NUMKEYS) 
 	    gamekeydown[ev.key.code] = true; 
 	return true;    // eat key down events 

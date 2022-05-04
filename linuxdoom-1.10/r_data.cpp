@@ -650,8 +650,7 @@ void R_InitData (void)
 //
 int R_FlatNumForName (const std::string& name)
 {
-    int		i;
-    i = W_CheckNumForName (name);
+    const auto i = W_CheckNumForName (name.substr(0,8));
 
     if (i == -1)
     {
