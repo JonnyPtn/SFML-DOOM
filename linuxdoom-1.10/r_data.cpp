@@ -142,13 +142,12 @@ int		numtextures;
 std::vector<texture_t>	textures;
 
 
-int*			texturewidthmask;
-// needed for texture pegging
-fixed_t*		textureheight;		
-int*			texturecompositesize;
-std::vector<std::vector<short>>			texturecolumnlump;
+std::vector<int>                            texturewidthmask;
+std::vector<fixed_t>		                textureheight; // needed for texture pegging
+std::vector<int>			                texturecompositesize;
+std::vector<std::vector<short>>			    texturecolumnlump;
 std::vector<std::vector<unsigned short>>	texturecolumnofs;
-byte**			texturecomposite;
+std::vector<byte*>			                texturecomposite;
 
 // for global animation
 int*		flattranslation;
@@ -460,13 +459,13 @@ void R_InitTextures (void)
     }
     numtextures = numtextures1 + numtextures2;
 	
-    textures.resize(numtextures*4);
-    texturecolumnlump.resize(numtextures*4);
-    texturecolumnofs.resize(numtextures*4);
-    texturecomposite = static_cast<byte**>(malloc (numtextures*4));
-    texturecompositesize = static_cast<int*>(malloc (numtextures*4));
-    texturewidthmask = static_cast<int*>(malloc (numtextures*4));
-    textureheight = static_cast<fixed_t*>(malloc (numtextures*4));
+    textures.resize(numtextures);
+    texturecolumnlump.resize(numtextures);
+    texturecolumnofs.resize(numtextures);
+    texturecomposite.resize(numtextures);
+    texturecompositesize.resize(numtextures);
+    texturewidthmask.resize(numtextures);
+    textureheight.resize(numtextures);
 
     totalwidth = 0;
     

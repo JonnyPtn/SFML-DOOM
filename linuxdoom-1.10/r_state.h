@@ -27,11 +27,7 @@
 #include "d_player.h"
 #include "r_data.h"
 
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
+#include <vector>
 
 
 
@@ -41,7 +37,7 @@
 //
 
 // needed for texture pegging
-extern fixed_t*		textureheight;
+extern std::vector<fixed_t>		textureheight;
 
 // needed for pre rendering (fracs)
 extern fixed_t*		spritewidth;
