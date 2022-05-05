@@ -733,7 +733,7 @@ void R_PrecacheLevel (void)
     flatpresent = static_cast<char*>(alloca(numflats));
     memset (flatpresent,0,numflats);	
 
-    for (i=0 ; i<numsectors ; i++)
+    for (i=0 ; i<sectors.size() ; i++)
     {
 	flatpresent[sectors[i].floorpic] = 1;
 	flatpresent[sectors[i].ceilingpic] = 1;

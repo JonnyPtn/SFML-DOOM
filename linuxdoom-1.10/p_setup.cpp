@@ -60,7 +60,7 @@ int		numsegs;
 seg_t*		segs;
 
 int		numsectors;
-sector_t*	sectors;
+std::vector<sector_t>	sectors;
 
 int		numsubsectors;
 subsector_t*	subsectors;
@@ -236,25 +236,22 @@ void P_LoadSectors (int lump)
     sector_t*		ss;
 	
     numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-    sectors = static_cast<sector_t*>(malloc (numsectors*sizeof(sector_t)));
-    memset (sectors, 0, numsectors*sizeof(sector_t));
+    sectors.resize(numsectors);
     data = static_cast<byte*>(W_CacheLumpNum (lump,PU_STATIC));
 	
     ms = (mapsector_t *)data;
-    ss = sectors;
+    ss = sectors.data();
     for (i=0 ; i<numsectors ; i++, ss++, ms++)
     {
-	ss->floorheight = SHORT(ms->floorheight)<<FRACBITS;
-	ss->ceilingheight = SHORT(ms->ceilingheight)<<FRACBITS;
-	ss->floorpic = R_FlatNumForName(ms->floorpic);
-	ss->ceilingpic = R_FlatNumForName(ms->ceilingpic);
-	ss->lightlevel = SHORT(ms->lightlevel);
-	ss->special = SHORT(ms->special);
-	ss->tag = SHORT(ms->tag);
-	ss->thinglist = NULL;
+        ss->floorheight = SHORT(ms->floorheight)<<FRACBITS;
+        ss->ceilingheight = SHORT(ms->ceilingheight)<<FRACBITS;
+        ss->floorpic = R_FlatNumForName(ms->floorpic);
+        ss->ceilingpic = R_FlatNumForName(ms->ceilingpic);
+        ss->lightlevel = SHORT(ms->lightlevel);
+        ss->special = SHORT(ms->special);
+        ss->tag = SHORT(ms->tag);
+        ss->thinglist = NULL;
     }
-	
-    free (data);
 }
 
 
@@ -496,12 +493,8 @@ void P_LoadBlockMap (int lump)
 //
 void P_GroupLines (void)
 {
-    line_t**		linebuffer;
-    int			i;
     int			j;
-    int			total;
     line_t*		li;
-    sector_t*		sector;
     subsector_t*	ss;
     seg_t*		seg;
     fixed_t		bbox[4];
@@ -509,67 +502,47 @@ void P_GroupLines (void)
 	
     // look up sector number for each subsector
     ss = subsectors;
-    for (i=0 ; i<numsubsectors ; i++, ss++)
+    for (auto i=0 ; i<numsubsectors ; i++, ss++)
     {
-	seg = &segs[ss->firstline];
-	ss->sector = seg->sidedef->sector;
-    }
-
-    // count number of lines in each sector
-    li = lines;
-    total = 0;
-    for (i=0 ; i<numlines ; i++, li++)
-    {
-	total++;
-	li->frontsector->linecount++;
-
-	if (li->backsector && li->backsector != li->frontsector)
-	{
-	    li->backsector->linecount++;
-	    total++;
-	}
+        seg = &segs[ss->firstline];
+        ss->sector = seg->sidedef->sector;
     }
 	
-    // build line tables for each sector	
-    linebuffer = static_cast<line_t**>(malloc (total*4));
-    sector = sectors;
-    for (i=0 ; i<numsectors ; i++, sector++)
+    // build line tables for each sector
+    for (auto& sector : sectors)
     {
-	M_ClearBox (bbox);
-	sector->lines = linebuffer;
-	li = lines;
-	for (j=0 ; j<numlines ; j++, li++)
-	{
-	    if (li->frontsector == sector || li->backsector == sector)
-	    {
-		*linebuffer++ = li;
-		M_AddToBox (bbox, li->v1->x, li->v1->y);
-		M_AddToBox (bbox, li->v2->x, li->v2->y);
-	    }
-	}
-	if (linebuffer - sector->lines != sector->linecount)
-	    I_Error ("P_GroupLines: miscounted");
-			
-	// set the degenmobj_t to the middle of the bounding box
-	sector->soundorg.x = (bbox[BOXRIGHT]+bbox[BOXLEFT])/2;
-	sector->soundorg.y = (bbox[BOXTOP]+bbox[BOXBOTTOM])/2;
-		
-	// adjust bounding box to map blocks
-	block = (bbox[BOXTOP]-bmaporgy+MAXRADIUS)>>MAPBLOCKSHIFT;
-	block = block >= bmapheight ? bmapheight-1 : block;
-	sector->blockbox[BOXTOP]=block;
+        M_ClearBox (bbox);
+        li = lines;
+        for (j=0 ; j<numlines ; j++, li++)
+        {
+            if (li->frontsector == &sector || li->backsector == &sector)
+            {
+                sector.lines.push_back(li);
+                M_AddToBox (bbox, li->v1->x, li->v1->y);
+                M_AddToBox (bbox, li->v2->x, li->v2->y);
+            }
+        }
+                
+        // set the degenmobj_t to the middle of the bounding box
+        sector.soundorg.x = (bbox[BOXRIGHT]+bbox[BOXLEFT])/2;
+        sector.soundorg.y = (bbox[BOXTOP]+bbox[BOXBOTTOM])/2;
+            
+        // adjust bounding box to map blocks
+        block = (bbox[BOXTOP]-bmaporgy+MAXRADIUS)>>MAPBLOCKSHIFT;
+        block = block >= bmapheight ? bmapheight-1 : block;
+        sector.blockbox[BOXTOP]=block;
 
-	block = (bbox[BOXBOTTOM]-bmaporgy-MAXRADIUS)>>MAPBLOCKSHIFT;
-	block = block < 0 ? 0 : block;
-	sector->blockbox[BOXBOTTOM]=block;
+        block = (bbox[BOXBOTTOM]-bmaporgy-MAXRADIUS)>>MAPBLOCKSHIFT;
+        block = block < 0 ? 0 : block;
+        sector.blockbox[BOXBOTTOM]=block;
 
-	block = (bbox[BOXRIGHT]-bmaporgx+MAXRADIUS)>>MAPBLOCKSHIFT;
-	block = block >= bmapwidth ? bmapwidth-1 : block;
-	sector->blockbox[BOXRIGHT]=block;
+        block = (bbox[BOXRIGHT]-bmaporgx+MAXRADIUS)>>MAPBLOCKSHIFT;
+        block = block >= bmapwidth ? bmapwidth-1 : block;
+        sector.blockbox[BOXRIGHT]=block;
 
-	block = (bbox[BOXLEFT]-bmaporgx-MAXRADIUS)>>MAPBLOCKSHIFT;
-	block = block < 0 ? 0 : block;
-	sector->blockbox[BOXLEFT]=block;
+        block = (bbox[BOXLEFT]-bmaporgx-MAXRADIUS)>>MAPBLOCKSHIFT;
+        block = block < 0 ? 0 : block;
+        sector.blockbox[BOXLEFT]=block;
     }
 	
 }

@@ -244,14 +244,14 @@ void EV_TurnTagLightsOff(line_t* line)
     sector_t*		tsec;
     line_t*		templine;
 	
-    sector = sectors;
+    sector = sectors.data();
     
-    for (j = 0;j < numsectors; j++, sector++)
+    for (j = 0;j < sectors.size(); j++, sector++)
     {
 	if (sector->tag == line->tag)
 	{
 	    min = sector->lightlevel;
-	    for (i = 0;i < sector->linecount; i++)
+	    for (i = 0;i < sector->lines.size(); i++)
 	    {
 		templine = sector->lines[i];
 		tsec = getNextSector(templine,sector);
@@ -274,36 +274,32 @@ EV_LightTurnOn
 ( line_t*	line,
   int		bright )
 {
-    int		i;
     int		j;
-    sector_t*	sector;
     sector_t*	temp;
     line_t*	templine;
 	
-    sector = sectors;
-	
-    for (i=0;i<numsectors;i++, sector++)
+    for ( auto& sector : sectors )
     {
-	if (sector->tag == line->tag)
+	if (sector.tag == line->tag)
 	{
 	    // bright = 0 means to search
 	    // for highest light level
 	    // surrounding sector
 	    if (!bright)
 	    {
-		for (j = 0;j < sector->linecount; j++)
-		{
-		    templine = sector->lines[j];
-		    temp = getNextSector(templine,sector);
+            for (j = 0;j < sector.lines.size(); j++)
+            {
+                templine = sector.lines[j];
+                temp = getNextSector(templine,&sector);
 
-		    if (!temp)
-			continue;
+                if (!temp)
+                continue;
 
-		    if (temp->lightlevel > bright)
-			bright = temp->lightlevel;
-		}
+                if (temp->lightlevel > bright)
+                bright = temp->lightlevel;
+            }
 	    }
-	    sector-> lightlevel = bright;
+	    sector.lightlevel = bright;
 	}
     }
 }

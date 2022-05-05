@@ -273,7 +273,7 @@ fixed_t	P_FindLowestFloorSurrounding(sector_t* sec)
     sector_t*		other;
     fixed_t		floor = sec->floorheight;
 	
-    for (i=0 ;i < sec->linecount ; i++)
+    for (i=0 ;i < sec->lines.size() ; i++)
     {
 	check = sec->lines[i];
 	other = getNextSector(check,sec);
@@ -300,7 +300,7 @@ fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
     sector_t*		other;
     fixed_t		floor = -500*FRACUNIT;
 	
-    for (i=0 ;i < sec->linecount ; i++)
+    for (i=0 ;i < sec->lines.size() ; i++)
     {
 	check = sec->lines[i];
 	other = getNextSector(check,sec);
@@ -339,7 +339,7 @@ P_FindNextHighestFloor
     
     fixed_t		heightlist[MAX_ADJOINING_SECTORS];		
 
-    for (i=0, h=0 ;i < sec->linecount ; i++)
+    for (i=0, h=0 ;i < sec->lines.size() ; i++)
     {
 	check = sec->lines[i];
 	other = getNextSector(check,sec);
@@ -385,7 +385,7 @@ P_FindLowestCeilingSurrounding(sector_t* sec)
     sector_t*		other;
     fixed_t		height = MAXINT;
 	
-    for (i=0 ;i < sec->linecount ; i++)
+    for (i=0 ;i < sec->lines.size() ; i++)
     {
 	check = sec->lines[i];
 	other = getNextSector(check,sec);
@@ -410,7 +410,7 @@ fixed_t	P_FindHighestCeilingSurrounding(sector_t* sec)
     sector_t*	other;
     fixed_t	height = 0;
 	
-    for (i=0 ;i < sec->linecount ; i++)
+    for (i=0 ;i < sec->lines.size() ; i++)
     {
 	check = sec->lines[i];
 	other = getNextSector(check,sec);
@@ -434,11 +434,13 @@ P_FindSectorFromLineTag
 ( line_t*	line,
   int		start )
 {
-    int	i;
-	
-    for (i=start+1;i<numsectors;i++)
-	if (sectors[i].tag == line->tag)
-	    return i;
+    for (auto i = start+1; i<sectors.size(); i++)
+    {
+        if (sectors[i].tag == line->tag)
+        {
+            return i;
+        }
+    }
     
     return -1;
 }
@@ -460,7 +462,7 @@ P_FindMinSurroundingLight
     sector_t*	check;
 	
     min = max;
-    for (i=0 ; i < sector->linecount ; i++)
+    for (i=0 ; i < sector->lines.size() ; i++)
     {
 	line = sector->lines[i];
 	check = getNextSector(line,sector);
@@ -1181,7 +1183,7 @@ int EV_DoDonut(line_t*	line)
 			
 	rtn = 1;
 	s2 = getNextSector(s1->lines[0],s1);
-	for (i = 0;i < s2->linecount;i++)
+	for (i = 0;i < s2->lines.size();i++)
 	{
 	    if ((!s2->lines[i]->flags & ML_TWOSIDED) ||
 		(s2->lines[i]->backsector == s1))
@@ -1237,7 +1239,6 @@ line_t*		linespeciallist[MAXLINEANIMS];
 // Parses command line parameters.
 void P_SpawnSpecials (void)
 {
-    sector_t*	sector;
     int		i;
     int		episode;
 
@@ -1266,68 +1267,67 @@ void P_SpawnSpecials (void)
     }
     
     //	Init special SECTORs.
-    sector = sectors;
-    for (i=0 ; i<numsectors ; i++, sector++)
+    for ( auto& sector : sectors )
     {
-	if (!sector->special)
-	    continue;
-	
-	switch (sector->special)
-	{
-	  case 1:
-	    // FLICKERING LIGHTS
-	    P_SpawnLightFlash (sector);
-	    break;
+        if (!sector.special)
+            continue;
+        
+        switch (sector.special)
+        {
+          case 1:
+            // FLICKERING LIGHTS
+            P_SpawnLightFlash (&sector);
+            break;
 
-	  case 2:
-	    // STROBE FAST
-	    P_SpawnStrobeFlash(sector,FASTDARK,0);
-	    break;
-	    
-	  case 3:
-	    // STROBE SLOW
-	    P_SpawnStrobeFlash(sector,SLOWDARK,0);
-	    break;
-	    
-	  case 4:
-	    // STROBE FAST/DEATH SLIME
-	    P_SpawnStrobeFlash(sector,FASTDARK,0);
-	    sector->special = 4;
-	    break;
-	    
-	  case 8:
-	    // GLOWING LIGHT
-	    P_SpawnGlowingLight(sector);
-	    break;
-	  case 9:
-	    // SECRET SECTOR
-	    totalsecret++;
-	    break;
-	    
-	  case 10:
-	    // DOOR CLOSE IN 30 SECONDS
-	    P_SpawnDoorCloseIn30 (sector);
-	    break;
-	    
-	  case 12:
-	    // SYNC STROBE SLOW
-	    P_SpawnStrobeFlash (sector, SLOWDARK, 1);
-	    break;
+          case 2:
+            // STROBE FAST
+            P_SpawnStrobeFlash(&sector,FASTDARK,0);
+            break;
+            
+          case 3:
+            // STROBE SLOW
+            P_SpawnStrobeFlash(&sector,SLOWDARK,0);
+            break;
+            
+          case 4:
+            // STROBE FAST/DEATH SLIME
+            P_SpawnStrobeFlash(&sector,FASTDARK,0);
+            sector.special = 4;
+            break;
+            
+          case 8:
+            // GLOWING LIGHT
+            P_SpawnGlowingLight(&sector);
+            break;
+          case 9:
+            // SECRET SECTOR
+            totalsecret++;
+            break;
+            
+          case 10:
+            // DOOR CLOSE IN 30 SECONDS
+            P_SpawnDoorCloseIn30 (&sector);
+            break;
+            
+          case 12:
+            // SYNC STROBE SLOW
+            P_SpawnStrobeFlash (&sector, SLOWDARK, 1);
+            break;
 
-	  case 13:
-	    // SYNC STROBE FAST
-	    P_SpawnStrobeFlash (sector, FASTDARK, 1);
-	    break;
+          case 13:
+            // SYNC STROBE FAST
+            P_SpawnStrobeFlash (&sector, FASTDARK, 1);
+            break;
 
-	  case 14:
-	    // DOOR RAISE IN 5 MINUTES
-	    P_SpawnDoorRaiseIn5Mins (sector, i);
-	    break;
-	    
-	  case 17:
-	    P_SpawnFireFlicker(sector);
-	    break;
-	}
+          case 14:
+            // DOOR RAISE IN 5 MINUTES
+            P_SpawnDoorRaiseIn5Mins (&sector, i);
+            break;
+            
+          case 17:
+            P_SpawnFireFlicker(&sector);
+            break;
+        }
     }
 
     

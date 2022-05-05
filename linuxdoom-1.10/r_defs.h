@@ -37,7 +37,7 @@
 // SECTORS do store MObjs anyway.
 #include "p_mobj.h"
 
-
+#include <vector>
 
 #ifdef __GNUG__
 #pragma interface
@@ -77,7 +77,7 @@ typedef struct
 
 
 // Forward of LineDefs, for Sectors.
-struct line_s;
+struct line_t;
 
 // Each sector has a degenmobj_t in its center
 //  for sound origin purposes.
@@ -128,9 +128,8 @@ typedef	struct
 
     // thinker_t for reversable actions
     void*	specialdata;
-
-    int			linecount;
-    struct line_s**	lines;	// [linecount] size
+    
+    std::vector<line_t*> lines;
     
 } sector_t;
 
@@ -176,7 +175,7 @@ typedef enum
 
 
 
-typedef struct line_s
+typedef struct line_t
 {
     // Vertices, from v1 to v2.
     vertex_t*	v1;
@@ -212,7 +211,7 @@ typedef struct line_s
 
     // thinker_t for reversable actions
     void*	specialdata;		
-} line_t;
+};
 
 
 

@@ -72,7 +72,7 @@ EV_Teleport
 
     
     tag = line->tag;
-    for (i = 0; i < numsectors; i++)
+    for (i = 0; i < sectors.size(); i++)
     {
 	if (sectors[ i ].tag == tag )
 	{
@@ -93,7 +93,7 @@ EV_Teleport
 
 		sector = m->subsector->sector;
 		// wrong sector
-		if (sector-sectors != i )
+		if (sector-sectors.data() != i )
 		    continue;	
 
 		oldx = thing->x;

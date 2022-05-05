@@ -378,7 +378,7 @@ EV_DoFloor
 	      floor->direction = 1;
 	      floor->sector = sec;
 	      floor->speed = FLOORSPEED;
-	      for (i = 0; i < sec->linecount; i++)
+	      for (i = 0; i < sec->lines.size(); i++)
 	      {
 		  if (twoSided (secnum, i) )
 		  {
@@ -409,11 +409,11 @@ EV_DoFloor
 		P_FindLowestFloorSurrounding(sec);
 	    floor->texture = sec->floorpic;
 
-	    for (i = 0; i < sec->linecount; i++)
+	    for (i = 0; i < sec->lines.size(); i++)
 	    {
 		if ( twoSided(secnum, i) )
 		{
-		    if (getSide(secnum,i,0)->sector-sectors == secnum)
+		    if (getSide(secnum,i,0)->sector-sectors.data() == secnum)
 		    {
 			sec = getSector(secnum,i,1);
 
@@ -512,19 +512,19 @@ EV_BuildStairs
 	do
 	{
 	    ok = 0;
-	    for (i = 0;i < sec->linecount;i++)
+	    for (i = 0;i < sec->lines.size();i++)
 	    {
 		if ( !((sec->lines[i])->flags & ML_TWOSIDED) )
 		    continue;
 					
 		tsec = (sec->lines[i])->frontsector;
-		newsecnum = tsec-sectors;
+		newsecnum = tsec-sectors.data();
 		
 		if (secnum != newsecnum)
 		    continue;
 
 		tsec = (sec->lines[i])->backsector;
-		newsecnum = tsec - sectors;
+		newsecnum = tsec - sectors.data();
 
 		if (tsec->floorpic != texture)
 		    continue;
