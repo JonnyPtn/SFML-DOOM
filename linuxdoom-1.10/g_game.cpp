@@ -183,8 +183,7 @@ fixed_t		angleturn[3] = {640, 1280, 320};	// + slow turn
 boolean         gamekeydown[NUMKEYS]; 
 int             turnheld;				// for accelerative turning 
  
-boolean		mousearray[4]; 
-boolean*	mousebuttons = &mousearray[1];		// allow [-1]
+std::bitset<3>	mousebuttons;		// allow [-1]
 
 // mouse values are used once 
 int             mousex;
@@ -200,8 +199,8 @@ int		dclicks2;
 // joystick values are repeated 
 int             joyxmove;
 int		joyymove;
-boolean         joyarray[5]; 
-boolean*	joybuttons = &joyarray[1];		// allow [-1] 
+
+std::bitset<sf::Joystick::ButtonCount> joybuttons;
  
 int		savegameslot; 
 char		savedescription[32]; 
@@ -491,9 +490,7 @@ void G_DoLoadLevel (void)
     memset (gamekeydown, 0, sizeof(gamekeydown)); 
     joyxmove = joyymove = 0; 
     mousex = mousey = 0; 
-    sendpause = sendsave = paused = false; 
-    memset (mousebuttons, 0, sizeof(mousebuttons)); 
-    memset (joybuttons, 0, sizeof(joybuttons)); 
+    sendpause = sendsave = paused = false;
 } 
  
  
