@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.21)
 
 project(sfml-doom)
 
@@ -39,4 +39,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics ImGui-SFML::Im
 
 if (UNIX)
     target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -w -Wno-c++11-narrowing)
+elseif(MSVC)
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /w)
 endif()
