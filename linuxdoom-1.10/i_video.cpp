@@ -298,14 +298,14 @@ void I_InitGraphics(void)
     }
 
     // open the window
-    mainWindow.create({width,height},displayname, sf::Style::Titlebar);
+    mainWindow.create(sf::VideoMode({width,height}),displayname, sf::Style::Titlebar);
     mainWindow.setFramerateLimit(TICRATE);
 
     mainWindow.setMouseCursorVisible(false);
 	mainWindow.setMouseCursorGrabbed(grabMouse);
 
-    texture.create(SCREENWIDTH,SCREENHEIGHT);
-    sprite.setScale(multiply, multiply);
+    texture.create({SCREENWIDTH,SCREENHEIGHT});
+    sprite.setScale({multiply, multiply});
     screens[0] = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
 }
 

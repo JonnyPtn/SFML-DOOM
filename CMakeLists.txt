@@ -12,7 +12,7 @@ include(FetchContent)
 FetchContent_Declare(
   sfml
   GIT_REPOSITORY    https://github.com/sfml/sfml
-  GIT_TAG           2.5.1
+  GIT_TAG           master
 )
 FetchContent_MakeAvailable(sfml)
 
@@ -28,7 +28,7 @@ set(IMGUI_DIR ${imgui_SOURCE_DIR})
 FetchContent_Declare(
   imgui-sfml
   GIT_REPOSITORY    https://github.com/eliasdaler/imgui-sfml
-  GIT_TAG           v2.5
+  GIT_TAG           master
 )
 FetchContent_MakeAvailable(imgui-sfml)
 
