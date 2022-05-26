@@ -7,6 +7,7 @@ file(GLOB SOURCE CONFIGURE_DEPENDS linuxdoom-1.10/*.c linuxdoom-1.10/*.cpp linux
 add_executable(${CMAKE_PROJECT_NAME} MACOSX_BUNDLE ${SOURCE})
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_17)
 
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 include(FetchContent)
 
 FetchContent_Declare(
