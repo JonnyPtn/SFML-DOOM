@@ -55,8 +55,8 @@ sf::RenderWindow	mainWindow;
 int			        screen;
 sf::Texture         texture;
 sf::Sprite          sprite;
-int			        width;
-int			        height;
+uint32_t			width;
+uint32_t			height;
 
 // Fake mouse handling.
 // This cannot work properly w/o DGA.
@@ -305,7 +305,7 @@ void I_InitGraphics(void)
 	mainWindow.setMouseCursorGrabbed(grabMouse);
 
     texture.create({SCREENWIDTH,SCREENHEIGHT});
-    sprite.setScale({multiply, multiply});
+    sprite.setScale({float(multiply), float(multiply)});
     screens[0] = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
 }
 

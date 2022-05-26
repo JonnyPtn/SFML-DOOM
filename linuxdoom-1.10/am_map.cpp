@@ -195,18 +195,18 @@ mline_t cheat_player_arrow[] = {
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
-    { { -.867*R, -.5*R }, { .867*R, -.5*R } },
-    { { .867*R, -.5*R } , { 0, R } },
-    { { 0, R }, { -.867*R, -.5*R } }
+    { { int32_t(-.867*R), int32_t(-.5*R) }, { int32_t(.867*R), int32_t(-.5*R) } },
+    { { int32_t(.867*R), int32_t(-.5*R) } , { 0, R } },
+    { { 0, R }, { int32_t(-.867*R), int32_t(-.5*R) } }
 };
 #undef R
 #define NUMTRIANGLEGUYLINES (sizeof(triangle_guy)/sizeof(mline_t))
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
-    { { -.5*R, -.7*R }, { R, 0 } },
-    { { R, 0 }, { -.5*R, .7*R } },
-    { { -.5*R, .7*R }, { -.5*R, -.7*R } }
+    { { int32_t(-.5*R), int32_t(-.7*R) }, { R, 0 } },
+    { { R, 0 }, { int32_t(-.5*R), int32_t(.7*R) } },
+    { { int32_t(-.5*R), int32_t(.7*R) }, { int32_t(-.5*R), int32_t(-.7*R) } }
 };
 #undef R
 #define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))

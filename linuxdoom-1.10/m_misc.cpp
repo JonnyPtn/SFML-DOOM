@@ -284,7 +284,7 @@ default_t	defaults[] =
 
 
     {"usegamma",&usegamma, 0},
-
+    /*
     {"chatmacro0", (int *) &chat_macros[0], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO0) },
     {"chatmacro1", (int *) &chat_macros[1], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO1) },
     {"chatmacro2", (int *) &chat_macros[2], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO2) },
@@ -294,7 +294,7 @@ default_t	defaults[] =
     {"chatmacro6", (int *) &chat_macros[6], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO6) },
     {"chatmacro7", (int *) &chat_macros[7], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO7) },
     {"chatmacro8", (int *) &chat_macros[8], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO8) },
-    {"chatmacro9", (int *) &chat_macros[9], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO9) }
+    {"chatmacro9", (int *) &chat_macros[9], reinterpret_cast<intptr_t>(HUSTR_CHATMACRO9) }*/
 
 };
 

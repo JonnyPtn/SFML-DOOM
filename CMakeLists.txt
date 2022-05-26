@@ -39,7 +39,7 @@ file(DOWNLOAD https://distro.ibiblio.org/slitaz/sources/packages/d/doom1.wad doo
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics ImGui-SFML::ImGui-SFML)
 
 if (UNIX)
-    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -w -Wno-c++11-narrowing)
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -w)
 elseif(MSVC)
     target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /w)
 endif()
