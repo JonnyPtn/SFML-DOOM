@@ -205,7 +205,7 @@ void I_FinishUpdate (void)
     
     }
 
-    sf::Uint8 colouredPixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
+    uint8_t colouredPixels[SCREENHEIGHT*SCREENWIDTH * 4] = { 0 };
     for (int i = 0; i < SCREENHEIGHT*SCREENWIDTH; i++)
     {
         colouredPixels[i * 4] = colours[screens[0][i]].r;
