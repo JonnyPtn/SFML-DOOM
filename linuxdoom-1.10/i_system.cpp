@@ -20,10 +20,9 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
-
+#include <iostream>
+#include <format>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -87,16 +86,11 @@ byte* I_ZoneBase (int*	size)
 //
 int  I_GetTime (void)
 {
-    struct timeval	tp;
-    struct timezone	tzp;
-    int			newtics;
-    static int		basetime=0;
-  
-    gettimeofday(&tp, &tzp);
-    if (!basetime)
-	basetime = tp.tv_sec;
-    newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;
-    return newtics;
+    using namespace std::chrono;
+    using tic = duration<int, std::ratio<70>>;
+    const auto now = floor<tic>(steady_clock::now());
+    static const auto basetime = now;
+    return (now - basetime).count();
 }
 
 
@@ -158,22 +152,18 @@ byte*	I_AllocLow(int length)
 //
 extern boolean demorecording;
 
-void I_Error (char *error, ...)
+template<typename... Args>
+void I_Error (std::string_view error, Args&&... args)
 {
-    va_list	argptr;
-
-    // Message first.
-    va_start (argptr,error);
-    fprintf (stderr, "Error: ");
-    vfprintf (stderr,error,argptr);
-    fprintf (stderr, "\n");
-    va_end (argptr);
-
-    fflush( stderr );
+    // Booo apple...
+    // const auto string = std::vformat(error, std::make_format_args(args...));
+    // std::cout << string << std::endl;
+    
+    vprintf(error, args...);
 
     // Shutdown. Here might be other errors.
     if (demorecording)
-	G_CheckDemoStatus();
+        G_CheckDemoStatus();
 
     D_QuitNetGame ();
     
