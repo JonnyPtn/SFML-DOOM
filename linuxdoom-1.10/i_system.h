@@ -26,6 +26,8 @@
 #include "d_ticcmd.h"
 #include "d_event.h"
 
+#include <string_view>
+
 #ifdef __GNUG__
 #pragma interface
 #endif
@@ -86,7 +88,7 @@ byte* I_AllocLow (int length);
 void I_Tactile (int on, int off, int total);
 
 
-void I_Error (char *error, ...);
+void I_Error (std::string_view error, ...);
 
 
 #endif

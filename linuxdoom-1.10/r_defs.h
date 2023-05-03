@@ -175,7 +175,7 @@ typedef enum
 
 
 
-typedef struct line_t
+struct line_t
 {
     // Vertices, from v1 to v2.
     vertex_t*	v1;
@@ -223,20 +223,20 @@ typedef struct line_t
 //  indicating the visible walls that define
 //  (all or some) sides of a convex BSP leaf.
 //
-typedef struct subsector_s
+struct subsector_t
 {
     sector_t*	sector;
     short	numlines;
     short	firstline;
     
-} subsector_t;
+};
 
 
 
 //
 // The LineSeg.
 //
-typedef struct
+struct seg_t
 {
     vertex_t*	v1;
     vertex_t*	v2;
@@ -254,14 +254,14 @@ typedef struct
     sector_t*	frontsector;
     sector_t*	backsector;
     
-} seg_t;
+};
 
 
 
 //
 // BSP node.
 //
-typedef struct
+struct node_t
 {
     // Partition line.
     fixed_t	x;
@@ -275,17 +275,17 @@ typedef struct
     // If NF_SUBSECTOR its a subsector.
     unsigned short children[2];
     
-} node_t;
+};
 
 
 
 
 // posts are runs of non masked source pixels
-typedef struct
+struct post_t
 {
     byte		topdelta;	// -1 is the last post in a column
     byte		length; 	// length data bytes follows
-} post_t;
+};
 
 // column_t is a list of 0 or more post_t, (byte)-1 terminated
 typedef post_t	column_t;
