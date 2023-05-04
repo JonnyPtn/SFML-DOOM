@@ -718,8 +718,7 @@ void FindResponseFile (void)
 	    int             indexinfile;
 	    char    *infile;
 	    char    *file;
-	    char    *moreargs[20];
-	    char    *firstargv;
+	    const char    *moreargs[20];
 			
 	    // READ THE RESPONSE FILE INTO MEMORY
 	    handle = fopen (&myargv[i][1],"rb");
@@ -738,12 +737,7 @@ void FindResponseFile (void)
 			
 	    // KEEP ALL CMDLINE ARGS FOLLOWING @RESPONSEFILE ARG
 	    for (index = 0,k = i+1; k < myargc; k++)
-		moreargs[index++] = myargv[k];
-			
-	    firstargv = myargv[0];
-	    myargv = static_cast<char**>(malloc(sizeof(char *)*MAXARGVS));
-	    memset(myargv,0,sizeof(char *)*MAXARGVS);
-	    myargv[0] = firstargv;
+		moreargs[index++] = myargv[k].c_str();
 			
 	    infile = file;
 	    indexinfile = k = 0;
@@ -767,7 +761,7 @@ void FindResponseFile (void)
 	    // DISPLAY ARGS
 	    printf("%d command-line args:\n",myargc);
 	    for (k=1;k<myargc;k++)
-		printf("%s\n",myargv[k]);
+		printf("%s\n",myargv[k].c_str());
 
 	    break;
 	}
@@ -866,7 +860,7 @@ void D_DoomMain (void)
 	extern int sidemove[2];
 	
 	if (p<myargc-1)
-	    scale = atoi (myargv[p+1]);
+	    scale = atoi (myargv[p+1].c_str());
 	if (scale < 10)
 	    scale = 10;
 	if (scale > 400)
@@ -897,12 +891,12 @@ void D_DoomMain (void)
 	    sprintf (file,"~" DEVMAPS "E%cM%c.wad",
 		     myargv[p+1][0], myargv[p+2][0]);
 	    printf("Warping to Episode %s, Map %s.\n",
-		   myargv[p+1],myargv[p+2]);
+		   myargv[p+1].c_str(),myargv[p+2].c_str());
 	    break;
 	    
 	  case commercial:
 	  default:
-	    p = atoi (myargv[p+1]);
+	    p = atoi (myargv[p+1].c_str());
 	    if (p<10)
 	      sprintf (file,"~" DEVMAPS "cdata/map0%i.wad", p);
 	    else
@@ -919,7 +913,7 @@ void D_DoomMain (void)
 	// until end of parms or another - preceded parm
 	modifiedgame = true;            // homebrew levels
 	while (++p != myargc && myargv[p][0] != '-')
-	    D_AddFile (myargv[p]);
+	    D_AddFile (myargv[p].c_str());
     }
 
     p = M_CheckParm ("-playdemo");
@@ -929,9 +923,9 @@ void D_DoomMain (void)
 
     if (p && p < myargc-1)
     {
-	sprintf (file,"%s.lmp", myargv[p+1]);
+	sprintf (file,"%s.lmp", myargv[p+1].c_str());
 	D_AddFile (file);
-	printf("Playing demo %s.lmp.\n",myargv[p+1]);
+	printf("Playing demo %s.lmp.\n",myargv[p+1].c_str());
     }
     
     // get skill / episode / map from parms
@@ -960,7 +954,7 @@ void D_DoomMain (void)
     if (p && p < myargc-1 && deathmatch)
     {
 	int     time;
-	time = atoi(myargv[p+1]);
+	time = atoi(myargv[p+1].c_str());
 	printf("Levels will end after %d minute",time);
 	if (time>1)
 	    printf("s");
@@ -975,7 +969,7 @@ void D_DoomMain (void)
     if (p && p < myargc-1)
     {
 	if (gamemode == commercial)
-	    startmap = atoi (myargv[p+1]);
+	    startmap = atoi (myargv[p+1].c_str());
 	else
 	{
 	    startepisode = myargv[p+1][0]-'0';
@@ -1096,7 +1090,7 @@ void D_DoomMain (void)
 	// for statistics driver
 	extern  void*	statcopy;                            
 
-	statcopy = (void*)atoi(myargv[p+1]);
+	statcopy = (void*)atoi(myargv[p+1].c_str());
 	printf ("External statistics registered.\n");
     }
     

@@ -671,7 +671,7 @@ S_ChangeMusic
     // get lumpnum if neccessary
     if (!music->lumpnum)
     {
-	sprintf(namebuf, "d_%s", music->name);
+	snprintf(namebuf,9, "d_%s", music->name);
 	music->lumpnum = W_GetNumForName(namebuf);
     }
 

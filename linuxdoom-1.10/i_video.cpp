@@ -235,7 +235,7 @@ void I_ReadScreen (byte* scr)
 void I_InitGraphics(void)
 {
 
-    char*		displayname;
+    const char*		displayname;
     char*		d;
     int			n;
     int			pnum;
@@ -271,7 +271,7 @@ void I_InitGraphics(void)
 
     // check for command-line display name
     if ( (pnum=M_CheckParm("-disp")) ) // suggest parentheses around assignment
-	displayname = myargv[pnum+1];
+	displayname = myargv[pnum+1].c_str();
     else
 	displayname = 0;
 
@@ -282,7 +282,7 @@ void I_InitGraphics(void)
     if ( (pnum=M_CheckParm("-geom")) ) // suggest parentheses around assignment
     {
 	// warning: char format, different type arg 3,5
-	n = sscanf(myargv[pnum+1], "%c%d%c%d", &xsign, &x, &ysign, &y);
+	n = sscanf(myargv[pnum+1].c_str(), "%c%d%c%d", &xsign, &x, &ysign, &y);
 	
 	if (n==2)
 	    x = y = 0;

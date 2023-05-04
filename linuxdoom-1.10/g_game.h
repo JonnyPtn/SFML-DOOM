@@ -40,7 +40,7 @@ void G_InitNew (skill_t skill, int episode, int map);
 // but a warp test can start elsewhere
 void G_DeferedInitNew (skill_t skill, int episode, int map);
 
-void G_DeferedPlayDemo (char* demo);
+void G_DeferedPlayDemo (const std::string& demo);
 
 // Can be called by the startup code or M_Responder,
 // calls P_SetupLevel or W_EnterWorld.
@@ -52,12 +52,12 @@ void G_DoLoadGame (void);
 void G_SaveGame (int slot, char* description);
 
 // Only called by startup code.
-void G_RecordDemo (char* name);
+void G_RecordDemo (const std::string& name);
 
 void G_BeginRecording (void);
 
 void G_PlayDemo (char* name);
-void G_TimeDemo (char* name);
+void G_TimeDemo (const std::string& name);
 boolean G_CheckDemoStatus (void);
 
 void G_ExitLevel (void);

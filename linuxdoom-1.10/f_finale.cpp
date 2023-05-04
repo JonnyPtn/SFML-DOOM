@@ -44,6 +44,8 @@ rcsid[] = "$Id: f_finale.c,v 1.5 1997/02/03 21:26:34 b1 Exp $";
 
 #include <SFML/Window.hpp>
 
+#include <string>
+
 // ?
 //#include "doomstat.h"
 //#include "r_local.h"
@@ -58,34 +60,34 @@ int		finalecount;
 #define	TEXTSPEED	3
 #define	TEXTWAIT	250
 
-char*	e1text = E1TEXT;
-char*	e2text = E2TEXT;
-char*	e3text = E3TEXT;
-char*	e4text = E4TEXT;
+auto	e1text = E1TEXT;
+auto	e2text = E2TEXT;
+auto	e3text = E3TEXT;
+auto	e4text = E4TEXT;
 
-char*	c1text = C1TEXT;
-char*	c2text = C2TEXT;
-char*	c3text = C3TEXT;
-char*	c4text = C4TEXT;
-char*	c5text = C5TEXT;
-char*	c6text = C6TEXT;
+auto	c1text = C1TEXT;
+auto	c2text = C2TEXT;
+auto	c3text = C3TEXT;
+auto	c4text = C4TEXT;
+auto	c5text = C5TEXT;
+auto	c6text = C6TEXT;
 
-char*	p1text = P1TEXT;
-char*	p2text = P2TEXT;
-char*	p3text = P3TEXT;
-char*	p4text = P4TEXT;
-char*	p5text = P5TEXT;
-char*	p6text = P6TEXT;
+auto	p1text = P1TEXT;
+auto	p2text = P2TEXT;
+auto	p3text = P3TEXT;
+auto	p4text = P4TEXT;
+auto	p5text = P5TEXT;
+auto	p6text = P6TEXT;
 
-char*	t1text = T1TEXT;
-char*	t2text = T2TEXT;
-char*	t3text = T3TEXT;
-char*	t4text = T4TEXT;
-char*	t5text = T5TEXT;
-char*	t6text = T6TEXT;
+auto	t1text = T1TEXT;
+auto	t2text = T2TEXT;
+auto	t3text = T3TEXT;
+auto	t4text = T4TEXT;
+auto	t5text = T5TEXT;
+auto	t6text = T6TEXT;
 
-char*	finaletext;
-char*	finaleflat;
+std::string finaletext;
+std::string	finaleflat;
 
 void	F_StartCast (void);
 void	F_CastTicker (void);
@@ -240,7 +242,7 @@ void F_Ticker (void)
     if ( gamemode == commercial)
 	return;
 		
-    if (!finalestage && finalecount>strlen (finaletext)*TEXTSPEED + TEXTWAIT)
+    if (!finalestage && finalecount>finaletext.length()*TEXTSPEED + TEXTWAIT)
     {
 	finalecount = 0;
 	finalestage = 1;
@@ -267,7 +269,7 @@ void F_TextWrite (void)
     
     int		x,y,w;
     int		count;
-    char*	ch;
+    const char*	ch;
     int		c;
     int		cx;
     int		cy;
@@ -295,7 +297,7 @@ void F_TextWrite (void)
     // draw some of the text onto the screen
     cx = 10;
     cy = 10;
-    ch = finaletext;
+    ch = finaletext.c_str();
 	
     count = (finalecount - 10)/TEXTSPEED;
     if (count < 0)

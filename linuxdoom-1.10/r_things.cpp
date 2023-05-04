@@ -748,7 +748,7 @@ void R_SortVisSprites (void)
     vissprite_t		unsorted;
     fixed_t		bestscale;
 
-    count = vissprite_p - vissprites;
+    count = static_cast<int>(vissprite_p - vissprites);
 	
     unsorted.next = unsorted.prev = &unsorted;
 

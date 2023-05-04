@@ -126,7 +126,7 @@ ExtractFileBase
 //  specially to allow map reloads.
 // But: the reload feature is a fragile hack...
 
-int			            reloadlump;
+size_t			        reloadlump;
 std::filesystem::path   reloadpath;
 
 
@@ -149,7 +149,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     wadinfo_t		header;
     unsigned		i;
     int			    length;
-    int			    startlump;
+    size_t			startlump;
     std::vector<filelump_t> fileinfo;
     filelump_t		singleinfo;
     
@@ -179,7 +179,7 @@ void W_AddFile (const std::filesystem::path& filepath)
         // single lump file
         fileinfo = {singleinfo};
         singleinfo.filepos = 0;
-        singleinfo.size = std::filesystem::file_size(filepath);
+        singleinfo.size = static_cast<int>(std::filesystem::file_size(filepath));
         ExtractFileBase (filename.c_str(), singleinfo.name);
         lumpinfo.emplace_back();
     }
@@ -213,7 +213,7 @@ void W_AddFile (const std::filesystem::path& filepath)
         const auto fileIndex = reloadpath.empty() ? wadfiles.size() - 1 : -1;
         lumpinfo.emplace_back();
         strcpy(lumpinfo.back().name, fileinfo[i].name);
-        lumpinfo.back().handle = fileIndex;
+        lumpinfo.back().handle = static_cast<int>(fileIndex);
         lumpinfo.back().position = fileinfo[i].filepos;
         lumpinfo.back().size = fileinfo[i].size;
     }
@@ -232,7 +232,6 @@ void W_Reload (void)
     wadinfo_t		header;
     int			lumpcount;
     lumpinfo_t*		lump_p;
-    unsigned		i;
     int			handle;
     int			length;
     filelump_t*		fileinfo;
@@ -256,7 +255,7 @@ void W_Reload (void)
     // Fill in lumpinfo
     lump_p = &lumpinfo[reloadlump];
 	
-    for (i=reloadlump ;
+    for (auto i=reloadlump ;
 	 i<reloadlump+lumpcount ;
 	 i++,lump_p++, fileinfo++)
     {
@@ -335,7 +334,7 @@ int W_CheckNumForName (const std::string& name)
     {
         if (lump->name == upper_name)
         {
-            return std::distance(lumpinfo.begin(),lump.base()) - 1;
+            return static_cast<int>(std::distance(lumpinfo.begin(),lump.base()) - 1);
         }
     }
 
@@ -350,14 +349,14 @@ int W_CheckNumForName (const std::string& name)
 // W_GetNumForName
 // Calls W_CheckNumForName, but bombs out if not found.
 //
-int W_GetNumForName (char* name)
+int W_GetNumForName (const std::string& name)
 {
     int	i;
 
     i = W_CheckNumForName (name);
     
     if (i == -1)
-      I_Error ("W_GetNumForName: %s not found!", name);
+      I_Error ("W_GetNumForName: %s not found!", name.c_str());
       
     return i;
 }
@@ -471,7 +470,7 @@ W_CacheLumpNum
 //
 void*
 W_CacheLumpName
-( char*		name,
+( const std::string&		name,
   int		tag )
 {
     return W_CacheLumpNum (W_GetNumForName(name), tag);

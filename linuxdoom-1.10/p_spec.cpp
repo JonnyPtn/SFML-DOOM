@@ -1185,7 +1185,7 @@ int EV_DoDonut(line_t*	line)
 	s2 = getNextSector(s1->lines[0],s1);
 	for (i = 0;i < s2->lines.size();i++)
 	{
-	    if ((!s2->lines[i]->flags & ML_TWOSIDED) ||
+        if (((!s2->lines[i]->flags) & ML_TWOSIDED) ||
 		(s2->lines[i]->backsector == s1))
 		continue;
 	    s3 = s2->lines[i]->backsector;
@@ -1261,7 +1261,7 @@ void P_SpawnSpecials (void)
     if (i && deathmatch)
     {
 	int	time;
-	time = atoi(myargv[i+1]) * 60 * 35;
+	time = atoi(myargv[i+1].c_str()) * 60 * 35;
 	levelTimer = true;
 	levelTimeCount = time;
     }

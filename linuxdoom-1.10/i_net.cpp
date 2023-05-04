@@ -24,7 +24,7 @@ static const char
 rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 #include <stdlib.h>
-#include <string.h>
+#include <string>
 #include <stdio.h>
 
 #include <sys/socket.h>
@@ -52,18 +52,25 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 
 // For some odd reason...
+#ifndef ntohl
 #define ntohl(x) \
         ((unsigned long int)((((unsigned long int)(x) & 0x000000ffU) << 24) | \
                              (((unsigned long int)(x) & 0x0000ff00U) <<  8) | \
                              (((unsigned long int)(x) & 0x00ff0000U) >>  8) | \
                              (((unsigned long int)(x) & 0xff000000U) >> 24)))
-
+#endif
+#ifndef ntohs
 #define ntohs(x) \
         ((unsigned short int)((((unsigned short int)(x) & 0x00ff) << 8) | \
                               (((unsigned short int)(x) & 0xff00) >> 8))) \
 	  
+#endif
+#ifndef htonl
 #define htonl(x) ntohl(x)
+#endif
+#ifndef htons
 #define htons(x) ntohs(x)
+#endif
 
 void	NetSend (void);
 boolean NetListen (void);
@@ -274,7 +281,7 @@ void I_InitNetwork (void)
     p = M_CheckParm ("-port");
     if (p && p<myargc-1)
     {
-	DOOMPORT = atoi (myargv[p+1]);
+	DOOMPORT = atoi (myargv[p+1].c_str());
 	printf ("using alternate port %i\n",DOOMPORT);
     }
     
@@ -309,13 +316,13 @@ void I_InitNetwork (void)
 	if (myargv[i][0] == '.')
 	{
 	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
-		= inet_addr (myargv[i]+1);
+		= inet_addr (myargv[i+1].c_str());
 	}
 	else
 	{
-	    hostentry = gethostbyname (myargv[i]);
+	    hostentry = gethostbyname (myargv[i].c_str());
 	    if (!hostentry)
-		I_Error ("gethostbyname: couldn't find %s", myargv[i]);
+		I_Error ("gethostbyname: couldn't find %s", myargv[i].c_str());
 	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
 		= *(int *)hostentry->h_addr_list[0];
 	}

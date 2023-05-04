@@ -689,7 +689,7 @@ P_TraverseIntercepts
     intercept_t*	scan;
     intercept_t*	in;
 	
-    count = intercept_p - intercepts;
+    count = static_cast<int>(intercept_p - intercepts);
     
     in = 0;			// shut up compiler warning
 	

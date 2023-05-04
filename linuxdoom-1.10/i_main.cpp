@@ -36,8 +36,11 @@ main
 ( int		argc,
   char**	argv ) 
 { 
-    myargc = argc; 
-    myargv = argv; 
+    myargc = argc;
+    while(*argv)
+    {
+        myargv.emplace_back(*(argv++));
+    }
  
     D_DoomMain (); 
 

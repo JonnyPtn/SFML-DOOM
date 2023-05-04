@@ -228,7 +228,7 @@ typedef struct mobj_s
     struct mobj_s*	bnext;
     struct mobj_s*	bprev;
     
-    struct subsector_s*	subsector;
+    struct subsector_t*	subsector;
 
     // The closest interval over all contacted Sectors.
     fixed_t		floorz;

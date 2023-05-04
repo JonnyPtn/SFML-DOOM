@@ -20,14 +20,13 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: m_argv.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
-
-#include <string.h>
+#include <string_view>
+#include <string>
+#include <ranges>
 
 int		myargc;
-char**		myargv;
+std::vector<std::string>		myargv;
 
 
 
@@ -38,14 +37,12 @@ char**		myargv;
 // in the program's command line arguments.
 // Returns the argument number (1 to argc-1)
 // or 0 if not present
-int M_CheckParm (char *check)
+int M_CheckParm (std::string_view check)
 {
-    int		i;
-
-    for (i = 1;i<myargc;i++)
+    const auto found = std::ranges::find(myargv, check);
+    if (found != myargv.end())
     {
-	if ( !strcasecmp(check, myargv[i]) )
-	    return i;
+        return static_cast<int>(std::distance(myargv.begin(),found));
     }
 
     return 0;

@@ -1545,18 +1545,18 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
 //
 // G_RecordDemo 
 // 
-void G_RecordDemo (char* name) 
+void G_RecordDemo (const std::string& name) 
 { 
     int             i; 
     int				maxsize;
 	
     usergame = false; 
-    strcpy (demoname, name); 
+    strcpy (demoname, name.c_str());
     strcat (demoname, ".lmp"); 
     maxsize = 0x20000;
     i = M_CheckParm ("-maxdemo");
     if (i && i<myargc-1)
-	maxsize = atoi(myargv[i+1])*1024;
+	maxsize = atoi(myargv[i].c_str() + 1)*1024;
     demobuffer = static_cast<byte*>(malloc (maxsize));
     demoend = demobuffer + maxsize;
 	
@@ -1589,11 +1589,11 @@ void G_BeginRecording (void)
 // G_PlayDemo 
 //
 
-char*	defdemoname; 
+std::string	defdemoname;
  
-void G_DeferedPlayDemo (char* name) 
+void G_DeferedPlayDemo (const std::string& name) 
 { 
-    defdemoname = name; 
+    defdemoname = name;
     gameaction = ga_playdemo; 
 } 
  
@@ -1603,7 +1603,7 @@ void G_DoPlayDemo (void)
     int             i, episode, map; 
 	 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = static_cast<byte*>(W_CacheLumpName (defdemoname, PU_STATIC)); 
+    demobuffer = demo_p = static_cast<byte*>(W_CacheLumpName (defdemoname.c_str(), PU_STATIC)); 
     if ( *demo_p++ != VERSION)
     {
         fprintf( stderr, "Demo is from a different game version!\n");
@@ -1640,14 +1640,14 @@ void G_DoPlayDemo (void)
 //
 // G_TimeDemo 
 //
-void G_TimeDemo (char* name) 
+void G_TimeDemo (const std::string& name) 
 { 	 
     nodrawers = M_CheckParm ("-nodraw"); 
     noblit = M_CheckParm ("-noblit"); 
     timingdemo = true; 
     singletics = true; 
 
-    defdemoname = name; 
+    defdemoname = name.c_str();
     gameaction = ga_playdemo; 
 } 
  

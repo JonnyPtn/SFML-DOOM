@@ -518,13 +518,13 @@ EV_BuildStairs
 		    continue;
 					
 		tsec = (sec->lines[i])->frontsector;
-		newsecnum = tsec-sectors.data();
+		newsecnum = static_cast<int>(tsec-sectors.data());
 		
 		if (secnum != newsecnum)
 		    continue;
 
 		tsec = (sec->lines[i])->backsector;
-		newsecnum = tsec - sectors.data();
+		newsecnum = static_cast<int>(tsec - sectors.data());
 
 		if (tsec->floorpic != texture)
 		    continue;

@@ -116,7 +116,7 @@ M_WriteFile
   int		length )
 {
     int		handle;
-    int		count;
+    size_t	count;
 	
     handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
 
@@ -141,7 +141,7 @@ M_ReadFile
 ( char const*	name,
   byte**	buffer )
 {
-    int	handle, count, length;
+    int	handle;
     struct stat	fileinfo;
     byte		*buf;
 	
@@ -150,16 +150,16 @@ M_ReadFile
 	I_Error ("Couldn't read file %s", name);
     if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Couldn't read file %s", name);
-    length = fileinfo.st_size;
+    const auto length = fileinfo.st_size;
     buf = static_cast<byte*>(malloc (length));
-    count = read (handle, buf, length);
+    const auto count = read (handle, buf, length);
     close (handle);
 	
     if (count < length)
 	I_Error ("Couldn't read file %s", name);
 		
     *buffer = buf;
-    return length;
+    return static_cast<int>(length);
 }
 
 
@@ -209,7 +209,7 @@ extern	int	numChannels;
 
 // UNIX hack, to be removed.
 #ifdef SNDSERV
-extern char*	sndserver_filename;
+extern const char*	sndserver_filename;
 extern int	mb_used;
 #endif
 
@@ -299,7 +299,7 @@ default_t	defaults[] =
 };
 
 int	numdefaults;
-char*	defaultfile;
+const char*	defaultfile;
 
 
 //
@@ -357,7 +357,7 @@ void M_LoadDefaults (void)
     i = M_CheckParm ("-config");
     if (i && i<myargc-1)
     {
-	defaultfile = myargv[i+1];
+	defaultfile = myargv[i+1].c_str();
 	printf ("	default file: %s\n",defaultfile);
     }
     else
