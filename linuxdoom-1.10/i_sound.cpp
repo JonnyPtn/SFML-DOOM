@@ -197,7 +197,7 @@ getsfx
     
     // Get the sound data from the WAD, allocate lump
     //  in zone memory.
-    sprintf(name, "ds%s", sfxname);
+    snprintf(name,20, "ds%s", sfxname);
 
     // Now, there is a severe problem with the
     //  sound handling, in it is not (yet/anymore)
@@ -450,7 +450,7 @@ void I_SetMusicVolume(int volume)
 int I_GetSfxLumpNum(sfxinfo_t* sfx)
 {
     char namebuf[9];
-    sprintf(namebuf, "ds%s", sfx->name);
+    snprintf(namebuf,9, "ds%s", sfx->name);
     return W_GetNumForName(namebuf);
 }
 
@@ -740,11 +740,11 @@ I_InitSound()
   char buffer[256];
   
   if (getenv("DOOMWADDIR"))
-    sprintf(buffer, "%s/%s",
+    snprintf(buffer,256, "%s/%s",
 	    getenv("DOOMWADDIR"),
 	    sndserver_filename);
   else
-    sprintf(buffer, "%s", sndserver_filename);
+    snprintf(buffer,256, "%s", sndserver_filename);
   
   // start sound process
   if ( !access(buffer, X_OK) )

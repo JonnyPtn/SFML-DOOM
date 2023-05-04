@@ -361,7 +361,7 @@ void D_DoomLoop (void)
     if (M_CheckParm ("-debugfile"))
     {
 	char    filename[20];
-	sprintf (filename,"debug%i.txt",consoleplayer);
+	snprintf (filename,20,"debug%i.txt",consoleplayer);
 	printf ("debug output to: %s\n",filename);
 	debugfile = fopen (filename,"w");
     }
@@ -415,7 +415,7 @@ void D_DoomLoop (void)
 //
 int             demosequence;
 int             pagetic;
-char                    *pagename;
+std::string     pagename;
 
 
 //
@@ -596,7 +596,7 @@ void IdentifyVersion (void)
     home = getenv("HOME");
     if (!home)
       I_Error("Please set $HOME to your home directory");
-    sprintf(basedefault, "%s/.doomrc", home);
+    snprintf(basedefault,1024, "%s/.doomrc", home);
 
     if (M_CheckParm ("-shdev"))
     {
@@ -712,7 +712,6 @@ void FindResponseFile (void)
 	if (myargv[i][0] == '@')
 	{
 	    FILE *          handle;
-	    int             size;
 	    int             k;
 	    int             index;
 	    int             indexinfile;
@@ -729,7 +728,7 @@ void FindResponseFile (void)
 	    }
 	    printf("Found response file %s!\n",&myargv[i][1]);
 	    fseek (handle,0,SEEK_END);
-	    size = ftell(handle);
+	    const auto size = ftell(handle);
 	    fseek (handle,0,SEEK_SET);
 	    file = static_cast<char*>(malloc (size));
 	    fread (file,size,1,handle);
@@ -795,28 +794,28 @@ void D_DoomMain (void)
     switch ( gamemode )
     {
       case retail:
-	sprintf (title,
+	snprintf (title,128,
 		 "                         "
 		 "The Ultimate DOOM Startup v%i.%i"
 		 "                           ",
 		 VERSION/100,VERSION%100);
 	break;
       case shareware:
-	sprintf (title,
+	snprintf (title,128,
 		 "                            "
 		 "DOOM Shareware Startup v%i.%i"
 		 "                           ",
 		 VERSION/100,VERSION%100);
 	break;
       case registered:
-	sprintf (title,
+	snprintf (title,128,
 		 "                            "
 		 "DOOM Registered Startup v%i.%i"
 		 "                           ",
 		 VERSION/100,VERSION%100);
 	break;
       case commercial:
-	sprintf (title,
+	snprintf (title,128,
 		 "                         "
 		 "DOOM 2: Hell on Earth v%i.%i"
 		 "                           ",
@@ -839,7 +838,7 @@ void D_DoomMain (void)
 	break;
 */
       default:
-	sprintf (title,
+	snprintf (title,128,
 		 "                     "
 		 "Public DOOM - v%i.%i"
 		 "                           ",
@@ -888,7 +887,7 @@ void D_DoomMain (void)
 	  case shareware:
 	  case retail:
 	  case registered:
-	    sprintf (file,"~" DEVMAPS "E%cM%c.wad",
+	    snprintf (file,256,"~" DEVMAPS "E%cM%c.wad",
 		     myargv[p+1][0], myargv[p+2][0]);
 	    printf("Warping to Episode %s, Map %s.\n",
 		   myargv[p+1].c_str(),myargv[p+2].c_str());
@@ -898,9 +897,9 @@ void D_DoomMain (void)
 	  default:
 	    p = atoi (myargv[p+1].c_str());
 	    if (p<10)
-	      sprintf (file,"~" DEVMAPS "cdata/map0%i.wad", p);
+	      snprintf (file,256,"~" DEVMAPS "cdata/map0%i.wad", p);
 	    else
-	      sprintf (file,"~" DEVMAPS "cdata/map%i.wad", p);
+	      snprintf (file,256,"~" DEVMAPS "cdata/map%i.wad", p);
 	    break;
 	}
 	D_AddFile (file);
@@ -923,7 +922,7 @@ void D_DoomMain (void)
 
     if (p && p < myargc-1)
     {
-	sprintf (file,"%s.lmp", myargv[p+1].c_str());
+	snprintf (file,256,"%s.lmp", myargv[p+1].c_str());
 	D_AddFile (file);
 	printf("Playing demo %s.lmp.\n",myargv[p+1].c_str());
     }
@@ -997,7 +996,7 @@ void D_DoomMain (void)
     {
 	// These are the lumps that will be checked in IWAD,
 	// if any one is not present, execution will be aborted.
-	char* name[23]=
+	std::array name=
 	{
 	    "e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
 	    "e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
@@ -1082,17 +1081,6 @@ void D_DoomMain (void)
 
     printf ("ST_Init: Init status bar.\n");
     ST_Init ();
-
-    // check for a driver that wants intermission stats
-    p = M_CheckParm ("-statcopy");
-    if (p && p<myargc-1)
-    {
-	// for statistics driver
-	extern  void*	statcopy;                            
-
-	statcopy = (void*)atoi(myargv[p+1].c_str());
-	printf ("External statistics registered.\n");
-    }
     
     // start the apropriate game based on parms
     p = M_CheckParm ("-record");
@@ -1121,7 +1109,7 @@ void D_DoomMain (void)
     p = M_CheckParm ("-loadgame");
     if (p && p < myargc-1)
     {
-	sprintf(file, SAVEGAMENAME"%c.dsg",myargv[p+1][0]);
+	snprintf(file,256, SAVEGAMENAME"%c.dsg",myargv[p+1][0]);
 	G_LoadGame (file);
     }
 	

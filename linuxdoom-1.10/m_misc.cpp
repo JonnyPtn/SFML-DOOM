@@ -224,7 +224,7 @@ extern char*	chat_macros[];
 
 typedef struct
 {
-    char*	name;
+    const char*	name;
     int*	location;
     int		defaultvalue;
     int		scantranslate;		// PC scan code hack
@@ -340,7 +340,6 @@ extern byte	scantokey[128];
 void M_LoadDefaults (void)
 {
     int		i;
-    int		len;
     FILE*	f;
     char	def[80];
     char	strparm[100];
@@ -376,7 +375,7 @@ void M_LoadDefaults (void)
 		{
 		    // get a string default
 		    isstring = true;
-		    len = strlen(strparm);
+		    const auto len = strlen(strparm);
 		    newstring = (char *) malloc(len);
 		    strparm[len-1] = 0;
 		    strcpy(newstring, strparm+1);
@@ -392,7 +391,7 @@ void M_LoadDefaults (void)
 			    *defaults[i].location = parm;
 			else
 			    *defaults[i].location =
-				reinterpret_cast<intptr_t>(newstring);
+				static_cast<int>(reinterpret_cast<intptr_t>(newstring));
 			break;
 		    }
 	    }

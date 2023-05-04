@@ -62,7 +62,7 @@ rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 
 
 
-char*	chat_macros[] =
+std::array	chat_macros =
 {
     HUSTR_CHATMACRO0,
     HUSTR_CHATMACRO1,
@@ -76,7 +76,7 @@ char*	chat_macros[] =
     HUSTR_CHATMACRO9
 };
 
-char*	player_names[] =
+std::array	player_names =
 {
     HUSTR_PLRGREEN,
     HUSTR_PLRINDIGO,
@@ -112,7 +112,7 @@ static boolean		headsupactive = false;
 // The actual names can be found in DStrings.h.
 //
 
-char*	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
+std::array	mapnames =	// DOOM shareware/registered/retail (Ultimate) names.
 {
 
     HUSTR_E1M1,
@@ -166,7 +166,7 @@ char*	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
     "NEWLEVEL"
 };
 
-char*	mapnames2[] =	// DOOM 2 map names.
+std::array	mapnames2 =	// DOOM 2 map names.
 {
     HUSTR_1,
     HUSTR_2,
@@ -205,7 +205,7 @@ char*	mapnames2[] =	// DOOM 2 map names.
 };
 
 
-char*	mapnamesp[] =	// Plutonia WAD map names.
+std::array	mapnamesp =	// Plutonia WAD map names.
 {
     PHUSTR_1,
     PHUSTR_2,
@@ -244,7 +244,7 @@ char*	mapnamesp[] =	// Plutonia WAD map names.
 };
 
 
-char *mapnamest[] =	// TNT WAD map names.
+std::array mapnamest =	// TNT WAD map names.
 {
     THUSTR_1,
     THUSTR_2,
@@ -405,7 +405,7 @@ void HU_Init(void)
     j = HU_FONTSTART;
     for (i=0;i<HU_FONTSIZE;i++)
     {
-	sprintf(buffer, "STCFN%.3d", j++);
+	snprintf(buffer,9, "STCFN%.3d", j++);
 	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
     }
 
@@ -420,7 +420,7 @@ void HU_Start(void)
 {
 
     int		i;
-    char*	s;
+    const char*	s;
 
     if (headsupactive)
 	HU_Stop();
@@ -619,7 +619,7 @@ boolean HU_Responder(const sf::Event& ev)
 {
 
     static char		lastmessage[HU_MAXLINELENGTH+1];
-    char*		macromessage;
+    const char*		macromessage;
     boolean		eatkey = false;
     static boolean	shiftdown = false;
     static boolean	altdown = false;

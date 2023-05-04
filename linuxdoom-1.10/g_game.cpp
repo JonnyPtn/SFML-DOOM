@@ -1017,7 +1017,6 @@ int cpars[32] =
 // G_DoCompleted 
 //
 boolean		secretexit; 
-extern char*	pagename; 
  
 void G_ExitLevel (void) 
 { 
@@ -1603,7 +1602,7 @@ void G_DoPlayDemo (void)
     int             i, episode, map; 
 	 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = static_cast<byte*>(W_CacheLumpName (defdemoname.c_str(), PU_STATIC)); 
+    demobuffer = demo_p = static_cast<byte*>(W_CacheLumpName (defdemoname.c_str(), PU_STATIC));
     if ( *demo_p++ != VERSION)
     {
         fprintf( stderr, "Demo is from a different game version!\n");
