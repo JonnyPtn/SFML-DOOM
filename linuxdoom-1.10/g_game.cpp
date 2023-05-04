@@ -113,7 +113,7 @@ int             starttime;          	// for comparative timing purposes
  
 boolean         viewactive; 
  
-boolean         deathmatch;           	// only if started as net death 
+uint8_t         deathmatch;           	// only if started as net death 
 boolean         netgame;                // only true if packets are broadcast 
 boolean         playeringame[MAXPLAYERS]; 
 player_t        players[MAXPLAYERS]; 
@@ -176,11 +176,9 @@ fixed_t		forwardmove[2] = {0x19, 0x32};
 fixed_t		sidemove[2] = {0x18, 0x28}; 
 fixed_t		angleturn[3] = {640, 1280, 320};	// + slow turn 
 
-#define SLOWTURNTICS	6 
- 
-#define NUMKEYS		256 
+#define SLOWTURNTICS	6
 
-boolean         gamekeydown[NUMKEYS]; 
+std::bitset<static_cast<int>(sf::Keyboard::Scancode::ScancodeCount)>    gamekeydown;
 int             turnheld;				// for accelerative turning 
  
 std::bitset<3>	mousebuttons;		// allow [-1]
@@ -455,8 +453,8 @@ void G_DoLoadLevel (void)
     // DOOM determines the sky texture to be used
     // depending on the current episode, and the game version.
     if ( (gamemode == commercial)
-	 || ( gamemode == pack_tnt )
-	 || ( gamemode == pack_plut ) )
+	 || ( gamemission == pack_tnt )
+	 || ( gamemission == pack_plut ) )
     {
 	skytexture = R_TextureNumForName ("SKY3");
 	if (gamemap < 12)
@@ -487,7 +485,7 @@ void G_DoLoadLevel (void)
     Z_CheckHeap ();
     
     // clear cmd building stuff
-    memset (gamekeydown, 0, sizeof(gamekeydown)); 
+    gamekeydown = {};
     joyxmove = joyymove = 0; 
     mousex = mousey = 0; 
     sendpause = sendsave = paused = false;
@@ -497,7 +495,9 @@ void G_DoLoadLevel (void)
 //
 // G_Responder  
 // Get info needed to make ticcmd_ts for the players.
-// 
+//
+
+
 boolean G_Responder (const sf::Event& ev) 
 { 
     // allow spy mode changes even during the demo
@@ -560,14 +560,12 @@ boolean G_Responder (const sf::Event& ev)
 //	{ 
 //	    sendpause = true; 
 //	    return true; 
-//	} 
-	if (ev.key.code <NUMKEYS) 
-	    gamekeydown[ev.key.code] = true; 
+//	}
+    gamekeydown[static_cast<int>(ev.key.scancode)] = true;
 	return true;    // eat key down events 
  
-      case sf::Event::KeyReleased: 
-	if (ev.key.code <NUMKEYS) 
-	    gamekeydown[ev.key.code] = false; 
+        case sf::Event::KeyReleased:
+            gamekeydown[static_cast<int>(ev.key.scancode)] = false;
 	return false;   // always let key up events filter down 
 		 
       case sf::Event::MouseButtonPressed: 
@@ -583,6 +581,8 @@ boolean G_Responder (const sf::Event& ev)
           case sf::Mouse::Button::Middle:
           mousebuttons[2] = ev.type == sf::Event::MouseButtonPressed;
           break;
+          default:
+              break;
       }
       break;
       case sf::Event::MouseMoved:
@@ -605,7 +605,9 @@ boolean G_Responder (const sf::Event& ev)
         break;
         case sf::Joystick::Axis::Y:
         joyymove = ev.joystickMove.position;
-        break; 
+        break;
+        default:
+            break;
     }
 	return true;    // eat events 
  
@@ -694,7 +696,7 @@ void G_Ticker (void)
 	    {
 		static char turbomessage[80];
 		extern char *player_names[4];
-		sprintf (turbomessage, "%s is turbo!",player_names[i]);
+		snprintf (turbomessage,80, "%s is turbo!",player_names[i]);
 		players[consoleplayer].message = turbomessage;
 	    }
 			
@@ -916,10 +918,9 @@ G_CheckSpot
 //
 void G_DeathMatchSpawnPlayer (int playernum) 
 { 
-    int             i,j; 
-    int				selections; 
+    int             i,j;
 	 
-    selections = deathmatch_p - deathmatchstarts; 
+    const auto selections = deathmatch_p - deathmatchstarts;
     if (selections < 4) 
 	I_Error ("Only %i deathmatch spots, 4 required", selections); 
  
@@ -1231,7 +1232,7 @@ void G_DoLoadGame (void)
     
     // skip the description field 
     memset (vcheck,0,sizeof(vcheck)); 
-    sprintf (vcheck,"version %i",VERSION); 
+    snprintf (vcheck,VERSIONSIZE,"version %i",VERSION);
     // JONNY TODO
     //if (strcmp (save_p, vcheck)) 
 	//return;				// bad version 
@@ -1291,11 +1292,10 @@ void G_DoSaveGame (void)
 { 
     char	name[100]; 
     char	name2[VERSIONSIZE]; 
-    char*	description; 
-    int		length; 
+    char*	description;
     int		i; 
 	
-	sprintf (name,SAVEGAMENAME"%d.dsg",savegameslot); 
+	snprintf (name,100,SAVEGAMENAME"%d.dsg",savegameslot);
     description = savedescription; 
 	 
     save_p = savebuffer = screens[1]+0x4000; 
@@ -1303,7 +1303,7 @@ void G_DoSaveGame (void)
     memcpy (save_p, description, SAVESTRINGSIZE); 
     save_p += SAVESTRINGSIZE; 
     memset (name2,0,sizeof(name2)); 
-    sprintf (name2,"version %i",VERSION); 
+    snprintf (name2,VERSIONSIZE,"version %i",VERSION);
     memcpy (save_p, name2, VERSIONSIZE); 
     save_p += VERSIONSIZE; 
 	 
@@ -1323,10 +1323,10 @@ void G_DoSaveGame (void)
 	 
     *save_p++ = 0x1d;		// consistancy marker 
 	 
-    length = save_p - savebuffer; 
+    const auto length = save_p - savebuffer;
     if (length > SAVEGAMESIZE) 
 	I_Error ("Savegame buffer overrun"); 
-    M_WriteFile (name, savebuffer, length); 
+    M_WriteFile (name, savebuffer, static_cast<int>(length));
     gameaction = ga_nothing; 
     savedescription[0] = 0;		 
 	 
@@ -1693,7 +1693,7 @@ boolean G_CheckDemoStatus (void)
     if (demorecording) 
     { 
 	*demo_p++ = DEMOMARKER; 
-	M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
+	M_WriteFile (demoname, demobuffer, static_cast<int>(demo_p - demobuffer)); 
 	free (demobuffer); 
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 

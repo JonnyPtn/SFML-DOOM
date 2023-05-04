@@ -509,7 +509,7 @@ void AM_loadPics(void)
   
     for (i=0;i<10;i++)
     {
-	sprintf(namebuf, "AMMNUM%d", i);
+	snprintf(namebuf,9, "AMMNUM%d", i);
 	marknums[i] = static_cast<patch_t*>(W_CacheLumpName(namebuf, PU_STATIC));
     }
 
@@ -679,7 +679,7 @@ boolean AM_Responder( const sf::Event&	ev )
 	    plr->message = grid ? AMSTR_GRIDON : AMSTR_GRIDOFF;
 	    break;
 	  case sf::Keyboard::Key::M: // mark
-	    sprintf(buffer, "%s %d", AMSTR_MARKEDSPOT, markpointnum);
+	    snprintf(buffer,20, "%s %d", AMSTR_MARKEDSPOT, markpointnum);
 	    plr->message = buffer;
 	    AM_addMark();
 	    break;
@@ -717,6 +717,8 @@ boolean AM_Responder( const sf::Event&	ev )
 	    mtof_zoommul = FRACUNIT;
 	    ftom_zoommul = FRACUNIT;
 	    break;
+      default:
+        break;
 	}
     }
 

@@ -446,7 +446,6 @@ WritePCXfile
   byte*		palette )
 {
     int		i;
-    int		length;
     pcx_t*	pcx;
     byte*	pack;
 	
@@ -489,8 +488,8 @@ WritePCXfile
 	*pack++ = *palette++;
     
     // write output file
-    length = pack - (byte *)pcx;
-    M_WriteFile (filename, pcx, length);
+    const auto length = pack - (byte *)pcx;
+    M_WriteFile (filename, pcx, static_cast<int>(length));
 
     free (pcx);
 }

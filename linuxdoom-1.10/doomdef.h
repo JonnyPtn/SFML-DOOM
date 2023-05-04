@@ -35,7 +35,7 @@ constexpr int32_t VERSION = 110;
 
 // Game mode handling - identify IWAD version
 //  to handle IWAD dependend animations etc.
-typedef enum
+enum GameMode_t
 {
   shareware,	// DOOM 1 shareware, E1, M9
   registered,	// DOOM 1 registered, E3, M27
@@ -44,11 +44,11 @@ typedef enum
   retail,	// DOOM 1 retail, E4, M36
   indetermined	// Well, no IWAD found.
   
-} GameMode_t;
+};
 
 
 // Mission packs - might be useful for TC stuff?
-typedef enum
+enum GameMission_t
 {
   doom,		// DOOM 1
   doom2,	// DOOM 2
@@ -56,18 +56,18 @@ typedef enum
   pack_plut,	// Plutonia pack
   none
 
-} GameMission_t;
+};
 
 
 // Identify language to use, software localization.
-typedef enum
+enum Language_t
 {
   english,
   french,
   german,
   unknown
 
-} Language_t;
+};
 
 
 // If rangecheck is undefined,
@@ -124,13 +124,13 @@ typedef enum
 // The current state of the game: whether we are
 // playing, gazing at the intermission screen,
 // the game final animation, or a demo. 
-typedef enum
+enum gamestate_t
 {
     GS_LEVEL,
     GS_INTERMISSION,
     GS_FINALE,
     GS_DEMOSCREEN
-} gamestate_t;
+};
 
 //
 // Difficulty/skill settings/filters.
@@ -144,14 +144,14 @@ typedef enum
 // Deaf monsters/do not react to sound.
 #define	MTF_AMBUSH		8
 
-typedef enum
+enum skill_t
 {
     sk_baby,
     sk_easy,
     sk_medium,
     sk_hard,
     sk_nightmare
-} skill_t;
+};
 
 
 
@@ -159,7 +159,7 @@ typedef enum
 //
 // Key cards.
 //
-typedef enum
+enum card_t
 {
     it_bluecard,
     it_yellowcard,
@@ -170,14 +170,14 @@ typedef enum
     
     NUMCARDS
     
-} card_t;
+};
 
 
 
 // The defined weapons,
 //  including a marker indicating
 //  user has not changed weapon.
-typedef enum
+enum weapontype_t
 {
     wp_fist,
     wp_pistol,
@@ -194,11 +194,11 @@ typedef enum
     // No pending weapon change.
     wp_nochange
 
-} weapontype_t;
+};
 
 
 // Ammunition types defined.
-typedef enum
+enum ammotype_t
 {
     am_clip,	// Pistol / chaingun ammo.
     am_shell,	// Shotgun / double barreled shotgun.
@@ -207,11 +207,11 @@ typedef enum
     NUMAMMO,
     am_noammo	// Unlimited for chainsaw / fist.	
 
-} ammotype_t;
+};
 
 
 // Power up artifacts.
-typedef enum
+enum powertype_t
 {
     pw_invulnerability,
     pw_strength,
@@ -221,7 +221,7 @@ typedef enum
     pw_infrared,
     NUMPOWERS
     
-} powertype_t;
+};
 
 
 
@@ -230,14 +230,14 @@ typedef enum
 //  how many seconds till expiration,
 //  assuming TICRATE is 35 ticks/second.
 //
-typedef enum
+enum powerduration_t
 {
     INVULNTICS	= (30*TICRATE),
     INVISTICS	= (60*TICRATE),
     INFRATICS	= (120*TICRATE),
     IRONTICS	= (60*TICRATE)
     
-} powerduration_t;
+};
 
 
 // DOOM basic types (boolean),

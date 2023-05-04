@@ -94,7 +94,7 @@ int			quickSaveSlot;
  // 1 = message to be printed
 int			messageToPrint;
 // ...and here is the message string!
-char*			messageString;		
+const char*			messageString;
 
 // message x & y
 int			messx;			
@@ -224,11 +224,11 @@ void M_SetupNextMenu(menu_t *menudef);
 void M_DrawThermo(int x,int y,int thermWidth,int thermDot);
 void M_DrawEmptyCell(menu_t *menu,int item);
 void M_DrawSelCell(menu_t *menu,int item);
-void M_WriteText(int x, int y, char *string);
+void M_WriteText(int x, int y, const char *string);
 int  M_StringWidth(char *string);
 int  M_StringHeight(char *string);
 void M_StartControlPanel(void);
-void M_StartMessage(char *string,std::function<void(int)> routine,boolean input);
+void M_StartMessage(const char *string,std::function<void(int)> routine,boolean input);
 void M_StopMessage(void);
 void M_ClearMenus (void);
 
@@ -577,7 +577,7 @@ void M_DrawSaveLoadBorder(int x,int y)
 void M_LoadSelect(int choice)
 {
     char    name[256];
-	sprintf(name,SAVEGAMENAME"%d.dsg",choice);
+	snprintf(name,256,SAVEGAMENAME"%d.dsg",choice);
     G_LoadGame (name);
     M_ClearMenus ();
 }
@@ -644,7 +644,7 @@ void M_SaveSelect(int choice)
     strcpy(saveOldString,savegamestrings[choice]);
     if (!strcmp(savegamestrings[choice],EMPTYSTRING))
 	savegamestrings[choice][0] = 0;
-    saveCharIndex = strlen(savegamestrings[choice]);
+    saveCharIndex = static_cast<int>(strlen(savegamestrings[choice]));
 }
 
 //
@@ -700,7 +700,7 @@ void M_QuickSave(void)
 	quickSaveSlot = -2;	// means to pick a slot now
 	return;
     }
-    sprintf(tempstring,QSPROMPT,savegamestrings[quickSaveSlot]);
+    snprintf(tempstring,80,QSPROMPT,savegamestrings[quickSaveSlot]);
     M_StartMessage(tempstring,M_QuickSaveResponse,true);
 }
 
@@ -732,7 +732,7 @@ void M_QuickLoad(void)
 	M_StartMessage(QSAVESPOT,NULL,false);
 	return;
     }
-    sprintf(tempstring,QLPROMPT,savegamestrings[quickSaveSlot]);
+    snprintf(tempstring,80,QLPROMPT,savegamestrings[quickSaveSlot]);
     M_StartMessage(tempstring,M_QuickLoadResponse,true);
 }
 
@@ -1094,9 +1094,9 @@ void M_QuitDOOM(int choice)
   // We pick index 0 which is language sensitive,
   //  or one at random, between 1 and maximum number.
   if (language != english )
-    sprintf(endstring,"%s\n\n" DOSY, endmsg[0] );
+    snprintf(endstring,160,"%s\n\n" DOSY, endmsg[0] );
   else
-    sprintf(endstring,"%s\n\n" DOSY, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
+    snprintf(endstring,160,"%s\n\n" DOSY, endmsg[ (gametic%(NUM_QUITMESSAGES-2))+1 ]);
   
   M_StartMessage(endstring,M_QuitResponse,true);
 }
@@ -1220,7 +1220,7 @@ M_DrawSelCell
 
 void
 M_StartMessage
-( char*		string,
+( const char*		string,
   std::function<void(int)>		routine,
   boolean	input )
 {
@@ -1269,7 +1269,7 @@ int M_StringWidth(char* string)
 //
 //      Find string height from hu_font chars
 //
-int M_StringHeight(char* string)
+int M_StringHeight(const char* string)
 {
     int             i;
     int             h;
@@ -1291,10 +1291,10 @@ void
 M_WriteText
 ( int		x,
   int		y,
-  char*		string)
+  const char*		string)
 {
     int		w;
-    char*	ch;
+    const char*	ch;
     int		c;
     int		cx;
     int		cy;
@@ -1446,6 +1446,8 @@ boolean M_Responder (const sf::Event& ev)
             key = ev.key.code;
             break;
         }
+        default:
+            break;
     }
     
     if (key == sf::Keyboard::Key::Unknown)
@@ -1606,6 +1608,8 @@ boolean M_Responder (const sf::Event& ev)
 	    players[consoleplayer].message = gammamsg[usegamma];
 	    I_SetPalette (static_cast<byte*>(W_CacheLumpName ("PLAYPAL",PU_CACHE)));
 	    return true;
+        default:
+            break;
 				
 	}
 
