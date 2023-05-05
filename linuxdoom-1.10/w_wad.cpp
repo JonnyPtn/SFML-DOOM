@@ -21,11 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
-static const char
-rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
-
-
 #ifdef NORMALUNIX
 #include <ctype.h>
 #include <sys/types.h>
@@ -42,10 +37,6 @@ rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
 #include "m_swap.h"
 #include "i_system.h"
 #include "z_zone.h"
-
-#ifdef __GNUG__
-#pragma implementation "w_wad.h"
-#endif
 #include "w_wad.h"
 
 #include <cctype>
@@ -147,9 +138,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     auto filename = filepath.filename();
     
     wadinfo_t		header;
-    unsigned		i;
     int			    length;
-    size_t			startlump;
     std::vector<filelump_t> fileinfo;
     filelump_t		singleinfo;
     
@@ -172,7 +161,6 @@ void W_AddFile (const std::filesystem::path& filepath)
     }
 
     printf (" adding %s\n",filename.c_str());
-    startlump = lumpinfo.size();
 	
     if (filename.extension() != ".wad")
     {
@@ -205,8 +193,6 @@ void W_AddFile (const std::filesystem::path& filepath)
         wadfiles.back().read(reinterpret_cast<char*>(fileinfo.data()), length);
         lumpinfo.reserve(lumpinfo.size() + header.numlumps);
     }
-
-    const auto& lump = lumpinfo[startlump];
 	
     for (auto i = 0; i < header.numlumps; ++i)
     {
@@ -229,12 +215,9 @@ void W_AddFile (const std::filesystem::path& filepath)
 //
 void W_Reload (void)
 {
-    wadinfo_t		header;
-    int			lumpcount;
+    int			lumpcount{};
     lumpinfo_t*		lump_p;
-    int			handle;
-    int			length;
-    filelump_t*		fileinfo;
+    filelump_t*		fileinfo{};
 	
     if (reloadpath.empty())
 	return;

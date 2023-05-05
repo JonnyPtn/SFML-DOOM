@@ -19,9 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __D_PLAYER__
-#define __D_PLAYER__
+#pragma once
 
 
 // The player data structure depends on a number
@@ -39,13 +37,6 @@
 // is buffered within the player data struct,
 // as commands per game tick.
 #include "d_ticcmd.h"
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
-
 
 //
 // Player states.
@@ -209,11 +200,3 @@ typedef struct
     wbplayerstruct_t	plyr[MAXPLAYERS];
 
 } wbstartstruct_t;
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

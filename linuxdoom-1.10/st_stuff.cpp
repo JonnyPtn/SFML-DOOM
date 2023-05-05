@@ -23,10 +23,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: st_stuff.c,v 1.6 1997/02/03 22:45:13 b1 Exp $";
-
-
 #include <stdio.h>
 
 #include "i_system.h"
@@ -517,9 +513,9 @@ void ST_refreshBackground(void)
 boolean
 ST_Responder (const sf::Event& ev)
 {
+  /* JONNY TODO
   int		i;
     
-  /* JONNY TODO
   // Filter automap on/off.
   if (ev.type == sf::Event::KeyReleased
       && ((ev.data1 & 0xffff0000) == AM_MSGHEADER))

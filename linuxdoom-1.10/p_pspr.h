@@ -19,9 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __P_PSPR__
-#define __P_PSPR__
+#pragma once
 
 // Basic data types.
 // Needs fixed point, and BAM angles.
@@ -37,10 +35,6 @@
 // i.e. the Thing Atrributes table
 // and the Frame Sequence table.
 #include "info.h"
-
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 
 //
@@ -73,10 +67,3 @@ typedef struct
     fixed_t	sy;
 
 } pspdef_t;
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

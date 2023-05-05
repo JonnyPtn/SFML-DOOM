@@ -22,10 +22,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
-static const char rcsid[] = "$Id: d_net.c,v 1.3 1997/02/03 22:01:47 b1 Exp $";
-
-
 #include "m_menu.h"
 #include "i_system.h"
 #include "i_video.h"
@@ -90,7 +86,8 @@ doomdata_t	reboundstore;
 int NetbufferSize (void)
 {
 	// JONNY TODO
-    //return (int)&(((doomdata_t *)0)->cmds[netbuffer->numtics]); 
+    //return (int)&(((doomdata_t *)0)->cmds[netbuffer->numtics]);
+    return {};
 }
 
 //
@@ -99,7 +96,6 @@ int NetbufferSize (void)
 unsigned NetbufferChecksum (void)
 {
     unsigned		c;
-    int		i,l;
 
     c = 0x1234567;
 
@@ -454,7 +450,6 @@ void NetUpdate (void)
 //
 void CheckAbort (void)
 {
-    sf::Event ev;
     int		stoptic;
 	
     stoptic = I_GetTime () + 2; 
@@ -645,7 +640,6 @@ void TryRunTics (void)
     int		realtics;
     int		availabletics;
     int		counts;
-    int		numplaying;
     
     // get real tics		
     entertic = I_GetTime ()/ticdup;
@@ -656,12 +650,10 @@ void TryRunTics (void)
     NetUpdate ();
 	
     lowtic = MAXINT;
-    numplaying = 0;
     for (i=0 ; i<doomcom->numnodes ; i++)
     {
 	if (nodeingame[i])
 	{
-	    numplaying++;
 	    if (nettics[i] < lowtic)
 		lowtic = nettics[i];
 	}

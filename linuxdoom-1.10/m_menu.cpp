@@ -22,9 +22,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: m_menu.c,v 1.7 1997/02/03 22:45:10 b1 Exp $";
-
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -238,7 +235,7 @@ void M_ClearMenus (void);
 //
 // DOOM MENU
 //
-enum
+enum main_e
 {
     newgame = 0,
     options,
@@ -247,7 +244,7 @@ enum
     readthis,
     quitdoom,
     main_end
-} main_e;
+};
 
 menuitem_t MainMenu[]=
 {
@@ -274,14 +271,14 @@ menu_t  MainDef =
 //
 // EPISODE SELECT
 //
-enum
+enum episodes_e
 {
     ep1,
     ep2,
     ep3,
     ep4,
     ep_end
-} episodes_e;
+};
 
 menuitem_t EpisodeMenu[]=
 {
@@ -304,7 +301,7 @@ menu_t  EpiDef =
 //
 // NEW GAME
 //
-enum
+enum newgame_e
 {
     killthings,
     toorough,
@@ -312,7 +309,7 @@ enum
     violence,
     nightmare,
     newg_end
-} newgame_e;
+};
 
 menuitem_t NewGameMenu[]=
 {
@@ -338,7 +335,7 @@ menu_t  NewDef =
 //
 // OPTIONS MENU
 //
-enum
+enum options_e
 {
     endgame,
     messages,
@@ -349,7 +346,7 @@ enum
     option_empty2,
     soundvol,
     opt_end
-} options_e;
+};
 
 menuitem_t OptionsMenu[]=
 {
@@ -376,11 +373,11 @@ menu_t  OptionsDef =
 //
 // Read This! MENU 1 & 2
 //
-enum
+enum read_e
 {
     rdthsempty1,
     read1_end
-} read_e;
+};
 
 menuitem_t ReadMenu1[] =
 {
@@ -397,11 +394,11 @@ menu_t  ReadDef1 =
     0
 };
 
-enum
+enum read_e2
 {
     rdthsempty2,
     read2_end
-} read_e2;
+};
 
 menuitem_t ReadMenu2[]=
 {
@@ -421,14 +418,14 @@ menu_t  ReadDef2 =
 //
 // SOUND VOLUME MENU
 //
-enum
+enum sound_e
 {
     sfx_vol,
     sfx_empty1,
     music_vol,
     sfx_empty2,
     sound_end
-} sound_e;
+};
 
 menuitem_t SoundMenu[]=
 {
@@ -451,7 +448,7 @@ menu_t  SoundDef =
 //
 // LOAD GAME MENU
 //
-enum
+enum load_e
 {
     load1,
     load2,
@@ -460,7 +457,7 @@ enum
     load5,
     load6,
     load_end
-} load_e;
+};
 
 menuitem_t LoadMenu[]=
 {
@@ -527,7 +524,7 @@ void M_ReadSaveStrings(void)
 	    LoadMenu[i].status = 0;
 	    continue;
 	}
-	auto count = read (handle, &savegamestrings[i], SAVESTRINGSIZE);
+	read (handle, &savegamestrings[i], SAVESTRINGSIZE);
 	close (handle);
 	LoadMenu[i].status = 1;
     }
@@ -1343,13 +1340,13 @@ M_WriteText
 boolean M_Responder (const sf::Event& ev)
 {
     sf::Keyboard::Key   key{sf::Keyboard::Key::Unknown};
-    int             i;
-    static  int     joywait = 0;
-    static  int     mousewait = 0;
-    static  int     mousey = 0;
-    static  int     lasty = 0;
-    static  int     mousex = 0;
-    static  int     lastx = 0;
+    //int             i;
+    //static  int     joywait = 0;
+    //static  int     mousewait = 0;
+    //static  int     mousey = 0;
+    //static  int     lasty = 0;
+    //static  int     mousex = 0;
+    //static  int     lastx = 0;
 	
 	/* TODO JONNY
     if (ev->type == ev_joystick && joywait < I_GetTime())

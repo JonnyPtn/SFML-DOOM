@@ -20,15 +20,10 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef __I_VIDEO__
-#define __I_VIDEO__
+#pragma once
 
 
 #include "doomtype.h"
-
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 
 // Called by D_DoomMain,
@@ -49,12 +44,3 @@ void I_ReadScreen (byte* scr);
 
 void I_BeginRead (void);
 void I_EndRead (void);
-
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

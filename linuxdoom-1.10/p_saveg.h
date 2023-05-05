@@ -19,14 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __P_SAVEG__
-#define __P_SAVEG__
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
+#pragma once
 
 
 // Persistent storage/archiving.
@@ -41,11 +34,3 @@ void P_ArchiveSpecials (void);
 void P_UnArchiveSpecials (void);
 
 extern byte*		save_p; 
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

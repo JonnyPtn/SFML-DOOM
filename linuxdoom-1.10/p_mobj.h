@@ -19,9 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __P_MOBJ__
-#define __P_MOBJ__
+#pragma once
 
 // Basics.
 #include "tables.h"
@@ -38,13 +36,6 @@
 //  tied to animation frames.
 // Needs precompiled tables/data structures.
 #include "info.h"
-
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 
 //
@@ -284,12 +275,3 @@ typedef struct mobj_s
     struct mobj_s*	tracer;	
     
 } mobj_t;
-
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

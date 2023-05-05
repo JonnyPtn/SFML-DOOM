@@ -24,9 +24,7 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __D_STATE__
-#define __D_STATE__
+#pragma once
 
 // We need globally shared data structures,
 //  for defining the global state variables.
@@ -35,13 +33,6 @@
 
 // We need the playr data structure as well.
 #include "d_player.h"
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
 
 // ------------------------
 // Command line parameters.
@@ -93,7 +84,7 @@ extern  boolean	netgame;
 
 // Flag: true only if started as net deathmatch.
 // An enum might handle altdeath/cooperative better.
-extern  uint8_t	deathmatch;	
+extern  uint8_t	deathmatch;
 	
 // -------------------------
 // Internal parameters for sound rendering.
@@ -285,12 +276,3 @@ extern  int             nettics[MAXNETNODES];
 
 extern  ticcmd_t        netcmds[MAXPLAYERS][BACKUPTICS];
 extern	int		ticdup;
-
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

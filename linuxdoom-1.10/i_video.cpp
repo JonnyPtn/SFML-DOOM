@@ -21,9 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/ipc.h>
@@ -79,8 +76,6 @@ void I_StartFrame (void)
 
 }
 
-static int	lastmousex = 0;
-static int	lastmousey = 0;
 boolean		mousemoved = false;
 boolean		shmFinished;
 
@@ -236,7 +231,6 @@ void I_InitGraphics(void)
 {
 
     const char*		displayname;
-    char*		d;
     int			n;
     int			pnum;
     int			x=0;
@@ -245,10 +239,7 @@ void I_InitGraphics(void)
     // warning: char format, different type arg
     char		xsign=' ';
     char		ysign=' ';
-    
-    int			oktodraw;
-    unsigned long	attribmask;
-    int			valuemask;
+
     static int		firsttime=1;
 
     if (!firsttime)
@@ -357,14 +348,11 @@ Expand4
 ( unsigned*	lineptr,
   double*	xline )
 {
-    double	dpixel;
+    double	dpixel{};
     unsigned	x;
     unsigned 	y;
-    unsigned	fourpixels;
     unsigned	step;
-    double*	exp;
 	
-    exp = exptable2;
     if (!inited)
     {
 	inited = 1;
@@ -381,7 +369,7 @@ Expand4
 
 	do
 	{
-	    fourpixels = lineptr[0];
+	    //fourpixels = lineptr[0];
 
 		//JONNY TODO	
 	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
@@ -397,7 +385,7 @@ Expand4
 	    xline[321] = dpixel;
 	    xline[481] = dpixel;
 
-	    fourpixels = lineptr[1];
+	    //fourpixels = lineptr[1];
 		
 		// JONNY TODO
 	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
@@ -413,7 +401,7 @@ Expand4
 	    xline[323] = dpixel;
 	    xline[483] = dpixel;
 
-	    fourpixels = lineptr[2];
+	    //fourpixels = lineptr[2];
 		
 		// JONNY TODO
 	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
@@ -429,7 +417,7 @@ Expand4
 	    xline[325] = dpixel;
 	    xline[485] = dpixel;
 
-	    fourpixels = lineptr[3];
+	    //fourpixels = lineptr[3];
 
 		// JONNY TODO	
 	    //dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );

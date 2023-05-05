@@ -20,18 +20,12 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __R_DATA__
-#define __R_DATA__
+#pragma once
 
 #include "r_defs.h"
 #include "r_state.h"
 
 #include <string>
-
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 // Retrieve column data for span blitting.
 byte*
@@ -55,10 +49,3 @@ int R_FlatNumForName (const std::string& name);
 // returns the texture number for the texture name.
 int R_TextureNumForName (const std::string& name);
 int R_CheckTextureNumForName (const std::string& name);
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

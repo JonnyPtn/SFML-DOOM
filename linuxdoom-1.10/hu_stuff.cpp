@@ -20,9 +20,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
-
 #include <ctype.h>
 
 #include "doomdef.h"
@@ -505,7 +502,7 @@ void HU_Erase(void)
 void HU_Ticker(void)
 {
 
-    int i, rc;
+    int i;
     char c;
 
     // tick down message counter if message is up
@@ -548,7 +545,7 @@ void HU_Ticker(void)
 		{
 		    if (c >= 'a' && c <= 'z')
 			c = (char) shiftxform[(unsigned char) c];
-		    rc = HUlib_keyInIText(&w_inputbuffer[i], c);
+		    //rc = HUlib_keyInIText(&w_inputbuffer[i], c);
             // JONNY TODO
 //		    if (rc && c == KEY_ENTER)
 //		    {

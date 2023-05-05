@@ -19,18 +19,10 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __R_MAIN__
-#define __R_MAIN__
+#pragma once
 
 #include "d_player.h"
 #include "r_data.h"
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 //
 // POV related.
@@ -163,10 +155,3 @@ void R_Init (void);
 
 // Called by M_Responder.
 void R_SetViewSize (int blocks, int detail);
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

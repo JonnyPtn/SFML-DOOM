@@ -20,12 +20,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
-static const char
-rcsid[] = "$Id: s_sound.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -42,11 +36,6 @@ rcsid[] = "$Id: s_sound.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 #include "p_local.h"
 
 #include "doomstat.h"
-
-
-// Purpose?
-const char snd_prefixen[]
-= { 'P', 'P', 'A', 'S', 'S', 'S', 'M', 'M', 'M', 'S', 'S', 'S' };
 
 #define S_MAX_VOLUME		127
 
@@ -651,7 +640,7 @@ S_ChangeMusic
 ( int			musicnum,
   int			looping )
 {
-    musicinfo_t*	music;
+    musicinfo_t*	music{};
     char		namebuf[9];
 
     if ( (musicnum <= mus_None)

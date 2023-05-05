@@ -20,10 +20,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
-static const char
-rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
-
 #include <string.h>
 #include <stdlib.h>
 
@@ -781,12 +777,7 @@ void G_Ticker (void)
 // Called by the game initialization functions.
 //
 void G_InitPlayer (int player) 
-{ 
-    player_t*	p; 
- 
-    // set up the saved info         
-    p = &players[player]; 
-	 
+{
     // clear everything else to defaults 
     G_PlayerReborn (player); 
 	 
@@ -1219,15 +1210,14 @@ void G_LoadGame (char* name)
 
 
 void G_DoLoadGame (void) 
-{ 
-    int		length; 
+{
     int		i; 
     int		a,b,c; 
     char	vcheck[VERSIONSIZE]; 
 	 
     gameaction = ga_nothing; 
 	 
-    length = M_ReadFile (savename, &savebuffer); 
+    M_ReadFile (savename, &savebuffer); 
     save_p = savebuffer + SAVESTRINGSIZE;
     
     // skip the description field 
@@ -1693,8 +1683,8 @@ boolean G_CheckDemoStatus (void)
     if (demorecording) 
     { 
 	*demo_p++ = DEMOMARKER; 
-	M_WriteFile (demoname, demobuffer, static_cast<int>(demo_p - demobuffer)); 
-	free (demobuffer); 
+	M_WriteFile (demoname, demobuffer, static_cast<int>(demo_p - demobuffer));
+	free (demobuffer);
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 
     } 

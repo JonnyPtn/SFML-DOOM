@@ -21,19 +21,11 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __D_MAIN__
-#define __D_MAIN__
+#pragma once
 
 #include "d_event.h"
 
 #include <SFML/Window.hpp>
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
 
 #define MAXWADFILES             20
 extern char*		wadfilenames[MAXWADFILES];
@@ -62,5 +54,3 @@ void D_PageTicker (void);
 void D_PageDrawer (void);
 void D_AdvanceDemo (void);
 void D_StartTitle (void);
-
-#endif

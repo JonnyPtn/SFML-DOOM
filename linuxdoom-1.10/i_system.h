@@ -19,18 +19,12 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __I_SYSTEM__
-#define __I_SYSTEM__
+#pragma once
 
 #include "d_ticcmd.h"
 #include "d_event.h"
 
 #include <string_view>
-
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 
 // Called by DoomMain.
@@ -89,11 +83,3 @@ void I_Tactile (int on, int off, int total);
 
 
 void I_Error (const char* error, ...);
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

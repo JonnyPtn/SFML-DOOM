@@ -19,10 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __R_DEFS__
-#define __R_DEFS__
-
+#pragma once
 
 // Screenwidth.
 #include "doomdef.h"
@@ -38,11 +35,6 @@
 #include "p_mobj.h"
 
 #include <vector>
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 
 // Silhouette, needed for clipping Segs (mainly)
@@ -472,13 +464,3 @@ typedef struct
   byte		pad4;
 
 } visplane_t;
-
-
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

@@ -21,8 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
-
 #include <stdio.h>
 
 
@@ -284,9 +282,6 @@ static mpoint_t markpoints[AM_NUMMARKPOINTS]; // where the points are
 static int markpointnum = 0; // next point to be assigned
 
 static int followplayer = 1; // specifies whether to follow the player around
-
-static unsigned char cheat_amap_seq[] = { 0xb2, 0x26, 0x26, 0x2e, 0xff };
-static cheatseq_t cheat_amap = { cheat_amap_seq, 0 };
 
 static boolean stopped = true;
 
@@ -609,7 +604,6 @@ boolean AM_Responder( const sf::Event&	ev )
 {
 
     int rc;
-    static int cheatstate=0;
     static int bigstate=0;
     static char buffer[20];
 
@@ -630,6 +624,7 @@ boolean AM_Responder( const sf::Event&	ev )
 
 	rc = true;
 	switch(ev.key.code)
+        
 	{
 	  case sf::Keyboard::Key::Right: // pan right
 	    if (!followplayer) m_paninc.x = FTOM(F_PANINC);
@@ -688,7 +683,6 @@ boolean AM_Responder( const sf::Event&	ev )
 	    plr->message = AMSTR_MARKSCLEARED;
 	    break;
 	  default:
-	    cheatstate=0;
 	    rc = false;
 	}
 	// JONNY TODO

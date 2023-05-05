@@ -21,11 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
-static const char
-rcsid[] = "$Id: r_things.c,v 1.5 1997/02/03 16:47:56 b1 Exp $";
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -157,7 +152,6 @@ R_InstallSpriteLump
 //
 void R_InitSpriteDefs (const std::array<const std::string,NUMSPRITES>& namelist)
 {
-    int		i;
     int		start;
     int		end;
     int		patched;

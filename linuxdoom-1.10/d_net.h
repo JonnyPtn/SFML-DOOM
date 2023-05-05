@@ -19,17 +19,9 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __D_NET__
-#define __D_NET__
+#pragma once
 
 #include "d_player.h"
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 //
 // Network play related stuff.
@@ -137,13 +129,3 @@ void D_QuitNetGame (void);
 
 //? how many ticks to run?
 void TryRunTics (void);
-
-
-#endif
-
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------
-

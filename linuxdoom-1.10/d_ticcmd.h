@@ -19,15 +19,9 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#ifndef __D_TICCMD__
-#define __D_TICCMD__
+#pragma once
 
 #include "doomtype.h"
-
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 // The data sampled per tick (single player)
 // and transmitted to other peers (multiplayer).
@@ -42,12 +36,3 @@ typedef struct
     byte	chatchar;
     byte	buttons;
 } ticcmd_t;
-
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

@@ -21,11 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
-static const char
-rcsid[] = "$Id: p_inter.c,v 1.4 1997/02/03 22:45:11 b1 Exp $";
-
-
 // Data.
 #include "doomdef.h"
 #include "dstrings.h"
@@ -42,9 +37,6 @@ rcsid[] = "$Id: p_inter.c,v 1.4 1997/02/03 22:45:11 b1 Exp $";
 
 #include "s_sound.h"
 
-#ifdef __GNUG__
-#pragma implementation "p_inter.h"
-#endif
 #include "p_inter.h"
 
 

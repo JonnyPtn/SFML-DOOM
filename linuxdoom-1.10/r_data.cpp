@@ -23,10 +23,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
-static const char
-rcsid[] = "$Id: r_data.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
-
 #include "i_system.h"
 #include "z_zone.h"
 
@@ -190,9 +186,6 @@ R_DrawColumnInCache
     int		count;
     int		position;
     byte*	source;
-    byte*	dest;
-	
-    dest = (byte *)cache + 3;
 	
     while (patch->topdelta != 0xff)
     {
@@ -231,7 +224,6 @@ void R_GenerateComposite (int texnum)
     int			x;
     int			x1;
     int			x2;
-    int			i;
     column_t*		patchcol;
 	
     const auto& texture = textures[texnum];
@@ -285,7 +277,6 @@ void R_GenerateLookup (int texnum)
     int			x;
     int			x1;
     int			x2;
-    int			i;
 	
     auto& texture = textures[texnum];
 
@@ -399,12 +390,10 @@ void R_InitTextures (void)
     int*		maptex2;
     int*		maptex1;
     
-    char		name[9];
     char*		names;
     char*		name_p;
     
     
-    int			totalwidth;
     int			nummappatches;
     int			offset;
     int			maxoff;
@@ -466,8 +455,6 @@ void R_InitTextures (void)
     texturecompositesize.resize(numtextures);
     texturewidthmask.resize(numtextures);
     textureheight.resize(numtextures);
-
-    totalwidth = 0;
     
     //	Really complex printing shit...
     temp1 = W_GetNumForName ("S_START");  // P_???????
@@ -531,7 +518,6 @@ void R_InitTextures (void)
 	texturewidthmask[i] = j-1;
 	textureheight[i] = texture.height<<FRACBITS;
 		
-	totalwidth += texture.width;
     }
 
     free (maptex1);

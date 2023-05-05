@@ -20,9 +20,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
-
 #include <stdlib.h>
 #include <string>
 #include <stdio.h>
@@ -41,10 +38,6 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include "m_argv.h"
 
 #include "doomstat.h"
-
-#ifdef __GNUG__
-#pragma implementation "i_net.h"
-#endif
 #include "i_net.h"
 
 
@@ -114,7 +107,6 @@ BindToLocalPort
 ( int	s,
   int	port )
 {
-    int			v;
     struct sockaddr_in	address;
 	
     memset (&address, 0, sizeof(address));
@@ -169,13 +161,12 @@ void PacketSend (void)
 void PacketGet (void)
 {
     int			i;
-    int			c;
+    int			c{-1};
     struct sockaddr_in	fromaddress;
-    int			fromlen;
     doomdata_t		sw;
 				
-    fromlen = sizeof(fromaddress);
     // JONNY TODO
+    // fromlen = sizeof(fromaddress);
     //c = recvfrom (insocket, &sw, sizeof(sw), 0
 	//	  , (struct sockaddr *)&fromaddress, &fromlen );
     if (c == -1 )

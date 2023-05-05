@@ -20,15 +20,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef __S_SOUND__
-#define __S_SOUND__
-
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
+#pragma once
 
 //
 // Initializes sound stuff, including volume
@@ -99,11 +91,3 @@ void S_UpdateSounds(void* listener);
 
 void S_SetMusicVolume(int volume);
 void S_SetSfxVolume(int volume);
-
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

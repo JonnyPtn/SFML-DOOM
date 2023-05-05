@@ -20,14 +20,9 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef __D_ITEMS__
-#define __D_ITEMS__
+#pragma once
 
 #include "doomdef.h"
-
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 
 // Weapon info: sprite frames, ammunition use.
@@ -43,10 +38,3 @@ typedef struct
 } weaponinfo_t;
 
 extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
-
-#endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------
