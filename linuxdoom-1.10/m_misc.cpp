@@ -28,7 +28,6 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include <ctype.h>
 
@@ -95,70 +94,6 @@ M_DrawText
 
     return x;
 }
-
-
-
-
-//
-// M_WriteFile
-//
-#ifndef O_BINARY
-#define O_BINARY 0
-#endif
-
-boolean
-M_WriteFile
-( char const*	name,
-  void*		source,
-  int		length )
-{
-    int		handle;
-    size_t	count;
-	
-    handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
-
-    if (handle == -1)
-	return false;
-
-    count = write (handle, source, length);
-    close (handle);
-	
-    if (count < length)
-	return false;
-		
-    return true;
-}
-
-
-//
-// M_ReadFile
-//
-int
-M_ReadFile
-( char const*	name,
-  byte**	buffer )
-{
-    int	handle;
-    struct stat	fileinfo;
-    byte		*buf;
-	
-    handle = open (name, O_RDONLY | O_BINARY, 0666);
-    if (handle == -1)
-	I_Error ("Couldn't read file %s", name);
-    if (fstat (handle,&fileinfo) == -1)
-	I_Error ("Couldn't read file %s", name);
-    const auto length = fileinfo.st_size;
-    buf = static_cast<byte*>(malloc (length));
-    const auto count = read (handle, buf, length);
-    close (handle);
-	
-    if (count < length)
-	I_Error ("Couldn't read file %s", name);
-		
-    *buffer = buf;
-    return static_cast<int>(length);
-}
-
 
 //
 // DEFAULTS
@@ -486,7 +421,7 @@ WritePCXfile
     
     // write output file
     const auto length = pack - (byte *)pcx;
-    M_WriteFile (filename, pcx, static_cast<int>(length));
+    //M_WriteFile (filename, pcx, static_cast<int>(length));
 
     free (pcx);
 }
@@ -497,33 +432,7 @@ WritePCXfile
 //
 void M_ScreenShot (void)
 {
-    int		i;
-    byte*	linear;
-    char	lbmname[12];
-    
-    // munge planar buffer to linear
-    linear = screens[2];
-    I_ReadScreen (linear);
-    
-    // find a file name to save it to
-    strcpy(lbmname,"DOOM00.pcx");
-		
-    for (i=0 ; i<=99 ; i++)
-    {
-	lbmname[4] = i/10 + '0';
-	lbmname[5] = i%10 + '0';
-	if (access(lbmname,0) == -1)
-	    break;	// file doesn't exist
-    }
-    if (i==100)
-	I_Error ("M_ScreenShot: Couldn't create a PCX");
-    
-    // save the pcx file
-    WritePCXfile (lbmname, linear,
-		  SCREENWIDTH, SCREENHEIGHT,
-		  static_cast<byte*>(W_CacheLumpName ("PLAYPAL",PU_CACHE)));
-	
-    players[consoleplayer].message = "screen shot";
+    // JONNY TODO
 }
 
 

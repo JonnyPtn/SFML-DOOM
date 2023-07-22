@@ -22,16 +22,10 @@
 //-----------------------------------------------------------------------------
 
 #include <stdlib.h>
-#include <unistd.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
 
 #include <stdarg.h>
-#include <sys/time.h>
 #include <sys/types.h>
-#include <sys/socket.h>
 
-#include <netinet/in.h>
 #include <errno.h>
 #include <signal.h>
 
@@ -51,7 +45,7 @@
 sf::RenderWindow	mainWindow;
 int			        screen;
 sf::Texture         texture;
-sf::Sprite          sprite;
+sf::Sprite          sprite(texture);
 uint32_t			width;
 uint32_t			height;
 

@@ -28,6 +28,7 @@
 #include "d_think.h"
 
 #include <array>
+#include <string>
 
 typedef enum
 {

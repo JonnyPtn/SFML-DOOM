@@ -21,18 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifdef NORMALUNIX
-#include <ctype.h>
-#include <sys/types.h>
-#include <string.h>
-#include <unistd.h>
-#include <malloc.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <alloca.h>
-#define O_BINARY		0
-#endif
-
 #include "doomtype.h"
 #include "m_swap.h"
 #include "i_system.h"
@@ -42,6 +30,7 @@
 #include <cctype>
 #include <cstring>
 #include <string>
+#include <filesystem>
 #include <fstream>
 #include <vector>
 
@@ -59,12 +48,6 @@ std::vector<std::ifstream> wadfiles;
 
 
 #define strcmpi	strcasecmp
-
-void strupr (char* s)
-{
-    while (*s) { *s = ::toupper(*s); s++; }
-}
-
 
 void
 ExtractFileBase
@@ -168,7 +151,7 @@ void W_AddFile (const std::filesystem::path& filepath)
         fileinfo = {singleinfo};
         singleinfo.filepos = 0;
         singleinfo.size = static_cast<int>(std::filesystem::file_size(filepath));
-        ExtractFileBase (filename.c_str(), singleinfo.name);
+        singleinfo.name = filename.string();
         lumpinfo.emplace_back();
     }
     else 
@@ -198,7 +181,7 @@ void W_AddFile (const std::filesystem::path& filepath)
     {
         const auto fileIndex = reloadpath.empty() ? wadfiles.size() - 1 : -1;
         lumpinfo.emplace_back();
-        strcpy(lumpinfo.back().name, fileinfo[i].name);
+        std::copy(fileinfo[i].name.begin(), fileinfo[i].name.end(), lumpinfo.back().name);
         lumpinfo.back().handle = static_cast<int>(fileIndex);
         lumpinfo.back().position = fileinfo[i].filepos;
         lumpinfo.back().size = fileinfo[i].size;

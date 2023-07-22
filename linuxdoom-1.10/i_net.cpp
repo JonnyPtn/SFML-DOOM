@@ -23,14 +23,7 @@
 #include <stdlib.h>
 #include <string>
 #include <stdio.h>
-
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #include <errno.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <sys/ioctl.h>
 
 #include "i_system.h"
 #include "d_event.h"
@@ -73,12 +66,12 @@ boolean NetListen (void);
 // NETWORKING
 //
 
-int	DOOMPORT =	(IPPORT_USERRESERVED +0x1d );
+//int	DOOMPORT =	(IPPORT_USERRESERVED +0x1d );
 
 int			sendsocket;
 int			insocket;
 
-struct	sockaddr_in	sendaddress[MAXNETNODES];
+//struct	sockaddr_in	sendaddress[MAXNETNODES];
 
 void	(*netget) (void);
 void	(*netsend) (void);
@@ -92,7 +85,7 @@ int UDPsocket (void)
     int	s;
 	
     // allocate a socket
-    s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+//    s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (s<0)
 	I_Error ("can't create socket: %s",strerror(errno));
 		
@@ -107,12 +100,12 @@ BindToLocalPort
 ( int	s,
   int	port )
 {
-    struct sockaddr_in	address;
+//    struct sockaddr_in	address;
 	
-    memset (&address, 0, sizeof(address));
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = port;
+//    memset (&address, 0, sizeof(address));
+//    address.sin_family = AF_INET;
+//    address.sin_addr.s_addr = INADDR_ANY;
+//    address.sin_port = port;
 	// JONNY TODO	
     //v = bind (s, (void *)&address, sizeof(address));
     //if (v == -1)
@@ -162,7 +155,7 @@ void PacketGet (void)
 {
     int			i;
     int			c{-1};
-    struct sockaddr_in	fromaddress;
+//    struct sockaddr_in	fromaddress;
     doomdata_t		sw;
 				
     // JONNY TODO
@@ -186,7 +179,7 @@ void PacketGet (void)
 
     // find remote node number
     for (i=0 ; i<doomcom->numnodes ; i++)
-	if ( fromaddress.sin_addr.s_addr == sendaddress[i].sin_addr.s_addr )
+//	if ( fromaddress.sin_addr.s_addr == sendaddress[i].sin_addr.s_addr )
 	    break;
 
     if (i == doomcom->numnodes)
@@ -226,15 +219,16 @@ int GetLocalAddress (void)
     int			v;
 
     // get local address
-    v = gethostname (hostname, sizeof(hostname));
+//    v = gethostname (hostname, sizeof(hostname));
     if (v == -1)
 	I_Error ("GetLocalAddress : gethostname: errno %d",errno);
 	
-    hostentry = gethostbyname (hostname);
+//    hostentry = gethostbyname (hostname);
     if (!hostentry)
 	I_Error ("GetLocalAddress : gethostbyname: couldn't get local host");
 		
-    return *(int *)hostentry->h_addr_list[0];
+//    return *(int *)hostentry->h_addr_list[0];
+    return {};
 }
 
 
@@ -272,8 +266,8 @@ void I_InitNetwork (void)
     p = M_CheckParm ("-port");
     if (p && p<myargc-1)
     {
-	DOOMPORT = atoi (myargv[p+1].c_str());
-	printf ("using alternate port %i\n",DOOMPORT);
+//	DOOMPORT = atoi (myargv[p+1].c_str());
+//	printf ("using alternate port %i\n",DOOMPORT);
     }
     
     // parse network game options,
@@ -302,20 +296,20 @@ void I_InitNetwork (void)
     i++;
     while (++i < myargc && myargv[i][0] != '-')
     {
-	sendaddress[doomcom->numnodes].sin_family = AF_INET;
-	sendaddress[doomcom->numnodes].sin_port = htons(DOOMPORT);
+//	sendaddress[doomcom->numnodes].sin_family = AF_INET;
+//	sendaddress[doomcom->numnodes].sin_port = htons(DOOMPORT);
 	if (myargv[i][0] == '.')
 	{
-	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
-		= inet_addr (myargv[i+1].c_str());
+//	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
+//		= inet_addr (myargv[i+1].c_str());
 	}
 	else
 	{
-	    hostentry = gethostbyname (myargv[i].c_str());
+//	    hostentry = gethostbyname (myargv[i].c_str());
 	    if (!hostentry)
 		I_Error ("gethostbyname: couldn't find %s", myargv[i].c_str());
-	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
-		= *(int *)hostentry->h_addr_list[0];
+//	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
+//		= *(int *)hostentry->h_addr_list[0];
 	}
 	doomcom->numnodes++;
     }
@@ -325,8 +319,8 @@ void I_InitNetwork (void)
     
     // build message to receive
     insocket = UDPsocket ();
-    BindToLocalPort (insocket,htons(DOOMPORT));
-    ioctl (insocket, FIONBIO, &trueval);
+//    BindToLocalPort (insocket,htons(DOOMPORT));
+//    ioctl (insocket, FIONBIO, &trueval);
 
     sendsocket = UDPsocket ();
 }

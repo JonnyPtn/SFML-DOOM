@@ -23,6 +23,7 @@
 #ifndef __SOUNDS__
 #define __SOUNDS__
 
+#include <string>
 
 //
 // SoundFX struct.
@@ -32,7 +33,7 @@ typedef struct sfxinfo_struct	sfxinfo_t;
 struct sfxinfo_struct
 {
     // up to 6-character name
-    char*	name;
+    std::string	name;
 
     // Sfx singularity (only one at a time)
     int		singularity;
@@ -70,7 +71,7 @@ struct sfxinfo_struct
 typedef struct
 {
     // up to 6-character name
-    char*	name;
+    std::string	name;
 
     // lump number of music
     int		lumpnum;

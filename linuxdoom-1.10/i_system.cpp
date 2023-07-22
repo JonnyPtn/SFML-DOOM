@@ -25,8 +25,6 @@
 #include <string.h>
 
 #include <stdarg.h>
-#include <sys/time.h>
-#include <unistd.h>
 
 #include "doomdef.h"
 #include "m_misc.h"
@@ -109,19 +107,6 @@ void I_Quit (void)
     I_ShutdownMusic();
     M_SaveDefaults ();
     exit(0);
-}
-
-void I_WaitVBL(int count)
-{
-#ifdef SGI
-    sginap(1);                                           
-#else
-#ifdef SUN
-    sleep(0);
-#else
-    usleep (count * (1000000/70) );                                
-#endif
-#endif
 }
 
 void I_BeginRead(void)

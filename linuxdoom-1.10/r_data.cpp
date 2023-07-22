@@ -661,7 +661,7 @@ int	R_CheckTextureNumForName (const std::string& name)
 	return 0;
 		
     for (i=0 ; i<numtextures ; i++)
-	if (!strncasecmp (textures[i].name.c_str(), name.c_str(), 8) )
+	if (textures[i].name ==  name)
 	    return i;
 		
     return -1;

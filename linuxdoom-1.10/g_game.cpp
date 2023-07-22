@@ -20,6 +20,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <bitset>
 #include <string.h>
 #include <stdlib.h>
 
@@ -691,7 +692,7 @@ void G_Ticker (void)
 		&& !(gametic&31) && ((gametic>>5)&3) == i )
 	    {
 		static char turbomessage[80];
-		extern char *player_names[4];
+		extern std::array<const char*,4> player_names;
 		snprintf (turbomessage,80, "%s is turbo!",player_names[i]);
 		players[consoleplayer].message = turbomessage;
 	    }
@@ -1217,7 +1218,7 @@ void G_DoLoadGame (void)
 	 
     gameaction = ga_nothing; 
 	 
-    M_ReadFile (savename, &savebuffer); 
+    //M_ReadFile (savename, &savebuffer); 
     save_p = savebuffer + SAVESTRINGSIZE;
     
     // skip the description field 
@@ -1316,7 +1317,7 @@ void G_DoSaveGame (void)
     const auto length = save_p - savebuffer;
     if (length > SAVEGAMESIZE) 
 	I_Error ("Savegame buffer overrun"); 
-    M_WriteFile (name, savebuffer, static_cast<int>(length));
+    //M_WriteFile (name, savebuffer, static_cast<int>(length));
     gameaction = ga_nothing; 
     savedescription[0] = 0;		 
 	 
@@ -1683,7 +1684,7 @@ boolean G_CheckDemoStatus (void)
     if (demorecording) 
     { 
 	*demo_p++ = DEMOMARKER; 
-	M_WriteFile (demoname, demobuffer, static_cast<int>(demo_p - demobuffer));
+	//M_WriteFile (demoname, demobuffer, static_cast<int>(demo_p - demobuffer));
 	free (demobuffer);
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 

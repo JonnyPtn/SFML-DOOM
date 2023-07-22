@@ -10,6 +10,8 @@ target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_20)
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 include(FetchContent)
 
+set(BUILD_SHARED_LIBS OFF)
+
 FetchContent_Declare(
   sfml
   GIT_REPOSITORY    https://github.com/sfml/sfml

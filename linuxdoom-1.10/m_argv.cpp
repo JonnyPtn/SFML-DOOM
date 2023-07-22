@@ -24,6 +24,7 @@
 #include <string_view>
 #include <string>
 #include <ranges>
+#include <vector>
 
 int		myargc;
 std::vector<std::string>		myargv;

@@ -22,7 +22,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -509,25 +508,7 @@ menu_t  SaveDef =
 //
 void M_ReadSaveStrings(void)
 {
-    int             handle;
-    int             i;
-    char    name[256];
-	
-    for (i = 0;i < load_end;i++)
-    {
-	snprintf(name,256,SAVEGAMENAME"%d.dsg",i);
-
-	handle = open (name, O_RDONLY | 0, 0666);
-	if (handle == -1)
-	{
-	    strcpy(&savegamestrings[i][0],EMPTYSTRING);
-	    LoadMenu[i].status = 0;
-	    continue;
-	}
-	read (handle, &savegamestrings[i], SAVESTRINGSIZE);
-	close (handle);
-	LoadMenu[i].status = 1;
-    }
+    // JONNY TODO
 }
 
 
@@ -1078,7 +1059,6 @@ void M_QuitResponse(int ch)
 	    S_StartSound(NULL,quitsounds2[(gametic>>2)&7]);
 	else
 	    S_StartSound(NULL,quitsounds[(gametic>>2)&7]);
-	I_WaitVBL(105);
     }
     I_Quit ();
 }

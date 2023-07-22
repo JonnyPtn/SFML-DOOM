@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <string>
 #include <vector>
 
 
@@ -41,7 +42,7 @@ typedef struct
 {
     int32_t		filepos;
     int32_t		size;
-    char		name[8];
+    std::string name;
     
 } filelump_t;
 

@@ -26,17 +26,9 @@
 #include <stdarg.h>
 
 #include <math.h>
-
-#include <sys/time.h>
 #include <sys/types.h>
 
-#ifndef LINUX
-#include <sys/filio.h>
-#endif
-
 #include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
 
 // Timer stuff. Experimental.
 #include <time.h>
@@ -161,7 +153,7 @@ myioctl
     int		rc;
     extern int	errno;
     
-    rc = ioctl(fd, command, arg);  
+//    rc = ioctl(fd, command, arg);  
     if (rc < 0)
     {
 	fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
@@ -662,7 +654,7 @@ void
 I_SubmitSound(void)
 {
   // Write it to DSP device.
-  write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
+//  write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
 }
 
 
@@ -744,12 +736,12 @@ I_InitSound()
     snprintf(buffer,256, "%s", sndserver_filename);
   
   // start sound process
-  if ( !access(buffer, X_OK) )
+//  if ( !access(buffer, X_OK) )
   {
     strcat(buffer, " -quiet");
-    sndserver = popen(buffer, "w");
+//    sndserver = popen(buffer, "w");
   }
-  else
+//  else
     fprintf(stderr, "Could not start sound server [%s]\n", buffer);
 #else
     
@@ -905,9 +897,9 @@ int I_QrySongPlaying(int handle)
 //  time independend timer happens to get lost due to heavy load.
 // SIGALRM and ITIMER_REAL doesn't really work well.
 // There are issues with profiling as well.
-static int /*__itimer_which*/  itimer = ITIMER_REAL;
+//static int /*__itimer_which*/  itimer = ITIMER_REAL;
 
-static int sig = SIGALRM;
+//static int sig = SIGALRM;
 
 // Interrupt handler.
 void I_HandleSoundTimer( int ignore )
@@ -920,7 +912,7 @@ void I_HandleSoundTimer( int ignore )
   {
     // See I_SubmitSound().
     // Write it to DSP device.
-    write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
+//    write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
 
     // Reset flag counter.
     flag = 0;
@@ -937,10 +929,10 @@ void I_HandleSoundTimer( int ignore )
 int I_SoundSetTimer( int duration_of_tick )
 {
   // Needed for gametick clockwork.
-  struct itimerval    value;
-  struct itimerval    ovalue;
-  struct sigaction    act;
-  struct sigaction    oact;
+//  struct itimerval    value;
+//  struct itimerval    ovalue;
+//  struct sigaction    act;
+//  struct sigaction    oact;
 
   int res;
   
@@ -948,21 +940,21 @@ int I_SoundSetTimer( int duration_of_tick )
   //     signal( _sig, handle_SIG_TICK );
   
   // Now we have to change this attribute for repeated calls.
-  act.sa_handler = I_HandleSoundTimer;
+//  act.sa_handler = I_HandleSoundTimer;
 #ifndef sun    
   //ac	t.sa_mask = _sig;
 #endif
-  act.sa_flags = SA_RESTART;
+//  act.sa_flags = SA_RESTART;
   
-  sigaction( sig, &act, &oact );
+//  sigaction( sig, &act, &oact );
 
-  value.it_interval.tv_sec    = 0;
-  value.it_interval.tv_usec   = duration_of_tick;
-  value.it_value.tv_sec       = 0;
-  value.it_value.tv_usec      = duration_of_tick;
+//  value.it_interval.tv_sec    = 0;
+//  value.it_interval.tv_usec   = duration_of_tick;
+//  value.it_value.tv_sec       = 0;
+//  value.it_value.tv_usec      = duration_of_tick;
 
   // Error is -1.
-  res = setitimer( itimer, &value, &ovalue );
+//  res = setitimer( itimer, &value, &ovalue );
 
   // Debug.
   if ( res == -1 )
