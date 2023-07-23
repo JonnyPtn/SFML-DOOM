@@ -43,7 +43,6 @@
 #define POINTER_WARP_COUNTDOWN	1
 
 sf::RenderWindow	mainWindow;
-int			        screen;
 sf::Texture         texture;
 sf::Sprite          sprite(texture);
 uint32_t			width;
@@ -217,7 +216,7 @@ void I_FinishUpdate (void)
 //
 void I_ReadScreen (byte* scr)
 {
-    memcpy (scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
+    memcpy (scr, screens[0].data(), SCREENWIDTH*SCREENHEIGHT);
 }
 
 
@@ -292,7 +291,6 @@ void I_InitGraphics(void)
     if (texture.create({SCREENWIDTH,SCREENHEIGHT}))
     {
         sprite.setScale({float(multiply), float(multiply)});
-        screens[0] = (unsigned char*)malloc(SCREENWIDTH*SCREENHEIGHT);
     }
 }
 

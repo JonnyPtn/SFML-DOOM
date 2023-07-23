@@ -272,7 +272,7 @@ void F_TextWrite (void)
     
     // erase the entire screen to a tiled background
     src = static_cast<byte*>(W_CacheLumpName ( finaleflat , PU_CACHE));
-    dest = screens[0];
+    dest = screens[0].data();
 	
     for (y=0 ; y<SCREENHEIGHT ; y++)
     {
@@ -618,7 +618,7 @@ F_DrawPatchCol
     int		count;
 	
     column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
-    desttop = screens[0]+x;
+    desttop = screens[0].data() +x;
 
     // step through the posts in a column
     while (column->topdelta != 0xff )

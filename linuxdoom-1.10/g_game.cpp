@@ -1289,7 +1289,7 @@ void G_DoSaveGame (void)
 	snprintf (name,100,SAVEGAMENAME"%d.dsg",savegameslot);
     description = savedescription; 
 	 
-    save_p = savebuffer = screens[1]+0x4000; 
+    save_p = savebuffer = screens[1].data() +0x4000;
 	 
     memcpy (save_p, description, SAVESTRINGSIZE); 
     save_p += SAVESTRINGSIZE; 

@@ -458,7 +458,7 @@ void AM_initVariables(void)
     //static sf::Event st_notify = { ev_keyup, AM_MSGENTERED };
 
     automapactive = true;
-    fb = screens[0];
+    fb = screens[0].data();
 
     f_oldloc.x = MAXINT;
     amclock = 0;

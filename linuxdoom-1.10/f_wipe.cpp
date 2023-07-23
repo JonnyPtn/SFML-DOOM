@@ -236,7 +236,7 @@ wipe_StartScreen
   int	width,
   int	height )
 {
-    wipe_scr_start = screens[2];
+    wipe_scr_start = screens[2].data();
     I_ReadScreen(wipe_scr_start);
     return 0;
 }
@@ -248,7 +248,7 @@ wipe_EndScreen
   int	width,
   int	height )
 {
-    wipe_scr_end = screens[3];
+    wipe_scr_end = screens[3].data();
     I_ReadScreen(wipe_scr_end);
     V_DrawBlock(x, y, 0, width, height, wipe_scr_start); // restore start scr.
     return 0;
@@ -277,7 +277,7 @@ wipe_ScreenWipe
     {
 	go = 1;
 	// wipe_scr = (byte *) malloc(width*height, PU_STATIC, 0); // DEBUG
-	wipe_scr = screens[0];
+	wipe_scr = screens[0].data();
 	(*wipes[wipeno*3])(width, height, ticks);
     }
 

@@ -40,21 +40,13 @@
 
 // Screen 0 is the screen updated by I_Update screen.
 // Screen 1 is an extra buffer.
-
-
-
-extern	byte*		screens[5];
+using screen = std::array<unsigned char, SCREENWIDTH* SCREENHEIGHT>;
+extern std::array<screen, 5> screens;
 
 extern  int	dirtybox[4];
 
 extern	byte	gammatable[5][256];
 extern	int	usegamma;
-
-
-
-// Allocates buffer screens, call before R_Init.
-void V_Init (void);
-
 
 void
 V_CopyRect

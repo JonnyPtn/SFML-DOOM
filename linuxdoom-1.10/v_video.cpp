@@ -34,9 +34,7 @@
 
 #include "v_video.h"
 
-
-// Each screen is [SCREENWIDTH*SCREENHEIGHT]; 
-byte*				screens[5];	
+std::array<screen, 5> screens;
  
 int				dirtybox[4]; 
 
@@ -179,8 +177,8 @@ V_CopyRect
 #endif 
     V_MarkRect (destx, desty, width, height); 
 	 
-    src = screens[srcscrn]+SCREENWIDTH*srcy+srcx; 
-    dest = screens[destscrn]+SCREENWIDTH*desty+destx; 
+    src = screens[srcscrn].data() + SCREENWIDTH * srcy + srcx;
+    dest = screens[destscrn].data() + SCREENWIDTH * desty + destx;
 
     for ( ; height>0 ; height--) 
     { 
@@ -231,7 +229,7 @@ V_DrawPatch
 	V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height)); 
 
     col = 0; 
-    desttop = screens[scrn]+y*SCREENWIDTH+x; 
+    desttop = screens[scrn].data() +y*SCREENWIDTH+x;
 	 
     w = SHORT(patch->width); 
 
@@ -296,7 +294,7 @@ V_DrawPatchFlipped
 	V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height)); 
 
     col = 0; 
-    desttop = screens[scrn]+y*SCREENWIDTH+x; 
+    desttop = screens[scrn].data() +y*SCREENWIDTH+x;
 	 
     w = SHORT(patch->width); 
 
@@ -420,7 +418,7 @@ V_DrawBlock
  
     V_MarkRect (x, y, width, height); 
  
-    dest = screens[scrn] + y*SCREENWIDTH+x; 
+    dest = screens[scrn].data() + y*SCREENWIDTH+x;
 
     while (height--) 
     { 
@@ -458,7 +456,7 @@ V_GetBlock
     }
 #endif 
  
-    src = screens[scrn] + y*SCREENWIDTH+x; 
+    src = screens[scrn].data() + y*SCREENWIDTH+x;
 
     while (height--) 
     { 
@@ -467,22 +465,3 @@ V_GetBlock
 	dest += width; 
     } 
 } 
-
-
-
-
-//
-// V_Init
-// 
-void V_Init (void) 
-{ 
-    int		i;
-    byte*	base;
-		
-    // stick these in low dos memory on PCs
-
-    base = I_AllocLow (SCREENWIDTH*SCREENHEIGHT*4);
-
-    for (i=0 ; i<4 ; i++)
-	screens[i] = base + i*SCREENWIDTH*SCREENHEIGHT;
-}

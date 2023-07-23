@@ -1423,5 +1423,4 @@ void ST_Init (void)
 {
     veryfirsttime = 0;
     ST_loadData();
-    screens[4] = (byte *) malloc(ST_WIDTH*ST_HEIGHT);
 }
