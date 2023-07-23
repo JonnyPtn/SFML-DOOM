@@ -590,10 +590,11 @@ void IdentifyVersion (void)
     // French stuff.
     const auto doom2fwad = waddir + "/doom2f.wad";
 
-    home = getenv("HOME");
-    if (!home)
-      I_Error("Please set $HOME to your home directory");
-    snprintf(basedefault,1024, "%s/.doomrc", home);
+	// JONNY TODO
+    //home = getenv("HOME");
+    //if (!home)
+    //  I_Error("Please set $HOME to your home directory");
+    //snprintf(basedefault,1024, "%s/.doomrc", home);
 
     if (M_CheckParm ("-shdev"))
     {
