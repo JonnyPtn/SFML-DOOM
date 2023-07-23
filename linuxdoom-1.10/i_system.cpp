@@ -36,6 +36,11 @@
 
 #include "i_system.h"
 
+#if WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#endif
+
 
 
 
@@ -150,6 +155,10 @@ void I_Error (const char *error, ...)
 	G_CheckDemoStatus();
 
     D_QuitNetGame ();
+
+#if WIN32
+    DebugBreak();
+#endif
     
     exit(-1);
 }
