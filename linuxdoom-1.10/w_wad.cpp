@@ -151,7 +151,7 @@ void W_AddFile (const std::filesystem::path& filepath)
         fileinfo = {singleinfo};
         singleinfo.filepos = 0;
         singleinfo.size = static_cast<int>(std::filesystem::file_size(filepath));
-        singleinfo.name = filename.string();
+        std::copy(filename.string().begin(), filename.string().end(), singleinfo.name.begin());
         lumpinfo.emplace_back();
     }
     else 
