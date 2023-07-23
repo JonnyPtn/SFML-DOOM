@@ -139,33 +139,6 @@ int*		channelleftvol_lookup[NUM_CHANNELS];
 int*		channelrightvol_lookup[NUM_CHANNELS];
 
 
-
-
-//
-// Safe ioctl, convenience.
-//
-void
-myioctl
-( int	fd,
-  int	command,
-  int*	arg )
-{   
-    int		rc;
-    extern int	errno;
-    
-//    rc = ioctl(fd, command, arg);  
-    if (rc < 0)
-    {
-	fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
-	fprintf(stderr, "errno=%d\n", errno);
-	exit(-1);
-    }
-}
-
-
-
-
-
 //
 // This function loads the sound data from the WAD lump,
 //  for single sound.
@@ -438,9 +411,7 @@ void I_SetMusicVolume(int volume)
 //
 int I_GetSfxLumpNum(sfxinfo_t* sfx)
 {
-    char namebuf[9];
-    snprintf(namebuf,9, "ds%s", sfx->name);
-    return W_GetNumForName(namebuf);
+    return W_GetNumForName(sfx->name);
 }
 
 //
@@ -957,10 +928,11 @@ int I_SoundSetTimer( int duration_of_tick )
 //  res = setitimer( itimer, &value, &ovalue );
 
   // Debug.
-  if ( res == -1 )
+//  if ( res == -1 )
     fprintf( stderr, "I_SoundSetTimer: interrupt n.a.\n");
   
-  return res;
+//  return res;
+    return {};
 }
 
 

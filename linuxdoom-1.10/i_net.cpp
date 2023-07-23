@@ -86,7 +86,7 @@ int UDPsocket (void)
 	
     // allocate a socket
 //    s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (s<0)
+//    if (s<0)
 	I_Error ("can't create socket: %s",strerror(errno));
 		
     return s;
@@ -173,7 +173,7 @@ void PacketGet (void)
     {
 	static int first=1;
 	if (first)
-	    printf("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw+1));
+//	    printf("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw+1));
 	first = 0;
     }
 
@@ -220,11 +220,11 @@ int GetLocalAddress (void)
 
     // get local address
 //    v = gethostname (hostname, sizeof(hostname));
-    if (v == -1)
+//    if (v == -1)
 	I_Error ("GetLocalAddress : gethostname: errno %d",errno);
 	
 //    hostentry = gethostbyname (hostname);
-    if (!hostentry)
+ //   if (!hostentry)
 	I_Error ("GetLocalAddress : gethostbyname: couldn't get local host");
 		
 //    return *(int *)hostentry->h_addr_list[0];
@@ -306,7 +306,7 @@ void I_InitNetwork (void)
 	else
 	{
 //	    hostentry = gethostbyname (myargv[i].c_str());
-	    if (!hostentry)
+//	    if (!hostentry)
 		I_Error ("gethostbyname: couldn't find %s", myargv[i].c_str());
 //	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
 //		= *(int *)hostentry->h_addr_list[0];
