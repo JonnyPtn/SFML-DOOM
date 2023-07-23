@@ -9,6 +9,7 @@ jobs:
       host: ["windows-2022"]
     runs-on: ${{ matrix.host }}
     steps:
+      - uses: actions/checkout@v3
       - uses: lukka/get-cmake@latest
       - name: Build
         run: cmake --build --preset default
