@@ -11,7 +11,6 @@
 #define STR_CONNECT		"CONNECT"
 #define STR_WAITRING	"Waiting for ring..."
 #define STR_RING		"RING"
-#define STR_NORESP		"No such response file!"
 #define STR_DOOMSERIAL	"DOOM II SERIAL DEVICE DRIVER v1.4"
 #define STR_WARNING \
 "Warning: no NULL or iret interrupt vectors were found in the 0x60 to 0x66\n"\

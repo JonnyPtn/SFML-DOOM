@@ -699,73 +699,6 @@ void IdentifyVersion (void)
 }
 
 //
-// Find a Response File
-//
-void FindResponseFile (void)
-{
-    int             i;
-#define MAXARGVS        100
-	
-    for (i = 1;i < myargc;i++)
-	if (myargv[i][0] == '@')
-	{
-	    FILE *          handle;
-	    int             k;
-	    int             index;
-	    int             indexinfile;
-	    char    *infile;
-	    char    *file;
-	    const char    *moreargs[20];
-			
-	    // READ THE RESPONSE FILE INTO MEMORY
-	    handle = fopen (&myargv[i][1],"rb");
-	    if (!handle)
-	    {
-		printf ("\nNo such response file!");
-		exit(1);
-	    }
-	    printf("Found response file %s!\n",&myargv[i][1]);
-	    fseek (handle,0,SEEK_END);
-	    const auto size = ftell(handle);
-	    fseek (handle,0,SEEK_SET);
-	    file = static_cast<char*>(malloc (size));
-	    fread (file,size,1,handle);
-	    fclose (handle);
-			
-	    // KEEP ALL CMDLINE ARGS FOLLOWING @RESPONSEFILE ARG
-	    for (index = 0,k = i+1; k < myargc; k++)
-		moreargs[index++] = myargv[k].c_str();
-			
-	    infile = file;
-	    indexinfile = k = 0;
-	    indexinfile++;  // SKIP PAST ARGV[0] (KEEP IT)
-	    do
-	    {
-		myargv[indexinfile++] = infile+k;
-		while(k < size &&
-		      ((*(infile+k)>= ' '+1) && (*(infile+k)<='z')))
-		    k++;
-		*(infile+k) = 0;
-		while(k < size &&
-		      ((*(infile+k)<= ' ') || (*(infile+k)>'z')))
-		    k++;
-	    } while(k < size);
-			
-	    for (k = 0;k < index;k++)
-		myargv[indexinfile++] = moreargs[k];
-	    myargc = indexinfile;
-	
-	    // DISPLAY ARGS
-	    printf("%d command-line args:\n",myargc);
-	    for (k=1;k<myargc;k++)
-		printf("%s\n",myargv[k].c_str());
-
-	    break;
-	}
-}
-
-
-//
 // D_DoomMain
 //
 void D_DoomMain (void)
@@ -773,11 +706,8 @@ void D_DoomMain (void)
     int             p;
     char                    file[256];
 
-    FindResponseFile ();
-	
     IdentifyVersion ();
 	
-    setbuf (stdout, NULL);
     modifiedgame = false;
 	
     nomonsters = M_CheckParm ("-nomonsters");

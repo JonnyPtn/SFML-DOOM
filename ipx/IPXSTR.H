@@ -5,8 +5,6 @@
 #define STR_MORETHAN	"More than %i players specified!"
 #define STR_NONESPEC	"No players specified for game!"
 #define STR_CONSOLEIS	"Console is player %i of %i"
-#define STR_NORESP		"No such response file!"
-#define STR_FOUNDRESP   "Found response file"
 #define STR_DOOMNETDRV	"DOOM II NETWORK DEVICE DRIVER"
 #define STR_VECTSPEC	"The specified vector (0x%02x) was already hooked."
 #define STR_NONULL	\

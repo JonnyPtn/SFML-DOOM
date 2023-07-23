@@ -632,7 +632,8 @@ void S_SetSfxVolume(int volume)
 //
 void S_StartMusic(int m_id)
 {
-    S_ChangeMusic(m_id, false);
+    // JONNY TODO
+    //S_ChangeMusic(m_id, false);
 }
 
 void
@@ -660,8 +661,7 @@ S_ChangeMusic
     // get lumpnum if neccessary
     if (!music->lumpnum)
     {
-	snprintf(namebuf,9, "d_%s", music->name);
-	music->lumpnum = W_GetNumForName(namebuf);
+	music->lumpnum = W_GetNumForName(music->name);
     }
 
     // load & register it
