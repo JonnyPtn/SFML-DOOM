@@ -21,8 +21,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __DOOMDATA__
-#define __DOOMDATA__
+#pragma once
 
 // The most basic types we use, portability.
 #include "doomtype.h"
@@ -213,7 +212,7 @@ typedef struct
 
 
 
-#endif			// __DOOMDATA__
+
 //-----------------------------------------------------------------------------
 //
 // $Log:$

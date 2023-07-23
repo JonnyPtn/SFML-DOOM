@@ -33,8 +33,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __SOUNDSH__
-#define __SOUNDSH__
+#pragma once
 
 #include "soundst.h"
 
@@ -237,5 +236,5 @@ typedef enum
 extern musicinfo_t S_music[];
 extern sfxinfo_t   S_sfx[];
 
-#endif
+
 

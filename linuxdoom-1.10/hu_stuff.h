@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __HU_STUFF_H__
-#define __HU_STUFF_H__
+#pragma once
 
 #include "d_event.h"
 
@@ -59,7 +58,7 @@ char HU_dequeueChatChar(void);
 void HU_Erase(void);
 
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 // $Log:$

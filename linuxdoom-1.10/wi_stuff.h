@@ -19,8 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __WI_STUFF__
-#define __WI_STUFF__
+#pragma once
 
 //#include "v_video.h"
 
@@ -46,7 +45,7 @@ void WI_Drawer (void);
 // Setup for an intermission screen.
 void WI_Start(wbstartstruct_t*	 wbstartstruct);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 // $Log:$

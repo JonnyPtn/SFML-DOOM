@@ -33,8 +33,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __SOUNDSTH__
-#define __SOUNDSTH__
+#pragma once
 
 #define S_MAX_VOLUME		127
 
@@ -309,4 +308,4 @@ extern sfxinfo_t	S_sfx[];
 // the complete set of music
 extern musicinfo_t	S_music[];
 
-#endif
+

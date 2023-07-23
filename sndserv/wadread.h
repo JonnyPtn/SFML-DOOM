@@ -36,8 +36,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __WADREAD_H__
-#define __WADREAD_H__
+#pragma once
 
 //
 //  Opens the wadfile specified.
@@ -59,4 +58,4 @@ getsfx
 ( char*		sfxname,
   int*		len );
 
-#endif
+

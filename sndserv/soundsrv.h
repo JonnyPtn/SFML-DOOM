@@ -32,8 +32,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __SNDSERVER_H__
-#define __SNDSERVER_H__
+#pragma once
 
 #define SAMPLECOUNT		512
 #define MIXBUFFERSIZE	(SAMPLECOUNT*2*2)
@@ -55,4 +54,4 @@ I_SubmitOutputBuffer
 void I_ShutdownSound(void);
 void I_ShutdownMusic(void);
 
-#endif
+

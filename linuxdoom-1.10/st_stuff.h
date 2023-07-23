@@ -21,8 +21,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __STSTUFF_H__
-#define __STSTUFF_H__
+#pragma once
 
 #include "doomtype.h"
 #include "d_event.h"
@@ -83,7 +82,7 @@ boolean ST_Responder(const sf::Event& event);
 
 
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 // $Log:$

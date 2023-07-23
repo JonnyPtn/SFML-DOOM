@@ -20,8 +20,7 @@
 //-----------------------------------------------------------------------------
 
 
-#ifndef __R_STATE__
-#define __R_STATE__
+#pragma once
 
 // Need data structure definitions.
 #include "d_player.h"
@@ -124,7 +123,7 @@ extern visplane_t*	floorplane;
 extern visplane_t*	ceilingplane;
 
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 // $Log:$
