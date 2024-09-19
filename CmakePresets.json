@@ -1,10 +1,5 @@
 {
-  "version": 5,
-  "cmakeMinimumRequired": {
-    "major": 3,
-    "minor": 23,
-    "patch": 0
-  },
+  "version": 6,
   "configurePresets": [
     {
       "name": "default",
@@ -16,47 +11,8 @@
       "name": "ninja-multi",
       "inherits": "default",
       "displayName": "Ninja Multi-Config",
-      "description": "Default build using Ninja Multi-Config generator",
+      "description": "Build using Ninja Multi-Config generator",
       "generator": "Ninja Multi-Config"
     }
-  ],
-  "buildPresets": [
-    {
-      "name": "default",
-      "configurePreset": "default"
-    }
-  ],
-  "packagePresets": [
-    {
-      "name": "default",
-      "configurePreset": "default",
-      "generators": [
-        "TGZ"
-      ]
-    }
-  ],
-  "workflowPresets": [
-    {
-      "name": "default",
-      "steps": [
-        {
-          "type": "configure",
-          "name": "default"
-        },
-        {
-          "type": "build",
-          "name": "default"
-        },
-        {
-          "type": "package",
-          "name": "default"
-        }
-      ]
-    }
-  ],
-  "vendor": {
-    "example.com/ExampleIDE/1.0": {
-      "autoFormat": false
-    }
-  }
+  ]
 }
