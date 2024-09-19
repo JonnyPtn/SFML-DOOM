@@ -501,8 +501,8 @@ void F_CastTicker (void)
 
 boolean F_CastResponder (const sf::Event& ev)
 {
-    if (ev.type != sf::Event::KeyPressed)
-	return false;
+    if (ev.is<sf::Event::KeyPressed>())
+	    return false;
 		
     if (castdeath)
 	return true;			// already in dying frames

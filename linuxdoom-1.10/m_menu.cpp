@@ -1415,16 +1415,10 @@ boolean M_Responder (const sf::Event& ev)
 	    }
     }
      */
-    
-    switch(ev.type)
+
+    if (auto key_press = ev.getIf<sf::Event::KeyPressed>(); key_press)
     {
-        case sf::Event::KeyPressed:
-        {
-            key = ev.key.code;
-            break;
-        }
-        default:
-            break;
+        key = key_press->code;
     }
     
     if (key == sf::Keyboard::Key::Unknown)

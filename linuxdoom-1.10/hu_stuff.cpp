@@ -624,7 +624,7 @@ boolean HU_Responder(const sf::Event& ev)
     int			i;
     int			numplayers;
     
-    static char		destination_keys[MAXPLAYERS] =
+    std::array	destination_keys =
     {
 	HUSTR_KEYGREEN,
 	HUSTR_KEYINDIGO,
@@ -638,109 +638,115 @@ boolean HU_Responder(const sf::Event& ev)
     for (i=0 ; i<MAXPLAYERS ; i++)
 	numplayers += playeringame[i];
 
-    if (ev.key.code == sf::Keyboard::Key::RShift)
+    if (auto key_release = ev.getIf<sf::Event::KeyPressed>(); key_release)
     {
-	shiftdown = ev.type == sf::Event::KeyPressed;
-	return false;
-    }
-    else if (ev.key.code == sf::Keyboard::Key::RAlt || ev.key.code == sf::Keyboard::Key::LAlt)
-    {
-	altdown = ev.type == sf::Event::KeyPressed;
-	return false;
+        switch(key_release->code)
+        {
+            case sf::Keyboard::Key::RShift:
+            case sf::Keyboard::Key::LShift:
+            {
+                shiftdown = false;
+                return false;
+            }
+            case sf::Keyboard::Key::LAlt:
+            case sf::Keyboard::Key::RAlt:
+            {
+                altdown = false;
+                return false;
+            }
+            default:
+                break;
+        }
     }
 
-    if (ev.type != sf::Event::KeyPressed)
-	return false;
+    if (auto key_press = ev.getIf<sf::Event::KeyPressed>(); key_press) {
+        switch (key_press->code) {
+            case sf::Keyboard::Key::RShift:
+            case sf::Keyboard::Key::LShift: {
+                shiftdown = true;
+                return false;
+            }
+            case sf::Keyboard::Key::LAlt:
+            case sf::Keyboard::Key::RAlt: {
+                altdown = true;
+                return false;
+            }
+            default:
+                break;
+        }
 
-    if (!chat_on)
-    {
-	if (ev.key.code == sf::Keyboard::Key::Enter)
-	{
-	    message_on = true;
-	    message_counter = HU_MSGTIMEOUT;
-	    eatkey = true;
-	}
-	else if (netgame && ev.key.code == sf::Keyboard::Key::T)
-	{
-	    eatkey = chat_on = true;
-	    HUlib_resetIText(&w_chat);
-	    HU_queueChatChar(HU_BROADCAST);
-	}
-	else if (netgame && numplayers > 2)
-	{
-	    for (i=0; i<MAXPLAYERS ; i++)
-	    {
-		if (ev.key.code == destination_keys[i])
-		{
-		    if (playeringame[i] && i!=consoleplayer)
-		    {
-			eatkey = chat_on = true;
-			HUlib_resetIText(&w_chat);
-			HU_queueChatChar(i+1);
-			break;
-		    }
-		    else if (i == consoleplayer)
-		    {
-			num_nobrainers++;
-			if (num_nobrainers < 3)
-			    plr->message = HUSTR_TALKTOSELF1;
-			else if (num_nobrainers < 6)
-			    plr->message = HUSTR_TALKTOSELF2;
-			else if (num_nobrainers < 9)
-			    plr->message = HUSTR_TALKTOSELF3;
-			else if (num_nobrainers < 32)
-			    plr->message = HUSTR_TALKTOSELF4;
-			else
-			    plr->message = HUSTR_TALKTOSELF5;
-		    }
-		}
-	    }
-	}
-    }
-    else
-    {
-	c = ev.key.code;
-	// send a macro
-	if (altdown)
-	{
-	    c = c - '0';
-	    if (c > 9)
-		return false;
-	    // fprintf(stderr, "got here\n");
-	    macromessage = chat_macros[c];
-	    
-	    // kill last message with a '\n'
-        // JONNY TODO
-        //HU_queueChatChar(KEY_ENTER); // DEBUG!!!
-	    
-	    // send the macro message
-	    while (*macromessage)
-		HU_queueChatChar(*macromessage++);
-        // JONNY TODO
-	    //HU_queueChatChar(KEY_ENTER);
-	    
-	    // leave chat mode and notify that it was sent
-	    chat_on = false;
-	    strcpy(lastmessage, chat_macros[c]);
-	    plr->message = lastmessage;
-	    eatkey = true;
-	}
-	else
-	{
-	    if (french)
-		c = ForeignTranslation(c);
-	    if (shiftdown || (c >= 'a' && c <= 'z'))
-		c = shiftxform[c];
-	    eatkey = HUlib_keyInIText(&w_chat, c);
-	    if (eatkey)
-	    {
-		// static unsigned char buf[20]; // DEBUG
-		HU_queueChatChar(c);
-		
-		// sprintf(buf, "KEY: %d => %d", ev->data1, c);
-		//      plr->message = buf;
-	    }
-        // JONNY TODO
+        if (!chat_on) {
+            if (key_press->code == sf::Keyboard::Key::Enter) {
+                message_on = true;
+                message_counter = HU_MSGTIMEOUT;
+                eatkey = true;
+            } else if (netgame && key_press->code == sf::Keyboard::Key::T) {
+                eatkey = chat_on = true;
+                HUlib_resetIText(&w_chat);
+                HU_queueChatChar(HU_BROADCAST);
+            } else if (netgame && numplayers > 2) {
+                for (i = 0; i < MAXPLAYERS; i++) {
+                    if (key_press->code == destination_keys[i]) {
+                        if (playeringame[i] && i != consoleplayer) {
+                            eatkey = chat_on = true;
+                            HUlib_resetIText(&w_chat);
+                            HU_queueChatChar(i + 1);
+                            break;
+                        } else if (i == consoleplayer) {
+                            num_nobrainers++;
+                            if (num_nobrainers < 3)
+                                plr->message = HUSTR_TALKTOSELF1;
+                            else if (num_nobrainers < 6)
+                                plr->message = HUSTR_TALKTOSELF2;
+                            else if (num_nobrainers < 9)
+                                plr->message = HUSTR_TALKTOSELF3;
+                            else if (num_nobrainers < 32)
+                                plr->message = HUSTR_TALKTOSELF4;
+                            else
+                                plr->message = HUSTR_TALKTOSELF5;
+                        }
+                    }
+                }
+            }
+        } else {
+            c = static_cast<char>(key_press->code);
+            // send a macro
+            if (altdown) {
+                c = c - '0';
+                if (c > 9)
+                    return false;
+                // fprintf(stderr, "got here\n");
+                macromessage = chat_macros[c];
+
+                // kill last message with a '\n'
+                // JONNY TODO
+                //HU_queueChatChar(KEY_ENTER); // DEBUG!!!
+
+                // send the macro message
+                while (*macromessage)
+                    HU_queueChatChar(*macromessage++);
+                // JONNY TODO
+                //HU_queueChatChar(KEY_ENTER);
+
+                // leave chat mode and notify that it was sent
+                chat_on = false;
+                strcpy(lastmessage, chat_macros[c]);
+                plr->message = lastmessage;
+                eatkey = true;
+            } else {
+                if (french)
+                    c = ForeignTranslation(c);
+                if (shiftdown || (c >= 'a' && c <= 'z'))
+                    c = shiftxform[c];
+                eatkey = HUlib_keyInIText(&w_chat, c);
+                if (eatkey) {
+                    // static unsigned char buf[20]; // DEBUG
+                    HU_queueChatChar(c);
+
+                    // sprintf(buf, "KEY: %d => %d", ev->data1, c);
+                    //      plr->message = buf;
+                }
+                // JONNY TODO
 //	    if (c == KEY_ENTER)
 //	    {
 //		chat_on = false;
@@ -752,8 +758,14 @@ boolean HU_Responder(const sf::Event& ev)
 //	    }
 //	    else if (c == KEY_ESCAPE)
 //		chat_on = false;
-	}
+            }
+        }
     }
+    else
+    {
+        return false;
+    }
+
 
     return eatkey;
 

@@ -175,10 +175,10 @@ fixed_t		angleturn[3] = {640, 1280, 320};	// + slow turn
 
 #define SLOWTURNTICS	6
 
-std::bitset<static_cast<int>(sf::Keyboard::Scancode::ScancodeCount)>    gamekeydown;
+std::bitset<sf::Keyboard::ScancodeCount>    gamekeydown;
 int             turnheld;				// for accelerative turning 
  
-std::bitset<3>	mousebuttons;		// allow [-1]
+std::bitset<sf::Mouse::ButtonCount>	mousebuttons;
 
 // mouse values are used once 
 int             mousex;
@@ -498,8 +498,7 @@ void G_DoLoadLevel (void)
 boolean G_Responder (const sf::Event& ev) 
 { 
     // allow spy mode changes even during the demo
-    if (gamestate == GS_LEVEL && ev.type == sf::Event::KeyPressed 
-	&& ev.key.code == sf::Keyboard::Key::F12 && (singledemo || !deathmatch) )
+    if (auto key_press = ev.getIf<sf::Event::KeyPressed>(); key_press && gamestate == GS_LEVEL && key_press->code == sf::Keyboard::Key::F12 && (singledemo || !deathmatch) )
     {
 	// spy mode 
 	do 
@@ -510,107 +509,85 @@ boolean G_Responder (const sf::Event& ev)
 	} while (!playeringame[displayplayer] && displayplayer != consoleplayer); 
 	return true; 
     }
-    
-    // any other key pops up menu if in demos
-    if (gameaction == ga_nothing && !singledemo && 
-	(demoplayback || gamestate == GS_DEMOSCREEN) 
-	) 
-    { 
-	if (ev.type == sf::Event::KeyPressed ||  
-	    (ev.type == sf::Event::MouseMoved) || 
-	    (ev.type == sf::Event::JoystickButtonPressed) ) 
-	{ 
-	    M_StartControlPanel (); 
-	    return true; 
-	} 
-	return false; 
-    } 
- 
-    if (gamestate == GS_LEVEL) 
-    { 
-#if 0 
-	if (devparm && ev->type == ev_keydown && ev->data1 == ';') 
-	{ 
-	    G_DeathMatchSpawnPlayer (0); 
-	    return true; 
-	} 
-#endif 
-	if (HU_Responder (ev)) 
-	    return true;	// chat ate the event 
-	if (ST_Responder (ev)) 
-	    return true;	// status window ate it 
-	if (AM_Responder (ev)) 
-	    return true;	// automap ate it 
-    } 
-	 
-    if (gamestate == GS_FINALE) 
-    { 
-	if (F_Responder (ev)) 
-	    return true;	// finale ate the event 
-    } 
-	 
-    switch (ev.type) 
-    { 
-      case sf::Event::KeyPressed: 
-      // JONNY TODO
+
+        // any other key pops up menu if in demos
+        if (gameaction == ga_nothing && !singledemo &&
+            (demoplayback || gamestate == GS_DEMOSCREEN)
+                ) {
+            if (ev.is<sf::Event::KeyPressed>() ||
+                ev.is<sf::Event::MouseMoved>() ||
+                ev.is<sf::Event::JoystickButtonPressed>()) {
+                M_StartControlPanel();
+                return true;
+            }
+            return false;
+        }
+
+        if (gamestate == GS_LEVEL) {
+#if 0
+            if (devparm && ev->type == ev_keydown && ev->data1 == ';')
+            {
+                G_DeathMatchSpawnPlayer (0);
+                return true;
+            }
+#endif
+            if (HU_Responder(ev))
+                return true;    // chat ate the event
+            if (ST_Responder(ev))
+                return true;    // status window ate it
+            if (AM_Responder(ev))
+                return true;    // automap ate it
+        }
+
+        if (gamestate == GS_FINALE) {
+            if (F_Responder(ev))
+                return true;    // finale ate the event
+        }
+
+        if (auto key_press = ev.getIf<sf::Event::KeyPressed>(); key_press) {
+            // JONNY TODO
 //	if (ev.key.code == KEY_PAUSE) 
 //	{ 
 //	    sendpause = true; 
 //	    return true; 
 //	}
-    gamekeydown[static_cast<int>(ev.key.scancode)] = true;
-	return true;    // eat key down events 
- 
-        case sf::Event::KeyReleased:
-            gamekeydown[static_cast<int>(ev.key.scancode)] = false;
-	return false;   // always let key up events filter down 
-		 
-      case sf::Event::MouseButtonPressed: 
-      case sf::Event::MouseButtonReleased:
-      switch(ev.mouseButton.button)
-      {
-          case sf::Mouse::Button::Left:
-          mousebuttons[0] = ev.type == sf::Event::MouseButtonPressed;
-          break;
-          case sf::Mouse::Button::Right:
-          mousebuttons[1] = ev.type == sf::Event::MouseButtonPressed;
-          break;
-          case sf::Mouse::Button::Middle:
-          mousebuttons[2] = ev.type == sf::Event::MouseButtonPressed;
-          break;
-          default:
-              break;
-      }
-      break;
-      case sf::Event::MouseMoved:
-	mousex = ev.mouseMove.x *(mouseSensitivity+5)/10; 
-	mousey = ev.mouseMove.y *(mouseSensitivity+5)/10; 
-	return true;    // eat events 
- 
-      case sf::Event::JoystickButtonPressed:
-      joybuttons[ev.joystickButton.button] = true;
-      break;
-      case sf::Event::JoystickButtonReleased: 
-          joybuttons[ev.joystickButton.button] = false;
-          break;
+            gamekeydown[static_cast<int>(key_press->scancode)] = true;
+            return true;    // eat key down events
+        } else if (auto key_release = ev.getIf<sf::Event::KeyReleased>(); key_release) {
 
-    case sf::Event::JoystickMoved:
-    switch(ev.joystickMove.axis)
-    {
-        case sf::Joystick::Axis::X:
-        joyxmove = ev.joystickMove.position;
-        break;
-        case sf::Joystick::Axis::Y:
-        joyymove = ev.joystickMove.position;
-        break;
-        default:
-            break;
-    }
-	return true;    // eat events 
- 
-      default: 
-	break; 
-    } 
+            gamekeydown[static_cast<int>(key_release->scancode)] = false;
+            return false;   // always let key up events filter down
+        }
+    else if (auto mouse_press = ev.getIf<sf::Event::MouseButtonPressed>(); mouse_press) {
+            mousebuttons[static_cast<int>(mouse_press->button)] = true;
+        }
+    else if (auto mouse_release = ev.getIf<sf::Event::MouseButtonReleased>(); mouse_release) {
+            mousebuttons[static_cast<int>(mouse_press->button)] = false;
+        }
+    else if (auto mouse_move = ev.getIf<sf::Event::MouseMoved>(); mouse_move) {
+            mousex = mouse_move->position.x * (mouseSensitivity + 5) / 10;
+            mousey = mouse_move->position.y * (mouseSensitivity + 5) / 10;
+            return true;    // eat events
+        }
+    else if (auto joystick_press_event = ev.getIf<sf::Event::JoystickButtonPressed>(); joystick_press_event) {
+            joybuttons[joystick_press_event->button] = true;
+        }
+        else if (auto joystick_release_event = ev.getIf<sf::Event::JoystickButtonReleased>(); joystick_release_event) {
+            joybuttons[joystick_release_event->button] = false;
+        }
+        else if (auto joystick_move_event = ev.getIf<sf::Event::JoystickMoved>(); joystick_move_event) {
+            switch (joystick_move_event->axis) {
+                case sf::Joystick::Axis::X:
+                    joyxmove = joystick_move_event->position;
+                    break;
+                case sf::Joystick::Axis::Y:
+                    joyymove = joystick_move_event->position;
+                    break;
+                default:
+                    break;
+            }
+            return true;    // eat events
+        }
  
     return false; 
 } 

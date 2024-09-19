@@ -74,12 +74,10 @@ boolean		shmFinished;
 
 void I_GetEvent(void)
 {
-	sf::Event event;
-
     // put event-grabbing stuff in here
-	while(mainWindow.pollEvent(event))
+	while(auto event = mainWindow.pollEvent())
 	{
-		D_PostEvent(event);
+		D_PostEvent(*event);
 	}
 }
 
@@ -288,7 +286,7 @@ void I_InitGraphics(void)
     mainWindow.setMouseCursorVisible(false);
 	mainWindow.setMouseCursorGrabbed(grabMouse);
 
-    if (texture.create({SCREENWIDTH,SCREENHEIGHT}))
+    if (texture.resize({SCREENWIDTH,SCREENHEIGHT}))
     {
         sprite.setScale({float(multiply), float(multiply)});
     }

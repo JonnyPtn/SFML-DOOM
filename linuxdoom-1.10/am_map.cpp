@@ -608,25 +608,12 @@ boolean AM_Responder( const sf::Event&	ev )
     static char buffer[20];
 
     rc = false;
-
-    if (!automapactive)
+    if (auto key = ev.getIf<sf::Event::KeyPressed>(); key)
     {
-	if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Key::Tab)
-	{
-	    AM_Start ();
-	    viewactive = false;
-	    rc = true;
-	}
-    }
-
-    else if (ev.type == sf::Event::KeyPressed)
-    {
-
 	rc = true;
-	switch(ev.key.code)
-        
+	switch(key->code)
 	{
-	  case sf::Keyboard::Key::Right: // pan right
+        case sf::Keyboard::Key::Right: // pan right
 	    if (!followplayer) m_paninc.x = FTOM(F_PANINC);
 	    else rc = false;
 	    break;
@@ -650,11 +637,20 @@ boolean AM_Responder( const sf::Event&	ev )
 	    mtof_zoommul = M_ZOOMIN;
 	    ftom_zoommul = M_ZOOMOUT;
 	    break;
-	  case sf::Keyboard::Key::Tab: // end
-	    bigstate = 0;
-	    viewactive = true;
-	    AM_Stop ();
-	    break;
+	  case sf::Keyboard::Key::Tab:
+          if (!automapactive)
+          {
+              AM_Start();
+              viewactive = false;
+              rc = true;
+          }
+          else
+          {
+              bigstate = 0;
+              viewactive = true;
+              AM_Stop ();
+              break;
+          }
 	  case sf::Keyboard::Key::Num0: // go big
 	    bigstate = !bigstate;
 	    if (bigstate)
@@ -693,10 +689,10 @@ boolean AM_Responder( const sf::Event&	ev )
 	// }
     }
 
-    else if (ev.type == sf::Event::KeyReleased)
+    else if (auto keyRelease = ev.getIf<sf::Event::KeyReleased>(); keyRelease)
     {
 	rc = false;
-	switch (ev.key.code)
+	switch (keyRelease->code)
 	{
 	  case sf::Keyboard::Key::Right:
 	  case sf::Keyboard::Key::Left:

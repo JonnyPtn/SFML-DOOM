@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <SFML/Window/Keyboard.hpp>
+
 //
 //	Printed strings for translation
 //
@@ -313,10 +315,10 @@
 #define HUSTR_PLRBROWN	"Brown: "
 #define HUSTR_PLRRED		"Red: "
 
-#define HUSTR_KEYGREEN	'g'
-#define HUSTR_KEYINDIGO	'i'
-#define HUSTR_KEYBROWN	'b'
-#define HUSTR_KEYRED	'r'
+constexpr auto HUSTR_KEYGREEN = sf::Keyboard::Key::G;
+constexpr auto HUSTR_KEYINDIGO = sf::Keyboard::Key::I;
+constexpr auto HUSTR_KEYBROWN = sf::Keyboard::Key::B;
+constexpr auto HUSTR_KEYRED = sf::Keyboard::Key::R;
 
 //
 //	AM_map.C
