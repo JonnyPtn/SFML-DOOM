@@ -1,4 +1,4 @@
 .vscode/
 .vs/
-build/
-*.wad
+.idea/
+out/

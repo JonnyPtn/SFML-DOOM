@@ -19,9 +19,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(sfml)
 
-file(DOWNLOAD https://distro.ibiblio.org/slitaz/sources/packages/d/doom1.wad doom1.wad 
-     SHOW_PROGRESS EXPECTED_MD5 f0cefca49926d00903cf57551d901abe)
-
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics)
 
 if (UNIX)
@@ -29,3 +26,4 @@ if (UNIX)
 endif()
 
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES XCODE_GENERATE_SCHEME YES XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
