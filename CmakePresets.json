@@ -5,7 +5,7 @@
       "name": "default",
       "displayName": "Default Config",
       "description": "Default build using default generator",
-      "binaryDir": "${sourceDir}/build/default"
+      "binaryDir": "out/build/${presetName}"
     },
     {
       "name": "ninja-multi",
