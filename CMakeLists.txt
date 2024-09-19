@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.29)
 
 project(sfml-doom)
 
@@ -19,26 +19,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(sfml)
 
-FetchContent_Declare(
-  imgui
-  GIT_REPOSITORY    https://github.com/ocornut/imgui
-  GIT_TAG           v1.87
-)
-FetchContent_MakeAvailable(imgui)
-
-set(IMGUI_SFML_FIND_SFML OFF)
-set(IMGUI_DIR ${imgui_SOURCE_DIR})
-FetchContent_Declare(
-  imgui-sfml
-  GIT_REPOSITORY    https://github.com/eliasdaler/imgui-sfml
-  GIT_TAG           master
-)
-FetchContent_MakeAvailable(imgui-sfml)
-
 file(DOWNLOAD https://distro.ibiblio.org/slitaz/sources/packages/d/doom1.wad doom1.wad 
      SHOW_PROGRESS EXPECTED_MD5 f0cefca49926d00903cf57551d901abe)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics ImGui-SFML::ImGui-SFML)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics)
 
 if (UNIX)
     target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Werror)
