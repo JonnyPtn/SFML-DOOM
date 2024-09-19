@@ -83,9 +83,6 @@ typedef enum
 //
 #define MAXEVENTS		64
 
-extern  int             eventhead;
-extern	int		eventtail;
-
 extern  gameaction_t    gameaction;
 
 

@@ -36,6 +36,7 @@
 
 #include "doomstat.h"
 
+import d_main;
 
 void G_PlayerReborn (int player);
 void P_SpawnMapThing (mapthing_t*	mthing);

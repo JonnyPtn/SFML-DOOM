@@ -39,7 +39,7 @@
 #include "p_saveg.h"
 #include "p_tick.h"
 
-#include "d_main.h"
+import d_main;
 
 #include "wi_stuff.h"
 #include "hu_stuff.h"
@@ -121,8 +121,7 @@ int             gametic;
 int             levelstarttic;          // gametic at level start 
 int             totalkills, totalitems, totalsecret;    // for intermission 
  
-char            demoname[32]; 
-boolean         demorecording; 
+char            demoname[32];
 boolean         demoplayback; 
 boolean		netdemo; 
 byte*		demobuffer;
@@ -169,8 +168,6 @@ int             joybspeed;
  
 #define TURBOTHRESHOLD	0x32
 
-fixed_t		forwardmove[2] = {0x19, 0x32}; 
-fixed_t		sidemove[2] = {0x18, 0x28}; 
 fixed_t		angleturn[3] = {640, 1280, 320};	// + slow turn 
 
 #define SLOWTURNTICS	6
@@ -434,8 +431,6 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 //
 // G_DoLoadLevel 
 //
-extern  gamestate_t     wipegamestate; 
- 
 void G_DoLoadLevel (void) 
 { 
     int             i; 
@@ -1174,7 +1169,6 @@ void G_DoWorldDone (void)
 // Can be called by the startup code or the menu task. 
 //
 extern boolean setsizeneeded;
-void R_ExecuteSetViewSize (void);
 
 char	savename[256];
 

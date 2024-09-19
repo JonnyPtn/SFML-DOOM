@@ -24,6 +24,7 @@
 
 #include "doomdef.h"
 #include "d_event.h"
+#include "d_ticcmd.h"
 
 #include <SFML/Window.hpp>
 
@@ -69,6 +70,7 @@ boolean G_Responder (const sf::Event&	ev);
 
 void G_ScreenShot (void);
 
+void G_BuildTiccmd (ticcmd_t* cmd);
 
 
 //-----------------------------------------------------------------------------

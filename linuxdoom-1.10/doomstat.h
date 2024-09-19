@@ -34,17 +34,6 @@
 // We need the playr data structure as well.
 #include "d_player.h"
 
-// ------------------------
-// Command line parameters.
-//
-extern  boolean	nomonsters;	// checkparm of -nomonsters
-extern  boolean	respawnparm;	// checkparm of -respawn
-extern  boolean	fastparm;	// checkparm of -fast
-
-extern  boolean	devparm;	// DEBUG: launched with -devparm
-
-
-
 // -----------------------------------------------------
 // Game Mode - identify IWAD as shareware, retail etc.
 //
@@ -63,13 +52,6 @@ extern  Language_t   language;
 // -------------------------------------------
 // Selected skill type, map etc.
 //
-
-// Defaults for menu, methinks.
-extern  skill_t		startskill;
-extern  int             startepisode;
-extern	int		startmap;
-
-extern  boolean		autostart;
 
 // Selected by user. 
 extern  skill_t         gameskill;
@@ -172,7 +154,6 @@ extern  boolean	usergame;
 
 //?
 extern  boolean	demoplayback;
-extern  boolean	demorecording;
 
 // Quit after playing a demo from cmdline.
 extern  boolean		singledemo;	
@@ -231,22 +212,10 @@ extern  int		maxammo[NUMAMMO];
 // Internal parameters, used for engine.
 //
 
-// File handling stuff.
-extern	char		basedefault[1024];
-extern  FILE*		debugfile;
-
 // if true, load all graphics at level load
 extern  boolean         precache;
 
-
-// wipegamestate can be set to -1
-//  to force a wipe on the next draw
-extern  gamestate_t     wipegamestate;
-
 extern  int             mouseSensitivity;
-//?
-// debug flag to cancel adaptiveness
-extern  boolean         singletics;	
 
 extern  int             bodyqueslot;
 

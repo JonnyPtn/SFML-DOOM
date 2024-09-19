@@ -42,6 +42,8 @@
 
 #include <string>
 
+import d_main;
+
 // ?
 //#include "doomstat.h"
 //#include "r_local.h"
@@ -371,9 +373,6 @@ boolean		castattacking;
 //
 // F_StartCast
 //
-extern	gamestate_t     wipegamestate;
-
-
 void F_StartCast (void)
 {
     wipegamestate = static_cast<gamestate_t>(-1);		// force a screen wipe

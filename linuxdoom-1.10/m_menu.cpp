@@ -32,8 +32,6 @@
 #include "doomdef.h"
 #include "dstrings.h"
 
-#include "d_main.h"
-
 #include "i_system.h"
 #include "i_video.h"
 #include "z_zone.h"
@@ -60,6 +58,8 @@
 #include "m_menu.h"
 
 #include <functional>
+
+import d_main;
 
 
 

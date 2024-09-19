@@ -41,7 +41,7 @@
 #include <Windows.h>
 #endif
 
-
+import d_main;
 
 
 int	mb_used = 6;
@@ -135,8 +135,6 @@ byte*	I_AllocLow(int length)
 //
 // I_Error
 //
-extern boolean demorecording;
-
 void I_Error (const char *error, ...)
 {
     va_list	argptr;

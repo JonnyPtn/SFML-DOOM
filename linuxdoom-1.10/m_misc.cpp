@@ -55,6 +55,8 @@
 
 #include "m_misc.h"
 
+import d_main;
+
 //
 // M_DrawText
 // Returns the final X coordinate

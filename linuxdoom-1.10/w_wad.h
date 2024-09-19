@@ -62,7 +62,7 @@ struct lumpinfo_t
 extern	std::vector<void*>		lumpcache;
 extern	std::vector<lumpinfo_t>	lumpinfo;
 
-void    W_InitMultipleFiles (char** filenames);
+void    W_InitMultipleFiles (std::vector<std::string>& filenames);
 void    W_Reload (void);
 
 int	W_CheckNumForName (const std::string& name);

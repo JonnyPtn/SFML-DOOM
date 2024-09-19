@@ -42,7 +42,7 @@
 // Data.
 #include "sounds.h"
 
-
+import d_main;
 
 
 typedef enum

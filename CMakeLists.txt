@@ -5,7 +5,13 @@ project(sfml-doom)
 file(GLOB SOURCE CONFIGURE_DEPENDS linuxdoom-1.10/*.c linuxdoom-1.10/*.cpp linuxdoom-1.10/*.h)
 
 add_executable(${CMAKE_PROJECT_NAME} MACOSX_BUNDLE ${SOURCE})
-target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_20)
+target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_23)
+
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE linuxdoom-1.10)
+
+# c++ modules
+file(GLOB MODULE_SOURCE CONFIGURE_DEPENDS src/*.ixx)
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE FILE_SET CXX_MODULES FILES ${MODULE_SOURCE})
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 include(FetchContent)

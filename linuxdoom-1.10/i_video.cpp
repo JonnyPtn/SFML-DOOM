@@ -33,12 +33,13 @@
 #include "i_system.h"
 #include "v_video.h"
 #include "m_argv.h"
-#include "d_main.h"
 
 #include "doomdef.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+
+import d_main;
 
 #define POINTER_WARP_COUNTDOWN	1
 

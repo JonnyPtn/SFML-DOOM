@@ -251,19 +251,20 @@ void W_Reload (void)
 // The name searcher looks backwards, so a later file
 //  does override all earlier ones.
 //
-void W_InitMultipleFiles (char** filenames)
+void W_InitMultipleFiles (std::vector<std::string>& filenames)
 {
     // open all the files, load headers, and count lumps
     lumpinfo.clear();
 
-    for ( ; *filenames ; filenames++)
-	W_AddFile (*filenames);
+    for (const auto& name : filenames) {
+        W_AddFile(name);
+    }
 
     if (lumpinfo.empty())
     {
         I_Error ("W_InitFiles: no files found");
     }
-    
+
     // set up caching
     lumpcache.resize(lumpinfo.size());
 }
@@ -275,13 +276,10 @@ void W_InitMultipleFiles (char** filenames)
 // W_InitFile
 // Just initialize from a single file.
 //
-void W_InitFile (char* filename)
+void W_InitFile (std::string filename)
 {
-    char*	names[2];
-
-    names[0] = filename;
-    names[1] = NULL;
-    W_InitMultipleFiles (names);
+    std::vector names{filename};
+    W_InitMultipleFiles(names);
 }
 
 
