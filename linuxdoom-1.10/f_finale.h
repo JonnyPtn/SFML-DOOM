@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -16,15 +16,13 @@
 //
 // DESCRIPTION:
 //
-//    
+//
 //-----------------------------------------------------------------------------
-
 
 #pragma once
 
-
-#include "doomtype.h"
 #include "d_event.h"
+#include "doomtype.h"
 
 #include <SFML/Window.hpp>
 //
@@ -32,20 +30,15 @@
 //
 
 // Called by main loop.
-boolean F_Responder (const sf::Event& ev);
+boolean F_Responder(const sf::Event &ev);
 
 // Called by main loop.
-void F_Ticker (void);
+void F_Ticker(void);
 
 // Called by main loop.
-void F_Drawer (void);
+void F_Drawer(void);
 
-
-void F_StartFinale (void);
-
-
-
-
+void F_StartFinale(void);
 
 //-----------------------------------------------------------------------------
 //

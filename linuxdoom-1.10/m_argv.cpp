@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -20,17 +20,13 @@
 //
 //-----------------------------------------------------------------------------
 
-
-#include <string_view>
-#include <string>
 #include <ranges>
+#include <string>
+#include <string_view>
 #include <vector>
 
-int		myargc;
-std::vector<std::string>		myargv;
-
-
-
+int myargc;
+std::vector<std::string> myargv;
 
 //
 // M_CheckParm
@@ -38,17 +34,11 @@ std::vector<std::string>		myargv;
 // in the program's command line arguments.
 // Returns the argument number (1 to argc-1)
 // or 0 if not present
-int M_CheckParm (std::string_view check)
-{
-    const auto found = std::ranges::find(myargv, check);
-    if (found != myargv.end())
-    {
-        return static_cast<int>(std::distance(myargv.begin(),found));
-    }
+int M_CheckParm(std::string_view check) {
+  const auto found = std::ranges::find(myargv, check);
+  if (found != myargv.end()) {
+    return static_cast<int>(std::distance(myargv.begin(), found));
+  }
 
-    return 0;
+  return 0;
 }
-
-
-
-

@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -19,7 +19,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #pragma once
 
-boolean	P_GivePower(player_t*, int);
+boolean P_GivePower(player_t *, int);

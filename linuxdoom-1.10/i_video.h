@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -19,25 +19,24 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #pragma once
 
-
 #include "doomtype.h"
-
 
 // Called by D_DoomMain,
 // determines the hardware configuration
 // and sets up the video mode
-void I_InitGraphics (void);
+void I_InitGraphics(void);
 
 // Takes full 8 bit values.
-void I_SetPalette (byte* palette);
+void I_SetPalette(byte *palette);
 
-void I_UpdateNoBlit (void);
-void I_FinishUpdate (void);
+void I_UpdateNoBlit(void);
 
-void I_ReadScreen (byte* scr);
+void I_FinishUpdate(void);
 
-void I_BeginRead (void);
-void I_EndRead (void);
+void I_ReadScreen(byte *scr);
+
+void I_BeginRead(void);
+
+void I_EndRead(void);

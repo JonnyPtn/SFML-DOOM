@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -27,18 +27,13 @@
 
 import d_main;
 
-int
-main
-( int		argc,
-  char**	argv ) 
-{ 
-    myargc = argc;
-    while(*argv)
-    {
-        myargv.emplace_back(*(argv++));
-    }
- 
-    D_DoomMain (); 
+int main(int argc, char **argv) {
+  myargc = argc;
+  while (*argv) {
+    myargv.emplace_back(*(argv++));
+  }
 
-    return 0;
-} 
+  D_DoomMain();
+
+  return 0;
+}

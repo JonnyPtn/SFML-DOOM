@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -16,7 +16,7 @@
 //
 // DESCRIPTION:
 //  Nil.
-//    
+//
 //-----------------------------------------------------------------------------
 
 #pragma once
@@ -27,9 +27,9 @@
 //
 // MISC
 //
-extern  int	myargc;
-extern  std::vector<std::string>	myargv;
+extern int myargc;
+extern std::vector<std::string> myargv;
 
 // Returns the position of the given parameter
 // in the arg list (0 if not found).
-int M_CheckParm (std::string_view check);
+int M_CheckParm(std::string_view check);

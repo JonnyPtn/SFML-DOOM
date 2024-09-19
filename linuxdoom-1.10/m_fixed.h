@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -19,20 +19,20 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #pragma once
 
 #include <stdint.h>
 
-
 //
 // Fixed point, 32bit as 16.16.
 //
-#define FRACBITS		16
-#define FRACUNIT		(1<<FRACBITS)
+#define FRACBITS 16
+#define FRACUNIT (1 << FRACBITS)
 
 typedef int32_t fixed_t;
 
-fixed_t FixedMul	(fixed_t a, fixed_t b);
-fixed_t FixedDiv	(fixed_t a, fixed_t b);
-fixed_t FixedDiv2	(fixed_t a, fixed_t b);
+fixed_t FixedMul(fixed_t a, fixed_t b);
+
+fixed_t FixedDiv(fixed_t a, fixed_t b);
+
+fixed_t FixedDiv2(fixed_t a, fixed_t b);

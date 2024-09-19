@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -21,7 +21,7 @@
 //  wall, wrapping around. A 1024 columns equal 360 degrees.
 //  The default sky map is 256 columns and repeats 4 times
 //  on a 320 screen?
-//  
+//
 //
 //-----------------------------------------------------------------------------
 
@@ -36,19 +36,15 @@
 //
 // sky mapping
 //
-int			skyflatnum;
-int			skytexture;
-int			skytexturemid;
-
-
+int skyflatnum;
+int skytexture;
+int skytexturemid;
 
 //
 // R_InitSkyMap
 // Called whenever the view size changes.
 //
-void R_InitSkyMap (void)
-{
+void R_InitSkyMap(void) {
   // skyflatnum = R_FlatNumForName ( SKYFLATNAME );
-    skytexturemid = 100*FRACUNIT;
+  skytexturemid = 100 * FRACUNIT;
 }
-

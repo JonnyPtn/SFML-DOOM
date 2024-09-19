@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -31,19 +31,16 @@
 // Include the refresh/render data structs.
 #include "r_data.h"
 
-
-
 //
 // Separate header file for each module.
 //
-#include "r_main.h"
 #include "r_bsp.h"
-#include "r_segs.h"
-#include "r_plane.h"
 #include "r_data.h"
-#include "r_things.h"
 #include "r_draw.h"
-
+#include "r_main.h"
+#include "r_plane.h"
+#include "r_segs.h"
+#include "r_things.h"
 
 //-----------------------------------------------------------------------------
 //

@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -19,22 +19,19 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #pragma once
 
 #include "doomdef.h"
 
-
 // Weapon info: sprite frames, ammunition use.
-typedef struct
-{
-    ammotype_t	ammo;
-    int		upstate;
-    int		downstate;
-    int		readystate;
-    int		atkstate;
-    int		flashstate;
+typedef struct {
+  ammotype_t ammo;
+  int upstate;
+  int downstate;
+  int readystate;
+  int atkstate;
+  int flashstate;
 
 } weaponinfo_t;
 
-extern  weaponinfo_t    weaponinfo[NUMWEAPONS];
+extern weaponinfo_t weaponinfo[NUMWEAPONS];
