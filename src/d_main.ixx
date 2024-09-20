@@ -763,7 +763,7 @@ export void D_DoomMain(void) {
   spdlog::info("Z_Init: Init zone memory allocation daemon.");
   Z_Init();
 
-  printf("W_Init: Init WADfiles.\n");
+  spdlog::info("W_Init: Init WADfiles.");
   W_InitMultipleFiles(wadfilenames);
 
   // Check for -file in shareware

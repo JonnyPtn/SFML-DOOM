@@ -33,6 +33,8 @@
 #include <string>
 #include <vector>
 
+#include <spdlog/spdlog.h>
+
 import i_system;
 
 //
@@ -119,12 +121,12 @@ void W_AddFile(const std::filesystem::path &filepath) {
 
   wadfiles.emplace_back(filepath.string(), std::ios::binary);
   if (!wadfiles.back().is_open()) {
-    printf(" couldn't open %s\n", filepath.c_str());
+    spdlog::error(" couldn't open {}", filepath.string());
     wadfiles.pop_back();
     return;
   }
 
-  printf(" adding %s\n", filename.c_str());
+  spdlog::info(" adding {}", filename.string());
 
   if (filename.extension() != ".wad") {
     // single lump file
