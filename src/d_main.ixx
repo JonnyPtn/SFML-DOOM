@@ -457,9 +457,6 @@ export void D_StartTitle(void) {
   D_AdvanceDemo();
 }
 
-//      print title for every printed line
-char title[128];
-
 //
 // IdentifyVersion
 // Checks availability of IWAD files by name,
@@ -623,32 +620,16 @@ export void D_DoomMain(void) {
 
   switch (gamemode) {
   case retail:
-    snprintf(title, 128,
-             "                         "
-             "The Ultimate DOOM Startup v%i.%i"
-             "                           ",
-             VERSION / 100, VERSION % 100);
+    spdlog::info("The Ultimate DOOM Startup v{}.{}", VERSION / 100, VERSION % 100);
     break;
   case shareware:
-    snprintf(title, 128,
-             "                            "
-             "DOOM Shareware Startup v%i.%i"
-             "                           ",
-             VERSION / 100, VERSION % 100);
+    spdlog::info("DOOM Shareware Startup v{}.{}", VERSION / 100, VERSION % 100);
     break;
   case registered:
-    snprintf(title, 128,
-             "                            "
-             "DOOM Registered Startup v%i.%i"
-             "                           ",
-             VERSION / 100, VERSION % 100);
+    spdlog::info("DOOM Registered Startup v{}.{}", VERSION / 100, VERSION % 100);
     break;
   case commercial:
-    snprintf(title, 128,
-             "                         "
-             "DOOM 2: Hell on Earth v%i.%i"
-             "                           ",
-             VERSION / 100, VERSION % 100);
+    spdlog::info("DOOM 2: Hell on Earth v{}.{}", VERSION / 100, VERSION % 100);
     break;
     /*FIXME
            case pack_plut:
@@ -667,15 +648,9 @@ export void D_DoomMain(void) {
             break;
     */
   default:
-    snprintf(title, 128,
-             "                     "
-             "Public DOOM - v%i.%i"
-             "                           ",
-             VERSION / 100, VERSION % 100);
+    spdlog::info("Public DOOM v{}.{}", VERSION / 100, VERSION % 100);
     break;
   }
-
-  printf("%s\n", title);
 
   if (devparm)
     printf(D_DEVSTR);
