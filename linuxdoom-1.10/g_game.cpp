@@ -30,7 +30,6 @@
 #include "f_finale.h"
 #include "m_argv.h"
 #include "m_menu.h"
-#include "m_misc.h"
 #include "m_random.h"
 #include "z_zone.h"
 
@@ -40,6 +39,7 @@
 
 import d_main;
 import i_system;
+import m_misc;
 
 #include "am_map.h"
 #include "hu_stuff.h"
@@ -156,15 +156,6 @@ int key_fire;
 int key_use;
 int key_strafe;
 int key_speed;
-
-int mousebfire;
-int mousebstrafe;
-int mousebforward;
-
-int joybfire;
-int joybstrafe;
-int joybuse;
-int joybspeed;
 
 #define MAXPLMOVE (forwardmove[1])
 

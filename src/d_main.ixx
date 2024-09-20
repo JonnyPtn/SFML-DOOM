@@ -34,7 +34,6 @@ module;
 
 #include "m_argv.h"
 #include "m_menu.h"
-#include "m_misc.h"
 
 #include "i_sound.h"
 #include "i_video.h"
@@ -57,7 +56,8 @@ module;
 
 export module d_main;
 
-import i_system;
+export import i_system;
+export import m_misc;
 
 std::vector<std::string> wadfilenames;
 
@@ -160,7 +160,6 @@ void D_PageDrawer(void) {
 // wipegamestate can be set to -1 to force a wipe on the next draw
 export gamestate_t wipegamestate = GS_DEMOSCREEN;
 bool setsizeneeded;
-extern int showMessages;
 
 void D_Display(void) {
   static boolean viewactivestate = false;

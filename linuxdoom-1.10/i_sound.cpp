@@ -38,7 +38,6 @@
 
 #include "i_sound.h"
 #include "m_argv.h"
-#include "m_misc.h"
 #include "w_wad.h"
 
 #include "doomdef.h"
@@ -46,6 +45,7 @@
 #include <string>
 
 import i_system;
+import m_misc;
 
 // UNIX hack, to be removed.
 #ifdef SNDSERV

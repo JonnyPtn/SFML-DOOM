@@ -34,6 +34,8 @@
 #include "r_local.h"
 #include "r_sky.h"
 
+import m_misc;
+
 // Fineangles in the SCREENWIDTH wide window.
 #define FIELDOFVIEW 2048
 
@@ -636,9 +638,6 @@ void R_ExecuteSetViewSize(void) {
 //
 // R_Init
 //
-extern int detailLevel;
-extern int screenblocks;
-
 void R_Init(void) {
   R_InitData();
   printf("\nR_InitData");

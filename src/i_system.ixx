@@ -30,7 +30,6 @@ module;
 #include "doomdef.h"
 #include "i_sound.h"
 #include "i_video.h"
-#include "m_misc.h"
 
 #include "d_net.h"
 #include "g_game.h"
@@ -47,6 +46,8 @@ module;
 #endif
 
 export module i_system;
+
+import m_misc;
 
 int mb_used = 6;
 

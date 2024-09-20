@@ -1,4 +1,3 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -23,6 +22,7 @@
 //	PCX Screenshots.
 //
 //-----------------------------------------------------------------------------
+module;
 
 #include <fcntl.h>
 #include <stdlib.h>
@@ -50,18 +50,14 @@
 
 // Data.
 #include "dstrings.h"
-
-#include "m_misc.h"
-
-import d_main;
-import i_system;
+export module m_misc;
 
 //
 // M_DrawText
 // Returns the final X coordinate
 // HU_Init must have been called to init the font
 //
-extern patch_t *hu_font[HU_FONTSIZE];
+patch_t *hu_font[HU_FONTSIZE];
 
 int M_DrawText(int x, int y, boolean direct, char *string) {
   int c;
@@ -107,29 +103,30 @@ extern int key_use;
 extern int key_strafe;
 extern int key_speed;
 
-extern int mousebfire;
-extern int mousebstrafe;
-extern int mousebforward;
+export int mousebfire;
+export int mousebstrafe;
+export int mousebforward;
 
-extern int joybfire;
-extern int joybstrafe;
-extern int joybuse;
-extern int joybspeed;
+export int joybfire;
+export int joybstrafe;
+export int joybuse;
+export int joybspeed;
 
-extern int viewwidth;
-extern int viewheight;
+export int viewwidth;
+export int viewheight;
 
-extern int mouseSensitivity;
-extern int showMessages;
+export int mouseSensitivity;
 
-extern int detailLevel;
+// Show messages has default, 0 = off, 1 = on
+export int showMessages;
 
-extern int screenblocks;
+// Blocky mode, has default, 0 = high, 1 = normal
+export int detailLevel;
 
-extern int showMessages;
+export int screenblocks;
 
 // machine-independent sound params
-extern int numChannels;
+export int numChannels;
 
 // UNIX hack, to be removed.
 #ifdef SNDSERV
@@ -231,7 +228,7 @@ const char *defaultfile;
 //
 // M_SaveDefaults
 //
-void M_SaveDefaults(void) {
+export void M_SaveDefaults(void) {
   int i;
   int v;
   FILE *f;
@@ -258,7 +255,7 @@ void M_SaveDefaults(void) {
 //
 extern byte scantokey[128];
 
-void M_LoadDefaults(void) {
+export void M_LoadDefaults(void) {
   int i;
   FILE *f;
   char def[80];
@@ -277,8 +274,10 @@ void M_LoadDefaults(void) {
   if (i && i < myargc - 1) {
     defaultfile = myargv[i + 1].c_str();
     printf("	default file: %s\n", defaultfile);
-  } else
-    defaultfile = basedefault;
+  } else {
+    // @TODO JONNY Circular module dependency here
+    //defaultfile = basedefault;
+  }
 
   // read the file in, overriding any set defaults
   f = fopen(defaultfile, "r");
@@ -396,6 +395,6 @@ void WritePCXfile(char *filename, byte *data, int width, int height,
 //
 // M_ScreenShot
 //
-void M_ScreenShot(void) {
+export void M_ScreenShot(void) {
   // JONNY TODO
 }

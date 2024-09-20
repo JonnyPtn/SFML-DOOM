@@ -39,6 +39,7 @@
 #include <stdlib.h>
 
 import i_system;
+import m_misc;
 
 // ?
 #define MAXWIDTH 1120
@@ -57,9 +58,7 @@ import i_system;
 //
 
 byte *viewimage;
-int viewwidth;
 int scaledviewwidth;
-int viewheight;
 int viewwindowx;
 int viewwindowy;
 byte *ylookup[MAXHEIGHT];

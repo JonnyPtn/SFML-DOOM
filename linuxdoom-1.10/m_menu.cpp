@@ -64,18 +64,6 @@ extern boolean message_dontfuckwithme;
 
 extern boolean chat_on; // in heads-up code
 
-//
-// defaulted values
-//
-int mouseSensitivity; // has default
-
-// Show messages has default, 0 = off, 1 = on
-int showMessages;
-
-// Blocky mode, has default, 0 = high, 1 = normal
-int detailLevel;
-int screenblocks; // has default
-
 // temp for screenblocks (0-9)
 int screenSize;
 

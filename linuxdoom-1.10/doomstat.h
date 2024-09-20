@@ -110,8 +110,6 @@ extern boolean noblit;
 
 extern int viewwindowx;
 extern int viewwindowy;
-extern int viewheight;
-extern int viewwidth;
 extern int scaledviewwidth;
 
 // This one is related to the 3-screen display mode.
@@ -185,8 +183,6 @@ extern int maxammo[NUMAMMO];
 
 // if true, load all graphics at level load
 extern boolean precache;
-
-extern int mouseSensitivity;
 
 extern int bodyqueslot;
 
