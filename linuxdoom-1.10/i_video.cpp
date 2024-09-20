@@ -182,7 +182,7 @@ void I_FinishUpdate(void) {
   }
 
   texture.update(colouredPixels);
-  sprite.setTexture(texture);
+  sprite.setTexture(texture, true);
 
   mainWindow.clear();
   mainWindow.draw(sprite);
