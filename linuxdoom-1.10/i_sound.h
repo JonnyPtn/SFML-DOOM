@@ -36,6 +36,14 @@ extern const char *sndserver_filename;
 #include "doomstat.h"
 #include "sounds.h"
 
+// These are not used, but should be (menu).
+// Maximum volume of a sound effect.
+// Internal default is max out of 0-15.
+static int snd_SfxVolume = 8;
+
+// Maximum volume of music. Useless so far.
+static int snd_MusicVolume = 15;
+
 // Init at program start...
 void I_InitSound();
 

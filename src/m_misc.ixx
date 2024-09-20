@@ -50,6 +50,11 @@ module;
 
 // Data.
 #include "dstrings.h"
+
+#include <spdlog/spdlog.h>
+
+#include <fstream>
+#include <map>
 export module m_misc;
 
 //
@@ -87,52 +92,24 @@ int M_DrawText(int x, int y, boolean direct, char *string) {
 //
 // DEFAULTS
 //
-int usemouse;
-int usejoystick;
-
-extern int key_right;
-extern int key_left;
-extern int key_up;
-extern int key_down;
-
-extern int key_strafeleft;
-extern int key_straferight;
-
-extern int key_fire;
-extern int key_use;
-extern int key_strafe;
-extern int key_speed;
-
-export int mousebfire;
-export int mousebstrafe;
-export int mousebforward;
-
-export int joybfire;
-export int joybstrafe;
-export int joybuse;
-export int joybspeed;
+int usemouse = 1;
+int usejoystick = 0;
 
 export int viewwidth;
 export int viewheight;
 
-export int mouseSensitivity;
+export int mouseSensitivity = 5;
 
 // Show messages has default, 0 = off, 1 = on
-export int showMessages;
+export int showMessages = 1;
 
 // Blocky mode, has default, 0 = high, 1 = normal
-export int detailLevel;
+export int detailLevel = 0;
 
-export int screenblocks;
+export int screenblocks = 9;
 
 // machine-independent sound params
-export int numChannels;
-
-// UNIX hack, to be removed.
-#ifdef SNDSERV
-extern const char *sndserver_filename;
-extern int mb_used;
-#endif
+export int numChannels = 3;
 
 #ifdef LINUX
 char *mousetype;
@@ -141,63 +118,38 @@ char *mousedev;
 
 extern char *chat_macros[];
 
-typedef struct {
-  const char *name;
-  int *location;
-  int defaultvalue;
-  int scantranslate; // PC scan code hack
-  int untranslated;  // lousy hack
-} default_t;
+std::map<std::string,int&> defaults = {
+    {"mouse_sensitivity", mouseSensitivity},
+    //{"sfx_volume", &snd_SfxVolume},
+    //{"music_volume", &snd_MusicVolume},
+    {"show_messages", showMessages},
+    //{"key_right", &key_right},
+    //{"key_left", &key_left},
+    //{"key_up", &key_up},
+    //{"key_down", &key_down},
+    //{"key_strafeleft", &key_strafeleft},
+    //{"key_straferight", &key_straferight},
+    //{"key_fire", &key_fire},
+    //{"key_use", &key_use},
+    //{"key_strafe", &key_strafe},
+    //{"key_speed", &key_speed},
+    {"use_mouse", usemouse},
+    //{"mouseb_fire", &mousebfire, 0},
+    //{"mouseb_strafe", &mousebstrafe, 1},
+    //{"mouseb_forward", &mousebforward, 2},
 
-default_t defaults[] = {
-    {"mouse_sensitivity", &mouseSensitivity, 5},
-    {"sfx_volume", &snd_SfxVolume, 8},
-    {"music_volume", &snd_MusicVolume, 8},
-    {"show_messages", &showMessages, 1},
+    //{"use_joystick", &usejoystick, 0},
+    //{"joyb_fire", &joybfire, 0},
+    //{"joyb_strafe", &joybstrafe, 1},
+    //{"joyb_use", &joybuse, 3},
+    //{"joyb_speed", &joybspeed, 2},
 
-#ifdef NORMALUNIX
-    {"key_right", &key_right, KEY_RIGHTARROW},
-    {"key_left", &key_left, KEY_LEFTARROW},
-    {"key_up", &key_up, KEY_UPARROW},
-    {"key_down", &key_down, KEY_DOWNARROW},
-    {"key_strafeleft", &key_strafeleft, ','},
-    {"key_straferight", &key_straferight, '.'},
+    {"screenblocks", screenblocks},
+    {"detaillevel", detailLevel},
 
-    {"key_fire", &key_fire, KEY_RCTRL},
-    {"key_use", &key_use, ' '},
-    {"key_strafe", &key_strafe, KEY_RALT},
-    {"key_speed", &key_speed, KEY_RSHIFT},
+    {"snd_channels", numChannels},
 
-// UNIX hack, to be removed.
-#ifdef SNDSERV
-    {"sndserver", (int *)&sndserver_filename, (int)"sndserver"},
-    {"mb_used", &mb_used, 2},
-#endif
-
-#endif
-
-#ifdef LINUX
-    {"mousedev", (int *)&mousedev, (int)"/dev/ttyS0"},
-    {"mousetype", (int *)&mousetype, (int)"microsoft"},
-#endif
-
-    {"use_mouse", &usemouse, 1},
-    {"mouseb_fire", &mousebfire, 0},
-    {"mouseb_strafe", &mousebstrafe, 1},
-    {"mouseb_forward", &mousebforward, 2},
-
-    {"use_joystick", &usejoystick, 0},
-    {"joyb_fire", &joybfire, 0},
-    {"joyb_strafe", &joybstrafe, 1},
-    {"joyb_use", &joybuse, 3},
-    {"joyb_speed", &joybspeed, 2},
-
-    {"screenblocks", &screenblocks, 9},
-    {"detaillevel", &detailLevel, 0},
-
-    {"snd_channels", &numChannels, 3},
-
-    {"usegamma", &usegamma, 0},
+    {"usegamma", usegamma},
     /*
     {"chatmacro0", (int *) &chat_macros[0],
     reinterpret_cast<intptr_t>(HUSTR_CHATMACRO0) },
@@ -222,32 +174,24 @@ default_t defaults[] = {
 
 };
 
-int numdefaults;
-const char *defaultfile;
+// Defaults are stored in a file with this name
+constexpr auto defaults_file_name = ".doomrc";
+
+// Path can be set via command line, or found in the home directory
+std::filesystem::path defaults_file_path;
 
 //
 // M_SaveDefaults
 //
 export void M_SaveDefaults(void) {
-  int i;
-  int v;
-  FILE *f;
-
-  f = fopen(defaultfile, "w");
-  if (!f)
-    return; // can't write the file, but don't complain
-
-  for (i = 0; i < numdefaults; i++) {
-    if (defaults[i].defaultvalue > -0xfff && defaults[i].defaultvalue < 0xfff) {
-      v = *defaults[i].location;
-      fprintf(f, "%s\t\t%i\n", defaults[i].name, v);
-    } else {
-      fprintf(f, "%s\t\t\"%s\"\n", defaults[i].name,
-              *(char **)(defaults[i].location));
+  std::ofstream file(defaults_file_path);
+  if (file)
+  {
+    for (const auto& [key, value] : defaults)
+    {
+      file << key << " " << value << std::endl;
     }
   }
-
-  fclose(f);
 }
 
 //
@@ -256,59 +200,42 @@ export void M_SaveDefaults(void) {
 extern byte scantokey[128];
 
 export void M_LoadDefaults(void) {
-  int i;
-  FILE *f;
-  char def[80];
-  char strparm[100];
-  char *newstring;
-  int parm;
-  boolean isstring;
-
-  // set everything to base values
-  numdefaults = sizeof(defaults) / sizeof(defaults[0]);
-  for (i = 0; i < numdefaults; i++)
-    *defaults[i].location = defaults[i].defaultvalue;
 
   // check for a custom default file
-  i = M_CheckParm("-config");
-  if (i && i < myargc - 1) {
-    defaultfile = myargv[i + 1].c_str();
-    printf("	default file: %s\n", defaultfile);
-  } else {
-    // @TODO JONNY Circular module dependency here
-    //defaultfile = basedefault;
+  const auto config_index = M_CheckParm("-config");
+  if (config_index)
+  {
+    defaults_file_path = myargv[config_index + 1];
+    spdlog::info("Defaults config set on command line: {}", defaults_file_path.string());
+  }
+  else if (const auto home_var = getenv("HOME"); home_var)
+  {
+    const std::filesystem::path home_path = home_var;
+    defaults_file_path = home_path / defaults_file_name;
   }
 
-  // read the file in, overriding any set defaults
-  f = fopen(defaultfile, "r");
-  if (f) {
-    while (!feof(f)) {
-      isstring = false;
-      if (fscanf(f, "%79s %[^\n]\n", def, strparm) == 2) {
-        if (strparm[0] == '"') {
-          // get a string default
-          isstring = true;
-          const auto len = strlen(strparm);
-          newstring = (char *)malloc(len);
-          strparm[len - 1] = 0;
-          strcpy(newstring, strparm + 1);
-        } else if (strparm[0] == '0' && strparm[1] == 'x')
-          sscanf(strparm + 2, "%x", &parm);
-        else
-          sscanf(strparm, "%i", &parm);
-        for (i = 0; i < numdefaults; i++)
-          if (!strcmp(def, defaults[i].name)) {
-            if (!isstring)
-              *defaults[i].location = parm;
-            else
-              *defaults[i].location =
-                  static_cast<int>(reinterpret_cast<intptr_t>(newstring));
-            break;
-          }
+  if (std::filesystem::exists(defaults_file_path))
+  {
+    spdlog::info("Defaults config found at: {}", defaults_file_path.string());
+
+    if (std::ifstream config(defaults_file_path); config)
+    {
+      std::string key, value;
+      while(config >> key >> value)
+      {
+        spdlog::info("Read default from config: {} = {}", key, value);
+        assert(defaults.contains(key));
+        defaults.find(key)->second = std::stoi(value);
       }
     }
-
-    fclose(f);
+    else
+    {
+      spdlog::error("Failed to open config: {}", defaults_file_path.string());
+    }
+  }
+  else
+  {
+    spdlog::info("No default config file found");
   }
 }
 

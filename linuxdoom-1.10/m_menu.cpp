@@ -51,6 +51,7 @@
 
 // Data.
 #include "sounds.h"
+#include "i_sound.h"
 
 #include "m_menu.h"
 

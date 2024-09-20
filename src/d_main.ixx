@@ -104,7 +104,6 @@ export bool advancedemo;
 
 char wadfile[1024];            // primary wad file
 char mapdir[1024];             // directory of development maps
-export char basedefault[1024]; // default file
 
 //
 // EVENT HANDLING
@@ -493,19 +492,12 @@ void IdentifyVersion(void) {
   // French stuff.
   const auto doom2fwad = waddir + "/doom2f.wad";
 
-  // JONNY TODO
-  // home = getenv("HOME");
-  // if (!home)
-  //  I_Error("Please set $HOME to your home directory");
-  // snprintf(basedefault,1024, "%s/.doomrc", home);
-
   if (M_CheckParm("-shdev")) {
     gamemode = shareware;
     devparm = true;
     D_AddFile(DEVDATA "doom1.wad");
     D_AddFile(DEVMAPS "data_se/texture1.lmp");
     D_AddFile(DEVMAPS "data_se/pnames.lmp");
-    strcpy(basedefault, DEVDATA "default.cfg");
     return;
   }
 
@@ -516,7 +508,6 @@ void IdentifyVersion(void) {
     D_AddFile(DEVMAPS "data_se/texture1.lmp");
     D_AddFile(DEVMAPS "data_se/texture2.lmp");
     D_AddFile(DEVMAPS "data_se/pnames.lmp");
-    strcpy(basedefault, DEVDATA "default.cfg");
     return;
   }
 
@@ -533,7 +524,6 @@ void IdentifyVersion(void) {
 
     D_AddFile(DEVMAPS "cdata/texture1.lmp");
     D_AddFile(DEVMAPS "cdata/pnames.lmp");
-    strcpy(basedefault, DEVDATA "default.cfg");
     return;
   }
 
@@ -768,7 +758,6 @@ export void D_DoomMain(void) {
   }
 
   // init subsystems
-  printf("M_LoadDefaults: Load system defaults.\n");
   M_LoadDefaults(); // load before initing other systems
 
   printf("Z_Init: Init zone memory allocation daemon. \n");

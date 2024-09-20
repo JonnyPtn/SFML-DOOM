@@ -44,7 +44,7 @@ extern std::array<screen, 5> screens;
 extern int dirtybox[4];
 
 extern byte gammatable[5][256];
-extern int usegamma;
+static int usegamma = 0;
 
 void V_CopyRect(int srcx, int srcy, int srcscrn, int width, int height,
                 int destx, int desty, int destscrn);

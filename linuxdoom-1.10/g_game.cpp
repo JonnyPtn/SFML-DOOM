@@ -145,17 +145,25 @@ byte *savebuffer;
 //
 // controls (have defaults)
 //
-int key_right;
-int key_left;
+auto key_right = static_cast<int>(sf::Keyboard::Key::Right);
+auto key_left = static_cast<int>(sf::Keyboard::Key::Left);
+auto key_up = static_cast<int>(sf::Keyboard::Key::Up);
+auto key_down = static_cast<int>(sf::Keyboard::Key::Down);
+auto key_strafeleft = static_cast<int>(sf::Keyboard::Key::Comma);
+auto key_straferight = static_cast<int>(sf::Keyboard::Key::Period);
+auto key_fire = static_cast<int>(sf::Keyboard::Key::RControl);
+auto key_use = static_cast<int>(sf::Keyboard::Key::Space);
+auto key_strafe = static_cast<int>(sf::Keyboard::Key::RAlt);
+auto key_speed = static_cast<int>(sf::Keyboard::Key::RShift);
 
-int key_up;
-int key_down;
-int key_strafeleft;
-int key_straferight;
-int key_fire;
-int key_use;
-int key_strafe;
-int key_speed;
+auto mousebfire = static_cast<int>(sf::Mouse::Button::Left);
+auto mousebstrafe = static_cast<int>(sf::Mouse::Button::Right);
+auto mousebforward = static_cast<int>(sf::Mouse::Button::Middle);
+
+auto joybfire = 0;
+auto joybstrafe = 1;
+auto joybuse = 3;
+auto joybspeed = 2;
 
 #define MAXPLMOVE (forwardmove[1])
 

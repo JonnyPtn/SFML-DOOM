@@ -47,12 +47,7 @@
 import i_system;
 import m_misc;
 
-// UNIX hack, to be removed.
-#ifdef SNDSERV
-// Separate sound server process.
-FILE *sndserver = 0;
-const char *sndserver_filename = "./sndserver ";
-#elif SNDINTR
+#if SNDINTR
 
 // Update all 30 millisecs, approx. 30fps synchronized.
 // Linux resolution is allegedly 10 millisecs,
@@ -596,7 +591,7 @@ void I_ShutdownSound(void) {
 #endif
 
   // Cleaning up -releasing the DSP device.
-  close(audio_fd);
+  //close(audio_fd);
 #endif
 
   // Done.
@@ -637,22 +632,22 @@ void I_InitSound() {
     fprintf(stderr, "Could not open /dev/dsp\n");
 
   i = 11 | (2 << 16);
-  myioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &i);
-  myioctl(audio_fd, SNDCTL_DSP_RESET, 0);
+  //myioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &i);
+  //myioctl(audio_fd, SNDCTL_DSP_RESET, 0);
 
   i = SAMPLERATE;
 
-  myioctl(audio_fd, SNDCTL_DSP_SPEED, &i);
+  //myioctl(audio_fd, SNDCTL_DSP_SPEED, &i);
 
   i = 1;
-  myioctl(audio_fd, SNDCTL_DSP_STEREO, &i);
+  //myioctl(audio_fd, SNDCTL_DSP_STEREO, &i);
 
-  myioctl(audio_fd, SNDCTL_DSP_GETFMTS, &i);
+  //myioctl(audio_fd, SNDCTL_DSP_GETFMTS, &i);
 
-  if (i &= AFMT_S16_LE)
-    myioctl(audio_fd, SNDCTL_DSP_SETFMT, &i);
-  else
-    fprintf(stderr, "Could not play signed 16 data\n");
+  //if (i &= AFMT_S16_LE)
+    //myioctl(audio_fd, SNDCTL_DSP_SETFMT, &i);
+  //else
+    //fprintf(stderr, "Could not play signed 16 data\n");
 
   fprintf(stderr, " configured audio device\n");
 
@@ -663,7 +658,7 @@ void I_InitSound() {
     // Alias? Example is the chaingun sound linked to pistol.
     if (!S_sfx[i].link) {
       // Load data from WAD file.
-      S_sfx[i].data = getsfx(S_sfx[i].name, &lengths[i]);
+      //S_sfx[i].data = getsfx(S_sfx[i].name, &lengths[i]);
     } else {
       // Previously loaded already?
       S_sfx[i].data = S_sfx[i].link->data;
