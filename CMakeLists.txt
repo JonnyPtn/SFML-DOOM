@@ -38,3 +38,8 @@ endif()
 
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES XCODE_GENERATE_SCHEME YES XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
+# On apple devices symlink the wads folder into the bundle
+if(APPLE)
+    add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/wads $<TARGET_BUNDLE_DIR:${CMAKE_PROJECT_NAME}>/Contents/MacOS/wads)
+endif()

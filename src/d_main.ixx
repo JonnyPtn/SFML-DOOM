@@ -53,6 +53,8 @@ module;
 
 #include <spdlog/spdlog.h>
 
+#include <filesystem>
+
 export module d_main;
 
 import i_system;
@@ -466,11 +468,13 @@ char title[128];
 //
 void IdentifyVersion(void) {
   char *home;
-  std::string waddir = ".";
+  std::string waddir = "wads";
   auto doomwaddir = getenv("DOOMWADDIR");
   if (doomwaddir) {
     waddir = doomwaddir;
   }
+
+  spdlog::info("WAD directory: {}", (std::filesystem::current_path() / waddir).string());
 
   // Commercial.
   const auto doom2wad = waddir + "/doom2.wad";
