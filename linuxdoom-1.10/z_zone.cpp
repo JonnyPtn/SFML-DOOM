@@ -23,9 +23,13 @@
 
 #include "z_zone.h"
 #include "doomdef.h"
-#include "i_system.h"
+#include "doomtype.h"
+
+#include <spdlog/spdlog.h>
 
 #include <stdlib.h>
+
+import i_system;
 
 //
 // ZONE MEMORY ALLOCATION
@@ -130,9 +134,9 @@ void freeTags(int lowtag, int hightag) {
 void Z_DumpHeap(int lowtag, int hightag) {
   memblock_t *block;
 
-  printf("zone size: %i  location: %p\n", mainzone->size, mainzone);
+  spdlog::info("zone size: {}  location: {}\n", mainzone->size, fmt::ptr(mainzone));
 
-  printf("tag range: %i to %i\n", lowtag, hightag);
+  spdlog::info("tag range: {} to {}\n", lowtag, hightag);
 
   for (block = mainzone->blocklist.next;; block = block->next) {
     if (block->tag >= lowtag && block->tag <= hightag)

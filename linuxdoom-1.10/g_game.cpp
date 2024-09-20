@@ -28,7 +28,6 @@
 #include "doomstat.h"
 
 #include "f_finale.h"
-#include "i_system.h"
 #include "m_argv.h"
 #include "m_menu.h"
 #include "m_misc.h"
@@ -40,6 +39,7 @@
 #include "p_tick.h"
 
 import d_main;
+import i_system;
 
 #include "am_map.h"
 #include "hu_stuff.h"
@@ -621,7 +621,7 @@ void G_Ticker(void) {
 
       if (netgame && !netdemo && !(gametic % ticdup)) {
         if (gametic > BACKUPTICS && consistancy[i][buf] != cmd->consistancy) {
-          I_Error("consistency failure (%i should be %i)", cmd->consistancy,
+          I_Error("consistency failure ({} should be {})", cmd->consistancy,
                   consistancy[i][buf]);
         }
         if (players[i].mo)
@@ -811,7 +811,7 @@ void G_DeathMatchSpawnPlayer(int playernum) {
 
   const auto selections = deathmatch_p - deathmatchstarts;
   if (selections < 4)
-    I_Error("Only %i deathmatch spots, 4 required", selections);
+    I_Error("Only {} deathmatch spots, 4 required", selections);
 
   for (j = 0; j < 20; j++) {
     i = P_Random() % selections;
@@ -1453,7 +1453,7 @@ boolean G_CheckDemoStatus(void) {
 
   if (timingdemo) {
     endtime = I_GetTime();
-    I_Error("timed %i gametics in %i realtics", gametic, endtime - starttime);
+    I_Error("timed {} gametics in {} realtics", gametic, endtime - starttime);
   }
 
   if (demoplayback) {

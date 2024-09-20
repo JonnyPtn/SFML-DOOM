@@ -21,7 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "i_system.h"
 #include "p_local.h"
 #include "z_zone.h"
 
@@ -30,6 +29,8 @@
 #include "r_state.h"
 
 #include <stdlib.h>
+
+import i_system;
 
 byte *save_p;
 
@@ -274,7 +275,7 @@ void P_UnArchiveThinkers(void) {
       break;
 
     default:
-      I_Error("Unknown tclass %i in savegame", tclass);
+      I_Error("Unknown tclass {} in savegame", tclass);
     }
   }
 }
@@ -512,7 +513,7 @@ void P_UnArchiveSpecials(void) {
       break;
 
     default:
-      I_Error("P_UnarchiveSpecials:Unknown tclass %i "
+      I_Error("P_UnarchiveSpecials:Unknown tclass {} "
               "in savegame",
               tclass);
     }

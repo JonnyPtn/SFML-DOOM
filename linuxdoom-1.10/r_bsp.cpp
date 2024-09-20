@@ -25,8 +25,6 @@
 
 #include "m_bbox.h"
 
-#include "i_system.h"
-
 #include "r_main.h"
 #include "r_plane.h"
 #include "r_things.h"
@@ -34,6 +32,8 @@
 // State.
 #include "doomstat.h"
 #include "r_state.h"
+
+import i_system;
 
 // #include "r_local.h"
 
@@ -427,7 +427,7 @@ void R_Subsector(int num) {
 
 #ifdef RANGECHECK
   if (num >= numsubsectors)
-    I_Error("R_Subsector: ss %i with numss = %i", num, numsubsectors);
+    I_Error("R_Subsector: ss {} with numss = {}", num, numsubsectors);
 #endif
 
   sscount++;

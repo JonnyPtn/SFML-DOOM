@@ -28,7 +28,6 @@
 
 #include "doomstat.h"
 
-#include "i_system.h"
 #include "m_random.h"
 
 #include "am_map.h"
@@ -38,6 +37,8 @@
 #include "s_sound.h"
 
 #include "p_inter.h"
+
+import i_system;
 
 #define BONUSADD 6
 
@@ -64,7 +65,7 @@ boolean P_GiveAmmo(player_t *player, ammotype_t ammo, int num) {
     return false;
 
   if (ammo < 0 || ammo > NUMAMMO)
-    I_Error("P_GiveAmmo: bad type %i", ammo);
+    I_Error("P_GiveAmmo: bad type {}", static_cast<int>(ammo));
 
   if (player->ammo[ammo] == player->maxammo[ammo])
     return false;

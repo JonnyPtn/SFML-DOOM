@@ -37,7 +37,6 @@
 #include "z_zone.h"
 
 #include "i_sound.h"
-#include "i_system.h"
 #include "m_argv.h"
 #include "m_misc.h"
 #include "w_wad.h"
@@ -45,6 +44,8 @@
 #include "doomdef.h"
 
 #include <string>
+
+import i_system;
 
 // UNIX hack, to be removed.
 #ifdef SNDSERV

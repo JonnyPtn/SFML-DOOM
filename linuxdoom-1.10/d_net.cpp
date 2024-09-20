@@ -26,11 +26,11 @@
 #include "doomstat.h"
 #include "g_game.h"
 #include "i_net.h"
-#include "i_system.h"
 #include "i_video.h"
 #include "m_menu.h"
 
 import d_main;
+import i_system;
 
 #define NCMD_EXIT 0x80000000
 #define NCMD_RETRANSMIT 0x40000000
@@ -118,7 +118,7 @@ int ExpandTics(int low) {
   if (delta < -64)
     return (maketic & ~0xff) + 256 + low;
 
-  I_Error("ExpandTics: strange value %i at maketic %i", low, maketic);
+  I_Error("ExpandTics: strange value {} at maketic {}", low, maketic);
   return 0;
 }
 

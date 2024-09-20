@@ -30,7 +30,6 @@
 #include <signal.h>
 
 #include "doomstat.h"
-#include "i_system.h"
 #include "m_argv.h"
 #include "v_video.h"
 
@@ -40,6 +39,7 @@
 #include <SFML/Window.hpp>
 
 import d_main;
+import i_system;
 
 #define POINTER_WARP_COUNTDOWN 1
 
@@ -60,13 +60,6 @@ int doPointerWarp = POINTER_WARP_COUNTDOWN;
 // According to Dave Taylor, it still is a bonehead thing
 // to use ....
 static int multiply = 1;
-
-//
-// I_StartFrame
-//
-void I_StartFrame(void) {
-  // er?
-}
 
 boolean mousemoved = false;
 boolean shmFinished;

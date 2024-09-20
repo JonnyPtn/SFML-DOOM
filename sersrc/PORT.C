@@ -83,10 +83,10 @@ void GetUart (void)
 		sscanf (_argv[p+1],"0x%x",&uart);
 	p = CheckParm ("-irq");
 	if (p)
-		sscanf (_argv[p+1],"%i",&irq);
+		sscanf (_argv[p+1],"{}",&irq);
 
 
-	printf (STR_PORTLOOK" 0x%x, irq %i\n",uart,irq);
+	printf (STR_PORTLOOK" 0x%x, irq {}\n",uart,irq);
 }
 
 

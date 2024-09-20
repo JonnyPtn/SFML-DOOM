@@ -30,7 +30,6 @@
 #include "doomdef.h"
 #include "doomstat.h"
 
-#include "i_system.h"
 #include "m_argv.h"
 #include "m_random.h"
 #include "w_wad.h"
@@ -50,6 +49,8 @@
 #include "sounds.h"
 
 #include <array>
+
+import i_system;
 
 //
 // Animating textures and planes
@@ -950,7 +951,7 @@ void P_PlayerInSpecialSector(player_t *player) {
 
   default:
     I_Error("P_PlayerInSpecialSector: "
-            "unknown special %i",
+            "unknown special {}",
             sector->special);
     break;
   };

@@ -23,7 +23,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "i_system.h"
 #include "r_local.h"
 
 #include "doomdata.h"
@@ -33,6 +32,8 @@
 #include "m_swap.h"
 
 #include "v_video.h"
+
+import i_system;
 
 std::array<screen, 5> screens;
 

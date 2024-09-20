@@ -27,13 +27,14 @@
 #include "doomdef.h"
 #include "m_swap.h"
 
-#include "i_system.h"
 #include "w_wad.h"
 #include "z_zone.h"
 
 #include "r_local.h"
 
 #include "doomstat.h"
+
+import i_system;
 
 #define MINZ (FRACUNIT * 4)
 #define BASEYCENTER 100
@@ -86,7 +87,7 @@ spriteframe_t R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
   spriteframe_t sprframe{};
 
   if (rotation > 8) {
-    I_Error("R_InstallSpriteLump: Bad frame characters in lump %i", lump);
+    I_Error("R_InstallSpriteLump: Bad frame characters in lump {}", lump);
   } else if (rotation == 0) {
     sprframe.rotate = false;
 
@@ -390,12 +391,12 @@ void R_ProjectSprite(mobj_t *thing) {
   // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
   if ((unsigned)thing->sprite >= sprites.size())
-    I_Error("R_ProjectSprite: invalid sprite number %i ", thing->sprite);
+    I_Error("R_ProjectSprite: invalid sprite number {} ", static_cast<int>(thing->sprite));
 #endif
   sprdef = &sprites[thing->sprite];
 #ifdef RANGECHECK
   if ((thing->frame & FF_FRAMEMASK) >= sprdef->size())
-    I_Error("R_ProjectSprite: invalid sprite frame %i : %i ", thing->sprite,
+    I_Error("R_ProjectSprite: invalid sprite frame {} : {} ", static_cast<int>(thing->sprite),
             thing->frame);
 #endif
   sprframe = &(*sprdef)[thing->frame & FF_FRAMEMASK];
@@ -522,13 +523,13 @@ void R_DrawPSprite(pspdef_t *psp) {
   // decide which patch to use
 #ifdef RANGECHECK
   if ((unsigned)psp->state->sprite >= sprites.size())
-    I_Error("R_ProjectSprite: invalid sprite number %i ", psp->state->sprite);
+    I_Error("R_ProjectSprite: invalid sprite number {} ", static_cast<int>(psp->state->sprite));
 #endif
   sprdef = &sprites[psp->state->sprite];
 #ifdef RANGECHECK
   if ((psp->state->frame & FF_FRAMEMASK) >= sprdef->size())
-    I_Error("R_ProjectSprite: invalid sprite frame %i : %i ",
-            psp->state->sprite, psp->state->frame);
+    I_Error("R_ProjectSprite: invalid sprite frame {} : {} ",
+            static_cast<int>(psp->state->sprite), psp->state->frame);
 #endif
   sprframe = &(*sprdef)[psp->state->frame & FF_FRAMEMASK];
 

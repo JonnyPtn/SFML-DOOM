@@ -21,7 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "i_system.h"
 #include "m_random.h"
 #include "z_zone.h"
 
@@ -37,6 +36,7 @@
 #include "doomstat.h"
 
 import d_main;
+import i_system;
 
 void G_PlayerReborn(int player);
 
@@ -653,7 +653,7 @@ void P_SpawnMapThing(mapthing_t *mthing) {
       break;
 
   if (i == NUMMOBJTYPES)
-    I_Error("P_SpawnMapThing: Unknown type %i at (%i, %i)", mthing->type,
+    I_Error("P_SpawnMapThing: Unknown type {} at ({}, {})", mthing->type,
             mthing->x, mthing->y);
 
   // don't spawn keycards and players in deathmatch

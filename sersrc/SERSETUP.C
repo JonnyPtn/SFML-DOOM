@@ -331,7 +331,7 @@ void Connect (void)
 		if (time.ti_sec != oldsec)
 		{
 			oldsec = time.ti_sec;
-			sprintf (str,"ID%s_%i",idstr,localstage);
+			sprintf (str,"ID%s_{}",idstr,localstage);
 			WritePacket (str,strlen(str));
 			printf ("wrote: %s\n",str);
 		}

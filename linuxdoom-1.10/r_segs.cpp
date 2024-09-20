@@ -23,13 +23,13 @@
 
 #include <stdlib.h>
 
-#include "i_system.h"
-
 #include "doomdef.h"
 #include "doomstat.h"
 
 #include "r_local.h"
 #include "r_sky.h"
+
+import i_system;
 
 // OPTIMIZE: closed two sided lines as single sided
 
@@ -333,7 +333,7 @@ void R_StoreWallRange(int start, int stop) {
 
 #ifdef RANGECHECK
   if (start >= viewwidth || start > stop)
-    I_Error("Bad R_RenderWallRange: %i to %i", start, stop);
+    I_Error("Bad R_RenderWallRange: {} to {}", start, stop);
 #endif
 
   sidedef = curline->sidedef;

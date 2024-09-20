@@ -25,7 +25,6 @@
 
 #include <stdio.h>
 
-#include "i_system.h"
 #include "i_video.h"
 #include "m_random.h"
 #include "w_wad.h"

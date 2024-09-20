@@ -24,7 +24,6 @@
 #include <stdlib.h>
 
 #include "i_sound.h"
-#include "i_system.h"
 #include "s_sound.h"
 #include "sounds.h"
 
@@ -36,6 +35,8 @@
 #include "p_local.h"
 
 #include "doomstat.h"
+
+import i_system;
 
 #define S_MAX_VOLUME 127
 

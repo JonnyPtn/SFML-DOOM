@@ -23,9 +23,14 @@ FetchContent_Declare(
   GIT_REPOSITORY    https://github.com/sfml/sfml
   GIT_TAG           master
 )
-FetchContent_MakeAvailable(sfml)
+FetchContent_Declare(
+        spdlog
+        GIT_REPOSITORY https://github.com/gabime/spdlog
+        GIT_TAG v1.14.1
+)
+FetchContent_MakeAvailable(sfml spdlog)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics spdlog::spdlog)
 
 if (UNIX)
     target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Werror)

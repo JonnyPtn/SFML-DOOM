@@ -23,7 +23,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "i_system.h"
 #include "z_zone.h"
 
 #include "m_swap.h"
@@ -46,6 +45,8 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
+
+import i_system;
 
 //
 // Graphics.
@@ -293,7 +294,7 @@ void R_GenerateLookup(int texnum) {
       colofs[x] = texturecompositesize[texnum];
 
       if (texturecompositesize[texnum] > 0x10000 - texture.height) {
-        I_Error("R_GenerateLookup: texture %i is >64k", texnum);
+        I_Error("R_GenerateLookup: texture {} is >64k", texnum);
       }
 
       texturecompositesize[texnum] += texture.height;

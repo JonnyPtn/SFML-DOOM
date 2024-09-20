@@ -40,7 +40,6 @@
 
 #include "w_wad.h"
 
-#include "i_system.h"
 #include "i_video.h"
 #include "v_video.h"
 
@@ -55,6 +54,7 @@
 #include "m_misc.h"
 
 import d_main;
+import i_system;
 
 //
 // M_DrawText

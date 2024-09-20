@@ -24,7 +24,6 @@
 
 #include <stdlib.h>
 
-#include "i_system.h"
 #include "m_bbox.h"
 #include "m_random.h"
 
@@ -38,6 +37,7 @@
 #include "r_state.h"
 // Data.
 #include "sounds.h"
+import i_system;
 
 fixed_t tmbbox[4];
 mobj_t *tmthing;

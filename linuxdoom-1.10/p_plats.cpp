@@ -21,7 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "i_system.h"
 #include "m_random.h"
 #include "z_zone.h"
 
@@ -38,6 +37,8 @@
 #include "sounds.h"
 
 #include <stdlib.h>
+
+import i_system;
 
 plat_t *activeplats[MAXPLATS];
 

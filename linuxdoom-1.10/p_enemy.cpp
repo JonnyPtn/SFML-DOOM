@@ -25,7 +25,6 @@
 
 #include <stdlib.h>
 
-#include "i_system.h"
 #include "m_random.h"
 
 #include "doomdef.h"
@@ -43,6 +42,7 @@
 #include "sounds.h"
 
 import d_main;
+import i_system;
 
 typedef enum {
   DI_EAST,

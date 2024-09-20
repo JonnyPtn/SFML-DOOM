@@ -28,8 +28,6 @@
 #include "st_stuff.h"
 #include "w_wad.h"
 #include "z_zone.h"
-
-#include "i_system.h"
 #include "m_cheat.h"
 
 // Needs access to LFB.

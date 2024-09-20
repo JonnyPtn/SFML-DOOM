@@ -27,11 +27,12 @@
 
 #include "d_event.h"
 #include "d_net.h"
-#include "i_system.h"
 #include "m_argv.h"
 
 #include "doomstat.h"
 #include "i_net.h"
+
+import i_system;
 
 // For some odd reason...
 #ifndef ntohl
@@ -82,7 +83,7 @@ int UDPsocket(void) {
   // allocate a socket
   //    s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
   //    if (s<0)
-  I_Error("can't create socket: %s", strerror(errno));
+  I_Error("can't create socket: {}", strerror(errno));
 
   return s;
 }
@@ -125,7 +126,7 @@ void PacketSend(void) {
     sw.cmds[c].buttons = netbuffer->cmds[c].buttons;
   }
 
-  // printf ("sending %i\n",gametic);
+  // printf ("sending {}\n",gametic);
   //  JONNY TODO
   // c = sendto (sendsocket , &sw, doomcom->datalength
   //	,0,(void *)&sendaddress[doomcom->remotenode]
@@ -243,7 +244,7 @@ void I_InitNetwork(void) {
   p = M_CheckParm("-port");
   if (p && p < myargc - 1) {
     //	DOOMPORT = atoi (myargv[p+1].c_str());
-    //	printf ("using alternate port %i\n",DOOMPORT);
+    //	printf ("using alternate port {}\n",DOOMPORT);
   }
 
   // parse network game options,
@@ -302,5 +303,5 @@ void I_NetCmd(void) {
   } else if (doomcom->command == CMD_GET) {
     netget();
   } else
-    I_Error("Bad net cmd: %i\n", doomcom->command);
+    I_Error("Bad net cmd: {}\n", doomcom->command);
 }

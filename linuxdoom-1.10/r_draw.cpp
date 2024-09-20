@@ -25,7 +25,6 @@
 
 #include "doomdef.h"
 
-#include "i_system.h"
 #include "w_wad.h"
 #include "z_zone.h"
 
@@ -38,6 +37,8 @@
 #include "doomstat.h"
 
 #include <stdlib.h>
+
+import i_system;
 
 // ?
 #define MAXWIDTH 1120
@@ -108,7 +109,7 @@ void R_DrawColumn(void) {
 
 #ifdef RANGECHECK
   if ((unsigned)dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT)
-    I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
+    I_Error("R_DrawColumn: {} to {} at {}", dc_yl, dc_yh, dc_x);
 #endif
 
   // Framebuffer destination address.
@@ -209,7 +210,7 @@ void R_DrawColumnLow(void) {
 #ifdef RANGECHECK
   if ((unsigned)dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT) {
 
-    I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
+    I_Error("R_DrawColumn: {} to {} at {}", dc_yl, dc_yh, dc_x);
   }
   //	dccount++;
 #endif
@@ -278,7 +279,7 @@ void R_DrawFuzzColumn(void) {
 
 #ifdef RANGECHECK
   if ((unsigned)dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT) {
-    I_Error("R_DrawFuzzColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
+    I_Error("R_DrawFuzzColumn: {} to {} at {}", dc_yl, dc_yh, dc_x);
   }
 #endif
 
@@ -357,7 +358,7 @@ void R_DrawTranslatedColumn(void) {
 
 #ifdef RANGECHECK
   if ((unsigned)dc_x >= SCREENWIDTH || dc_yl < 0 || dc_yh >= SCREENHEIGHT) {
-    I_Error("R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
+    I_Error("R_DrawColumn: {} to {} at {}", dc_yl, dc_yh, dc_x);
   }
 
 #endif
@@ -471,7 +472,7 @@ void R_DrawSpan(void) {
 #ifdef RANGECHECK
   if (ds_x2 < ds_x1 || ds_x1 < 0 || ds_x2 >= SCREENWIDTH ||
       (unsigned)ds_y > SCREENHEIGHT) {
-    I_Error("R_DrawSpan: %i to %i at %i", ds_x1, ds_x2, ds_y);
+    I_Error("R_DrawSpan: {} to {} at {}", ds_x1, ds_x2, ds_y);
   }
 //	dscount++;
 #endif
@@ -584,7 +585,7 @@ void R_DrawSpanLow(void) {
 #ifdef RANGECHECK
   if (ds_x2 < ds_x1 || ds_x1 < 0 || ds_x2 >= SCREENWIDTH ||
       (unsigned)ds_y > SCREENHEIGHT) {
-    I_Error("R_DrawSpan: %i to %i at %i", ds_x1, ds_x2, ds_y);
+    I_Error("R_DrawSpan: {} to {} at {}", ds_x1, ds_x2, ds_y);
   }
 //	dscount++;
 #endif

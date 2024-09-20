@@ -25,7 +25,6 @@
 
 #include <stdlib.h>
 
-#include "i_system.h"
 #include "w_wad.h"
 #include "z_zone.h"
 
@@ -34,6 +33,8 @@
 
 #include "r_local.h"
 #include "r_sky.h"
+
+import i_system;
 
 planefunction_t floorfunc;
 planefunction_t ceilingfunc;
@@ -114,7 +115,7 @@ void R_MapPlane(int y, int x1, int x2) {
 
 #ifdef RANGECHECK
   if (x2 < x1 || x1 < 0 || x2 >= viewwidth || (unsigned)y > viewheight) {
-    I_Error("R_MapPlane: %i, %i at %i", x1, x2, y);
+    I_Error("R_MapPlane: {}, {} at {}", x1, x2, y);
   }
 #endif
 
@@ -306,13 +307,13 @@ void R_DrawPlanes(void) {
 
 #ifdef RANGECHECK
   if (ds_p - drawsegs > MAXDRAWSEGS)
-    I_Error("R_DrawPlanes: drawsegs overflow (%i)", ds_p - drawsegs);
+    I_Error("R_DrawPlanes: drawsegs overflow ({})", ds_p - drawsegs);
 
   if (lastvisplane - visplanes > MAXVISPLANES)
-    I_Error("R_DrawPlanes: visplane overflow (%i)", lastvisplane - visplanes);
+    I_Error("R_DrawPlanes: visplane overflow ({})", lastvisplane - visplanes);
 
   if (lastopening - openings > MAXOPENINGS)
-    I_Error("R_DrawPlanes: opening overflow (%i)", lastopening - openings);
+    I_Error("R_DrawPlanes: opening overflow ({})", lastopening - openings);
 #endif
 
   for (pl = visplanes; pl < lastvisplane; pl++) {

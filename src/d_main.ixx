@@ -37,7 +37,6 @@ module;
 #include "m_misc.h"
 
 #include "i_sound.h"
-#include "i_system.h"
 #include "i_video.h"
 
 #include "g_game.h"
@@ -52,7 +51,11 @@ module;
 
 #include <SFML/Window/Event.hpp>
 
+#include <spdlog/spdlog.h>
+
 export module d_main;
+
+import i_system;
 
 std::vector<std::string> wadfilenames;
 
@@ -368,6 +371,13 @@ export void D_DoAdvanceDemo(void) {
 }
 
 //
+// I_StartFrame
+//
+void I_StartFrame(void) {
+  // er?
+}
+
+//
 //  D_DoomLoop
 //
 export bool demorecording;
@@ -676,7 +686,7 @@ export void D_DoomMain(void) {
       scale = 10;
     if (scale > 400)
       scale = 400;
-    printf("turbo scale: %i%%\n", scale);
+    spdlog::info("turbo scale: {}%%\n", scale);
     forwardmove[0] = forwardmove[0] * scale / 100;
     forwardmove[1] = forwardmove[1] * scale / 100;
     sidemove[0] = sidemove[0] * scale / 100;

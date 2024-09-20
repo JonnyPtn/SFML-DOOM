@@ -1,8 +1,4 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
-//
-// $Id:$
-//
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
 // This source is available for distribution and/or modification
@@ -14,11 +10,16 @@
 // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
 // for more details.
 //
-// $Log:$
-//
 // DESCRIPTION:
+//	System specific interface stuff.
 //
 //-----------------------------------------------------------------------------
+module;
+
+#include "d_event.h"
+#include "d_ticcmd.h"
+
+#include <string_view>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,29 +35,33 @@
 #include "d_net.h"
 #include "g_game.h"
 
-#include "i_system.h"
+#include <spdlog/spdlog.h>
 
+#include <source_location>
+
+// For debug break on error
 #if WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
+#include <windows.h>
+#else
+#include <signal.h>
 #endif
 
-import d_main;
+export module i_system;
 
 int mb_used = 6;
 
-void I_Tactile(int on, int off, int total) {
+export void I_Tactile(int on, int off, int total) {
   // UNUSED.
   on = off = total = 0;
 }
 
 ticcmd_t emptycmd;
 
-ticcmd_t *I_BaseTiccmd(void) { return &emptycmd; }
+export ticcmd_t *I_BaseTiccmd(void) { return &emptycmd; }
 
 int I_GetHeapSize(void) { return mb_used * 1024 * 1024; }
 
-byte *I_ZoneBase(int *size) {
+export byte *I_ZoneBase(int *size) {
   *size = mb_used * 1024 * 1024;
   return (byte *)malloc(*size);
 }
@@ -65,7 +70,7 @@ byte *I_ZoneBase(int *size) {
 // I_GetTime
 // returns time in 1/70th second tics
 //
-int I_GetTime(void) {
+export int I_GetTime(void) {
   using namespace std::chrono;
   using tic = duration<int, std::ratio<1, 70>>;
   const auto now = steady_clock::now();
@@ -77,7 +82,7 @@ int I_GetTime(void) {
 //
 // I_Init
 //
-void I_Init(void) {
+export void I_Init(void) {
   I_InitSound();
   //  I_InitGraphics();
 }
@@ -85,17 +90,13 @@ void I_Init(void) {
 //
 // I_Quit
 //
-void I_Quit(void) {
+export void I_Quit(void) {
   D_QuitNetGame();
   I_ShutdownSound();
   I_ShutdownMusic();
   M_SaveDefaults();
   exit(0);
 }
-
-void I_BeginRead(void) {}
-
-void I_EndRead(void) {}
 
 byte *I_AllocLow(int length) {
   byte *mem;
@@ -108,27 +109,21 @@ byte *I_AllocLow(int length) {
 //
 // I_Error
 //
-void I_Error(const char *error, ...) {
-  va_list argptr;
+export template <typename... Args>
+void I_Error(spdlog::format_string_t<Args...> fmt, Args &&...args) {
+    spdlog::error(fmt, std::forward<Args>(args)...);
+    // Shutdown. Here might be other errors.
+    // @TODO Jonny - this is in the d_main module so would be circular
+    // if (demorecording)
+    // G_CheckDemoStatus();
 
-  // Message first.
-  va_start(argptr, error);
-  fprintf(stderr, "Error: ");
-  vfprintf(stderr, error, argptr);
-  fprintf(stderr, "\n");
-  va_end(argptr);
-
-  fflush(stderr);
-
-  // Shutdown. Here might be other errors.
-  if (demorecording)
-    G_CheckDemoStatus();
-
-  D_QuitNetGame();
+    D_QuitNetGame();
 
 #if WIN32
-  DebugBreak();
+    DebugBreak();
+#else
+    raise(SIGTRAP);
 #endif
 
-  exit(-1);
-}
+    exit(-1);
+  }

@@ -28,8 +28,6 @@
 #include "m_random.h"
 #include "m_swap.h"
 
-#include "i_system.h"
-
 #include "w_wad.h"
 
 #include "g_game.h"

@@ -24,7 +24,6 @@
 #include <ctype.h>
 
 // Functions.
-#include "i_system.h"
 #include "m_swap.h"
 #include "s_sound.h"
 #include "v_video.h"
@@ -34,6 +33,7 @@
 // Data.
 #include "dstrings.h"
 #include "sounds.h"
+#include "d_event.h"
 
 #include "doomstat.h"
 #include "r_state.h"

@@ -30,13 +30,13 @@
 
 #include "m_swap.h"
 
-#include "i_system.h"
-
 #include "w_wad.h"
 
 #include "r_local.h"
 #include "st_lib.h"
 #include "st_stuff.h"
+
+import i_system;
 
 // in AM_map.c
 extern boolean automapactive;

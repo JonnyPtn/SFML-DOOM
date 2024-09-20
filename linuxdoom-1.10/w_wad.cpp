@@ -23,7 +23,6 @@
 
 #include "w_wad.h"
 #include "doomtype.h"
-#include "i_system.h"
 #include "m_swap.h"
 #include "z_zone.h"
 
@@ -33,6 +32,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
+
+import i_system;
 
 //
 // GLOBALS
@@ -285,7 +286,7 @@ int W_GetNumForName(const std::string &name) {
 //
 int W_LumpLength(int lump) {
   if (lump >= lumpinfo.size()) {
-    I_Error("W_LumpLength: %i out of bounds", lump);
+    I_Error("W_LumpLength: {} out of bounds", lump);
   }
 
   return lumpinfo[lump].size;
@@ -299,7 +300,7 @@ int W_LumpLength(int lump) {
 void W_ReadLump(int lump, void *dest) {
 
   if (lump >= lumpinfo.size()) {
-    I_Error("W_ReadLump: %i out of bounds", lump);
+    I_Error("W_ReadLump: {} out of bounds", lump);
   }
 
   const auto &l = lumpinfo[lump];
@@ -316,7 +317,7 @@ void W_ReadLump(int lump, void *dest) {
       file.read(reinterpret_cast<char *>(dest), l.size);
 
       if (!file) {
-        I_Error("W_ReadLump: only read %i of %i on lump %i", file.gcount(),
+        I_Error("W_ReadLump: only read {} of {} on lump {}", file.gcount(),
                 l.size, lump);
       }
     }
@@ -327,7 +328,7 @@ void W_ReadLump(int lump, void *dest) {
     file.read(reinterpret_cast<char *>(dest), l.size);
 
     if (!file) {
-      I_Error("W_ReadLump: only read %i of %i on lump %i", file.gcount(),
+      I_Error("W_ReadLump: only read {} of {} on lump {}", file.gcount(),
               l.size, lump);
     }
   }
@@ -338,18 +339,18 @@ void W_ReadLump(int lump, void *dest) {
 //
 void *W_CacheLumpNum(uint32_t lump, int tag) {
   if (lump >= lumpinfo.size()) {
-    I_Error("W_CacheLumpNum: %i out of bounds", lump);
+    I_Error("W_CacheLumpNum: {} out of bounds", lump);
   }
 
   if (!lumpcache[lump]) {
     // read the lump in
 
-    // printf ("cache miss on lump %i\n",lump);
+    // printf ("cache miss on lump {}\n",lump);
     const auto size = W_LumpLength(lump);
     lumpcache[lump] = static_cast<void *>(malloc(size));
     W_ReadLump(lump, lumpcache[lump]);
   } else {
-    // printf ("cache hit on lump %i\n",lump);
+    // printf ("cache hit on lump {}\n",lump);
   }
 
   return lumpcache[lump];

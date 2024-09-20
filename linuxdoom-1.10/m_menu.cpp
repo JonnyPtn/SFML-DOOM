@@ -31,7 +31,6 @@
 #include "doomdef.h"
 #include "dstrings.h"
 
-#include "i_system.h"
 #include "i_video.h"
 #include "v_video.h"
 #include "w_wad.h"
@@ -58,6 +57,7 @@
 #include <functional>
 
 import d_main;
+import i_system;
 
 extern patch_t *hu_font[HU_FONTSIZE];
 extern boolean message_dontfuckwithme;
