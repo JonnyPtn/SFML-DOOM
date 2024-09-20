@@ -760,7 +760,7 @@ export void D_DoomMain(void) {
   // init subsystems
   M_LoadDefaults(); // load before initing other systems
 
-  printf("Z_Init: Init zone memory allocation daemon. \n");
+  spdlog::info("Z_Init: Init zone memory allocation daemon.");
   Z_Init();
 
   printf("W_Init: Init WADfiles.\n");
