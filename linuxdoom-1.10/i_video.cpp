@@ -38,6 +38,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include <spdlog/spdlog.h>
+
 import d_main;
 import i_system;
 
@@ -45,7 +47,7 @@ import i_system;
 
 sf::RenderWindow mainWindow;
 sf::Texture texture;
-sf::Sprite sprite(texture);
+sf::RectangleShape sprite;
 uint32_t width;
 uint32_t height;
 
@@ -59,7 +61,7 @@ int doPointerWarp = POINTER_WARP_COUNTDOWN;
 // replace each 320x200 pixel with multiply*multiply pixels.
 // According to Dave Taylor, it still is a bonehead thing
 // to use ....
-static int multiply = 1;
+// static int multiply = 1;
 
 boolean mousemoved = false;
 boolean shmFinished;
@@ -182,7 +184,6 @@ void I_FinishUpdate(void) {
   }
 
   texture.update(colouredPixels);
-  sprite.setTexture(texture, true);
 
   mainWindow.clear();
   mainWindow.draw(sprite);
@@ -216,17 +217,8 @@ void I_InitGraphics(void) {
 
   signal(SIGINT, (void (*)(int))I_Quit);
 
-  if (M_CheckParm("-2"))
-    multiply = 2;
-
-  if (M_CheckParm("-3"))
-    multiply = 3;
-
-  if (M_CheckParm("-4"))
-    multiply = 4;
-
-  width = SCREENWIDTH * multiply;
-  height = SCREENHEIGHT * multiply;
+  width = SCREENWIDTH;
+  height = SCREENHEIGHT;
 
   // check for command-line display name
   if ((pnum = M_CheckParm("-disp"))) // suggest parentheses around assignment
@@ -256,15 +248,17 @@ void I_InitGraphics(void) {
 
   // open the window
   mainWindow.create(sf::VideoMode({width, height}), displayname,
-                    sf::Style::Titlebar);
+                    sf::State::Fullscreen);
   mainWindow.setFramerateLimit(TICRATE);
 
   mainWindow.setMouseCursorVisible(false);
   mainWindow.setMouseCursorGrabbed(grabMouse);
 
-  if (texture.resize({SCREENWIDTH, SCREENHEIGHT})) {
-    sprite.setScale({float(multiply), float(multiply)});
+  if (!texture.resize({SCREENWIDTH, SCREENHEIGHT })) {
+    spdlog::error("Failed to resize texture");
   }
+  sprite.setSize(sf::Vector2f{mainWindow.getSize()});
+  sprite.setTexture(&texture);
 }
 
 unsigned exptable[256];
