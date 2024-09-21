@@ -512,7 +512,7 @@ bool G_Responder(const sf::Event &ev) {
              mouse_press) {
     mousebuttons[static_cast<int>(mouse_press->button)] = true;
   } else if (auto mouse_release = ev.getIf<sf::Event::MouseButtonReleased>();
-             mouse_release) {
+             mouse_press) {
     mousebuttons[static_cast<int>(mouse_press->button)] = false;
   } else if (auto mouse_move = ev.getIf<sf::Event::MouseMoved>(); mouse_move) {
     mousex = mouse_move->position.x * (mouseSensitivity + 5) / 10;

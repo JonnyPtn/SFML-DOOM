@@ -46,6 +46,8 @@
 #include <string>
 #include <vector>
 
+#include <spdlog/spdlog.h>
+
 import i_system;
 
 //
@@ -591,12 +593,19 @@ int R_CheckTextureNumForName(const std::string &name) {
 //  aborts with error message.
 //
 int R_TextureNumForName(const std::string &name) {
-  int i;
-
-  i = R_CheckTextureNumForName(name);
+  auto i = R_CheckTextureNumForName(name);
 
   if (i == -1) {
-    I_Error("R_TextureNumForName: %s not found", name.c_str());
+    constexpr auto max_name_length = 8;
+    if(name.length() > max_name_length)
+    {
+      const auto truncated_name = name.substr(0,8);
+      spdlog::info("{} longer than {} characters truncated to {}", name, max_name_length, truncated_name);
+      i = R_CheckTextureNumForName(truncated_name);
+    }
+    if (i == -1) {
+      I_Error("{} texture not found", name);
+    }
   }
   return i;
 }
