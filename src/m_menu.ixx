@@ -21,6 +21,7 @@
 //	Sliders and icons. Kinda widget stuff.
 //
 //-----------------------------------------------------------------------------
+module;
 
 #include <ctype.h>
 #include <fcntl.h>
@@ -53,18 +54,16 @@
 #include "sounds.h"
 #include "i_sound.h"
 
-#include "m_menu.h"
-
 #include <functional>
 
-import d_main;
+export module m_menu;
+
 import i_system;
 import m_misc;
 
-extern patch_t *hu_font[HU_FONTSIZE];
-extern boolean message_dontfuckwithme;
+export bool message_dontfuckwithme;
 
-extern boolean chat_on; // in heads-up code
+export bool chat_on; // in heads-up code
 
 // temp for screenblocks (0-9)
 int screenSize;
@@ -98,8 +97,8 @@ int saveCharIndex; // which char we're editing
 // old save description before edit
 char saveOldString[SAVESTRINGSIZE];
 
-boolean inhelpscreens;
-boolean menuactive;
+bool inhelpscreens;
+export bool menuactive;
 
 #define SKULLXOFF -32
 #define LINEHEIGHT 16
@@ -232,8 +231,6 @@ void M_WriteText(int x, int y, const char *string);
 int M_StringWidth(char *string);
 
 int M_StringHeight(char *string);
-
-void M_StartControlPanel(void);
 
 void M_StartMessage(const char *string, std::function<void(int)> routine,
                     boolean input);
@@ -523,6 +520,16 @@ void M_QuickSaveResponse(int ch) {
   }
 }
 
+export void M_StartControlPanel(void) {
+  // intro might call this repeatedly
+  if (menuactive)
+    return;
+
+  menuactive = 1;
+  currentMenu = &MainDef;       // JDC
+  itemOn = currentMenu->lastOn; // JDC
+}
+
 void M_QuickSave(void) {
   if (!usergame) {
     S_StartSound(NULL, sfx_oof);
@@ -787,7 +794,8 @@ void M_EndGameResponse(int ch) {
 
   currentMenu->lastOn = itemOn;
   M_ClearMenus();
-  D_StartTitle();
+  // @todo JONNY Circular dependency here
+  //D_StartTitle();
 }
 
 void M_EndGame(int choice) {
@@ -1038,7 +1046,7 @@ void M_WriteText(int x, int y, const char *string) {
 //
 // M_Responder
 //
-boolean M_Responder(const sf::Event &ev) {
+export bool M_Responder(const sf::Event &ev) {
   sf::Keyboard::Key key{sf::Keyboard::Key::Unknown};
   // int             i;
   // static  int     joywait = 0;
@@ -1199,7 +1207,8 @@ boolean M_Responder(const sf::Event &ev) {
   //	return true;
   //    }
 
-  if (devparm && key == sf::Keyboard::Key::F1) {
+  // @todo JONNY devparm causes circular dependency
+  if (/*devparm &&*/ key == sf::Keyboard::Key::F1) {
     G_ScreenShot();
     return true;
   }
@@ -1393,24 +1402,11 @@ boolean M_Responder(const sf::Event &ev) {
 }
 
 //
-// M_StartControlPanel
-//
-void M_StartControlPanel(void) {
-  // intro might call this repeatedly
-  if (menuactive)
-    return;
-
-  menuactive = 1;
-  currentMenu = &MainDef;       // JDC
-  itemOn = currentMenu->lastOn; // JDC
-}
-
-//
 // M_Drawer
 // Called after the view has been rendered,
 // but before it has been blitted.
 //
-void M_Drawer(void) {
+export void M_Drawer(void) {
   static short x;
   static short y;
   short i;
@@ -1490,7 +1486,7 @@ void M_SetupNextMenu(menu_t *menudef) {
 //
 // M_Ticker
 //
-void M_Ticker(void) {
+export void M_Ticker(void) {
   if (--skullAnimCounter <= 0) {
     whichSkull ^= 1;
     skullAnimCounter = 8;
@@ -1500,7 +1496,7 @@ void M_Ticker(void) {
 //
 // M_Init
 //
-void M_Init(void) {
+export void M_Init(void) {
   currentMenu = &MainDef;
   menuactive = 0;
   itemOn = currentMenu->lastOn;

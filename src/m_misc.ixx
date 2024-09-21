@@ -57,12 +57,13 @@ module;
 #include <map>
 export module m_misc;
 
+export patch_t *hu_font[HU_FONTSIZE];
+
 //
 // M_DrawText
 // Returns the final X coordinate
 // HU_Init must have been called to init the font
 //
-patch_t *hu_font[HU_FONTSIZE];
 
 int M_DrawText(int x, int y, boolean direct, char *string) {
   int c;

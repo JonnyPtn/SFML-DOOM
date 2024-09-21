@@ -29,7 +29,6 @@
 
 #include "f_finale.h"
 #include "m_argv.h"
-#include "m_menu.h"
 #include "m_random.h"
 #include "z_zone.h"
 
@@ -40,6 +39,7 @@
 import d_main;
 import i_system;
 import m_misc;
+import m_menu;
 
 #include "am_map.h"
 #include "hu_stuff.h"

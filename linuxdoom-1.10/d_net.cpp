@@ -27,10 +27,10 @@
 #include "g_game.h"
 #include "i_net.h"
 #include "i_video.h"
-#include "m_menu.h"
 
 import d_main;
 import i_system;
+import m_menu;
 
 #define NCMD_EXIT 0x80000000
 #define NCMD_RETRANSMIT 0x40000000

@@ -28,6 +28,7 @@
 #include "doomstat.h"
 
 #include <stdlib.h>
+import m_menu;
 
 int leveltime;
 

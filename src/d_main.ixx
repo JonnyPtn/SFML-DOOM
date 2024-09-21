@@ -33,7 +33,6 @@ module;
 #include "f_wipe.h"
 
 #include "m_argv.h"
-#include "m_menu.h"
 
 #include "i_sound.h"
 #include "i_video.h"
@@ -58,6 +57,7 @@ export module d_main;
 
 import i_system;
 import m_misc;
+import m_menu;
 
 std::vector<std::string> wadfilenames;
 

@@ -43,6 +43,7 @@
 #include <string>
 
 import d_main;
+import m_misc;
 
 // ?
 // #include "doomstat.h"
@@ -241,8 +242,6 @@ void F_Ticker(void) {
 //
 
 #include "hu_stuff.h"
-
-extern patch_t *hu_font[HU_FONTSIZE];
 
 void F_TextWrite(void) {
   byte *src;
