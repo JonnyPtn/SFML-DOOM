@@ -43,7 +43,7 @@
 #include <string>
 
 import main;
-import m_misc;
+import misc;
 
 // ?
 // #include "doomstat.h"

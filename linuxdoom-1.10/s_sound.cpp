@@ -36,7 +36,7 @@
 
 #include "doomstat.h"
 
-import i_system;
+import system;
 
 #define S_MAX_VOLUME 127
 

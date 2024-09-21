@@ -42,7 +42,7 @@
 #include "sounds.h"
 
 import main;
-import i_system;
+import system;
 
 typedef enum {
   DI_EAST,

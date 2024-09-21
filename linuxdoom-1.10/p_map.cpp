@@ -37,7 +37,7 @@
 #include "r_state.h"
 // Data.
 #include "sounds.h"
-import i_system;
+import system;
 
 fixed_t tmbbox[4];
 mobj_t *tmthing;

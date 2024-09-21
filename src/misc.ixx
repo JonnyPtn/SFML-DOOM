@@ -55,7 +55,7 @@ module;
 
 #include <fstream>
 #include <map>
-export module m_misc;
+export module misc;
 
 export patch_t *hu_font[HU_FONTSIZE];
 

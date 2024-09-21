@@ -41,7 +41,7 @@
 #include <spdlog/spdlog.h>
 
 import main;
-import i_system;
+import system;
 
 #define POINTER_WARP_COUNTDOWN 1
 

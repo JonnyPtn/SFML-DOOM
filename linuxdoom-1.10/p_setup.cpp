@@ -39,7 +39,7 @@
 
 #include "doomstat.h"
 
-import i_system;
+import system;
 
 void P_SpawnMapThing(mapthing_t *mthing);
 

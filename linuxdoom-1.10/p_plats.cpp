@@ -38,7 +38,7 @@
 
 #include <stdlib.h>
 
-import i_system;
+import system;
 
 plat_t *activeplats[MAXPLATS];
 

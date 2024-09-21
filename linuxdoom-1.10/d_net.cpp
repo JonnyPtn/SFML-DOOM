@@ -29,8 +29,8 @@
 #include "i_video.h"
 
 import main;
-import i_system;
-import m_menu;
+import system;
+import menu;
 
 #define NCMD_EXIT 0x80000000
 #define NCMD_RETRANSMIT 0x40000000

@@ -45,9 +45,9 @@ module;
 #include <signal.h>
 #endif
 
-export module i_system;
+export module system;
 
-import m_misc;
+import misc;
 
 // lovely clang compiler crash if I try to use std::byte here
 using byte = unsigned char;
@@ -116,11 +116,6 @@ byte *I_AllocLow(int length) {
 export template <typename... Args>
 void I_Error(spdlog::format_string_t<Args...> fmt, Args &&...args) {
     spdlog::error(fmt, std::forward<Args>(args)...);
-    // Shutdown. Here might be other errors.
-    // @TODO Jonny - this is in the d_main module so would be circular
-    // if (demorecording)
-    // G_CheckDemoStatus();
-
     D_QuitNetGame();
 
 #if WIN32

@@ -26,7 +26,7 @@
 #include "doomtype.h"
 #include "m_fixed.h"
 
-import i_system;
+import system;
 
 // Fixme. __USE_C_FIXED__ or something.
 

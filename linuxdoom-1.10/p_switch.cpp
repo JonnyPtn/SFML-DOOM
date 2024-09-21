@@ -36,7 +36,7 @@
 #include "doomstat.h"
 #include "r_state.h"
 
-import i_system;
+import system;
 
 //
 // CHANGE THE TEXTURE OF A WALL SWITCH TO ITS OPPOSITE

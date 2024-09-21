@@ -36,7 +36,7 @@
 #include "st_lib.h"
 #include "st_stuff.h"
 
-import i_system;
+import system;
 
 // in AM_map.c
 extern bool automapactive;

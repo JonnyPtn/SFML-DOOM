@@ -34,8 +34,8 @@
 
 #include "doomstat.h"
 
-import i_system;
-import m_misc;
+import system;
+import misc;
 
 #define MINZ (FRACUNIT * 4)
 #define BASEYCENTER 100

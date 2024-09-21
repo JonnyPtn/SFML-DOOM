@@ -32,7 +32,7 @@
 
 #include <stdlib.h>
 
-import i_system;
+import system;
 
 std::byte *save_p;
 

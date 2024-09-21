@@ -28,7 +28,7 @@
 // State.
 #include "r_state.h"
 
-import i_system;
+import system;
 
 //
 // P_CheckSight

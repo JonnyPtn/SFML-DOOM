@@ -29,8 +29,8 @@
 #include "r_local.h"
 #include "r_sky.h"
 
-import i_system;
-import m_misc;
+import system;
+import misc;
 
 // OPTIMIZE: closed two sided lines as single sided
 

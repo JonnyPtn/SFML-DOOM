@@ -58,10 +58,10 @@ module;
 
 #include <cstddef>
 
-export module m_menu;
+export module menu;
 
-import i_system;
-import m_misc;
+import system;
+import misc;
 
 export bool message_dontfuckwithme;
 

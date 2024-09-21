@@ -33,7 +33,7 @@
 
 #include "v_video.h"
 
-import i_system;
+import system;
 
 std::array<screen, 5> screens;
 

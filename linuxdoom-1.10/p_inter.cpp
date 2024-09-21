@@ -38,7 +38,7 @@
 
 #include "p_inter.h"
 
-import i_system;
+import system;
 
 #define BONUSADD 6
 

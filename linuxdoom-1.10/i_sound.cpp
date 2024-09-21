@@ -44,8 +44,8 @@
 
 #include <string>
 
-import i_system;
-import m_misc;
+import system;
+import misc;
 
 #if SNDINTR
 

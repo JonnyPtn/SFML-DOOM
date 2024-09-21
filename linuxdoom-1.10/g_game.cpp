@@ -37,9 +37,9 @@
 #include "p_tick.h"
 
 import main;
-import i_system;
-import m_misc;
-import m_menu;
+import system;
+import misc;
+import menu;
 
 #include "am_map.h"
 #include "hu_stuff.h"

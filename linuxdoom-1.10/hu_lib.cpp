@@ -31,7 +31,7 @@
 #include "r_draw.h"
 #include "r_local.h"
 
-import m_misc;
+import misc;
 
 // bool : whether the screen is always erased
 #define noterased viewwindowx

@@ -40,7 +40,7 @@
 #include "dstrings.h"
 #include "sounds.h"
 
-import m_misc;
+import misc;
 
 //
 // Locally used constants, shortcuts.

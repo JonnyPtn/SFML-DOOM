@@ -58,9 +58,9 @@ module;
 
 export module main;
 
-import i_system;
-import m_misc;
-import m_menu;
+import system;
+import misc;
+import menu;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

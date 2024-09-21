@@ -36,7 +36,7 @@
 #include "doomstat.h"
 
 import main;
-import i_system;
+import system;
 
 void G_PlayerReborn(int player);
 

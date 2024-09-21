@@ -38,8 +38,8 @@
 
 #include <stdlib.h>
 
-import i_system;
-import m_misc;
+import system;
+import misc;
 
 // ?
 #define MAXWIDTH 1120

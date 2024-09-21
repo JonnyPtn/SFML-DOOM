@@ -29,7 +29,7 @@
 
 #include <stdlib.h>
 
-import i_system;
+import system;
 
 //
 // ZONE MEMORY ALLOCATION

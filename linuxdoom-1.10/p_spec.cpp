@@ -50,7 +50,7 @@
 
 #include <array>
 
-import i_system;
+import system;
 
 //
 // Animating textures and planes

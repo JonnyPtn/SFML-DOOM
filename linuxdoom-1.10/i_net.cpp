@@ -32,7 +32,7 @@
 #include "doomstat.h"
 #include "i_net.h"
 
-import i_system;
+import system;
 
 // For some odd reason...
 #ifndef ntohl
