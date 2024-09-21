@@ -823,8 +823,7 @@ export void D_DoomMain(void) {
     // Ouch.
     break;
   }
-
-  printf("M_Init: Init miscellaneous info.\n");
+  
   M_Init();
 
   printf("R_Init: Init DOOM refresh daemon - ");

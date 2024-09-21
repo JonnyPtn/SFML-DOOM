@@ -1,42 +1,49 @@
 cmake_minimum_required(VERSION 3.29)
 
+# Project name and main executable
 project(sfml-doom)
+add_executable(${CMAKE_PROJECT_NAME} MACOSX_BUNDLE)
 
-file(GLOB SOURCE CONFIGURE_DEPENDS linuxdoom-1.10/*.c linuxdoom-1.10/*.cpp linuxdoom-1.10/*.h)
-
-add_executable(${CMAKE_PROJECT_NAME} MACOSX_BUNDLE ${SOURCE})
+# We use c++23
 target_compile_features(${CMAKE_PROJECT_NAME} PRIVATE cxx_std_23)
 
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE linuxdoom-1.10)
+# Legacy cpp files
+file(GLOB SOURCE CONFIGURE_DEPENDS linuxdoom-1.10/*.c linuxdoom-1.10/*.cpp linuxdoom-1.10/*.h)
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${SOURCE})
 
-# c++ modules
+# c++ modules source
 file(GLOB MODULE_SOURCE CONFIGURE_DEPENDS src/*.ixx)
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE FILE_SET CXX_MODULES FILES ${MODULE_SOURCE})
 
-set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
+# Include directories
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE linuxdoom-1.10)
+
+# We want to treat compiler warnings as errors
+set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY COMPILE_WARNING_AS_ERROR YES)
+
+# Use fetch content to fetch dependencies if they are not found
 include(FetchContent)
 
-set(BUILD_SHARED_LIBS OFF)
-
+# SFML we take from master - can pin to an SFML 3 release when there is one
+# We use this for window, audio and graphics
 FetchContent_Declare(
   sfml
   GIT_REPOSITORY    https://github.com/sfml/sfml
   GIT_TAG           master
 )
+
+# spdlog we use for logging
 FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog
         GIT_TAG v1.14.1
 )
+
+# Make them available
 FetchContent_MakeAvailable(sfml spdlog)
 
+# Link them
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE sfml-graphics spdlog::spdlog)
-
-if (UNIX)
-    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Werror)
-endif()
-
-set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES XCODE_GENERATE_SCHEME YES XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 # On apple devices symlink the wads folder into the bundle
 if(APPLE)
