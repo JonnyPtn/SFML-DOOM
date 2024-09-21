@@ -63,7 +63,7 @@ Mon Dec 22 17:08:33 1997    <bk@gamers.org>
 	  do_nothing screen.
 
 	* doomdef.h&Cie.: Lesson of the day - do not
-	  replace a bunch of booleans with an enum and
+	  replace a bunch of bools with an enum and
 	  use the same identifiers. Point in case:
 	   "if ( commercial )" will not give an error,
 	  and will always be true as long as the enum
@@ -272,11 +272,11 @@ Sun Dec 21 12:38:08 1997    <bk@gamers.org>
 
 	* doomstat.h:
 	  Global variables for game mode and language.
-	  Removed old booleans.
+	  Removed old bools.
 
 	* doomdef.h: GameMode_t and Language_t enum added.
-          Boolean for language was kinda limiting to 2
-	  alternatives (french, english), and five boolean
+          bool for language was kinda limiting to 2
+	  alternatives (french, english), and five bool
 	  plus #define SPECIAL for game version is just ugly.
 	
 	* wi_stuff.h: SPECIAL switch compiles two

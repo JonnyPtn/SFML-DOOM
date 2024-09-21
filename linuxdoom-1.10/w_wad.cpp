@@ -386,7 +386,7 @@ void W_Profile(void) {
       ch = ' ';
       continue;
     } else {
-      block = (memblock_t *)((byte *)ptr - sizeof(memblock_t));
+      block = (memblock_t *)((std::byte *)ptr - sizeof(memblock_t));
       if (block->tag < PU_PURGELEVEL)
         ch = 'S';
       else

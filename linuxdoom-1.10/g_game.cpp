@@ -68,7 +68,7 @@ import m_menu;
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24
 
-boolean G_CheckDemoStatus(void);
+bool G_CheckDemoStatus(void);
 
 void G_ReadDemoTiccmd(ticcmd_t *cmd);
 
@@ -99,25 +99,25 @@ void G_DoSaveGame(void);
 gameaction_t gameaction;
 gamestate_t gamestate;
 skill_t gameskill;
-boolean respawnmonsters;
+bool respawnmonsters;
 int gameepisode;
 int gamemap;
 
-boolean paused;
-boolean sendpause; // send a pause event next tic
-boolean sendsave;  // send a save event next tic
-boolean usergame;  // ok to save / end game
+bool paused;
+bool sendpause; // send a pause event next tic
+bool sendsave;  // send a save event next tic
+bool usergame;  // ok to save / end game
 
-boolean timingdemo; // if true, exit with report on completion
-boolean nodrawers;  // for comparative timing purposes
-boolean noblit;     // for comparative timing purposes
+bool timingdemo; // if true, exit with report on completion
+bool nodrawers;  // for comparative timing purposes
+bool noblit;     // for comparative timing purposes
 int starttime;      // for comparative timing purposes
 
-boolean viewactive;
+bool viewactive;
 
 uint8_t deathmatch; // only if started as net death
-boolean netgame;    // only true if packets are broadcast
-boolean playeringame[MAXPLAYERS];
+bool netgame;    // only true if packets are broadcast
+bool playeringame[MAXPLAYERS];
 player_t players[MAXPLAYERS];
 
 int consoleplayer; // player taking events and displaying
@@ -127,20 +127,20 @@ int levelstarttic;                       // gametic at level start
 int totalkills, totalitems, totalsecret; // for intermission
 
 char demoname[32];
-boolean demoplayback;
-boolean netdemo;
-byte *demobuffer;
-byte *demo_p;
-byte *demoend;
-boolean singledemo; // quit after playing a demo from cmdline
+bool demoplayback;
+bool netdemo;
+std::byte *demobuffer;
+std::byte *demo_p;
+std::byte *demoend;
+bool singledemo; // quit after playing a demo from cmdline
 
-boolean precache = true; // if true, load all graphics at start
+bool precache = true; // if true, load all graphics at start
 
 wbstartstruct_t wminfo; // parms for world map / intermission
 
 short consistancy[MAXPLAYERS][BACKUPTICS];
 
-byte *savebuffer;
+std::byte *savebuffer;
 
 //
 // controls (have defaults)
@@ -223,8 +223,8 @@ int G_CmdChecksum(ticcmd_t *cmd) {
 //
 void G_BuildTiccmd(ticcmd_t *cmd) {
   int i;
-  boolean strafe;
-  boolean bstrafe;
+  bool strafe;
+  bool bstrafe;
   int speed;
   int tspeed;
   int forward;
@@ -303,10 +303,10 @@ void G_BuildTiccmd(ticcmd_t *cmd) {
   cmd->chatchar = HU_dequeueChatChar();
 
   if (gamekeydown[key_fire] || mousebuttons[mousebfire] || joybuttons[joybfire])
-    cmd->buttons |= BT_ATTACK;
+    cmd->buttons = static_cast<buttoncode_t>(cmd->buttons | BT_ATTACK);
 
   if (gamekeydown[key_use] || joybuttons[joybuse]) {
-    cmd->buttons |= BT_USE;
+    cmd->buttons = static_cast<buttoncode_t>(cmd->buttons | BT_USE);
     // clear double clicks if hit use button
     dclicks = 0;
   }
@@ -314,8 +314,8 @@ void G_BuildTiccmd(ticcmd_t *cmd) {
   // chainsaw overrides
   for (i = 0; i < NUMWEAPONS - 1; i++)
     if (gamekeydown['1' + i]) {
-      cmd->buttons |= BT_CHANGE;
-      cmd->buttons |= i << BT_WEAPONSHIFT;
+      cmd->buttons = static_cast<buttoncode_t>(cmd->buttons | BT_CHANGE);
+      cmd->buttons = static_cast<buttoncode_t>(cmd->buttons | (i << BT_WEAPONSHIFT));
       break;
     }
 
@@ -329,7 +329,7 @@ void G_BuildTiccmd(ticcmd_t *cmd) {
     if (dclickstate)
       dclicks++;
     if (dclicks == 2) {
-      cmd->buttons |= BT_USE;
+      cmd->buttons = static_cast<buttoncode_t>(cmd->buttons | BT_USE);
       dclicks = 0;
     } else
       dclicktime = 0;
@@ -348,7 +348,7 @@ void G_BuildTiccmd(ticcmd_t *cmd) {
     if (dclickstate2)
       dclicks2++;
     if (dclicks2 == 2) {
-      cmd->buttons |= BT_USE;
+      cmd->buttons = static_cast<buttoncode_t>(cmd->buttons | BT_USE);
       dclicks2 = 0;
     } else
       dclicktime2 = 0;
@@ -383,12 +383,12 @@ void G_BuildTiccmd(ticcmd_t *cmd) {
   // special buttons
   if (sendpause) {
     sendpause = false;
-    cmd->buttons = BT_SPECIAL | BTS_PAUSE;
+    cmd->buttons = static_cast<buttoncode_t>(BT_SPECIAL | BTS_PAUSE);
   }
 
   if (sendsave) {
     sendsave = false;
-    cmd->buttons = BT_SPECIAL | BTS_SAVEGAME | (savegameslot << BTS_SAVESHIFT);
+    cmd->buttons = static_cast<buttoncode_t>(BT_SPECIAL | BTS_SAVEGAME | (savegameslot << BTS_SAVESHIFT));
   }
 }
 
@@ -447,7 +447,7 @@ void G_DoLoadLevel(void) {
 // Get info needed to make ticcmd_ts for the players.
 //
 
-boolean G_Responder(const sf::Event &ev) {
+bool G_Responder(const sf::Event &ev) {
   // allow spy mode changes even during the demo
   if (auto key_press = ev.getIf<sf::Event::KeyPressed>();
       key_press && gamestate == GS_LEVEL &&
@@ -758,7 +758,7 @@ void G_PlayerReborn(int player) {
 //
 void P_SpawnPlayer(mapthing_t *mthing);
 
-boolean G_CheckSpot(int playernum, mapthing_t *mthing) {
+bool G_CheckSpot(int playernum, mapthing_t *mthing) {
   fixed_t x;
   fixed_t y;
   subsector_t *ss;
@@ -884,7 +884,7 @@ int cpars[32] = {
 //
 // G_DoCompleted
 //
-boolean secretexit;
+bool secretexit;
 
 void G_ExitLevel(void) {
   secretexit = false;
@@ -1052,7 +1052,7 @@ void G_DoWorldDone(void) {
 // G_InitFromSavegame
 // Can be called by the startup code or the menu task.
 //
-extern boolean setsizeneeded;
+extern bool setsizeneeded;
 
 char savename[256];
 
@@ -1082,18 +1082,18 @@ void G_DoLoadGame(void) {
   save_p += VERSIONSIZE;
 
   gameskill = static_cast<skill_t>(*save_p++);
-  gameepisode = *save_p++;
-  gamemap = *save_p++;
+  gameepisode = static_cast<int>(*save_p++);
+  gamemap = static_cast<int>(*save_p++);
   for (i = 0; i < MAXPLAYERS; i++)
-    playeringame[i] = *save_p++;
+    playeringame[i] = static_cast<bool>(*save_p++);
 
   // load a base level
   G_InitNew(gameskill, gameepisode, gamemap);
 
   // get the times
-  a = *save_p++;
-  b = *save_p++;
-  c = *save_p++;
+  a = static_cast<int>(*save_p++);
+  b = static_cast<int>(*save_p++);
+  c = static_cast<int>(*save_p++);
   leveltime = (a << 16) + (b << 8) + c;
 
   // dearchive all the modifications
@@ -1102,7 +1102,7 @@ void G_DoLoadGame(void) {
   P_UnArchiveThinkers();
   P_UnArchiveSpecials();
 
-  if (*save_p != 0x1d)
+  if (*save_p != std::byte{0x1d})
     I_Error("Bad savegame");
 
   // done
@@ -1144,21 +1144,21 @@ void G_DoSaveGame(void) {
   memcpy(save_p, name2, VERSIONSIZE);
   save_p += VERSIONSIZE;
 
-  *save_p++ = gameskill;
-  *save_p++ = gameepisode;
-  *save_p++ = gamemap;
+  *save_p++ = static_cast<std::byte>(gameskill);
+  *save_p++ = static_cast<std::byte>(gameepisode);
+  *save_p++ = static_cast<std::byte>(gamemap);
   for (i = 0; i < MAXPLAYERS; i++)
-    *save_p++ = playeringame[i];
-  *save_p++ = leveltime >> 16;
-  *save_p++ = leveltime >> 8;
-  *save_p++ = leveltime;
+    *save_p++ = static_cast<std::byte>(playeringame[i]);
+  *save_p++ = static_cast<std::byte>(leveltime >> 16);
+  *save_p++ = static_cast<std::byte>(leveltime >> 8);
+  *save_p++ = static_cast<std::byte>(leveltime);
 
   P_ArchivePlayers();
   P_ArchiveWorld();
   P_ArchiveThinkers();
   P_ArchiveSpecials();
 
-  *save_p++ = 0x1d; // consistancy marker
+  *save_p++ = std::byte{0x1d}; // consistancy marker
 
   const auto length = save_p - savebuffer;
   if (length > SAVEGAMESIZE)
@@ -1308,7 +1308,7 @@ void G_InitNew(skill_t skill, int episode, int map) {
 #define DEMOMARKER 0x80
 
 void G_ReadDemoTiccmd(ticcmd_t *cmd) {
-  if (*demo_p == DEMOMARKER) {
+  if (*demo_p == static_cast<std::byte>(DEMOMARKER)) {
     // end of demo data stream
     G_CheckDemoStatus();
     return;
@@ -1316,16 +1316,16 @@ void G_ReadDemoTiccmd(ticcmd_t *cmd) {
   cmd->forwardmove = ((signed char)*demo_p++);
   cmd->sidemove = ((signed char)*demo_p++);
   cmd->angleturn = ((unsigned char)*demo_p++) << 8;
-  cmd->buttons = (unsigned char)*demo_p++;
+  cmd->buttons = (buttoncode_t)*demo_p++;
 }
 
 void G_WriteDemoTiccmd(ticcmd_t *cmd) {
   if (gamekeydown['q']) // press q to end demo recording
     G_CheckDemoStatus();
-  *demo_p++ = cmd->forwardmove;
-  *demo_p++ = cmd->sidemove;
-  *demo_p++ = (cmd->angleturn + 128) >> 8;
-  *demo_p++ = cmd->buttons;
+  *demo_p++ = static_cast<std::byte>(cmd->forwardmove);
+  *demo_p++ = static_cast<std::byte>(cmd->sidemove);
+  *demo_p++ = static_cast<std::byte>((cmd->angleturn + 128) >> 8);
+  *demo_p++ = static_cast<std::byte>(cmd->buttons);
   demo_p -= 4;
   if (demo_p > demoend - 16) {
     // no more space
@@ -1350,7 +1350,7 @@ void G_RecordDemo(const std::string &name) {
   i = M_CheckParm("-maxdemo");
   if (i && i < myargc - 1)
     maxsize = atoi(myargv[i].c_str() + 1) * 1024;
-  demobuffer = static_cast<byte *>(malloc(maxsize));
+  demobuffer = static_cast<std::byte *>(malloc(maxsize));
   demoend = demobuffer + maxsize;
 
   demorecording = true;
@@ -1361,18 +1361,18 @@ void G_BeginRecording(void) {
 
   demo_p = demobuffer;
 
-  *demo_p++ = VERSION;
-  *demo_p++ = gameskill;
-  *demo_p++ = gameepisode;
-  *demo_p++ = gamemap;
-  *demo_p++ = deathmatch;
-  *demo_p++ = respawnparm;
-  *demo_p++ = fastparm;
-  *demo_p++ = nomonsters;
-  *demo_p++ = consoleplayer;
+  *demo_p++ = static_cast<std::byte>(VERSION);
+  *demo_p++ = static_cast<std::byte>(gameskill);
+  *demo_p++ = static_cast<std::byte>(gameepisode);
+  *demo_p++ = static_cast<std::byte>(gamemap);
+  *demo_p++ = static_cast<std::byte>(deathmatch);
+  *demo_p++ = static_cast<std::byte>(respawnparm);
+  *demo_p++ = static_cast<std::byte>(fastparm);
+  *demo_p++ = static_cast<std::byte>(nomonsters);
+  *demo_p++ = static_cast<std::byte>(consoleplayer);
 
   for (i = 0; i < MAXPLAYERS; i++)
-    *demo_p++ = playeringame[i];
+    *demo_p++ = static_cast<std::byte>(playeringame[i]);
 }
 
 //
@@ -1392,24 +1392,24 @@ void G_DoPlayDemo(void) {
 
   gameaction = ga_nothing;
   demobuffer = demo_p =
-      static_cast<byte *>(W_CacheLumpName(defdemoname.c_str(), PU_STATIC));
-  if (*demo_p++ != VERSION) {
+      static_cast<std::byte *>(W_CacheLumpName(defdemoname.c_str(), PU_STATIC));
+  if (*demo_p++ != std::byte{VERSION}) {
     fprintf(stderr, "Demo is from a different game version!\n");
     gameaction = ga_nothing;
     return;
   }
 
   skill = static_cast<skill_t>(*demo_p++);
-  episode = *demo_p++;
-  map = *demo_p++;
-  deathmatch = *demo_p++;
-  respawnparm = *demo_p++;
-  fastparm = *demo_p++;
-  nomonsters = *demo_p++;
-  consoleplayer = *demo_p++;
+  episode = static_cast<int>(*demo_p++);
+  map = static_cast<int>(*demo_p++);
+  deathmatch = static_cast<uint8_t>(*demo_p++);
+  respawnparm = static_cast<bool>(*demo_p++);
+  fastparm = static_cast<bool>(*demo_p++);
+  nomonsters = static_cast<bool>(*demo_p++);
+  consoleplayer = static_cast<bool>(*demo_p++);
 
   for (i = 0; i < MAXPLAYERS; i++)
-    playeringame[i] = *demo_p++;
+    playeringame[i] = static_cast<bool>(*demo_p++);
   if (playeringame[1]) {
     netgame = true;
     netdemo = true;
@@ -1447,7 +1447,7 @@ void G_TimeDemo(const std::string &name) {
 ===================
 */
 
-boolean G_CheckDemoStatus(void) {
+bool G_CheckDemoStatus(void) {
   int endtime;
 
   if (timingdemo) {
@@ -1473,7 +1473,7 @@ boolean G_CheckDemoStatus(void) {
   }
 
   if (demorecording) {
-    *demo_p++ = DEMOMARKER;
+    *demo_p++ = std::byte{DEMOMARKER};
     // M_WriteFile (demoname, demobuffer, static_cast<int>(demo_p -
     // demobuffer));
     free(demobuffer);

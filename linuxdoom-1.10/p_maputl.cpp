@@ -390,7 +390,7 @@ void P_SetThingPosition(mobj_t *thing) {
 // to P_BlockLinesIterator, then make one or more calls
 // to it.
 //
-boolean P_BlockLinesIterator(int x, int y, boolean (*func)(line_t *)) {
+bool P_BlockLinesIterator(int x, int y, bool (*func)(line_t *)) {
   int offset;
   short *list;
   line_t *ld;
@@ -420,7 +420,7 @@ boolean P_BlockLinesIterator(int x, int y, boolean (*func)(line_t *)) {
 //
 // P_BlockThingsIterator
 //
-boolean P_BlockThingsIterator(int x, int y, boolean (*func)(mobj_t *)) {
+bool P_BlockThingsIterator(int x, int y, bool (*func)(mobj_t *)) {
   mobj_t *mobj;
 
   if (x < 0 || y < 0 || x >= bmapwidth || y >= bmapheight) {
@@ -441,7 +441,7 @@ intercept_t intercepts[MAXINTERCEPTS];
 intercept_t *intercept_p;
 
 divline_t trace;
-boolean earlyout;
+bool earlyout;
 int ptflags;
 
 //
@@ -454,7 +454,7 @@ int ptflags;
 // are on opposite sides of the trace.
 // Returns true if earlyout and a solid line hit.
 //
-boolean PIT_AddLineIntercepts(line_t *ld) {
+bool PIT_AddLineIntercepts(line_t *ld) {
   int s1;
   int s2;
   fixed_t frac;
@@ -496,7 +496,7 @@ boolean PIT_AddLineIntercepts(line_t *ld) {
 //
 // PIT_AddThingIntercepts
 //
-boolean PIT_AddThingIntercepts(mobj_t *thing) {
+bool PIT_AddThingIntercepts(mobj_t *thing) {
   fixed_t x1;
   fixed_t y1;
   fixed_t x2;
@@ -505,7 +505,7 @@ boolean PIT_AddThingIntercepts(mobj_t *thing) {
   int s1;
   int s2;
 
-  boolean tracepositive;
+  bool tracepositive;
 
   divline_t dl;
 
@@ -557,7 +557,7 @@ boolean PIT_AddThingIntercepts(mobj_t *thing) {
 // Returns true if the traverser function returns true
 // for all lines.
 //
-boolean P_TraverseIntercepts(traverser_t func, fixed_t maxfrac) {
+bool P_TraverseIntercepts(traverser_t func, fixed_t maxfrac) {
   int count;
   fixed_t dist;
   intercept_t *scan;
@@ -607,8 +607,8 @@ boolean P_TraverseIntercepts(traverser_t func, fixed_t maxfrac) {
 // Returns true if the traverser function returns true
 // for all lines.
 //
-boolean P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2,
-                       int flags, boolean (*trav)(intercept_t *)) {
+bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2,
+                       int flags, bool (*trav)(intercept_t *)) {
   fixed_t xt1;
   fixed_t yt1;
   fixed_t xt2;

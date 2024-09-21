@@ -313,7 +313,7 @@ int checkcoord[12][4] = {{3, 0, 2, 1}, {3, 0, 2, 0}, {3, 1, 2, 0}, {0},
                          {2, 0, 2, 1}, {0, 0, 0, 0}, {3, 1, 3, 0}, {0},
                          {2, 0, 3, 1}, {2, 1, 3, 1}, {2, 1, 3, 0}};
 
-boolean R_CheckBBox(fixed_t *bspcoord) {
+bool R_CheckBBox(fixed_t *bspcoord) {
   int boxx;
   int boxy;
   int boxpos;

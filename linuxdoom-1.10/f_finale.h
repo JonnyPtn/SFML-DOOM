@@ -30,7 +30,7 @@
 //
 
 // Called by main loop.
-boolean F_Responder(const sf::Event &ev);
+bool F_Responder(const sf::Event &ev);
 
 // Called by main loop.
 void F_Ticker(void);

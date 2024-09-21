@@ -22,6 +22,7 @@
 #pragma once
 
 #include "doomtype.h"
+#include <cstddef>
 
 typedef enum {
   ga_nothing,
@@ -39,7 +40,7 @@ typedef enum {
 //
 // Button/action code definitions.
 //
-typedef enum {
+enum buttoncode_t : unsigned char{
   // Press "Fire".
   BT_ATTACK = 1,
   // Use button, to open doors, activate switches.
@@ -66,7 +67,7 @@ typedef enum {
   BTS_SAVEMASK = (4 + 8 + 16),
   BTS_SAVESHIFT = 2,
 
-} buttoncode_t;
+};
 
 //
 // GLOBAL VARIABLES

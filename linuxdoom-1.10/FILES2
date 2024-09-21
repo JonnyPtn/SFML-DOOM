@@ -24,7 +24,7 @@ DOOM game loop and top level stuff
 ------------------------------------------------------------------------
 g_game.c    -  Game loop functions, event handling etc.
 
-                boolean  G_CheckDemoStatus (void); 
+                bool  G_CheckDemoStatus (void);
                 void     G_ReadDemoTiccmd (ticcmd_t *cmd); 
                 void     G_WriteDemoTiccmd (ticcmd_t *cmd); 
                 void     G_PlayerReborn (int player); 

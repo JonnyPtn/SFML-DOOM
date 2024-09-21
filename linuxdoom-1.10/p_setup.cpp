@@ -94,7 +94,7 @@ mobj_t **blocklinks;
 // Without special effect, this could be
 //  used as a PVS lookup as well.
 //
-byte *rejectmatrix;
+std::byte *rejectmatrix;
 
 // Maintain single and multi player starting spots.
 #define MAX_DEATHMATCH_STARTS 10
@@ -107,7 +107,7 @@ mapthing_t playerstarts[MAXPLAYERS];
 // P_LoadVertexes
 //
 void P_LoadVertexes(int lump) {
-  byte *data;
+  std::byte *data;
   int i;
   mapvertex_t *ml;
   vertex_t *li;
@@ -120,7 +120,7 @@ void P_LoadVertexes(int lump) {
   vertexes = static_cast<vertex_t *>(malloc(numvertexes * sizeof(vertex_t)));
 
   // Load data into cache.
-  data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
 
   ml = (mapvertex_t *)data;
   li = vertexes;
@@ -140,7 +140,7 @@ void P_LoadVertexes(int lump) {
 // P_LoadSegs
 //
 void P_LoadSegs(int lump) {
-  byte *data;
+  std::byte *data;
   int i;
   mapseg_t *ml;
   seg_t *li;
@@ -151,7 +151,7 @@ void P_LoadSegs(int lump) {
   numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
   segs = static_cast<seg_t *>(malloc(numsegs * sizeof(seg_t)));
   memset(segs, 0, numsegs * sizeof(seg_t));
-  data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
 
   ml = (mapseg_t *)data;
   li = segs;
@@ -180,7 +180,7 @@ void P_LoadSegs(int lump) {
 // P_LoadSubsectors
 //
 void P_LoadSubsectors(int lump) {
-  byte *data;
+  std::byte *data;
   int i;
   mapsubsector_t *ms;
   subsector_t *ss;
@@ -188,7 +188,7 @@ void P_LoadSubsectors(int lump) {
   numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
   subsectors =
       static_cast<subsector_t *>(malloc(numsubsectors * sizeof(subsector_t)));
-  data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
 
   ms = (mapsubsector_t *)data;
   memset(subsectors, 0, numsubsectors * sizeof(subsector_t));
@@ -206,14 +206,14 @@ void P_LoadSubsectors(int lump) {
 // P_LoadSectors
 //
 void P_LoadSectors(int lump) {
-  byte *data;
+  std::byte *data;
   int i;
   mapsector_t *ms;
   sector_t *ss;
 
   numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
   sectors.resize(numsectors);
-  data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
 
   ms = (mapsector_t *)data;
   ss = sectors.data();
@@ -233,7 +233,7 @@ void P_LoadSectors(int lump) {
 // P_LoadNodes
 //
 void P_LoadNodes(int lump) {
-  byte *data;
+  std::byte *data;
   int i;
   int j;
   int k;
@@ -242,7 +242,7 @@ void P_LoadNodes(int lump) {
 
   numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
   nodes = static_cast<node_t *>(malloc(numnodes * sizeof(node_t)));
-  data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
 
   mn = (mapnode_t *)data;
   no = nodes;
@@ -266,13 +266,13 @@ void P_LoadNodes(int lump) {
 // P_LoadThings
 //
 void P_LoadThings(int lump) {
-  byte *data;
+  std::byte *data;
   int i;
   mapthing_t *mt;
   int numthings;
-  boolean spawn;
+  bool spawn;
 
-  data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
   numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
   mt = (mapthing_t *)data;
@@ -315,7 +315,7 @@ void P_LoadThings(int lump) {
 // Also counts secret lines for intermissions.
 //
 void P_LoadLineDefs(int lump) {
-  byte *data;
+  std::byte *data;
   int i;
   maplinedef_t *mld;
   line_t *ld;
@@ -325,7 +325,7 @@ void P_LoadLineDefs(int lump) {
   numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
   lines = static_cast<line_t *>(malloc(numlines * sizeof(line_t)));
   memset(lines, 0, numlines * sizeof(line_t));
-  data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
 
   mld = (maplinedef_t *)data;
   ld = lines;
@@ -386,7 +386,7 @@ void P_LoadLineDefs(int lump) {
 // P_LoadSideDefs
 //
 void P_LoadSideDefs(int lump) {
-  byte *data;
+  std::byte *data;
   int i;
   mapsidedef_t *msd;
   side_t *sd;
@@ -394,7 +394,7 @@ void P_LoadSideDefs(int lump) {
   numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
   sides = static_cast<side_t *>(malloc(numsides * sizeof(side_t)));
   memset(sides, 0, numsides * sizeof(side_t));
-  data = static_cast<byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
 
   msd = (mapsidedef_t *)data;
   sd = sides;
@@ -557,7 +557,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill) {
   P_LoadSegs(lumpnum + ML_SEGS);
 
   rejectmatrix =
-      static_cast<byte *>(W_CacheLumpNum(lumpnum + ML_REJECT, PU_LEVEL));
+      static_cast<std::byte *>(W_CacheLumpNum(lumpnum + ML_REJECT, PU_LEVEL));
   P_GroupLines();
 
   bodyqueslot = 0;

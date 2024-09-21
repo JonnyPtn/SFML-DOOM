@@ -57,18 +57,18 @@ import m_misc;
 //  and the total size == width*height*depth/8.,
 //
 
-byte *viewimage;
+std::byte *viewimage;
 int scaledviewwidth;
 int viewwindowx;
 int viewwindowy;
-byte *ylookup[MAXHEIGHT];
+std::byte *ylookup[MAXHEIGHT];
 int columnofs[MAXWIDTH];
 
 // Color tables for different players,
 //  translate a limited part to another
 //  (color ramps used for  suit colors).
 //
-byte translations[3][256];
+std::byte translations[3][256];
 
 //
 // R_DrawColumn
@@ -82,7 +82,7 @@ fixed_t dc_iscale;
 fixed_t dc_texturemid;
 
 // first pixel in a column (possibly virtual)
-byte *dc_source;
+std::byte *dc_source;
 
 // just for profiling
 int dccount;
@@ -96,7 +96,7 @@ int dccount;
 //
 void R_DrawColumn(void) {
   int count;
-  byte *dest;
+  std::byte *dest;
   fixed_t frac;
   fixed_t fracstep;
 
@@ -127,7 +127,7 @@ void R_DrawColumn(void) {
   do {
     // Re-map color indices from wall texture column
     //  using a lighting/special effects LUT.
-    *dest = dc_colormap[dc_source[(frac >> FRACBITS) & 127]];
+    *dest = dc_colormap[static_cast<int>(dc_source[(frac >> FRACBITS) & 127])];
 
     dest += SCREENWIDTH;
     frac += fracstep;
@@ -195,8 +195,8 @@ void R_DrawColumn (void)
 
 void R_DrawColumnLow(void) {
   int count;
-  byte *dest;
-  byte *dest2;
+  std::byte *dest;
+  std::byte *dest2;
   fixed_t frac;
   fixed_t fracstep;
 
@@ -224,7 +224,7 @@ void R_DrawColumnLow(void) {
 
   do {
     // Hack. Does not work corretly.
-    *dest2 = *dest = dc_colormap[dc_source[(frac >> FRACBITS) & 127]];
+    *dest2 = *dest = dc_colormap[static_cast<int>(dc_source[(frac >> FRACBITS) & 127])];
     dest += SCREENWIDTH;
     dest2 += SCREENWIDTH;
     frac += fracstep;
@@ -260,7 +260,7 @@ int fuzzpos = 0;
 //
 void R_DrawFuzzColumn(void) {
   int count;
-  byte *dest;
+  std::byte *dest;
 
   // Adjust borders. Low...
   if (!dc_yl)
@@ -321,7 +321,7 @@ void R_DrawFuzzColumn(void) {
     //  a pixel that is either one column
     //  left or right of the current one.
     // Add index from colormap to index.
-    *dest = colormaps[6 * 256 + dest[fuzzoffset[fuzzpos]]];
+    *dest = colormaps[6 * 256 + static_cast<int>(dest[fuzzoffset[fuzzpos]])];
 
     // Clamp table lookup index.
     if (++fuzzpos == FUZZTABLE)
@@ -342,12 +342,12 @@ void R_DrawFuzzColumn(void) {
 //  of the BaronOfHell, the HellKnight, uses
 //  identical sprites, kinda brightened up.
 //
-byte *dc_translation;
-byte *translationtables;
+std::byte *dc_translation;
+std::byte *translationtables;
 
 void R_DrawTranslatedColumn(void) {
   int count;
-  byte *dest;
+  std::byte *dest;
   fixed_t frac;
   fixed_t fracstep;
 
@@ -394,7 +394,7 @@ void R_DrawTranslatedColumn(void) {
     //  used with PLAY sprites.
     // Thus the "green" ramp of the player 0 sprite
     //  is mapped to gray, red, black/indigo.
-    *dest = dc_colormap[dc_translation[dc_source[frac >> FRACBITS]]];
+    *dest = dc_colormap[static_cast<int>(dc_translation[static_cast<int>(dc_source[frac >> FRACBITS])])];
     dest += SCREENWIDTH;
 
     frac += fracstep;
@@ -411,21 +411,21 @@ void R_DrawTranslatedColumn(void) {
 void R_InitTranslationTables(void) {
   int i;
 
-  translationtables = static_cast<byte *>(malloc(256 * 3 + 255));
+  translationtables = static_cast<std::byte *>(malloc(256 * 3 + 255));
   translationtables =
-      (byte *)((reinterpret_cast<intptr_t>(translationtables) + 255) & ~255);
+      (std::byte *)((reinterpret_cast<intptr_t>(translationtables) + 255) & ~255);
 
   // translate just the 16 green colors
   for (i = 0; i < 256; i++) {
     if (i >= 0x70 && i <= 0x7f) {
       // map green ramp to gray, brown, red
-      translationtables[i] = 0x60 + (i & 0xf);
-      translationtables[i + 256] = 0x40 + (i & 0xf);
-      translationtables[i + 512] = 0x20 + (i & 0xf);
+      translationtables[i] = static_cast<std::byte>(0x60 + (i & 0xf));
+      translationtables[i + 256] = static_cast<std::byte>(0x40 + (i & 0xf));
+      translationtables[i + 512] = static_cast<std::byte>(0x20 + (i & 0xf));
     } else {
       // Keep all other colors as is.
       translationtables[i] = translationtables[i + 256] =
-          translationtables[i + 512] = i;
+          translationtables[i + 512] = static_cast<std::byte>(i);
     }
   }
 }
@@ -454,7 +454,7 @@ fixed_t ds_xstep;
 fixed_t ds_ystep;
 
 // start of a 64*64 tile image
-byte *ds_source;
+std::byte *ds_source;
 
 // just for profiling
 int dscount;
@@ -464,7 +464,7 @@ int dscount;
 void R_DrawSpan(void) {
   fixed_t xfrac;
   fixed_t yfrac;
-  byte *dest;
+  std::byte *dest;
   int count;
   int spot;
 
@@ -490,7 +490,7 @@ void R_DrawSpan(void) {
 
     // Lookup pixel from flat texture tile,
     //  re-index using light/colormap.
-    *dest++ = ds_colormap[ds_source[spot]];
+    *dest++ = ds_colormap[static_cast<int>(ds_source[spot])];
 
     // Next step in u,v.
     xfrac += ds_xstep;
@@ -577,7 +577,7 @@ void R_DrawSpan (void)
 void R_DrawSpanLow(void) {
   fixed_t xfrac;
   fixed_t yfrac;
-  byte *dest;
+  std::byte *dest;
   int count;
   int spot;
 
@@ -603,8 +603,8 @@ void R_DrawSpanLow(void) {
     spot = ((yfrac >> (16 - 6)) & (63 * 64)) + ((xfrac >> 16) & 63);
     // Lowres/blocky mode does it twice,
     //  while scale is adjusted appropriately.
-    *dest++ = ds_colormap[ds_source[spot]];
-    *dest++ = ds_colormap[ds_source[spot]];
+    *dest++ = ds_colormap[static_cast<int>(ds_source[spot])];
+    *dest++ = ds_colormap[static_cast<int>(ds_source[spot])];
 
     xfrac += ds_xstep;
     yfrac += ds_ystep;
@@ -649,8 +649,8 @@ void R_InitBuffer(int width, int height) {
 // Also draws a beveled edge.
 //
 void R_FillBackScreen(void) {
-  byte *src;
-  byte *dest;
+  std::byte *src;
+  std::byte *dest;
   int x;
   int y;
   patch_t *patch;
@@ -671,7 +671,7 @@ void R_FillBackScreen(void) {
   else
     name = name1;
 
-  src = static_cast<byte *>(W_CacheLumpName(name, PU_CACHE));
+  src = static_cast<std::byte *>(W_CacheLumpName(name, PU_CACHE));
   dest = screens[1].data();
 
   for (y = 0; y < SCREENHEIGHT - SBARHEIGHT; y++) {

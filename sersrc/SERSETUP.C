@@ -119,7 +119,7 @@ int		packetlen;
 int		inescape;
 int		newpacket;
 
-boolean ReadPacket (void)
+bool ReadPacket (void)
 {
 	int	c;
 

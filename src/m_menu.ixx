@@ -56,6 +56,8 @@ module;
 
 #include <functional>
 
+#include <cstddef>
+
 export module m_menu;
 
 import i_system;
@@ -82,7 +84,7 @@ int messy;
 int messageLastMenuActive;
 
 // timed message = no input from user
-boolean messageNeedsInput;
+bool messageNeedsInput;
 
 std::function<void(int)> messageRoutine;
 
@@ -103,7 +105,7 @@ export bool menuactive;
 #define SKULLXOFF -32
 #define LINEHEIGHT 16
 
-extern boolean sendpause;
+extern bool sendpause;
 char savegamestrings[10][SAVESTRINGSIZE];
 
 char endstring[160];
@@ -233,7 +235,7 @@ int M_StringWidth(char *string);
 int M_StringHeight(char *string);
 
 void M_StartMessage(const char *string, std::function<void(int)> routine,
-                    boolean input);
+                    bool input);
 
 void M_StopMessage(void);
 
@@ -951,7 +953,7 @@ void M_DrawSelCell(menu_t *menu, int item) {
 }
 
 void M_StartMessage(const char *string, std::function<void(int)> routine,
-                    boolean input) {
+                    bool input) {
   messageLastMenuActive = menuactive;
   messageToPrint = 1;
   messageString = string;
@@ -1296,7 +1298,7 @@ export bool M_Responder(const sf::Event &ev) {
       if (usegamma > 4)
         usegamma = 0;
       players[consoleplayer].message = gammamsg[usegamma];
-      I_SetPalette(static_cast<byte *>(W_CacheLumpName("PLAYPAL", PU_CACHE)));
+      I_SetPalette(static_cast<std::byte *>(W_CacheLumpName("PLAYPAL", PU_CACHE)));
       return true;
     default:
       break;

@@ -28,7 +28,7 @@
 #include <string>
 
 // Retrieve column data for span blitting.
-byte *R_GetColumn(int tex, int col);
+std::byte *R_GetColumn(int tex, int col);
 
 // I/O, setting up the stuff.
 void R_InitData(void);

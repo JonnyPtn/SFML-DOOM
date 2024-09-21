@@ -40,7 +40,7 @@
 // 16 pixels of bob
 #define MAXBOB 0x100000
 
-boolean onground;
+bool onground;
 
 //
 // P_Thrust
@@ -233,7 +233,7 @@ void P_PlayerThink(player_t *player) {
 
   // A special event has no other buttons.
   if (cmd->buttons & BT_SPECIAL)
-    cmd->buttons = 0;
+    cmd->buttons = static_cast<buttoncode_t>(0);
 
   if (cmd->buttons & BT_CHANGE) {
     // The actual changing of the weapon is done

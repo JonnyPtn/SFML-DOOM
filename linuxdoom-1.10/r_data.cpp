@@ -79,7 +79,7 @@ typedef struct {
 //
 typedef struct {
   char name[8];
-  boolean masked;
+  bool masked;
   char padding[3];
   short width;
   short height;
@@ -131,7 +131,7 @@ std::vector<fixed_t> textureheight; // needed for texture pegging
 std::vector<int> texturecompositesize;
 std::vector<std::vector<short>> texturecolumnlump;
 std::vector<std::vector<unsigned short>> texturecolumnofs;
-std::vector<byte *> texturecomposite;
+std::vector<std::byte *> texturecomposite;
 
 // for global animation
 int *flattranslation;
@@ -161,16 +161,16 @@ lighttable_t *colormaps;
 // Clip and draw a column
 //  from a patch into a cached post.
 //
-void R_DrawColumnInCache(column_t *patch, byte *cache, int originy,
+void R_DrawColumnInCache(column_t *patch, std::byte *cache, int originy,
                          int cacheheight) {
   int count;
   int position;
-  byte *source;
+  std::byte *source;
 
-  while (patch->topdelta != 0xff) {
-    source = (byte *)patch + 3;
-    count = patch->length;
-    position = originy + patch->topdelta;
+  while (patch->topdelta != std::byte{0xff}) {
+    source = (std::byte *)patch + 3;
+    count = static_cast<int>(patch->length);
+    position = originy + static_cast<int>(patch->topdelta);
 
     if (position < 0) {
       count += position;
@@ -183,7 +183,7 @@ void R_DrawColumnInCache(column_t *patch, byte *cache, int originy,
     if (count > 0)
       memcpy(cache + position, source, count);
 
-    patch = (column_t *)((byte *)patch + patch->length + 4);
+    patch = (column_t *)((std::byte *)patch + static_cast<int>(patch->length) + 4);
   }
 }
 
@@ -194,7 +194,7 @@ void R_DrawColumnInCache(column_t *patch, byte *cache, int originy,
 //  and each column is cached.
 //
 void R_GenerateComposite(int texnum) {
-  byte *block;
+  std::byte *block;
   patch_t *realpatch;
   int x;
   int x1;
@@ -203,7 +203,7 @@ void R_GenerateComposite(int texnum) {
 
   const auto &texture = textures[texnum];
 
-  block = static_cast<byte *>(malloc(texturecompositesize[texnum]));
+  block = static_cast<std::byte *>(malloc(texturecompositesize[texnum]));
 
   const auto &collump = texturecolumnlump[texnum];
   const auto &colofs = texturecolumnofs[texnum];
@@ -228,7 +228,7 @@ void R_GenerateComposite(int texnum) {
         continue;
 
       patchcol =
-          (column_t *)((byte *)realpatch + LONG(realpatch->columnofs[x - x1]));
+          (column_t *)((std::byte *)realpatch + LONG(realpatch->columnofs[x - x1]));
       R_DrawColumnInCache(patchcol, block + colofs[x], patch.originy,
                           texture.height);
     }
@@ -239,7 +239,7 @@ void R_GenerateComposite(int texnum) {
 // R_GenerateLookup
 //
 void R_GenerateLookup(int texnum) {
-  byte *patchcount; // patchcount[texture->width]
+  std::byte *patchcount; // patchcount[texture->width]
   patch_t *realpatch;
   int x;
   int x1;
@@ -258,7 +258,7 @@ void R_GenerateLookup(int texnum) {
   //  that are covered by more than one patch.
   // Fill in the lump / offset, so columns
   //  with only a single patch are all done.
-  patchcount = (byte *)malloc(texture.width);
+  patchcount = (std::byte *)malloc(texture.width);
   memset(patchcount, 0, texture.width);
 
   for (const auto &patch : texture.patches) {
@@ -274,21 +274,21 @@ void R_GenerateLookup(int texnum) {
     if (x2 > texture.width)
       x2 = texture.width;
     for (; x < x2; x++) {
-      patchcount[x]++;
+      patchcount[x] = static_cast<std::byte>(static_cast<int>(patchcount[x]) + 1);
       collump[x] = patch.patch;
       colofs[x] = LONG(realpatch->columnofs[x - x1]) + 3;
     }
   }
 
   for (x = 0; x < texture.width; x++) {
-    if (!patchcount[x]) {
+    if (patchcount[x] == std::byte{0}) {
       printf("R_GenerateLookup: column without a patch (%s)\n",
              texture.name.c_str());
       return;
     }
     // I_Error ("R_GenerateLookup: column without a patch");
 
-    if (patchcount[x] > 1) {
+    if (static_cast<int>(patchcount[x]) > 1) {
       // Use the cached block.
       collump[x] = -1;
       colofs[x] = texturecompositesize[texnum];
@@ -305,7 +305,7 @@ void R_GenerateLookup(int texnum) {
 //
 // R_GetColumn
 //
-byte *R_GetColumn(int tex, int col) {
+std::byte *R_GetColumn(int tex, int col) {
   int lump;
   int ofs;
 
@@ -314,7 +314,7 @@ byte *R_GetColumn(int tex, int col) {
   ofs = texturecolumnofs[tex][col];
 
   if (lump > 0)
-    return (byte *)W_CacheLumpNum(lump, PU_CACHE) + ofs;
+    return (std::byte *)W_CacheLumpNum(lump, PU_CACHE) + ofs;
 
   if (!texturecomposite[tex])
     R_GenerateComposite(tex);
@@ -426,7 +426,7 @@ void R_InitTextures(void) {
     if (offset > maxoff)
       I_Error("R_InitTextures: bad texture directory");
 
-    mtexture = (maptexture_t *)((byte *)maptex + offset);
+    mtexture = (maptexture_t *)((std::byte *)maptex + offset);
 
     auto &texture = textures[i];
 
@@ -532,7 +532,7 @@ void R_InitColormaps(void) {
   lump = W_GetNumForName("COLORMAP");
   length = W_LumpLength(lump) + 255;
   colormaps = static_cast<lighttable_t *>(malloc(length));
-  colormaps = (byte *)((reinterpret_cast<intptr_t>(colormaps) + 255) & ~0xff);
+  colormaps = (std::byte *)((reinterpret_cast<intptr_t>(colormaps) + 255) & ~0xff);
   W_ReadLump(lump, colormaps);
 }
 

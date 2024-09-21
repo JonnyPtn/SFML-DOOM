@@ -49,6 +49,9 @@ export module i_system;
 
 import m_misc;
 
+// lovely clang compiler crash if I try to use std::byte here
+using byte = unsigned char;
+
 int mb_used = 6;
 
 export void I_Tactile(int on, int off, int total) {

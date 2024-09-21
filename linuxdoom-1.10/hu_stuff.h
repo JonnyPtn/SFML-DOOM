@@ -51,7 +51,7 @@ void HU_Init(void);
 
 void HU_Start(void);
 
-boolean HU_Responder(const sf::Event &ev);
+bool HU_Responder(const sf::Event &ev);
 
 void HU_Ticker(void);
 

@@ -68,7 +68,7 @@ export bool nomonsters;  // checkparm of -nomonsters
 export bool respawnparm; // checkparm of -respawn
 export bool fastparm;    // checkparm of -fast
 
-boolean drone;
+bool drone;
 
 export bool singletics = false; // debug flag to cancel adaptiveness
 
@@ -150,19 +150,19 @@ export gamestate_t wipegamestate = GS_DEMOSCREEN;
 bool setsizeneeded;
 
 void D_Display(void) {
-  static boolean viewactivestate = false;
-  static boolean menuactivestate = false;
-  static boolean inhelpscreensstate = false;
-  static boolean fullscreen = false;
+  static bool viewactivestate = false;
+  static bool menuactivestate = false;
+  static bool inhelpscreensstate = false;
+  static bool fullscreen = false;
   static gamestate_t oldgamestate = static_cast<gamestate_t>(-1);
   static int borderdrawcount;
   int nowtime;
   int tics;
   int wipestart;
   int y;
-  boolean done;
-  boolean wipe;
-  boolean redrawsbar;
+  bool done;
+  bool wipe;
+  bool redrawsbar;
 
   if (nodrawers)
     return; // for comparative timing / profiling
@@ -226,7 +226,7 @@ void D_Display(void) {
 
   // clean up border stuff
   if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-    I_SetPalette(static_cast<byte *>(W_CacheLumpName("PLAYPAL", PU_CACHE)));
+    I_SetPalette(static_cast<std::byte *>(W_CacheLumpName("PLAYPAL", PU_CACHE)));
 
   // see if the border needs to be initially drawn
   if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL) {

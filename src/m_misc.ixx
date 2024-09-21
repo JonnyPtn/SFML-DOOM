@@ -65,7 +65,7 @@ export patch_t *hu_font[HU_FONTSIZE];
 // HU_Init must have been called to init the font
 //
 
-int M_DrawText(int x, int y, boolean direct, char *string) {
+int M_DrawText(int x, int y, bool direct, char *string) {
   int c;
   int w;
 
@@ -198,7 +198,7 @@ export void M_SaveDefaults(void) {
 //
 // M_LoadDefaults
 //
-extern byte scantokey[128];
+extern std::byte scantokey[128];
 
 export void M_LoadDefaults(void) {
 
@@ -266,17 +266,17 @@ typedef struct {
   unsigned short palette_type;
 
   char filler[58];
-  unsigned char data; // unbounded
+  std::byte data; // unbounded
 } pcx_t;
 
 //
 // WritePCXfile
 //
-void WritePCXfile(char *filename, byte *data, int width, int height,
-                  byte *palette) {
+void WritePCXfile(char *filename, std::byte *data, int width, int height,
+                  std::byte *palette) {
   int i;
   pcx_t *pcx;
-  byte *pack;
+  std::byte *pack;
 
   pcx = static_cast<pcx_t *>(malloc(width * height * 2 + 1000));
 
@@ -300,21 +300,21 @@ void WritePCXfile(char *filename, byte *data, int width, int height,
   pack = &pcx->data;
 
   for (i = 0; i < width * height; i++) {
-    if ((*data & 0xc0) != 0xc0)
+    if ((*data & std::byte{0xc0}) != std::byte{0xc0})
       *pack++ = *data++;
     else {
-      *pack++ = 0xc1;
+      *pack++ = std::byte{0xc1};
       *pack++ = *data++;
     }
   }
 
   // write the palette
-  *pack++ = 0x0c; // palette ID byte
+  *pack++ = std::byte{0x0c}; // palette ID byte
   for (i = 0; i < 768; i++)
     *pack++ = *palette++;
 
   // write output file
-  const auto length = pack - (byte *)pcx;
+  const auto length = pack - (std::byte *)pcx;
   // M_WriteFile (filename, pcx, static_cast<int>(length));
 
   free(pcx);

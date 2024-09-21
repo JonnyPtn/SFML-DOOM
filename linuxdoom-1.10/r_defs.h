@@ -239,8 +239,8 @@ struct node_t {
 
 // posts are runs of non masked source pixels
 struct post_t {
-  byte topdelta; // -1 is the last post in a column
-  byte length;   // length data bytes follows
+  std::byte topdelta; // -1 is the last post in a column
+  std::byte length;   // length data bytes follows
 };
 
 // column_t is a list of 0 or more post_t, (byte)-1 terminated
@@ -260,7 +260,7 @@ typedef post_t column_t;
 //  precalculating 24bpp lightmap/colormap LUT.
 //  from darkening PLAYPAL to all black.
 // Could even us emore than 32 levels.
-typedef byte lighttable_t;
+typedef std::byte lighttable_t;
 
 //
 // ?
@@ -368,7 +368,7 @@ typedef struct {
   short lump[8];
 
   // Flip bit (1 = flip) to use for view angles 0-7.
-  byte flip[8];
+  std::byte flip[8];
 
 } spriteframe_t;
 
@@ -390,14 +390,14 @@ typedef struct {
 
   // leave pads for [minx-1]/[maxx+1]
 
-  byte pad1;
+  std::byte pad1;
   // Here lies the rub for all
   //  dynamic resize/change of resolution.
-  byte top[SCREENWIDTH];
-  byte pad2;
-  byte pad3;
+  std::byte top[SCREENWIDTH];
+  std::byte pad2;
+  std::byte pad3;
   // See above.
-  byte bottom[SCREENWIDTH];
-  byte pad4;
+  std::byte bottom[SCREENWIDTH];
+  std::byte pad4;
 
 } visplane_t;

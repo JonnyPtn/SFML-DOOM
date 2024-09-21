@@ -92,7 +92,7 @@ void F_StartCast(void);
 
 void F_CastTicker(void);
 
-boolean F_CastResponder(const sf::Event &ev);
+bool F_CastResponder(const sf::Event &ev);
 
 void F_CastDrawer(void);
 
@@ -188,7 +188,7 @@ void F_StartFinale(void) {
   finalecount = 0;
 }
 
-boolean F_Responder(const sf::Event &event) {
+bool F_Responder(const sf::Event &event) {
   if (finalestage == 2)
     return F_CastResponder(event);
 
@@ -244,8 +244,8 @@ void F_Ticker(void) {
 #include "hu_stuff.h"
 
 void F_TextWrite(void) {
-  byte *src;
-  byte *dest;
+  std::byte *src;
+  std::byte *dest;
 
   int x, y, w;
   int count;
@@ -255,7 +255,7 @@ void F_TextWrite(void) {
   int cy;
 
   // erase the entire screen to a tiled background
-  src = static_cast<byte *>(W_CacheLumpName(finaleflat, PU_CACHE));
+  src = static_cast<std::byte *>(W_CacheLumpName(finaleflat, PU_CACHE));
   dest = screens[0].data();
 
   for (y = 0; y < SCREENHEIGHT; y++) {
@@ -336,10 +336,10 @@ castinfo_t castorder[] = {{CC_ZOMBIE, MT_POSSESSED},
 int castnum;
 int casttics;
 state_t *caststate;
-boolean castdeath;
+bool castdeath;
 int castframes;
 int castonmelee;
-boolean castattacking;
+bool castattacking;
 
 //
 // F_StartCast
@@ -491,7 +491,7 @@ void F_CastTicker(void) {
 // F_CastResponder
 //
 
-boolean F_CastResponder(const sf::Event &ev) {
+bool F_CastResponder(const sf::Event &ev) {
   if (ev.is<sf::Event::KeyPressed>())
     return false;
 
@@ -561,7 +561,7 @@ void V_DrawPatchFlipped(int x, int y, int scrn, patch_t *patch);
 
 void F_CastDrawer(void) {
   int lump;
-  boolean flip;
+  bool flip;
   patch_t *patch;
 
   // erase the entire screen to a background
@@ -574,7 +574,7 @@ void F_CastDrawer(void) {
   const auto &sprdef = sprites[caststate->sprite];
   const auto &sprframe = sprdef[caststate->frame & FF_FRAMEMASK];
   lump = sprframe.lump[0];
-  flip = (boolean)sprframe.flip[0];
+  flip = (bool)sprframe.flip[0];
 
   patch =
       static_cast<patch_t *>(W_CacheLumpNum(lump + firstspritelump, PU_CACHE));
@@ -589,25 +589,25 @@ void F_CastDrawer(void) {
 //
 void F_DrawPatchCol(int x, patch_t *patch, int col) {
   column_t *column;
-  byte *source;
-  byte *dest;
-  byte *desttop;
+  std::byte *source;
+  std::byte *dest;
+  std::byte *desttop;
   int count;
 
-  column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
+  column = (column_t *)((std::byte *)patch + LONG(patch->columnofs[col]));
   desttop = screens[0].data() + x;
 
   // step through the posts in a column
-  while (column->topdelta != 0xff) {
-    source = (byte *)column + 3;
-    dest = desttop + column->topdelta * SCREENWIDTH;
-    count = column->length;
+  while (column->topdelta != std::byte{0xff}) {
+    source = (std::byte *)column + 3;
+    dest = desttop + static_cast<int>(column->topdelta) * SCREENWIDTH;
+    count = static_cast<int>(column->length);
 
     while (count--) {
       *dest = *source++;
       dest += SCREENWIDTH;
     }
-    column = (column_t *)((byte *)column + column->length + 4);
+    column = (column_t *)((std::byte *)column + static_cast<int>(column->length) + 4);
   }
 }
 

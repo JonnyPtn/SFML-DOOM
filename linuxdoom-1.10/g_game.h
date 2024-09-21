@@ -59,7 +59,7 @@ void G_PlayDemo(char *name);
 
 void G_TimeDemo(const std::string &name);
 
-boolean G_CheckDemoStatus(void);
+bool G_CheckDemoStatus(void);
 
 void G_ExitLevel(void);
 
@@ -69,7 +69,7 @@ void G_WorldDone(void);
 
 void G_Ticker(void);
 
-boolean G_Responder(const sf::Event &ev);
+bool G_Responder(const sf::Event &ev);
 
 void G_ScreenShot(void);
 

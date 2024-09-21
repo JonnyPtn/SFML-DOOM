@@ -57,7 +57,7 @@ import i_system;
 
 void NetSend(void);
 
-boolean NetListen(void);
+bool NetListen(void);
 
 //
 // NETWORKING
@@ -117,7 +117,7 @@ void PacketSend(void) {
   sw.retransmitfrom = netbuffer->retransmitfrom;
   sw.starttic = netbuffer->starttic;
   sw.numtics = netbuffer->numtics;
-  for (c = 0; c < netbuffer->numtics; c++) {
+  for (c = 0; c < static_cast<int>(netbuffer->numtics); c++) {
     sw.cmds[c].forwardmove = netbuffer->cmds[c].forwardmove;
     sw.cmds[c].sidemove = netbuffer->cmds[c].sidemove;
     sw.cmds[c].angleturn = htons(netbuffer->cmds[c].angleturn);
@@ -185,7 +185,7 @@ void PacketGet(void) {
   netbuffer->starttic = sw.starttic;
   netbuffer->numtics = sw.numtics;
 
-  for (c = 0; c < netbuffer->numtics; c++) {
+  for (c = 0; c < static_cast<int>(netbuffer->numtics); c++) {
     netbuffer->cmds[c].forwardmove = sw.cmds[c].forwardmove;
     netbuffer->cmds[c].sidemove = sw.cmds[c].sidemove;
     netbuffer->cmds[c].angleturn = ntohs(sw.cmds[c].angleturn);
@@ -217,7 +217,7 @@ int GetLocalAddress(void) {
 // I_InitNetwork
 //
 void I_InitNetwork(void) {
-  boolean trueval = true;
+  bool trueval = true;
   int i;
   int p;
   struct hostent *hostentry; // host information entry

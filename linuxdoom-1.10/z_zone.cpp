@@ -65,7 +65,7 @@ void Z_ClearZone(memzone_t *zone) {
 
   // set the entire zone to one free block
   zone->blocklist.next = zone->blocklist.prev = block =
-      (memblock_t *)((byte *)zone + sizeof(memzone_t));
+      (memblock_t *)((std::byte *)zone + sizeof(memzone_t));
 
   zone->blocklist.user = static_cast<void **>(static_cast<void *>(zone));
   zone->blocklist.tag = PU_STATIC;
@@ -91,7 +91,7 @@ void Z_Init(void) {
 
   // set the entire zone to one free block
   mainzone->blocklist.next = mainzone->blocklist.prev = block =
-      (memblock_t *)((byte *)mainzone + sizeof(memzone_t));
+      (memblock_t *)((std::byte *)mainzone + sizeof(memzone_t));
 
   mainzone->blocklist.user =
       static_cast<void **>(static_cast<void *>(mainzone));
@@ -123,7 +123,7 @@ void freeTags(int lowtag, int hightag) {
       continue;
 
     if (block->tag >= lowtag && block->tag <= hightag)
-      free((byte *)block + sizeof(memblock_t));
+      free((std::byte *)block + sizeof(memblock_t));
   }
 }
 
@@ -148,7 +148,7 @@ void Z_DumpHeap(int lowtag, int hightag) {
       break;
     }
 
-    if ((byte *)block + block->size != (byte *)block->next)
+    if ((std::byte *)block + block->size != (std::byte *)block->next)
       printf("ERROR: block size does not touch the next block\n");
 
     if (block->next->prev != block)
@@ -176,7 +176,7 @@ void Z_FileDumpHeap(FILE *f) {
       break;
     }
 
-    if ((byte *)block + block->size != (byte *)block->next)
+    if ((std::byte *)block + block->size != (std::byte *)block->next)
       fprintf(f, "ERROR: block size does not touch the next block\n");
 
     if (block->next->prev != block)
@@ -199,7 +199,7 @@ void Z_CheckHeap(void) {
       break;
     }
 
-    if ((byte *)block + block->size != (byte *)block->next)
+    if ((std::byte *)block + block->size != (std::byte *)block->next)
       I_Error("Z_CheckHeap: block size does not touch the next block\n");
 
     if (block->next->prev != block)

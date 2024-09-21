@@ -29,7 +29,7 @@ extern fixed_t dc_iscale;
 extern fixed_t dc_texturemid;
 
 // first pixel in a column
-extern byte *dc_source;
+extern std::byte *dc_source;
 
 // The span blitting interface.
 // Hook in assembler or system specific BLT
@@ -64,10 +64,10 @@ extern fixed_t ds_xstep;
 extern fixed_t ds_ystep;
 
 // start of a 64*64 tile image
-extern byte *ds_source;
+extern std::byte *ds_source;
 
-extern byte *translationtables;
-extern byte *dc_translation;
+extern std::byte *translationtables;
+extern std::byte *dc_translation;
 
 // Span blitting for rows, floor/ceiling.
 // No Sepctre effect needed.

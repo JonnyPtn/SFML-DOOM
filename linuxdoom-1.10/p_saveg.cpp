@@ -28,11 +28,13 @@
 #include "doomstat.h"
 #include "r_state.h"
 
+#include <spdlog/spdlog.h>
+
 #include <stdlib.h>
 
 import i_system;
 
-byte *save_p;
+std::byte *save_p;
 
 // Pads save_p to a 4-byte boundary
 //  so that the load/save works on SGI&Gecko.
@@ -137,7 +139,7 @@ void P_ArchiveWorld(void) {
     }
   }
 
-  save_p = (byte *)put;
+  save_p = (std::byte *)put;
 }
 
 //
@@ -182,7 +184,7 @@ void P_UnArchiveWorld(void) {
       si->midtexture = *get++;
     }
   }
-  save_p = (byte *)get;
+  save_p = (std::byte *)get;
 }
 
 //
@@ -204,7 +206,7 @@ void P_ArchiveThinkers(void) {
   // save off the current thinkers
   for (th = thinkercap.next; th != &thinkercap; th = th->next) {
     if (th->function.acp1 == (actionf_p1)P_MobjThinker) {
-      *save_p++ = tc_mobj;
+      *save_p++ = static_cast<std::byte>(tc_mobj);
       PADSAVEP();
       mobj = (mobj_t *)save_p;
       memcpy(mobj, th, sizeof(*mobj));
@@ -220,14 +222,14 @@ void P_ArchiveThinkers(void) {
   }
 
   // add a terminating marker
-  *save_p++ = tc_end;
+  *save_p++ = static_cast<std::byte>(tc_end);
 }
 
 //
 // P_UnArchiveThinkers
 //
 void P_UnArchiveThinkers(void) {
-  byte tclass;
+  thinkerclass_t tclass;
   thinker_t *currentthinker;
   thinker_t *next;
   mobj_t *mobj;
@@ -248,7 +250,7 @@ void P_UnArchiveThinkers(void) {
 
   // read in saved thinkers
   while (1) {
-    tclass = *save_p++;
+    tclass = static_cast<thinkerclass_t>(*save_p++);
     switch (tclass) {
     case tc_end:
       return; // end of list
@@ -275,7 +277,7 @@ void P_UnArchiveThinkers(void) {
       break;
 
     default:
-      I_Error("Unknown tclass {} in savegame", tclass);
+      I_Error("Unknown tclass {} in savegame", static_cast<int>(tclass));
     }
   }
 }
@@ -325,7 +327,7 @@ void P_ArchiveSpecials(void) {
           break;
 
       if (i < MAXCEILINGS) {
-        *save_p++ = tc_ceiling;
+        *save_p++ = static_cast<std::byte>(tc_ceiling);
         PADSAVEP();
         ceiling = (ceiling_t *)save_p;
         memcpy(ceiling, th, sizeof(*ceiling));
@@ -336,7 +338,7 @@ void P_ArchiveSpecials(void) {
     }
 
     if (th->function.acp1 == (actionf_p1)T_MoveCeiling) {
-      *save_p++ = tc_ceiling;
+      *save_p++ = static_cast<std::byte>(tc_ceiling);
       PADSAVEP();
       ceiling = (ceiling_t *)save_p;
       memcpy(ceiling, th, sizeof(*ceiling));
@@ -346,7 +348,7 @@ void P_ArchiveSpecials(void) {
     }
 
     if (th->function.acp1 == (actionf_p1)T_VerticalDoor) {
-      *save_p++ = tc_door;
+      *save_p++ = static_cast<std::byte>(tc_door);
       PADSAVEP();
       door = (vldoor_t *)save_p;
       memcpy(door, th, sizeof(*door));
@@ -356,7 +358,7 @@ void P_ArchiveSpecials(void) {
     }
 
     if (th->function.acp1 == (actionf_p1)T_MoveFloor) {
-      *save_p++ = tc_floor;
+      *save_p++ = static_cast<std::byte>(tc_floor);
       PADSAVEP();
       floor = (floormove_t *)save_p;
       memcpy(floor, th, sizeof(*floor));
@@ -366,7 +368,7 @@ void P_ArchiveSpecials(void) {
     }
 
     if (th->function.acp1 == (actionf_p1)T_PlatRaise) {
-      *save_p++ = tc_plat;
+      *save_p++ = static_cast<std::byte>(tc_plat);
       PADSAVEP();
       plat = (plat_t *)save_p;
       memcpy(plat, th, sizeof(*plat));
@@ -376,7 +378,7 @@ void P_ArchiveSpecials(void) {
     }
 
     if (th->function.acp1 == (actionf_p1)T_LightFlash) {
-      *save_p++ = tc_flash;
+      *save_p++ = static_cast<std::byte>(tc_flash);
       PADSAVEP();
       flash = (lightflash_t *)save_p;
       memcpy(flash, th, sizeof(*flash));
@@ -386,7 +388,7 @@ void P_ArchiveSpecials(void) {
     }
 
     if (th->function.acp1 == (actionf_p1)T_StrobeFlash) {
-      *save_p++ = tc_strobe;
+      *save_p++ = static_cast<std::byte>(tc_strobe);
       PADSAVEP();
       strobe = (strobe_t *)save_p;
       memcpy(strobe, th, sizeof(*strobe));
@@ -396,7 +398,7 @@ void P_ArchiveSpecials(void) {
     }
 
     if (th->function.acp1 == (actionf_p1)T_Glow) {
-      *save_p++ = tc_glow;
+      *save_p++ = static_cast<std::byte>(tc_glow);
       PADSAVEP();
       glow = (glow_t *)save_p;
       memcpy(glow, th, sizeof(*glow));
@@ -407,14 +409,14 @@ void P_ArchiveSpecials(void) {
   }
 
   // add a terminating marker
-  *save_p++ = tc_endspecials;
+  *save_p++ = static_cast<std::byte>(tc_endspecials);
 }
 
 //
 // P_UnArchiveSpecials
 //
 void P_UnArchiveSpecials(void) {
-  byte tclass;
+  specials_e tclass;
   ceiling_t *ceiling;
   vldoor_t *door;
   floormove_t *floor;
@@ -425,7 +427,7 @@ void P_UnArchiveSpecials(void) {
 
   // read in saved thinkers
   while (1) {
-    tclass = *save_p++;
+    tclass = static_cast<specials_e>(*save_p++);
     switch (tclass) {
     case tc_endspecials:
       return; // end of list
@@ -513,9 +515,9 @@ void P_UnArchiveSpecials(void) {
       break;
 
     default:
-      I_Error("P_UnarchiveSpecials:Unknown tclass {} "
+      spdlog::error("P_UnarchiveSpecials:Unknown tclass {} "
               "in savegame",
-              tclass);
+              static_cast<int>(tclass));
     }
   }
 }

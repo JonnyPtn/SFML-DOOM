@@ -105,7 +105,7 @@ mobj_t *P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type);
 
 void P_RemoveMobj(mobj_t *th);
 
-boolean P_SetMobjState(mobj_t *mobj, statenum_t state);
+bool P_SetMobjState(mobj_t *mobj, statenum_t state);
 
 void P_MobjThinker(mobj_t *mobj);
 
@@ -135,7 +135,7 @@ typedef struct {
 
 typedef struct {
   fixed_t frac; // along trace line
-  boolean isaline;
+  bool isaline;
   union {
     mobj_t *thing;
     line_t *line;
@@ -147,7 +147,7 @@ typedef struct {
 extern intercept_t intercepts[MAXINTERCEPTS];
 extern intercept_t *intercept_p;
 
-typedef boolean (*traverser_t)(intercept_t *in);
+typedef bool (*traverser_t)(intercept_t *in);
 
 fixed_t P_AproxDistance(fixed_t dx, fixed_t dy);
 
@@ -168,9 +168,9 @@ extern fixed_t lowfloor;
 
 void P_LineOpening(line_t *linedef);
 
-boolean P_BlockLinesIterator(int x, int y, boolean (*func)(line_t *));
+bool P_BlockLinesIterator(int x, int y, bool (*func)(line_t *));
 
-boolean P_BlockThingsIterator(int x, int y, boolean (*func)(mobj_t *));
+bool P_BlockThingsIterator(int x, int y, bool (*func)(mobj_t *));
 
 #define PT_ADDLINES 1
 #define PT_ADDTHINGS 2
@@ -178,8 +178,8 @@ boolean P_BlockThingsIterator(int x, int y, boolean (*func)(mobj_t *));
 
 extern divline_t trace;
 
-boolean P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2,
-                       int flags, boolean (*trav)(intercept_t *));
+bool P_PathTraverse(fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2,
+                       int flags, bool (*trav)(intercept_t *));
 
 void P_UnsetThingPosition(mobj_t *thing);
 
@@ -191,25 +191,25 @@ void P_SetThingPosition(mobj_t *thing);
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
-extern boolean floatok;
+extern bool floatok;
 extern fixed_t tmfloorz;
 extern fixed_t tmceilingz;
 
 extern line_t *ceilingline;
 
-boolean P_CheckPosition(mobj_t *thing, fixed_t x, fixed_t y);
+bool P_CheckPosition(mobj_t *thing, fixed_t x, fixed_t y);
 
-boolean P_TryMove(mobj_t *thing, fixed_t x, fixed_t y);
+bool P_TryMove(mobj_t *thing, fixed_t x, fixed_t y);
 
-boolean P_TeleportMove(mobj_t *thing, fixed_t x, fixed_t y);
+bool P_TeleportMove(mobj_t *thing, fixed_t x, fixed_t y);
 
 void P_SlideMove(mobj_t *mo);
 
-boolean P_CheckSight(mobj_t *t1, mobj_t *t2);
+bool P_CheckSight(mobj_t *t1, mobj_t *t2);
 
 void P_UseLines(player_t *player);
 
-boolean P_ChangeSector(sector_t *sector, boolean crunch);
+bool P_ChangeSector(sector_t *sector, bool crunch);
 
 extern mobj_t *linetarget; // who got hit (or NULL)
 
@@ -223,7 +223,7 @@ void P_RadiusAttack(mobj_t *spot, mobj_t *source, int damage);
 //
 // P_SETUP
 //
-extern byte *rejectmatrix;  // for fast sight rejection
+extern std::byte *rejectmatrix;  // for fast sight rejection
 extern short *blockmaplump; // offsets in blockmap are from here
 extern short *blockmap;
 extern int bmapwidth;

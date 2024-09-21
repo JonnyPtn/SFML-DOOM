@@ -33,10 +33,10 @@
 
 import m_misc;
 
-// boolean : whether the screen is always erased
+// bool : whether the screen is always erased
 #define noterased viewwindowx
 
-extern boolean automapactive; // in AM_map.c
+extern bool automapactive; // in AM_map.c
 
 void HUlib_init(void) {}
 
@@ -54,7 +54,7 @@ void HUlib_initTextLine(hu_textline_t *t, int x, int y, patch_t **f, int sc) {
   HUlib_clearTextLine(t);
 }
 
-boolean HUlib_addCharToTextLine(hu_textline_t *t, char ch) {
+bool HUlib_addCharToTextLine(hu_textline_t *t, char ch) {
 
   if (t->len == HU_MAXLINELENGTH)
     return false;
@@ -66,7 +66,7 @@ boolean HUlib_addCharToTextLine(hu_textline_t *t, char ch) {
   }
 }
 
-boolean HUlib_delCharFromTextLine(hu_textline_t *t) {
+bool HUlib_delCharFromTextLine(hu_textline_t *t) {
 
   if (!t->len)
     return false;
@@ -77,7 +77,7 @@ boolean HUlib_delCharFromTextLine(hu_textline_t *t) {
   }
 }
 
-void HUlib_drawTextLine(hu_textline_t *l, boolean drawcursor) {
+void HUlib_drawTextLine(hu_textline_t *l, bool drawcursor) {
 
   int i;
   int w;
@@ -135,7 +135,7 @@ void HUlib_eraseTextLine(hu_textline_t *l) {
 }
 
 void HUlib_initSText(hu_stext_t *s, int x, int y, int h, patch_t **font,
-                     int startchar, boolean *on) {
+                     int startchar, bool *on) {
 
   int i;
 
@@ -205,7 +205,7 @@ void HUlib_eraseSText(hu_stext_t *s) {
 }
 
 void HUlib_initIText(hu_itext_t *it, int x, int y, patch_t **font,
-                     int startchar, boolean *on) {
+                     int startchar, bool *on) {
   it->lm = 0; // default left margin is start of text
   it->on = on;
   it->laston = true;
@@ -237,7 +237,7 @@ void HUlib_addPrefixToIText(hu_itext_t *it, char *str) {
 
 // wrapper function for handling general keyed input.
 // returns true if it ate the key
-boolean HUlib_keyInIText(hu_itext_t *it, unsigned char ch) {
+bool HUlib_keyInIText(hu_itext_t *it, unsigned char ch) {
   // JONNY TODO
   //    if (ch >= ' ' && ch <= '_')
   //  	HUlib_addCharToTextLine(&it->l, (char) ch);

@@ -54,7 +54,7 @@ uint32_t height;
 // Fake mouse handling.
 // This cannot work properly w/o DGA.
 // Needs an invisible mouse cursor at least.
-boolean grabMouse;
+bool grabMouse;
 int doPointerWarp = POINTER_WARP_COUNTDOWN;
 
 // Blocky mode,
@@ -63,8 +63,8 @@ int doPointerWarp = POINTER_WARP_COUNTDOWN;
 // to use ....
 // static int multiply = 1;
 
-boolean mousemoved = false;
-boolean shmFinished;
+bool mousemoved = false;
+bool shmFinished;
 
 void I_GetEvent(void) {
   // put event-grabbing stuff in here
@@ -139,13 +139,13 @@ static std::array<sf::Color, 256> colours;
 //
 // I_SetPalette
 //
-void I_SetPalette(byte *palette) {
+void I_SetPalette(std::byte *palette) {
   for (int i = 0; i < 256; i++) {
-    auto c = gammatable[usegamma][*palette++];
+    auto c = gammatable[usegamma][static_cast<int>(*palette++)];
     colours[i].r = (c << 8) + c;
-    c = gammatable[usegamma][*palette++];
+    c = gammatable[usegamma][static_cast<int>(*palette++)];
     colours[i].g = (c << 8) + c;
-    c = gammatable[usegamma][*palette++];
+    c = gammatable[usegamma][static_cast<int>(*palette++)];
     colours[i].b = (c << 8) + c;
   }
 }
@@ -170,16 +170,16 @@ void I_FinishUpdate(void) {
       tics = 20;
 
     for (i = 0; i < tics * 2; i += 2)
-      screens[0][(SCREENHEIGHT - 1) * SCREENWIDTH + i] = 0xff;
+      screens[0][(SCREENHEIGHT - 1) * SCREENWIDTH + i] = std::byte{0xff};
     for (; i < 20 * 2; i += 2)
-      screens[0][(SCREENHEIGHT - 1) * SCREENWIDTH + i] = 0x0;
+      screens[0][(SCREENHEIGHT - 1) * SCREENWIDTH + i] = std::byte{0x0};
   }
 
   uint8_t colouredPixels[SCREENHEIGHT * SCREENWIDTH * 4] = {0};
   for (int i = 0; i < SCREENHEIGHT * SCREENWIDTH; i++) {
-    colouredPixels[i * 4] = colours[screens[0][i]].r;
-    colouredPixels[i * 4 + 1] = colours[screens[0][i]].g;
-    colouredPixels[i * 4 + 2] = colours[screens[0][i]].b;
+    colouredPixels[i * 4] = colours[static_cast<int>(screens[0][i])].r;
+    colouredPixels[i * 4 + 1] = colours[static_cast<int>(screens[0][i])].g;
+    colouredPixels[i * 4 + 2] = colours[static_cast<int>(screens[0][i])].b;
     colouredPixels[i * 4 + 3] = 255;
   }
 
@@ -193,7 +193,7 @@ void I_FinishUpdate(void) {
 //
 // I_ReadScreen
 //
-void I_ReadScreen(byte *scr) {
+void I_ReadScreen(std::byte *scr) {
   memcpy(scr, screens[0].data(), SCREENWIDTH * SCREENHEIGHT);
 }
 

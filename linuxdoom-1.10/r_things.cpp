@@ -84,7 +84,7 @@ const char *spritename;
 // Local function for R_InitSprites.
 //
 spriteframe_t R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
-                                  boolean flipped) {
+                                  bool flipped) {
   spriteframe_t sprframe{};
 
   if (rotation > 8) {
@@ -94,7 +94,7 @@ spriteframe_t R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
 
     for (auto r = 0; r < 8; r++) {
       sprframe.lump[r] = lump - firstspritelump;
-      sprframe.flip[r] = (byte)flipped;
+      sprframe.flip[r] = (std::byte)flipped;
     }
     return sprframe;
   }
@@ -109,7 +109,7 @@ spriteframe_t R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation,
   }
 
   sprframe.lump[rotation] = lump - firstspritelump;
-  sprframe.flip[rotation] = (byte)flipped;
+  sprframe.flip[rotation] = (std::byte)flipped;
   return sprframe;
 }
 
@@ -259,11 +259,11 @@ void R_DrawMaskedColumn(column_t *column) {
 
   basetexturemid = dc_texturemid;
 
-  for (; column->topdelta != 0xff;) {
+  for (; column->topdelta != std::byte{0xff};) {
     // calculate unclipped screen coordinates
     //  for post
-    topscreen = sprtopscreen + spryscale * column->topdelta;
-    bottomscreen = topscreen + spryscale * column->length;
+    topscreen = sprtopscreen + spryscale * static_cast<int>(column->topdelta);
+    bottomscreen = topscreen + spryscale * static_cast<int>(column->length);
 
     dc_yl = (topscreen + FRACUNIT - 1) >> FRACBITS;
     dc_yh = (bottomscreen - 1) >> FRACBITS;
@@ -274,15 +274,15 @@ void R_DrawMaskedColumn(column_t *column) {
       dc_yl = mceilingclip[dc_x] + 1;
 
     if (dc_yl <= dc_yh) {
-      dc_source = (byte *)column + 3;
-      dc_texturemid = basetexturemid - (column->topdelta << FRACBITS);
+      dc_source = (std::byte *)column + 3;
+      dc_texturemid = basetexturemid - static_cast<int>(column->topdelta << FRACBITS);
       // dc_source = (byte *)column + 3 - column->topdelta;
 
       // Drawn by either R_DrawColumn
       //  or (SHADOW) R_DrawFuzzColumn.
       colfunc();
     }
-    column = (column_t *)((byte *)column + column->length + 4);
+    column = (column_t *)((std::byte *)column + static_cast<int>(column->length) + 4);
   }
 
   dc_texturemid = basetexturemid;
@@ -325,7 +325,7 @@ void R_DrawVisSprite(vissprite_t *vis, int x1, int x2) {
       I_Error("R_DrawSpriteRange: bad texturecolumn");
 #endif
     column =
-        (column_t *)((byte *)patch + LONG(patch->columnofs[texturecolumn]));
+        (column_t *)((std::byte *)patch + LONG(patch->columnofs[texturecolumn]));
     R_DrawMaskedColumn(column);
   }
 
@@ -357,7 +357,7 @@ void R_ProjectSprite(mobj_t *thing) {
   int lump;
 
   unsigned rot;
-  boolean flip;
+  bool flip;
 
   int index;
 
@@ -407,11 +407,11 @@ void R_ProjectSprite(mobj_t *thing) {
     ang = R_PointToAngle(thing->x, thing->y);
     rot = (ang - thing->angle + (unsigned)(ANG45 / 2) * 9) >> 29;
     lump = sprframe->lump[rot];
-    flip = (boolean)sprframe->flip[rot];
+    flip = (bool)sprframe->flip[rot];
   } else {
     // use single rotation for all views
     lump = sprframe->lump[0];
-    flip = (boolean)sprframe->flip[0];
+    flip = (bool)sprframe->flip[0];
   }
 
   // calculate edges of the shape
@@ -517,7 +517,7 @@ void R_DrawPSprite(pspdef_t *psp) {
   spritedef_t *sprdef;
   spriteframe_t *sprframe;
   int lump;
-  boolean flip;
+  bool flip;
   vissprite_t *vis;
   vissprite_t avis;
 
@@ -535,7 +535,7 @@ void R_DrawPSprite(pspdef_t *psp) {
   sprframe = &(*sprdef)[psp->state->frame & FF_FRAMEMASK];
 
   lump = sprframe->lump[0];
-  flip = (boolean)sprframe->flip[0];
+  flip = (bool)sprframe->flip[0];
 
   // calculate edges of the shape
   tx = psp->sx - 160 * FRACUNIT;

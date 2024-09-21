@@ -36,11 +36,11 @@
 //
 
 // when zero, stop the wipe
-static boolean go = 0;
+static bool go = 0;
 
-static byte *wipe_scr_start;
-static byte *wipe_scr_end;
-static byte *wipe_scr;
+static std::byte *wipe_scr_start;
+static std::byte *wipe_scr_end;
+static std::byte *wipe_scr;
 
 void wipe_shittyColMajorXform(short *array, int width, int height) {
   int x;
@@ -64,10 +64,10 @@ int wipe_initColorXForm(int width, int height, int ticks) {
 }
 
 int wipe_doColorXForm(int width, int height, int ticks) {
-  boolean changed;
-  byte *w;
-  byte *e;
-  int newval;
+  bool changed;
+  std::byte *w;
+  std::byte *e;
+  std::byte newval;
 
   changed = false;
   w = wipe_scr;
@@ -76,14 +76,14 @@ int wipe_doColorXForm(int width, int height, int ticks) {
   while (w != wipe_scr + width * height) {
     if (*w != *e) {
       if (*w > *e) {
-        newval = *w - ticks;
+        newval = static_cast<std::byte>(static_cast<int>(*w) - ticks);
         if (newval < *e)
           *w = *e;
         else
           *w = newval;
         changed = true;
       } else if (*w < *e) {
-        newval = *w + ticks;
+        newval = static_cast<std::byte>(static_cast<int>(*w) + ticks);
         if (newval > *e)
           *w = *e;
         else
@@ -137,7 +137,7 @@ int wipe_doMelt(int width, int height, int ticks) {
 
   short *s;
   short *d;
-  boolean done = true;
+  bool done = true;
 
   width /= 2;
 

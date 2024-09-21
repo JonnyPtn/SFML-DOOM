@@ -198,7 +198,7 @@ static int grid = 0;
 
 static int leveljuststarted = 1; // kluge until AM_LevelInit() is called
 
-boolean automapactive = false;
+bool automapactive = false;
 static int finit_width = SCREENWIDTH;
 static int finit_height = SCREENHEIGHT - 32;
 
@@ -211,7 +211,7 @@ static int f_w;
 static int f_h;
 
 static int lightlev; // used for funky strobing effect
-static byte *fb;     // pseudo-frame buffer
+static std::byte *fb;     // pseudo-frame buffer
 static int amclock;
 
 static mpoint_t m_paninc; // how far the window pans each tic (map coords)
@@ -264,9 +264,9 @@ static int markpointnum = 0;                  // next point to be assigned
 
 static int followplayer = 1; // specifies whether to follow the player around
 
-static boolean stopped = true;
+static bool stopped = true;
 
-extern boolean viewactive;
+extern bool viewactive;
 // extern byte screens[][SCREENWIDTH*SCREENHEIGHT];
 
 void V_MarkRect(int x, int y, int width, int height);
@@ -545,7 +545,7 @@ void AM_maxOutWindowScale(void) {
 //
 // Handle events (user inputs) in automap mode
 //
-boolean AM_Responder(const sf::Event &ev) {
+bool AM_Responder(const sf::Event &ev) {
 
   int rc;
   static int bigstate = 0;
@@ -751,7 +751,7 @@ void AM_clearFB(int color) { memset(fb, color, f_w * f_h); }
 // faster reject and precalculated slopes.  If the speed is needed,
 // use a hash algorithm to handle  the common cases.
 //
-boolean AM_clipMline(mline_t *ml, fline_t *fl) {
+bool AM_clipMline(mline_t *ml, fline_t *fl) {
   enum { LEFT = 1, RIGHT = 2, BOTTOM = 4, TOP = 8 };
 
   int32_t outcode1 = 0;
@@ -883,7 +883,7 @@ void AM_drawFline(fline_t *fl, int color) {
     return;
   }
 
-#define PUTDOT(xx, yy, cc) fb[(yy) * f_w + (xx)] = (cc)
+#define PUTDOT(xx, yy, cc) fb[(yy) * f_w + (xx)] = static_cast<std::byte>(cc)
 
   dx = fl->b.x - fl->a.x;
   ax = 2 * (dx < 0 ? -dx : dx);
@@ -1144,7 +1144,7 @@ void AM_drawMarks(void) {
 }
 
 void AM_drawCrosshair(int color) {
-  fb[(f_w * (f_h + 1)) / 2] = color; // single point for now
+  fb[(f_w * (f_h + 1)) / 2] = static_cast<std::byte>(color); // single point for now
 }
 
 void AM_Drawer(void) {

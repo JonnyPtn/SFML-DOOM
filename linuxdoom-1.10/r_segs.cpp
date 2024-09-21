@@ -35,13 +35,13 @@ import m_misc;
 // OPTIMIZE: closed two sided lines as single sided
 
 // True if any of the segs textures might be visible.
-boolean segtextured;
+bool segtextured;
 
 // False if the back side is the same plane.
-boolean markfloor;
-boolean markceiling;
+bool markfloor;
+bool markceiling;
 
-boolean maskedtexture;
+bool maskedtexture;
 int toptexture;
 int bottomtexture;
 int midtexture;
@@ -158,7 +158,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds, int x1, int x2) {
 
       // draw the texture
       col =
-          (column_t *)((byte *)R_GetColumn(texnum, maskedtexturecol[dc_x]) - 3);
+          (column_t *)((std::byte *)R_GetColumn(texnum, maskedtexturecol[dc_x]) - 3);
 
       R_DrawMaskedColumn(col);
       maskedtexturecol[dc_x] = MAXSHORT;
@@ -206,8 +206,8 @@ void R_RenderSegLoop(void) {
         bottom = floorclip[rw_x] - 1;
 
       if (top <= bottom) {
-        ceilingplane->top[rw_x] = top;
-        ceilingplane->bottom[rw_x] = bottom;
+        ceilingplane->top[rw_x] = static_cast<std::byte>(top);
+        ceilingplane->bottom[rw_x] = static_cast<std::byte>(bottom);
       }
     }
 
@@ -222,8 +222,8 @@ void R_RenderSegLoop(void) {
       if (top <= ceilingclip[rw_x])
         top = ceilingclip[rw_x] + 1;
       if (top <= bottom) {
-        floorplane->top[rw_x] = top;
-        floorplane->bottom[rw_x] = bottom;
+        floorplane->top[rw_x] = static_cast<std::byte>(top);
+        floorplane->bottom[rw_x] = static_cast<std::byte>(bottom);
       }
     }
 

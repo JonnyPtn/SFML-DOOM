@@ -247,7 +247,7 @@ visplane_t *R_CheckPlane(visplane_t *pl, int start, int stop) {
   }
 
   for (x = intrl; x <= intrh; x++)
-    if (pl->top[x] != 0xff)
+    if (pl->top[x] != std::byte{0xff})
       break;
 
   if (x > intrh) {
@@ -332,8 +332,8 @@ void R_DrawPlanes(void) {
       dc_colormap = colormaps;
       dc_texturemid = skytexturemid;
       for (x = pl->minx; x <= pl->maxx; x++) {
-        dc_yl = pl->top[x];
-        dc_yh = pl->bottom[x];
+        dc_yl = static_cast<int>(pl->top[x]);
+        dc_yh = static_cast<int>(pl->bottom[x]);
 
         if (dc_yl <= dc_yh) {
           angle = (viewangle + xtoviewangle[x]) >> ANGLETOSKYSHIFT;
@@ -346,7 +346,7 @@ void R_DrawPlanes(void) {
     }
 
     // regular flat
-    ds_source = static_cast<byte *>(
+    ds_source = static_cast<std::byte *>(
         W_CacheLumpNum(firstflat + flattranslation[pl->picnum], PU_STATIC));
 
     planeheight = abs(pl->height - viewz);
@@ -360,14 +360,14 @@ void R_DrawPlanes(void) {
 
     planezlight = zlight[light];
 
-    pl->top[pl->maxx + 1] = 0xff;
-    pl->top[pl->minx - 1] = 0xff;
+    pl->top[pl->maxx + 1] = std::byte{0xff};
+    pl->top[pl->minx - 1] = std::byte{0xff};
 
     stop = pl->maxx + 1;
 
     for (x = pl->minx; x <= stop; x++) {
-      R_MakeSpans(x, pl->top[x - 1], pl->bottom[x - 1], pl->top[x],
-                  pl->bottom[x]);
+      R_MakeSpans(x, static_cast<int>(pl->top[x - 1]), static_cast<int>(pl->bottom[x - 1]), static_cast<int>(pl->top[x]),
+                  static_cast<int>(pl->bottom[x]));
     }
   }
 }

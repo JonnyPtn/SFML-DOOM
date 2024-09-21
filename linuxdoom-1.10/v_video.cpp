@@ -40,7 +40,7 @@ std::array<screen, 5> screens;
 int dirtybox[4];
 
 // Now where did these came from?
-byte gammatable[5][256] = {
+unsigned char gammatable[5][256] = {
     {1,   2,   3,   4,   5,   6,   7,   8,   9,   10,  11,  12,  13,  14,  15,
      16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,
      31,  32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,
@@ -150,8 +150,8 @@ void V_MarkRect(int x, int y, int width, int height) {
 //
 void V_CopyRect(int srcx, int srcy, int srcscrn, int width, int height,
                 int destx, int desty, int destscrn) {
-  byte *src;
-  byte *dest;
+  std::byte *src;
+  std::byte *dest;
 
 #ifdef RANGECHECK
   if (srcx < 0 || srcx + width > SCREENWIDTH || srcy < 0 ||
@@ -183,9 +183,9 @@ void V_DrawPatch(int x, int y, int scrn, patch_t *patch) {
   int count;
   int col;
   column_t *column;
-  byte *desttop;
-  byte *dest;
-  byte *source;
+  std::byte *desttop;
+  std::byte *dest;
+  std::byte *source;
   int w;
 
   y -= SHORT(patch->topoffset);
@@ -209,19 +209,19 @@ void V_DrawPatch(int x, int y, int scrn, patch_t *patch) {
   w = SHORT(patch->width);
 
   for (; col < w; x++, col++, desttop++) {
-    column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
+    column = (column_t *)((std::byte *)patch + LONG(patch->columnofs[col]));
 
     // step through the posts in a column
-    while (column->topdelta != 0xff) {
-      source = (byte *)column + 3;
-      dest = desttop + column->topdelta * SCREENWIDTH;
-      count = column->length;
+    while (column->topdelta != std::byte{0xff}) {
+      source = (std::byte *)column + 3;
+      dest = desttop + static_cast<int>(column->topdelta) * SCREENWIDTH;
+      count = static_cast<int>(column->length);
 
       while (count--) {
         *dest = *source++;
         dest += SCREENWIDTH;
       }
-      column = (column_t *)((byte *)column + column->length + 4);
+      column = (column_t *)((std::byte *)column + static_cast<int>(column->length) + 4);
     }
   }
 }
@@ -236,9 +236,9 @@ void V_DrawPatchFlipped(int x, int y, int scrn, patch_t *patch) {
   int count;
   int col;
   column_t *column;
-  byte *desttop;
-  byte *dest;
-  byte *source;
+  std::byte *desttop;
+  std::byte *dest;
+  std::byte *source;
   int w;
 
   y -= SHORT(patch->topoffset);
@@ -260,19 +260,19 @@ void V_DrawPatchFlipped(int x, int y, int scrn, patch_t *patch) {
   w = SHORT(patch->width);
 
   for (; col < w; x++, col++, desttop++) {
-    column = (column_t *)((byte *)patch + LONG(patch->columnofs[w - 1 - col]));
+    column = (column_t *)((std::byte *)patch + LONG(patch->columnofs[w - 1 - col]));
 
     // step through the posts in a column
-    while (column->topdelta != 0xff) {
-      source = (byte *)column + 3;
-      dest = desttop + column->topdelta * SCREENWIDTH;
-      count = column->length;
+    while (column->topdelta != std::byte{0xff}) {
+      source = (std::byte *)column + 3;
+      dest = desttop + static_cast<int>(column->topdelta) * SCREENWIDTH;
+      count = static_cast<int>(column->length);
 
       while (count--) {
         *dest = *source++;
         dest += SCREENWIDTH;
       }
-      column = (column_t *)((byte *)column + column->length + 4);
+      column = (column_t *)((std::byte *)column + static_cast<int>(column->length) + 4);
     }
   }
 }
@@ -341,8 +341,8 @@ void V_DrawPatchDirect(int x, int y, int scrn, patch_t *patch) {
 // V_DrawBlock
 // Draw a linear block of pixels into the view buffer.
 //
-void V_DrawBlock(int x, int y, int scrn, int width, int height, byte *src) {
-  byte *dest;
+void V_DrawBlock(int x, int y, int scrn, int width, int height, std::byte *src) {
+  std::byte *dest;
 
 #ifdef RANGECHECK
   if (x < 0 || x + width > SCREENWIDTH || y < 0 || y + height > SCREENHEIGHT ||
@@ -366,8 +366,8 @@ void V_DrawBlock(int x, int y, int scrn, int width, int height, byte *src) {
 // V_GetBlock
 // Gets a linear block of pixels from the view buffer.
 //
-void V_GetBlock(int x, int y, int scrn, int width, int height, byte *dest) {
-  byte *src;
+void V_GetBlock(int x, int y, int scrn, int width, int height, std::byte *dest) {
+  std::byte *src;
 
 #ifdef RANGECHECK
   if (x < 0 || x + width > SCREENWIDTH || y < 0 || y + height > SCREENHEIGHT ||

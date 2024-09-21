@@ -43,8 +43,8 @@
 // Move a plane (floor or ceiling) and check for crushing
 //
 result_e T_MovePlane(sector_t *sector, fixed_t speed, fixed_t dest,
-                     boolean crush, int floorOrCeiling, int direction) {
-  boolean flag;
+                     bool crush, int floorOrCeiling, int direction) {
+  bool flag;
   fixed_t lastpos;
 
   switch (floorOrCeiling) {

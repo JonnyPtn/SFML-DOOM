@@ -57,7 +57,7 @@ import i_system;
 // There is another anim_t used in wi_stuff, unrelated.
 //
 typedef struct {
-  boolean istexture;
+  bool istexture;
   int picnum;
   int basepic;
   int numpics;
@@ -69,7 +69,7 @@ typedef struct {
 //      source animation definition
 //
 struct animdef_t {
-  boolean istexture; // if false, it is a flat
+  bool istexture; // if false, it is a flat
   std::string endname;
   std::string startname;
   int speed;
@@ -961,7 +961,7 @@ void P_PlayerInSpecialSector(player_t *player) {
 // P_UpdateSpecials
 // Animate planes, scroll walls, etc.
 //
-boolean levelTimer;
+bool levelTimer;
 int levelTimeCount;
 
 void P_UpdateSpecials(void) {

@@ -116,7 +116,7 @@ fixed_t P_InterceptVector2(divline_t *v2, divline_t *v1) {
 // Returns true
 //  if strace crosses the given subsector successfully.
 //
-boolean P_CrossSubsector(int num) {
+bool P_CrossSubsector(int num) {
   seg_t *seg;
   line_t *line;
   int s1;
@@ -230,7 +230,7 @@ boolean P_CrossSubsector(int num) {
 // Returns true
 //  if strace crosses the given node successfully.
 //
-boolean P_CrossBSPNode(int bspnum) {
+bool P_CrossBSPNode(int bspnum) {
   node_t *bsp;
   int side;
 
@@ -268,7 +268,7 @@ boolean P_CrossBSPNode(int bspnum) {
 //  if a straight line between t1 and t2 is unobstructed.
 // Uses REJECT.
 //
-boolean P_CheckSight(mobj_t *t1, mobj_t *t2) {
+bool P_CheckSight(mobj_t *t1, mobj_t *t2) {
   int s1;
   int s2;
   int pnum;
@@ -285,7 +285,7 @@ boolean P_CheckSight(mobj_t *t1, mobj_t *t2) {
   bitnum = 1 << (pnum & 7);
 
   // Check in REJECT table.
-  if (rejectmatrix[bytenum] & bitnum) {
+  if (static_cast<int>(rejectmatrix[bytenum]) & bitnum) {
     sightcounts[0]++;
 
     // can't possibly be connected
