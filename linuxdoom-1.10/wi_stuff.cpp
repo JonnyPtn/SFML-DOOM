@@ -28,8 +28,6 @@
 #include "m_random.h"
 #include "m_swap.h"
 
-#include "w_wad.h"
-
 #include "g_game.h"
 
 #include "r_local.h"
@@ -44,6 +42,7 @@
 #include "v_video.h"
 
 #include "wi_stuff.h"
+import wad;
 
 //
 // Data needed to add patches to full screen intermission pics.

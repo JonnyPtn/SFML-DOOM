@@ -27,7 +27,6 @@
 #include "doomdef.h"
 #include "m_swap.h"
 
-#include "w_wad.h"
 #include "z_zone.h"
 
 #include "r_local.h"
@@ -35,7 +34,7 @@
 #include "doomstat.h"
 
 import system;
-import misc;
+import wad;
 
 #define MINZ (FRACUNIT * 4)
 #define BASEYCENTER 100

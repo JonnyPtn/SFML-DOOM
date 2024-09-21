@@ -29,7 +29,6 @@ module;
 
 #include "s_sound.h"
 #include "v_video.h"
-#include "w_wad.h"
 #include "z_zone.h"
 
 #include "f_finale.h"
@@ -59,8 +58,8 @@ module;
 export module main;
 
 import system;
-import misc;
 import menu;
+import wad;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

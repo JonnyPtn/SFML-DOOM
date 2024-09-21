@@ -30,7 +30,7 @@
 #include "m_swap.h"
 
 #include "g_game.h"
-#include "w_wad.h"
+import wad;
 
 #include "doomdef.h"
 #include "p_local.h"

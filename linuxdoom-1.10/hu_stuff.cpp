@@ -30,7 +30,6 @@
 
 #include "hu_lib.h"
 #include "hu_stuff.h"
-#include "w_wad.h"
 
 #include "s_sound.h"
 
@@ -40,7 +39,10 @@
 #include "dstrings.h"
 #include "sounds.h"
 
-import misc;
+import menu;
+import system;
+import wad;
+
 
 //
 // Locally used constants, shortcuts.
@@ -77,7 +79,6 @@ static char chat_dest[MAXPLAYERS];
 static hu_itext_t w_inputbuffer[MAXPLAYERS];
 
 static bool message_on;
-bool message_dontfuckwithme;
 static bool message_nottobefuckedwith;
 
 static hu_stext_t w_message;

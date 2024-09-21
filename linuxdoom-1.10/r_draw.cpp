@@ -25,7 +25,7 @@
 
 #include "doomdef.h"
 
-#include "w_wad.h"
+import wad;
 #include "z_zone.h"
 
 #include "r_local.h"
@@ -39,7 +39,6 @@
 #include <stdlib.h>
 
 import system;
-import misc;
 
 // ?
 #define MAXWIDTH 1120

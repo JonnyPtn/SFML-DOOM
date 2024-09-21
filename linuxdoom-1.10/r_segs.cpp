@@ -30,7 +30,6 @@
 #include "r_sky.h"
 
 import system;
-import misc;
 
 // OPTIMIZE: closed two sided lines as single sided
 

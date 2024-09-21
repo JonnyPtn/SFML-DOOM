@@ -34,7 +34,6 @@ module;
 
 #include "i_video.h"
 #include "v_video.h"
-#include "w_wad.h"
 #include "z_zone.h"
 
 #include "r_local.h"
@@ -61,11 +60,43 @@ module;
 export module menu;
 
 import system;
-import misc;
+import wad;
+
+export patch_t *hu_font[HU_FONTSIZE];
+
+//
+// M_DrawText
+// Returns the final X coordinate
+// HU_Init must have been called to init the font
+//
+
+int M_DrawText(int x, int y, bool direct, char *string) {
+  int c;
+  int w;
+
+  while (*string) {
+    c = toupper(*string) - HU_FONTSTART;
+    string++;
+    if (c < 0 || c > HU_FONTSIZE) {
+      x += 4;
+      continue;
+    }
+
+    w = SHORT(hu_font[c]->width);
+    if (x + w > SCREENWIDTH)
+      break;
+    if (direct)
+      V_DrawPatchDirect(x, y, 0, hu_font[c]);
+    else
+      V_DrawPatch(x, y, 0, hu_font[c]);
+    x += w;
+  }
+
+  return x;
+}
+
 
 export bool message_dontfuckwithme;
-
-export bool chat_on; // in heads-up code
 
 // temp for screenblocks (0-9)
 int screenSize;
@@ -1219,14 +1250,14 @@ export bool M_Responder(const sf::Event &ev) {
   if (!menuactive)
     switch (key) {
     case sf::Keyboard::Key::Subtract: // Screen size down
-      if (automapactive || chat_on)
+      if (automapactive/* || chat_on*/) // TODO JONNY circular dependency
         return false;
       M_SizeDisplay(0);
       S_StartSound(NULL, sfx_stnmov);
       return true;
 
     case sf::Keyboard::Key::Equal: // Screen size up
-      if (automapactive || chat_on)
+      if (automapactive/* || chat_on*/) // TODO jonny circular dependency
         return false;
       M_SizeDisplay(1);
       S_StartSound(NULL, sfx_stnmov);

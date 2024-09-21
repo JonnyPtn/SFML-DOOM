@@ -32,7 +32,6 @@
 
 #include "m_argv.h"
 #include "m_random.h"
-#include "w_wad.h"
 #include "z_zone.h"
 
 #include "p_local.h"
@@ -51,6 +50,7 @@
 #include <array>
 
 import system;
+import wad;
 
 //
 // Animating textures and planes

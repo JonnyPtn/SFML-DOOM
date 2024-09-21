@@ -27,7 +27,6 @@
 
 #include "i_video.h"
 #include "m_random.h"
-#include "w_wad.h"
 #include "z_zone.h"
 
 #include "doomdef.h"
@@ -55,6 +54,8 @@
 // Data.
 #include "dstrings.h"
 #include "sounds.h"
+
+import wad;
 
 //
 // STATUS BAR DATA

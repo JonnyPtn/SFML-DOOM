@@ -27,8 +27,6 @@
 
 #include "m_swap.h"
 
-#include "w_wad.h"
-
 #include "doomdef.h"
 #include "p_local.h"
 #include "r_local.h"
@@ -49,6 +47,7 @@
 #include <spdlog/spdlog.h>
 
 import system;
+import wad;
 
 //
 // Graphics.

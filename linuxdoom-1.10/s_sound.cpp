@@ -28,7 +28,7 @@
 #include "sounds.h"
 
 #include "m_random.h"
-#include "w_wad.h"
+import wad;
 #include "z_zone.h"
 
 #include "doomdef.h"
@@ -96,11 +96,6 @@ static bool mus_paused;
 
 // music currently being played
 static musicinfo_t *mus_playing = 0;
-
-// following is set
-//  by the defaults code in M_misc:
-// number of channels available
-int numChannels;
 
 static int nextcleanup;
 

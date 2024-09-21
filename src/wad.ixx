@@ -20,8 +20,7 @@
 //	Handles WAD file header, directory, lump I/O.
 //
 //-----------------------------------------------------------------------------
-
-#include "w_wad.h"
+module;
 #include "doomtype.h"
 #include "m_swap.h"
 #include "z_zone.h"
@@ -35,14 +34,43 @@
 
 #include <spdlog/spdlog.h>
 
+export module wad;
+
 import system;
+
+//
+// TYPES
+//
+struct wadinfo_t {
+  // Should be "IWAD" or "PWAD".
+  char identification[4];
+  int32_t numlumps;
+  int32_t infotableofs;
+};
+
+typedef struct {
+  int32_t filepos;
+  int32_t size;
+  std::array<char, 8> name;
+
+} filelump_t;
+
+//
+// WADFILE I/O related stuff.
+//
+struct lumpinfo_t {
+  char name[8];
+  int32_t handle;
+  int32_t position;
+  int32_t size;
+};
 
 //
 // GLOBALS
 //
 
 // Location of each lump on disk.
-std::vector<lumpinfo_t> lumpinfo;
+export std::vector<lumpinfo_t> lumpinfo;
 
 std::vector<void *> lumpcache;
 
@@ -172,7 +200,7 @@ void W_AddFile(const std::filesystem::path &filepath) {
 // Flushes any of the reloadable lumps in memory
 //  and reloads the directory.
 //
-void W_Reload(void) {
+export void W_Reload(void) {
   int lumpcount{};
   lumpinfo_t *lump_p;
   filelump_t *fileinfo{};
@@ -222,7 +250,7 @@ void W_Reload(void) {
 // The name searcher looks backwards, so a later file
 //  does override all earlier ones.
 //
-void W_InitMultipleFiles(std::vector<std::string> &filenames) {
+export void W_InitMultipleFiles(std::vector<std::string> &filenames) {
   // open all the files, load headers, and count lumps
   lumpinfo.clear();
 
@@ -252,7 +280,7 @@ void W_InitFile(std::string filename) {
 // Returns -1 if name not found.
 //
 
-int W_CheckNumForName(const std::string &name) {
+export int W_CheckNumForName(const std::string &name) {
   // scan backwards so patch lump files take precedence
   auto upper_name = name;
   std::transform(std::begin(upper_name), std::end(upper_name),
@@ -271,7 +299,7 @@ int W_CheckNumForName(const std::string &name) {
 // W_GetNumForName
 // Calls W_CheckNumForName, but bombs out if not found.
 //
-int W_GetNumForName(const std::string &name) {
+export int W_GetNumForName(const std::string &name) {
   int i;
 
   i = W_CheckNumForName(name);
@@ -286,7 +314,7 @@ int W_GetNumForName(const std::string &name) {
 // W_LumpLength
 // Returns the buffer size needed to load the given lump.
 //
-int W_LumpLength(int lump) {
+export int W_LumpLength(int lump) {
   if (lump >= lumpinfo.size()) {
     I_Error("W_LumpLength: {} out of bounds", lump);
   }
@@ -299,7 +327,7 @@ int W_LumpLength(int lump) {
 // Loads the lump into the given buffer,
 //  which must be >= W_LumpLength().
 //
-void W_ReadLump(int lump, void *dest) {
+export void W_ReadLump(int lump, void *dest) {
 
   if (lump >= lumpinfo.size()) {
     I_Error("W_ReadLump: {} out of bounds", lump);
@@ -339,7 +367,7 @@ void W_ReadLump(int lump, void *dest) {
 //
 // W_CacheLumpNum
 //
-void *W_CacheLumpNum(uint32_t lump, int tag) {
+export void *W_CacheLumpNum(uint32_t lump, int tag) {
   if (lump >= lumpinfo.size()) {
     I_Error("W_CacheLumpNum: {} out of bounds", lump);
   }
@@ -361,7 +389,7 @@ void *W_CacheLumpNum(uint32_t lump, int tag) {
 //
 // W_CacheLumpName
 //
-void *W_CacheLumpName(const std::string &name, int tag) {
+export void *W_CacheLumpName(const std::string &name, int tag) {
   return W_CacheLumpNum(W_GetNumForName(name), tag);
 }
 

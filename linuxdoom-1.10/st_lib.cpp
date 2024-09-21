@@ -30,7 +30,7 @@
 
 #include "m_swap.h"
 
-#include "w_wad.h"
+import wad;
 
 #include "r_local.h"
 #include "st_lib.h"

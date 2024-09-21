@@ -27,7 +27,6 @@
 #include "m_swap.h"
 #include "s_sound.h"
 #include "v_video.h"
-#include "w_wad.h"
 #include "z_zone.h"
 
 // Data.
@@ -43,7 +42,8 @@
 #include <string>
 
 import main;
-import misc;
+import menu;
+import wad;
 
 // ?
 // #include "doomstat.h"

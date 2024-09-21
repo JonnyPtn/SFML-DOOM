@@ -38,7 +38,6 @@
 
 import main;
 import system;
-import misc;
 import menu;
 
 #include "am_map.h"
@@ -49,7 +48,7 @@ import menu;
 // Needs access to LFB.
 #include "v_video.h"
 
-#include "w_wad.h"
+import wad;
 
 #include "p_local.h"
 
@@ -586,7 +585,8 @@ void G_Ticker(void) {
       G_DoWorldDone();
       break;
     case ga_screenshot:
-      M_ScreenShot();
+      // @ TODO JONNY implement this somewhere
+      //M_ScreenShot();
       gameaction = ga_nothing;
       break;
     case ga_nothing:

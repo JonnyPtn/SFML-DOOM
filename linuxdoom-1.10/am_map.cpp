@@ -26,7 +26,6 @@
 #include "doomdef.h"
 #include "p_local.h"
 #include "st_stuff.h"
-#include "w_wad.h"
 #include "z_zone.h"
 #include "m_cheat.h"
 
@@ -43,6 +42,8 @@
 #include "am_map.h"
 
 #include <SFML/Window.hpp>
+
+import wad;
 
 // For use if I do walls with outsides/insides
 #define REDS (256 - 5 * 16)

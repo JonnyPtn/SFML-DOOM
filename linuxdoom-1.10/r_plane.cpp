@@ -25,7 +25,7 @@
 
 #include <stdlib.h>
 
-#include "w_wad.h"
+import wad;
 #include "z_zone.h"
 
 #include "doomdef.h"
@@ -35,7 +35,6 @@
 #include "r_sky.h"
 
 import system;
-import misc;
 
 planefunction_t floorfunc;
 planefunction_t ceilingfunc;
