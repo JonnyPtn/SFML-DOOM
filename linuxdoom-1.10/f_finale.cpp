@@ -42,7 +42,7 @@
 
 #include <string>
 
-import d_main;
+import main;
 import m_misc;
 
 // ?

@@ -36,7 +36,7 @@
 #include "p_setup.h"
 #include "p_tick.h"
 
-import d_main;
+import main;
 import i_system;
 import m_misc;
 import m_menu;

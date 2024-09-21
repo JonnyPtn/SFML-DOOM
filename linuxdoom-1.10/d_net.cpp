@@ -28,7 +28,7 @@
 #include "i_net.h"
 #include "i_video.h"
 
-import d_main;
+import main;
 import i_system;
 import m_menu;
 

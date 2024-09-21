@@ -40,7 +40,7 @@
 
 #include <spdlog/spdlog.h>
 
-import d_main;
+import main;
 import i_system;
 
 #define POINTER_WARP_COUNTDOWN 1

@@ -13,7 +13,10 @@
 //
 //
 // DESCRIPTION:
-//	System specific interface stuff.
+//	DOOM main program (D_DoomMain) and game loop (D_DoomLoop),
+//	plus functions to determine game mode (shareware, registered),
+//	parse command line parameters, configure game parameters (turbo),
+//	and call the startup functions.
 //
 //-----------------------------------------------------------------------------
 module;
@@ -53,14 +56,14 @@ module;
 
 #include <filesystem>
 
-export module d_main;
+export module main;
 
 import i_system;
 import m_misc;
 import m_menu;
 
+// List of wad files
 std::vector<std::string> wadfilenames;
-
 void D_AddFile(std::string_view file) { wadfilenames.emplace_back(file); }
 
 export bool devparm;     // started game with -devparm
@@ -823,7 +826,7 @@ export void D_DoomMain(void) {
     // Ouch.
     break;
   }
-  
+
   M_Init();
 
   printf("R_Init: Init DOOM refresh daemon - ");
@@ -884,16 +887,15 @@ export void D_DoomMain(void) {
   D_DoomLoop(); // never returns
 }
 
-// Called by IO functions when input is detected.
-void D_PostEvent(const sf::Event &event);
+// Main entry point, read arguments and call doom main
+int main(int argc, char **argv) {
+  myargc = argc;
+  while (*argv) {
+    myargv.emplace_back(*(argv++));
+  }
 
-//
-// BASE LEVEL
-//
-void D_PageTicker(void);
+  D_DoomMain();
 
-void D_PageDrawer(void);
+  return 0;
+}
 
-void D_AdvanceDemo(void);
-
-void D_StartTitle(void);
