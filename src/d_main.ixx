@@ -56,23 +56,12 @@ module;
 
 export module d_main;
 
-export import i_system;
-export import m_misc;
+import i_system;
+import m_misc;
 
 std::vector<std::string> wadfilenames;
 
 void D_AddFile(std::string_view file) { wadfilenames.emplace_back(file); }
-
-//
-// D-DoomLoop()
-// Not a globally visible function,
-//  just included for source reference,
-//  called by D_DoomMain, never exits.
-// Manages timing and IO,
-//  calls all ?_Responder, ?_Ticker, and ?_Drawer,
-//  calls I_GetTime, I_StartFrame, and I_StartTic
-//
-void D_DoomLoop(void);
 
 export bool devparm;     // started game with -devparm
 export bool nomonsters;  // checkparm of -nomonsters
@@ -378,7 +367,11 @@ void I_StartFrame(void) {
 }
 
 //
-//  D_DoomLoop
+// D-DoomLoop()
+//  called by D_DoomMain, never exits.
+// Manages timing and IO,
+//  calls all ?_Responder, ?_Ticker, and ?_Drawer,
+//  calls I_GetTime, I_StartFrame, and I_StartTic
 //
 export bool demorecording;
 
