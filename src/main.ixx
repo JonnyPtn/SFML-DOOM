@@ -887,7 +887,7 @@ export void D_DoomMain(void) {
 }
 
 // Main entry point, read arguments and call doom main
-int main(int argc, char **argv) {
+export int main(int argc, char **argv) {
   myargc = argc;
   while (*argv) {
     myargv.emplace_back(*(argv++));

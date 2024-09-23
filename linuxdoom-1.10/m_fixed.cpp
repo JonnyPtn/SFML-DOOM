@@ -23,8 +23,10 @@
 
 #include "stdlib.h"
 
-#include "doomtype.h"
+
 #include "m_fixed.h"
+
+#include <limits>
 
 import system;
 
@@ -40,7 +42,7 @@ fixed_t FixedMul(fixed_t a, fixed_t b) {
 
 fixed_t FixedDiv(fixed_t a, fixed_t b) {
   if ((abs(a) >> 14) >= abs(b))
-    return (a ^ b) < 0 ? MININT : MAXINT;
+    return (a ^ b) < 0 ? std::numeric_limits<int>::min() : std::numeric_limits<int>::max();
   return FixedDiv2(a, b);
 }
 

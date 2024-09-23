@@ -202,7 +202,7 @@ enum powerduration_t {
 
 // DOOM basic types (bool),
 //  and max/min values.
-// #include "doomtype.h"
+// 
 
 // Fixed point.
 // #include "m_fixed.h"

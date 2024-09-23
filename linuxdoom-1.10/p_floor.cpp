@@ -308,7 +308,7 @@ int EV_DoFloor(line_t *line, floor_e floortype) {
       break;
 
     case raiseToTexture: {
-      int minsize = MAXINT;
+      int minsize = std::numeric_limits<int>::max();
       side_t *side;
 
       floor->direction = 1;

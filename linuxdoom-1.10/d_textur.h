@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "doomtype.h"
+
 
 //
 // Flats?

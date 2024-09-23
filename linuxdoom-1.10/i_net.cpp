@@ -78,7 +78,7 @@ void (*netsend)(void);
 // UDPsocket
 //
 int UDPsocket(void) {
-  int s;
+    int s{};
 
   // allocate a socket
   //    s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -143,7 +143,7 @@ void PacketGet(void) {
   int i;
   int c{-1};
   //    struct sockaddr_in	fromaddress;
-  doomdata_t sw;
+  doomdata_t sw{};
 
   // JONNY TODO
   // fromlen = sizeof(fromaddress);

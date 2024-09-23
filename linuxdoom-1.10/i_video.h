@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "doomtype.h"
+
 
 #include <cstddef>
 

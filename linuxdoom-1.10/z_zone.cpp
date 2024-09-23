@@ -23,7 +23,7 @@
 
 #include "z_zone.h"
 #include "doomdef.h"
-#include "doomtype.h"
+
 
 #include <spdlog/spdlog.h>
 

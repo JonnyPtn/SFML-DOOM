@@ -574,7 +574,7 @@ void TryRunTics(void) {
   // get available tics
   NetUpdate();
 
-  lowtic = MAXINT;
+  lowtic = std::numeric_limits<int>::max();
   for (i = 0; i < doomcom->numnodes; i++) {
     if (nodeingame[i]) {
       if (nettics[i] < lowtic)
@@ -625,7 +625,7 @@ void TryRunTics(void) {
   // wait for new tics if needed
   while (lowtic < gametic / ticdup + counts) {
     NetUpdate();
-    lowtic = MAXINT;
+    lowtic = std::numeric_limits<int>::max();
 
     for (i = 0; i < doomcom->numnodes; i++)
       if (nodeingame[i] && nettics[i] < lowtic)

@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include "doomtype.h"
+
 
 #include "doomdef.h"
 

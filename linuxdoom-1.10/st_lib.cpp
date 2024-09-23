@@ -191,7 +191,8 @@ void STlib_updateBinIcon(st_binicon_t *bi, bool refresh) {
   int w;
   int h;
 
-  if (*bi->on && (bi->oldval != *bi->val || refresh)) {
+  if ( *bi->on && (bi->oldval != int{ *bi->val } || refresh) )
+  {
     x = bi->x - SHORT(bi->p->leftoffset);
     y = bi->y - SHORT(bi->p->topoffset);
     w = SHORT(bi->p->width);

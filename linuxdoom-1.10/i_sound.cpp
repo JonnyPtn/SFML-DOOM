@@ -626,9 +626,9 @@ void I_InitSound() {
   // Secure and configure sound device first.
   fprintf(stderr, "I_InitSound: ");
 
-  audio_fd = open("/dev/dsp", O_WRONLY);
-  if (audio_fd < 0)
-    fprintf(stderr, "Could not open /dev/dsp\n");
+  //audio_fd = open("/dev/dsp", O_WRONLY);
+  //if (audio_fd < 0)
+  //  fprintf(stderr, "Could not open /dev/dsp\n");
 
   i = 11 | (2 << 16);
   //myioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &i);

@@ -342,7 +342,8 @@ void G_BuildTiccmd(ticcmd_t *cmd) {
 
   // strafe double click
   bstrafe = mousebuttons[mousebstrafe] || joybuttons[joybstrafe];
-  if (bstrafe != dclickstate2 && dclicktime2 > 1) {
+  if ( int{ bstrafe } != dclickstate2 && dclicktime2 > 1 )
+  {
     dclickstate2 = bstrafe;
     if (dclickstate2)
       dclicks2++;

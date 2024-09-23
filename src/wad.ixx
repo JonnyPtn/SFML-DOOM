@@ -21,10 +21,11 @@
 //
 //-----------------------------------------------------------------------------
 module;
-#include "doomtype.h"
+
 #include "m_swap.h"
 #include "z_zone.h"
 
+#include <array>
 #include <cctype>
 #include <cstring>
 #include <filesystem>
@@ -127,7 +128,7 @@ void W_AddFile(const std::filesystem::path &filepath) {
   }
 
   if (!std::filesystem::exists(filepath)) {
-    printf("File not found: %s\n", filepath.c_str());
+    printf("File not found: %s\n", filepath.string().c_str());
     return;
   }
 
@@ -136,7 +137,7 @@ void W_AddFile(const std::filesystem::path &filepath) {
   wadinfo_t header;
   int length;
   std::vector<filelump_t> fileinfo;
-  filelump_t singleinfo;
+  filelump_t singleinfo{};
 
   // open the file and add to directory
 
@@ -170,7 +171,7 @@ void W_AddFile(const std::filesystem::path &filepath) {
     if (strncmp(header.identification, "IWAD", 4)) {
       // Homebrew levels?
       if (strncmp(header.identification, "PWAD", 4)) {
-        I_Error("Wad file %s doesn't have or PWAD id\n", filename.c_str());
+        I_Error("Wad file {} doesn't have or PWAD id\n", filename.string());
       }
 
       // ???modifiedgame = true;
@@ -341,7 +342,7 @@ export void W_ReadLump(int lump, void *dest) {
     // reloadable file, so use open / read / close
     if (std::ifstream file{reloadpath.c_str(), std::ios::binary};
         !file.is_open()) {
-      I_Error("W_ReadLump: couldn't open %s", reloadpath.c_str());
+      I_Error("W_ReadLump: couldn't open {}", reloadpath.string());
     } else {
       file.seekg(l.position, std::ios::beg);
       file.read(reinterpret_cast<char *>(dest), l.size);

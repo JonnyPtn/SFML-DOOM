@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "doomtype.h"
+
 
 // Returns a number from 0 to 255,
 // from a lookup table.

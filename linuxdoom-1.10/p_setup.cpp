@@ -514,7 +514,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill) {
 #if 0 // UNUSED
     if (debugfile)
     {
-    freeTags (PU_LEVEL, MAXINT);
+    freeTags (PU_LEVEL, std::numeric_limits<int>::max());
     Z_FileDumpHeap (debugfile);
     }
     else

@@ -23,7 +23,7 @@
 //-----------------------------------------------------------------------------
 
 #include "sounds.h"
-#include "doomtype.h"
+
 
 //
 // Information about all the music

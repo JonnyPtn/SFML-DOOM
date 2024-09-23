@@ -282,11 +282,11 @@ void AM_getIslope(mline_t *ml, islope_t *is) {
   dy = ml->a.y - ml->b.y;
   dx = ml->b.x - ml->a.x;
   if (!dy)
-    is->islp = (dx < 0 ? -MAXINT : MAXINT);
+    is->islp = (dx < 0 ? -std::numeric_limits<int>::max() : std::numeric_limits<int>::max());
   else
     is->islp = FixedDiv(dx, dy);
   if (!dx)
-    is->slp = (dy < 0 ? -MAXINT : MAXINT);
+    is->slp = (dy < 0 ? -std::numeric_limits<int>::max() : std::numeric_limits<int>::max());
   else
     is->slp = FixedDiv(dy, dx);
 }
@@ -355,8 +355,8 @@ void AM_findMinMaxBoundaries(void) {
   fixed_t a;
   fixed_t b;
 
-  min_x = min_y = MAXINT;
-  max_x = max_y = -MAXINT;
+  min_x = min_y = std::numeric_limits<int>::max();
+  max_x = max_y = -std::numeric_limits<int>::max();
 
   for (i = 0; i < numvertexes; i++) {
     if (vertexes[i].x < min_x)
@@ -389,7 +389,7 @@ void AM_findMinMaxBoundaries(void) {
 void AM_changeWindowLoc(void) {
   if (m_paninc.x || m_paninc.y) {
     followplayer = 0;
-    f_oldloc.x = MAXINT;
+    f_oldloc.x = std::numeric_limits<int>::max();
   }
 
   m_x += m_paninc.x;
@@ -420,7 +420,7 @@ void AM_initVariables(void) {
   automapactive = true;
   fb = screens[0].data();
 
-  f_oldloc.x = MAXINT;
+  f_oldloc.x = std::numeric_limits<int>::max();
   amclock = 0;
   lightlev = 0;
 
@@ -609,7 +609,7 @@ bool AM_Responder(const sf::Event &ev) {
       break;
     case sf::Keyboard::Key::F: // follow
       followplayer = !followplayer;
-      f_oldloc.x = MAXINT;
+      f_oldloc.x = std::numeric_limits<int>::max();
       plr->message = followplayer ? AMSTR_FOLLOWON : AMSTR_FOLLOWOFF;
       break;
     case sf::Keyboard::Key::G: // grid

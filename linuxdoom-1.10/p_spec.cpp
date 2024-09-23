@@ -316,7 +316,7 @@ fixed_t P_FindLowestCeilingSurrounding(sector_t *sec) {
   int i;
   line_t *check;
   sector_t *other;
-  fixed_t height = MAXINT;
+  fixed_t height = std::numeric_limits<int>::max();
 
   for (i = 0; i < sec->lines.size(); i++) {
     check = sec->lines[i];
@@ -1050,7 +1050,7 @@ int EV_DoDonut(line_t *line) {
     rtn = 1;
     s2 = getNextSector(s1->lines[0], s1);
     for (i = 0; i < s2->lines.size(); i++) {
-      if (((!s2->lines[i]->flags) & ML_TWOSIDED) ||
+      if ((int(!s2->lines[i]->flags) & ML_TWOSIDED) ||
           (s2->lines[i]->backsector == s1))
         continue;
       s3 = s2->lines[i]->backsector;

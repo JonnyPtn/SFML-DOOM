@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "doomtype.h"
+
 #include "d_event.h"
 
 // The data sampled per tick (single player)
