@@ -11,4 +11,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build
-        run: cmake --preset ninja-multi && cmake --build out/build/ninja-multi
+        run: cmake --preset default && cmake --build out/build/default
