@@ -10,6 +10,5 @@ jobs:
     runs-on: ${{ matrix.host }}
     steps:
       - uses: actions/checkout@v3
-      - uses: lukka/get-cmake@latest
       - name: Build
         run: cmake --preset ninja-multi && cmake --build out/build/ninja-multi
