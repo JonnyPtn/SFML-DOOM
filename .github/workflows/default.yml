@@ -15,7 +15,9 @@ jobs:
         run: brew install llvm
       - name: Setup vcpkg and install dependencies
         uses: lukka/run-vcpkg@v11
-      - name: Install depdendencies
+        with:
+          vcpkgGitCommitId: d07689ef165f033de5c0710e4f67c193a85373e1
+      - name: Install dependencies
         run: vcpkg install sfml spdlog
       - name: Build
         run: cmake --preset ninja-multi -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake && cmake --build out/build/default
