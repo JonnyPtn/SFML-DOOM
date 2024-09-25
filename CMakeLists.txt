@@ -26,13 +26,13 @@ include(FetchContent)
 
 # SFML we take from master - can pin to an SFML 3 release when there is one
 # We use this for window, audio and graphics
+set(SFML_STATIC_LIBRARIES ON)
 set(SFML_FIND_COMPONENTS Graphics)
-set(SFML_STATIC_LIBRARIES YES)
 FetchContent_Declare(
         sfml
         GIT_REPOSITORY    https://github.com/sfml/sfml
         GIT_TAG           master
-        FIND_PACKAGE_ARGS NAMES SFML
+        FIND_PACKAGE_ARGS
 )
 
 # spdlog we use for logging
@@ -40,7 +40,7 @@ FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog
         GIT_TAG v1.14.1
-        FIND_PACKAGE_ARGS NAMES spdlog
+        FIND_PACKAGE_ARGS
 )
 
 # Make them available

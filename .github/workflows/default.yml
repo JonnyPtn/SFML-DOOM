@@ -23,4 +23,4 @@ jobs:
       - name: Install spdlog
         run: vcpkg install spdlog
       - name: Build
-        run: cmake --preset default -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_REQUIRE_FIND_PACKAGE_SFML=YES -DCMAKE_REQUIRE_FIND_PACKAGE_spdlog=YES && cmake --build out/build/default
+        run: cmake --preset default -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_REQUIRE_FIND_PACKAGE_sfml=YES -DCMAKE_REQUIRE_FIND_PACKAGE_spdlog=YES -DVCPKG_TARGET_TRIPLET=x64-windows-static && cmake --build out/build/default
