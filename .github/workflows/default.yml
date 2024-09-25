@@ -1,9 +1,10 @@
 ﻿name: Build
 run-name: ${{ github.event_name }} by ${{ github.actor }} (${{ github.ref }})
 on: [push]
+env:
+  VCPKG_ROOT: ~/vcpkg
 jobs:
   build:
-
     strategy:
      matrix:
       host: ["macos-14"]
