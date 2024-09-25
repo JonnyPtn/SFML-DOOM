@@ -2,7 +2,10 @@
 run-name: ${{ github.event_name }} by ${{ github.actor }} (${{ github.ref }})
 on: [push]
 env:
-  VCPKG_ROOT: ~/vcpkg
+  LDFLAGS: -L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib -lunwind
+  CPPFLAGS: -I/opt/homebrew/opt/llvm/include
+  CMAKE_CXX_COMPILER: clang++
+  CMAKE_C_COMPILER: clang
 jobs:
   build:
     strategy:
