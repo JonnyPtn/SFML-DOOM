@@ -11,7 +11,11 @@ jobs:
     runs-on: ${{ matrix.host }}
     steps:
       - uses: actions/checkout@v3
-      - name: Install requirements
-        run: brew install llvm vcpkg && vcpkg install sfml spdlog
+      - name: Install llvm
+        run: brew install llvm
+      - name: Setup vcpkg and install dependencies
+        uses: lukka/run-vcpkg@v11
+      - name: Install depdendencies
+        run: vcpkg install sfml spdlog
       - name: Build
-        run: cmake --preset ninja-multi -DCMAKE_TOOLCHAIN_FILE=/opt/homebrew/bin/vcpkg/scripts/buildsystems/vcpkg.cmake && cmake --build out/build/default
+        run: cmake --preset ninja-multi -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake && cmake --build out/build/default
