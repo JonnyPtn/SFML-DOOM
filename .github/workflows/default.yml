@@ -1,21 +1,14 @@
 ﻿name: Build
 run-name: ${{ github.event_name }} by ${{ github.actor }} (${{ github.ref }})
 on: [push]
-env:
-  LDFLAGS: -L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib -lunwind
-  CPPFLAGS: -I/opt/homebrew/opt/llvm/include
-  CMAKE_CXX_COMPILER: clang++
-  CMAKE_C_COMPILER: clang
 jobs:
   build:
     strategy:
      matrix:
-      host: ["macos-14"]
+      host: ["windows-2022"]
     runs-on: ${{ matrix.host }}
     steps:
       - uses: actions/checkout@v3
-      - name: Install llvm
-        run: brew install llvm
       - name: Setup vcpkg and install dependencies
         uses: lukka/run-vcpkg@v11
         with:
@@ -23,4 +16,4 @@ jobs:
       - name: Install dependencies
         run: vcpkg install sfml spdlog
       - name: Build
-        run: cmake --preset ninja-multi -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake && cmake --build out/build/default
+        run: cmake --preset default -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake && cmake --build out/build/default
