@@ -6,9 +6,11 @@ jobs:
 
     strategy:
      matrix:
-      host: ["windows-2022"]
+      host: ["macos-14"]
     runs-on: ${{ matrix.host }}
     steps:
       - uses: actions/checkout@v3
+      - name: Install requirements
+        run: brew install llvm vcpkg && vcpkg install sfml spdlog
       - name: Build
-        run: cmake --preset default && cmake --build out/build/default
+        run: cmake --preset ninja-multi -DCMAKE_TOOLCHAIN_FILE=/opt/homebrew/bin/vcpkg/scripts/buildsystems/vcpkg.cmake && cmake --build out/build/default
