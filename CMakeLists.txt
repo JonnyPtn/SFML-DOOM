@@ -32,7 +32,7 @@ FetchContent_Declare(
         sfml
         GIT_REPOSITORY    https://github.com/sfml/sfml
         GIT_TAG           master
-        FIND_PACKAGE_ARGS
+        FIND_PACKAGE_ARGS NAMES SFML
 )
 
 # spdlog we use for logging
