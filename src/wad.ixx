@@ -306,7 +306,7 @@ export int W_GetNumForName(const std::string &name) {
   i = W_CheckNumForName(name);
 
   if (i == -1)
-    I_Error("W_GetNumForName: %s not found!", name.c_str());
+    I_Error("W_GetNumForName: {} not found!", name);
 
   return i;
 }
