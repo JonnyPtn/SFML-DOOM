@@ -9,11 +9,13 @@ jobs:
     runs-on: ${{ matrix.host }}
     steps:
       - uses: actions/checkout@v3
-      - name: Setup vcpkg and install dependencies
+      - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgGitCommitId: d07689ef165f033de5c0710e4f67c193a85373e1
-      - name: Install dependencies
-        run: vcpkg install sfml spdlog
+      - name: Install SFML
+        run: vcpkg install sfml --head
+      - name: Install spdlog
+        run: vcpkg install spdlog
       - name: Build
         run: cmake --preset default -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake && cmake --build out/build/default
