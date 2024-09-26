@@ -45,7 +45,6 @@ import wad;
 import argv;
 import doomdef;
 
-#if SNDINTR
 
 // Update all 30 millisecs, approx. 30fps synchronized.
 // Linux resolution is allegedly 10 millisecs,
@@ -55,9 +54,6 @@ import doomdef;
 // Get the interrupt. Set duration in millisecs.
 int I_SoundSetTimer(int duration_of_tick);
 void I_SoundDelTimer(void);
-#else
-// None?
-#endif
 
 // A quick hack to establish a protocol between
 // synchronous mix buffer updates and asynchronous
@@ -378,15 +374,6 @@ int I_StartSound(int id, int vol, int sep, int pitch, int priority) {
 
   // UNUSED
   priority = 0;
-
-#ifdef SNDSERV
-  if (sndserver) {
-    fprintf(sndserver, "p%2.2x%2.2x%2.2x%2.2x\n", id, pitch, vol, sep);
-    fflush(sndserver);
-  }
-  // warning: control reaches end of non-void function.
-  return id;
-#else
   // Debug.
   // fprintf( stderr, "starting sound %d", id );
 
@@ -396,7 +383,6 @@ int I_StartSound(int id, int vol, int sep, int pitch, int priority) {
   // fprintf( stderr, "/handle is %d\n", id );
 
   return id;
-#endif
 }
 
 void I_StopSound(int handle) {
@@ -428,10 +414,8 @@ int I_SoundIsPlaying(int handle) {
 // This function currently supports only 16bit.
 //
 void I_UpdateSound(void) {
-#ifdef SNDINTR
   // Debug. Count buffer misses with interrupt.
   static int misses = 0;
-#endif
 
   // Mix current sound data.
   // Data, from raw sound, for right and left.
@@ -520,7 +504,6 @@ void I_UpdateSound(void) {
     rightout += step;
   }
 
-#ifdef SNDINTR
   // Debug check.
   if (flag) {
     misses += flag;
@@ -534,7 +517,6 @@ void I_UpdateSound(void) {
 
   // Increment flag for update.
   flag++;
-#endif
 }
 
 //
@@ -561,13 +543,6 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch) {
 }
 
 void I_ShutdownSound(void) {
-#ifdef SNDSERV
-  if (sndserver) {
-    // Send a "quit" command.
-    fprintf(sndserver, "q\n");
-    fflush(sndserver);
-  }
-#else
   // Wait till all pending sounds are finished.
   int done = 0;
   int i;
@@ -584,43 +559,21 @@ void I_ShutdownSound(void) {
     // if (i==8)
     done = 1;
   }
-#ifdef SNDINTR
   I_SoundDelTimer();
-#endif
 
   // Cleaning up -releasing the DSP device.
   //close(audio_fd);
-#endif
 
   // Done.
   return;
 }
 
 void I_InitSound() {
-#ifdef SNDSERV
-  char buffer[256];
-
-  if (getenv("DOOMWADDIR"))
-    snprintf(buffer, 256, "%s/%s", getenv("DOOMWADDIR"), sndserver_filename);
-  else
-    snprintf(buffer, 256, "%s", sndserver_filename);
-
-  // start sound process
-  //  if ( !access(buffer, X_OK) )
-  {
-    strcat(buffer, " -quiet");
-    //    sndserver = popen(buffer, "w");
-  }
-  //  else
-  fprintf(stderr, "Could not start sound server [%s]\n", buffer);
-#else
 
   int i;
 
-#ifdef SNDINTR
   fprintf(stderr, "I_SoundSetTimer: %d microsecs\n", SOUND_INTERVAL);
   I_SoundSetTimer(SOUND_INTERVAL);
-#endif
 
   // Secure and configure sound device first.
   fprintf(stderr, "I_InitSound: ");
@@ -672,8 +625,6 @@ void I_InitSound() {
 
   // Finished initialization.
   fprintf(stderr, "I_InitSound: sound module ready\n");
-
-#endif
 }
 
 //

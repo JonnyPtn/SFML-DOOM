@@ -414,15 +414,8 @@ void D_DoomLoop(void) {
     // Update display, next frame, with current state.
     D_Display();
 
-#ifndef SNDSERV
     // Sound mixing for the buffer is snychronous.
     I_UpdateSound();
-#endif
-    // Synchronous sound output is explicitly called.
-#ifndef SNDINTR
-    // Update sound output.
-    I_SubmitSound();
-#endif
   }
 }
 

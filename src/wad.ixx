@@ -60,10 +60,10 @@ typedef struct {
 // WADFILE I/O related stuff.
 //
 struct lumpinfo_t {
-  char name[8];
-  int32_t handle;
-  int32_t position;
-  int32_t size;
+  char name[8] = {};
+  int32_t handle = {};
+  int32_t position = {};
+  int32_t size = {};
 };
 
 //

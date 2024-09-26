@@ -117,6 +117,11 @@ void I_Error(spdlog::format_string_t<Args...> fmt, Args &&...args) {
     exit(-1);
   }
 
+export template <typename... Args>
+void I_Debug(spdlog::format_string_t<Args...> fmt, Args &&...args) {
+    spdlog::debug(fmt, std::forward<Args>(args)...);
+  }
+
 
 
   //
