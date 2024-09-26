@@ -26,7 +26,6 @@
 
 #include "doomstat.h"
 
-#include "f_finale.h"
 #include "m_random.h"
 #include "z_zone.h"
 
@@ -40,7 +39,7 @@
 
 // Needs access to LFB.
 #include "v_video.h"
-#
+
 import main;
 import system;
 import menu;
@@ -48,6 +47,7 @@ import argv;
 import wad;
 import am_map;
 import net;
+import finale;
 
 #include "p_local.h"
 

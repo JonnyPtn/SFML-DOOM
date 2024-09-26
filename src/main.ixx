@@ -28,7 +28,6 @@ module;
 #include "v_video.h"
 #include "z_zone.h"
 
-#include "f_finale.h"
 #include "f_wipe.h"
 
 #include "i_sound.h"
@@ -57,6 +56,7 @@ import wad;
 import argv;
 import am_map;
 import net;
+import finale;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

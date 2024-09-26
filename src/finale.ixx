@@ -20,7 +20,7 @@
 //	Game completion, final screen animation.
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include <ctype.h>
 
 // Functions.
@@ -41,7 +41,8 @@
 
 #include <string>
 
-import main;
+export module finale;
+
 import menu;
 import wad;
 import am_map;
@@ -100,7 +101,7 @@ void F_CastDrawer(void);
 //
 // F_StartFinale
 //
-void F_StartFinale(void) {
+export void F_StartFinale(void) {
   gameaction = ga_nothing;
   gamestate = GS_FINALE;
   viewactive = false;
@@ -189,7 +190,7 @@ void F_StartFinale(void) {
   finalecount = 0;
 }
 
-bool F_Responder(const sf::Event &event) {
+export bool F_Responder(const sf::Event &event) {
   if (finalestage == 2)
     return F_CastResponder(event);
 
@@ -199,7 +200,7 @@ bool F_Responder(const sf::Event &event) {
 //
 // F_Ticker
 //
-void F_Ticker(void) {
+export void F_Ticker(void) {
   int i;
 
   // check for skipping
@@ -232,7 +233,8 @@ void F_Ticker(void) {
       finalecount > finaletext.length() * TEXTSPEED + TEXTWAIT) {
     finalecount = 0;
     finalestage = 1;
-    wipegamestate = static_cast<gamestate_t>(-1); // force a wipe
+    // TODO JONNY Circular dep
+    //wipegamestate = static_cast<gamestate_t>(-1); // force a wipe
     if (gameepisode == 3)
       S_StartMusic(mus_bunny);
   }
@@ -346,7 +348,8 @@ bool castattacking;
 // F_StartCast
 //
 void F_StartCast(void) {
-  wipegamestate = static_cast<gamestate_t>(-1); // force a screen wipe
+  // TODO JONNY Circular dep
+  //wipegamestate = static_cast<gamestate_t>(-1); // force a screen wipe
   castnum = 0;
   caststate = &states[mobjinfo[castorder[castnum].type].seestate];
   casttics = static_cast<int>(caststate->tics);
@@ -558,7 +561,6 @@ void F_CastPrint(const char *text) {
 //
 // F_CastDrawer
 //
-void V_DrawPatchFlipped(int x, int y, int scrn, patch_t *patch);
 
 void F_CastDrawer(void) {
   int lump;
@@ -579,8 +581,9 @@ void F_CastDrawer(void) {
 
   patch =
       static_cast<patch_t *>(W_CacheLumpNum(lump + firstspritelump, PU_CACHE));
-  if (flip)
-    V_DrawPatchFlipped(160, 170, 0, patch);
+  if (flip){}
+    // TODO JONNY circular dep
+    //V_DrawPatchFlipped(160, 170, 0, patch);
   else
     V_DrawPatch(160, 170, 0, patch);
 }
@@ -667,7 +670,7 @@ void F_BunnyScroll(void) {
 //
 // F_Drawer
 //
-void F_Drawer(void) {
+export void F_Drawer(void) {
   if (finalestage == 2) {
     F_CastDrawer();
     return;
