@@ -673,8 +673,7 @@ export void TryRunTics(void) {
   int counts;
 
   // get real tics
-  // TODO JONNY circular dependency
-  //entertic = I_GetTime() / ticdup;
+  entertic = I_GetTime() / ticdup;
   realtics = entertic - oldentertics;
   oldentertics = entertic;
 
