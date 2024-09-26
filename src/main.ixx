@@ -405,6 +405,7 @@ void D_DoomLoop(void) {
     } else {
       if (advancedemo)
         D_DoAdvanceDemo();
+      D_ProcessEvents();
       TryRunTics(); // will run at least one tic
     }
 

@@ -452,8 +452,6 @@ export void NetUpdate(void) {
   gameticdiv = gametic / ticdup;
   for (i = 0; i < newtics; i++) {
     I_StartTic();
-    // TODO JONNY circular dependency
-    //D_ProcessEvents();
     if (maketic - gameticdiv >= BACKUPTICS / 2 - 1)
       break; // can't hold any more
 
