@@ -111,7 +111,6 @@ bool nodrawers;  // for comparative timing purposes
 bool noblit;     // for comparative timing purposes
 int starttime;      // for comparative timing purposes
 
-bool viewactive;
 
 uint8_t deathmatch; // only if started as net death
 bool netgame;    // only true if packets are broadcast

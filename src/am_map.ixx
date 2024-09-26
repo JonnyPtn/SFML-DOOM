@@ -20,7 +20,7 @@
 // DESCRIPTION:  the automap code
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include <stdio.h>
 
 #include "doomdef.h"
@@ -42,6 +42,13 @@
 #include "am_map.h"
 
 #include <SFML/Window.hpp>
+
+// Used by ST StatusBar stuff.
+#define AM_MSGHEADER (('a' << 24) + ('m' << 16))
+#define AM_MSGENTERED (AM_MSGHEADER | ('e' << 8))
+#define AM_MSGEXITED (AM_MSGHEADER | ('x' << 8))
+
+export module am_map;
 
 import wad;
 
@@ -199,7 +206,7 @@ static int grid = 0;
 
 static int leveljuststarted = 1; // kluge until AM_LevelInit() is called
 
-bool automapactive = false;
+export bool automapactive = false;
 static int finit_width = SCREENWIDTH;
 static int finit_height = SCREENHEIGHT - 32;
 
@@ -269,8 +276,6 @@ static bool stopped = true;
 
 extern bool viewactive;
 // extern byte screens[][SCREENWIDTH*SCREENHEIGHT];
-
-void V_MarkRect(int x, int y, int width, int height);
 
 // Calculates the slope and slope according to the x-axis of a line
 // segment in map coordinates (with the upright y-axis n' all) so
@@ -497,7 +502,7 @@ void AM_LevelInit(void) {
 //
 //
 //
-void AM_Stop(void) {
+export void AM_Stop(void) {
   // JONNY TODO
   // static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
 
@@ -546,7 +551,7 @@ void AM_maxOutWindowScale(void) {
 //
 // Handle events (user inputs) in automap mode
 //
-bool AM_Responder(const sf::Event &ev) {
+export bool AM_Responder(const sf::Event &ev) {
 
   int rc;
   static int bigstate = 0;
@@ -718,7 +723,7 @@ void AM_updateLightLev(void) {
 //
 // Updates on Game Tick
 //
-void AM_Ticker(void) {
+export void AM_Ticker(void) {
 
   if (!automapactive)
     return;
@@ -1148,7 +1153,7 @@ void AM_drawCrosshair(int color) {
   fb[(f_w * (f_h + 1)) / 2] = static_cast<std::byte>(color); // single point for now
 }
 
-void AM_Drawer(void) {
+export void AM_Drawer(void) {
   if (!automapactive)
     return;
 

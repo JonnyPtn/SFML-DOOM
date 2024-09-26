@@ -94,7 +94,7 @@ extern bool statusbaractive;
 extern bool automapactive; // In AutoMap mode?
 extern bool paused;        // Game Pause?
 
-extern bool viewactive;
+static bool viewactive;
 
 extern bool nodrawers;
 extern bool noblit;
