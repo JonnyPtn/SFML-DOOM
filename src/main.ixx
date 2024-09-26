@@ -403,6 +403,8 @@ void D_DoomLoop(void) {
       gametic++;
       maketic++;
     } else {
+      if (advancedemo)
+        D_DoAdvanceDemo();
       TryRunTics(); // will run at least one tic
     }
 

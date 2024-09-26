@@ -260,13 +260,11 @@ void P_UnArchiveThinkers(void) {
       mobj = static_cast<mobj_t *>(malloc(sizeof(*mobj)));
       memcpy(mobj, save_p, sizeof(*mobj));
       save_p += sizeof(*mobj);
-      // JONNY TODO
-      // mobj->state = &states[(int)mobj->state];
+      mobj->state = &states[(intptr_t)mobj->state];
       mobj->target = NULL;
       if (mobj->player) {
-        // JONNY TODO
-        // mobj->player = &players[(int)mobj->player-1];
-        mobj->player->mo = mobj;
+        mobj->player = &players[(intptr_t)mobj->player-1];
+        mobj->player->mo = mobj; 
       }
       P_SetThingPosition(mobj);
       mobj->info = &mobjinfo[mobj->type];

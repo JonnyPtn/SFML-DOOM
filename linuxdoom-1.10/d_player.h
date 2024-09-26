@@ -68,7 +68,7 @@ typedef enum {
 // Extended player object info: player_t
 //
 typedef struct player_s {
-  mobj_t *mo;
+  mobj_t* mo;
   playerstate_t playerstate;
   ticcmd_t cmd;
 
