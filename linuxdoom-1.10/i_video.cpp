@@ -30,7 +30,6 @@
 #include <signal.h>
 
 #include "doomstat.h"
-#include "m_argv.h"
 #include "v_video.h"
 
 #include "doomdef.h"
@@ -42,6 +41,7 @@
 
 import main;
 import system;
+import argv;
 
 #define POINTER_WARP_COUNTDOWN 1
 

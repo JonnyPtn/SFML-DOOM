@@ -28,17 +28,12 @@
 #include "doomstat.h"
 
 #include "f_finale.h"
-#include "m_argv.h"
 #include "m_random.h"
 #include "z_zone.h"
 
 #include "p_saveg.h"
 #include "p_setup.h"
 #include "p_tick.h"
-
-import main;
-import system;
-import menu;
 
 #include "am_map.h"
 #include "hu_stuff.h"
@@ -47,7 +42,11 @@ import menu;
 
 // Needs access to LFB.
 #include "v_video.h"
-
+#
+import main;
+import system;
+import menu;
+import argv;
 import wad;
 
 #include "p_local.h"

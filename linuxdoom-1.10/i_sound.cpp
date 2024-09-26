@@ -37,7 +37,6 @@
 #include "z_zone.h"
 
 #include "i_sound.h"
-#include "m_argv.h"
 
 #include "doomdef.h"
 
@@ -45,6 +44,7 @@
 
 import system;
 import wad;
+import argv;
 
 #if SNDINTR
 

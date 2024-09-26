@@ -34,8 +34,6 @@ module;
 #include "f_finale.h"
 #include "f_wipe.h"
 
-#include "m_argv.h"
-
 #include "i_sound.h"
 #include "i_video.h"
 
@@ -60,6 +58,7 @@ export module main;
 import system;
 import menu;
 import wad;
+import argv;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

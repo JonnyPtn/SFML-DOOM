@@ -27,12 +27,12 @@
 
 #include "d_event.h"
 #include "d_net.h"
-#include "m_argv.h"
 
 #include "doomstat.h"
 #include "i_net.h"
 
 import system;
+import argv;
 
 // For some odd reason...
 #ifndef ntohl

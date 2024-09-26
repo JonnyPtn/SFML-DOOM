@@ -1,7 +1,4 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
-//
-// $Id:$
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -14,19 +11,20 @@
 // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
 // for more details.
 //
-// $Log:$
 //
 // DESCRIPTION:
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include <ranges>
 #include <string>
 #include <string_view>
 #include <vector>
 
-int myargc;
-std::vector<std::string> myargv;
+export module argv;
+
+export int myargc;
+export std::vector<std::string> myargv;
 
 //
 // M_CheckParm
@@ -34,7 +32,7 @@ std::vector<std::string> myargv;
 // in the program's command line arguments.
 // Returns the argument number (1 to argc-1)
 // or 0 if not present
-int M_CheckParm(std::string_view check) {
+export int M_CheckParm(std::string_view check) {
   const auto found = std::ranges::find(myargv, check);
   if (found != myargv.end()) {
     return static_cast<int>(std::distance(myargv.begin(), found));

@@ -30,7 +30,6 @@
 #include "doomdef.h"
 #include "doomstat.h"
 
-#include "m_argv.h"
 #include "m_random.h"
 #include "z_zone.h"
 
@@ -51,6 +50,7 @@
 
 import system;
 import wad;
+import argv;
 
 //
 // Animating textures and planes

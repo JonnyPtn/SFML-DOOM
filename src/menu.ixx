@@ -42,7 +42,6 @@ module;
 
 #include "g_game.h"
 
-#include "m_argv.h"
 #include "m_swap.h"
 
 #include "s_sound.h"
@@ -61,6 +60,7 @@ export module menu;
 
 import system;
 import wad;
+import argv;
 
 export patch_t *hu_font[HU_FONTSIZE];
 

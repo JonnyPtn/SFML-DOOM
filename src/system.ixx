@@ -26,7 +26,6 @@ module;
 
 #include "d_net.h"
 #include "g_game.h"
-#include "m_argv.h"
 #include "v_video.h"
 
 #include <spdlog/spdlog.h>
@@ -43,6 +42,8 @@ module;
 #endif
 
 export module system;
+
+import argv;
 
 // lovely clang compiler crash if I try to use std::byte here
 using byte = unsigned char;
