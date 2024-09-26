@@ -49,8 +49,11 @@ FetchContent_MakeAvailable(sfml spdlog)
 # Link them
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE SFML::Graphics spdlog::spdlog)
 
-# On apple devices symlink the wads folder into the bundle
+# Sym link the wads folder into the build output
 if(APPLE)
-    add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/wads $<TARGET_BUNDLE_DIR:${CMAKE_PROJECT_NAME}>/Contents/MacOS/wads)
+    set(WADS_DEST $<TARGET_BUNDLE_DIR:${CMAKE_PROJECT_NAME}>/Contents/MacOS/wads)
+else()
+    set(WADS_DEST $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/wads)
 endif()
+
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/wads ${WADS_DEST})
