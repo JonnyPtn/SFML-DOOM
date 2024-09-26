@@ -22,7 +22,6 @@
 //-----------------------------------------------------------------------------
 
 // Data.
-#include "doomdef.h"
 #include "dstrings.h"
 #include "sounds.h"
 
@@ -39,6 +38,7 @@
 import system;
 import am_map;
 import items;
+import doomdef;
 
 #define BONUSADD 6
 

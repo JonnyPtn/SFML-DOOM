@@ -23,9 +23,10 @@
 
 #include "d_event.h"
 #include "d_ticcmd.h"
-#include "doomdef.h"
 
 #include <SFML/Window.hpp>
+
+import doomdef;
 
 //
 // GAME

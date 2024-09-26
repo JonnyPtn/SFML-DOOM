@@ -38,13 +38,12 @@
 
 #include "i_sound.h"
 
-#include "doomdef.h"
-
 #include <string>
 
 import system;
 import wad;
 import argv;
+import doomdef;
 
 #if SNDINTR
 

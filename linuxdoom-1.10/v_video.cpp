@@ -26,7 +26,6 @@
 #include "r_local.h"
 
 #include "doomdata.h"
-#include "doomdef.h"
 
 #include "m_bbox.h"
 #include "m_swap.h"

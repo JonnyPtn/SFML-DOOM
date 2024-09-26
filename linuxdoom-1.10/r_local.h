@@ -25,9 +25,6 @@
 // Binary Angles, sine/cosine/atan lookups.
 #include "tables.h"
 
-// Screen size related parameters.
-#include "doomdef.h"
-
 // Include the refresh/render data structs.
 #include "r_data.h"
 

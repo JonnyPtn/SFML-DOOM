@@ -22,10 +22,6 @@
 //	 e.g. inline assembly, different algorithms.
 //
 //-----------------------------------------------------------------------------
-
-#include "doomdef.h"
-
-import wad;
 #include "z_zone.h"
 
 #include "r_local.h"
@@ -39,6 +35,7 @@ import wad;
 #include <stdlib.h>
 
 import system;
+import wad;
 
 // ?
 #define MAXWIDTH 1120

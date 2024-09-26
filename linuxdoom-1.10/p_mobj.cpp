@@ -24,7 +24,6 @@
 #include "m_random.h"
 #include "z_zone.h"
 
-#include "doomdef.h"
 #include "p_local.h"
 #include "sounds.h"
 

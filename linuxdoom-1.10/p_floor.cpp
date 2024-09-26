@@ -21,7 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "doomdef.h"
 #include "p_local.h"
 #include "z_zone.h"
 
@@ -34,6 +33,8 @@
 #include "sounds.h"
 
 #include <stdlib.h>
+
+import doomdef;
 
 //
 // FLOORS

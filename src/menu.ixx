@@ -28,8 +28,6 @@ module;
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-
-#include "doomdef.h"
 #include "dstrings.h"
 
 #include "i_video.h"

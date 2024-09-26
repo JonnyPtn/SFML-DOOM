@@ -26,10 +26,10 @@
 #include "v_video.h"
 #include "z_zone.h"
 
-#include "doomdef.h"
-
 #include "f_wipe.h"
 #include <stdlib.h>
+
+import doomdef;
 
 //
 //                       SCREEN WIPE PACKAGE

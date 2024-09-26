@@ -26,8 +26,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "doomdef.h"
-
 #include "m_bbox.h"
 
 #include "r_local.h"

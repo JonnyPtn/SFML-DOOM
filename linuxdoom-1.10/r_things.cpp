@@ -24,7 +24,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "doomdef.h"
 #include "m_swap.h"
 
 #include "z_zone.h"

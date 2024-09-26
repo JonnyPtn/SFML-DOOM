@@ -36,6 +36,8 @@
 // as commands per game tick.
 #include "d_ticcmd.h"
 
+import doomdef;
+
 //
 // Player states.
 //

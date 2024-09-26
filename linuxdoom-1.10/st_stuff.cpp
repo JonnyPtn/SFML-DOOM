@@ -29,8 +29,6 @@
 #include "m_random.h"
 #include "z_zone.h"
 
-#include "doomdef.h"
-
 #include "g_game.h"
 
 #include "r_local.h"

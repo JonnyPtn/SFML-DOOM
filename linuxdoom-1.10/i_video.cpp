@@ -32,8 +32,6 @@
 #include "doomstat.h"
 #include "v_video.h"
 
-#include "doomdef.h"
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 

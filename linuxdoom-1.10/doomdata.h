@@ -25,10 +25,6 @@
 
 // The most basic types we use, portability.
 
-
-// Some global defines, that configure the game.
-#include "doomdef.h"
-
 //
 // Map level types.
 // The following data structures define the persistent format

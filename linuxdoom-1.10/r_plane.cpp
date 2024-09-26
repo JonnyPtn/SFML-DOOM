@@ -25,16 +25,15 @@
 
 #include <stdlib.h>
 
-import wad;
 #include "z_zone.h"
 
-#include "doomdef.h"
 #include "doomstat.h"
 
 #include "r_local.h"
 #include "r_sky.h"
 
 import system;
+import wad;
 
 planefunction_t floorfunc;
 planefunction_t ceilingfunc;

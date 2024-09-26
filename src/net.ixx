@@ -23,7 +23,6 @@
 //-----------------------------------------------------------------------------
 module;
 
-#include "doomdef.h"
 #include "doomstat.h"
 #include "g_game.h"
 #include "i_net.h"

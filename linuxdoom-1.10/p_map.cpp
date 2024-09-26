@@ -27,7 +27,6 @@
 #include "m_bbox.h"
 #include "m_random.h"
 
-#include "doomdef.h"
 #include "p_local.h"
 
 #include "s_sound.h"
@@ -38,6 +37,7 @@
 // Data.
 #include "sounds.h"
 import system;
+import doomdef;
 
 fixed_t tmbbox[4];
 mobj_t *tmthing;

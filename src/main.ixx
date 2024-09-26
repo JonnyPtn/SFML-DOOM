@@ -21,8 +21,6 @@
 //-----------------------------------------------------------------------------
 module;
 
-#include "doomdef.h"
-
 #include "dstrings.h"
 #include "sounds.h"
 

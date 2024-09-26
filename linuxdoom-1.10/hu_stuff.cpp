@@ -22,8 +22,6 @@
 
 #include <ctype.h>
 
-#include "doomdef.h"
-
 #include "z_zone.h"
 
 #include "m_swap.h"

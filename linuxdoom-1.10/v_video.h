@@ -24,9 +24,6 @@
 #pragma once
 
 
-
-#include "doomdef.h"
-
 // Needed because we are refering to patches.
 #include "r_data.h"
 

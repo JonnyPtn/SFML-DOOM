@@ -22,8 +22,6 @@
 //-----------------------------------------------------------------------------
 
 #include <stdlib.h>
-
-#include "doomdef.h"
 #include "doomstat.h"
 
 #include "r_local.h"

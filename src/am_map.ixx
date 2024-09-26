@@ -23,7 +23,6 @@
 module;
 #include <stdio.h>
 
-#include "doomdef.h"
 #include "p_local.h"
 #include "st_stuff.h"
 #include "z_zone.h"

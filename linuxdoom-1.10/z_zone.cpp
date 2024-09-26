@@ -22,8 +22,6 @@
 //-----------------------------------------------------------------------------
 
 #include "z_zone.h"
-#include "doomdef.h"
-
 
 #include <spdlog/spdlog.h>
 

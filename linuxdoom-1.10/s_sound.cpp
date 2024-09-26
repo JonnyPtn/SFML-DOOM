@@ -28,15 +28,14 @@
 #include "sounds.h"
 
 #include "m_random.h"
-import wad;
 #include "z_zone.h"
 
-#include "doomdef.h"
 #include "p_local.h"
 
 #include "doomstat.h"
 
 import system;
+import wad;
 
 #define S_MAX_VOLUME 127
 

@@ -22,8 +22,6 @@
 
 #include <ctype.h>
 
-#include "doomdef.h"
-
 #include "m_swap.h"
 #include "v_video.h"
 
@@ -31,6 +29,7 @@
 #include "r_draw.h"
 #include "r_local.h"
 
+import doomdef;
 import system;
 import am_map;
 

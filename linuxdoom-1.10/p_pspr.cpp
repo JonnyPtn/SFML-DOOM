@@ -23,7 +23,6 @@
 //-----------------------------------------------------------------------------
 
 #include "d_event.h"
-#include "doomdef.h"
 
 #include "m_random.h"
 #include "p_local.h"

@@ -21,9 +21,6 @@
 
 #pragma once
 
-// Screenwidth.
-#include "doomdef.h"
-
 // Some more or less basic data types
 // we depend on.
 #include "m_fixed.h"
@@ -35,6 +32,8 @@
 #include "p_mobj.h"
 
 #include <vector>
+
+import doomdef;
 
 // Silhouette, needed for clipping Segs (mainly)
 // and sprites representing things.

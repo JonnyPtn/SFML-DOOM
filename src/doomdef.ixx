@@ -19,22 +19,23 @@
 //   key definitions, lots of other stuff.
 //
 //-----------------------------------------------------------------------------
-
-#pragma once
+module;
 
 #include <cstdint>
 #include <stdio.h>
 #include <string.h>
 
+export module doomdef;
+
 //
 // Global parameters/defines.
 //
 // DOOM version
-constexpr int32_t VERSION = 110;
+export constexpr int32_t VERSION = 110;
 
 // Game mode handling - identify IWAD version
 //  to handle IWAD dependend animations etc.
-enum GameMode_t {
+export enum GameMode_t {
   shareware,  // DOOM 1 shareware, E1, M9
   registered, // DOOM 1 registered, E3, M27
   commercial, // DOOM 2 retail, E1 M34
@@ -45,7 +46,7 @@ enum GameMode_t {
 };
 
 // Mission packs - might be useful for TC stuff?
-enum GameMission_t {
+export enum GameMission_t {
   doom,      // DOOM 1
   doom2,     // DOOM 2
   pack_tnt,  // TNT mission pack
@@ -55,7 +56,7 @@ enum GameMission_t {
 };
 
 // Identify language to use, software localization.
-enum Language_t {
+export enum Language_t {
   english,
   french,
   german,
@@ -92,27 +93,27 @@ enum Language_t {
 //  scaling e.g. to 2. Drawing of status bar,
 //  menues etc. is tied to the scale implied
 //  by the graphics.
-#define SCREEN_MUL 1
+export constexpr auto SCREEN_MUL = 1;
 #define INV_ASPECT_RATIO 0.625 // 0.75, ideally
 
 // Defines suck. C sucks.
 // C++ might sucks for OOP, but it sure is a better C.
 // So there.
-#define SCREENWIDTH 320
+export constexpr auto SCREENWIDTH = 320;
 // SCREEN_MUL*BASE_WIDTH //320
-#define SCREENHEIGHT 200
+export constexpr auto SCREENHEIGHT = 200;
 //(int)(SCREEN_MUL*BASE_WIDTH*INV_ASPECT_RATIO) //200
 
 // The maximum number of players, multiplayer/networking.
-#define MAXPLAYERS 4
+export constexpr auto MAXPLAYERS = 4;
 
 // State updates, number of tics / second.
-#define TICRATE 35
+export constexpr auto TICRATE = 35;
 
 // The current state of the game: whether we are
 // playing, gazing at the intermission screen,
 // the game final animation, or a demo.
-enum gamestate_t { GS_LEVEL, GS_INTERMISSION, GS_FINALE, GS_DEMOSCREEN };
+export enum gamestate_t { GS_LEVEL, GS_INTERMISSION, GS_FINALE, GS_DEMOSCREEN };
 
 //
 // Difficulty/skill settings/filters.
@@ -124,14 +125,14 @@ enum gamestate_t { GS_LEVEL, GS_INTERMISSION, GS_FINALE, GS_DEMOSCREEN };
 #define MTF_HARD 4
 
 // Deaf monsters/do not react to sound.
-#define MTF_AMBUSH 8
+export constexpr auto MTF_AMBUSH = 8;
 
-enum skill_t { sk_baby, sk_easy, sk_medium, sk_hard, sk_nightmare };
+export enum skill_t { sk_baby, sk_easy, sk_medium, sk_hard, sk_nightmare };
 
 //
 // Key cards.
 //
-enum card_t {
+export enum card_t {
   it_bluecard,
   it_yellowcard,
   it_redcard,
@@ -146,7 +147,7 @@ enum card_t {
 // The defined weapons,
 //  including a marker indicating
 //  user has not changed weapon.
-enum weapontype_t {
+export enum weapontype_t {
   wp_fist,
   wp_pistol,
   wp_shotgun,
@@ -165,7 +166,7 @@ enum weapontype_t {
 };
 
 // Ammunition types defined.
-enum ammotype_t {
+export enum ammotype_t {
   am_clip,  // Pistol / chaingun ammo.
   am_shell, // Shotgun / double barreled shotgun.
   am_cell,  // Plasma rifle, BFG.

@@ -24,7 +24,6 @@
 #include "m_random.h"
 #include "z_zone.h"
 
-#include "doomdef.h"
 #include "p_local.h"
 
 #include "s_sound.h"
@@ -39,6 +38,7 @@
 #include <stdlib.h>
 
 import system;
+import doomdef;
 
 plat_t *activeplats[MAXPLATS];
 

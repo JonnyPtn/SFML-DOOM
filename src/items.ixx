@@ -22,9 +22,10 @@
 module;
 // We are referring to sprite numbers.
 #include "info.h"
-#include "doomdef.h"
 
 export module items;
+
+import doomdef;
 
 typedef struct {
   ammotype_t ammo;

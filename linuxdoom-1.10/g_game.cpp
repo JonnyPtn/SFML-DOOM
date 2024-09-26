@@ -24,7 +24,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "doomdef.h"
 #include "doomstat.h"
 
 #include "f_finale.h"

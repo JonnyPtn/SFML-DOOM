@@ -22,8 +22,6 @@
 
 #pragma once
 
-#include "doomdef.h"
-
 // UNIX hack, to be removed.
 #ifdef SNDSERV
 

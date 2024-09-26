@@ -23,20 +23,17 @@
 
 #include <ctype.h>
 
-#include "doomdef.h"
-
 #include "v_video.h"
 #include "z_zone.h"
 
 #include "m_swap.h"
-
-import wad;
 
 #include "r_local.h"
 #include "st_lib.h"
 #include "st_stuff.h"
 
 import system;
+import wad;
 
 // in AM_map.c
 extern bool automapactive;

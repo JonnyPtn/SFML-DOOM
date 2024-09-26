@@ -30,9 +30,6 @@
 #include "m_swap.h"
 
 #include "g_game.h"
-import wad;
-
-#include "doomdef.h"
 #include "p_local.h"
 
 #include "s_sound.h"
@@ -40,6 +37,7 @@ import wad;
 #include "doomstat.h"
 
 import system;
+import wad;
 
 void P_SpawnMapThing(mapthing_t *mthing);
 
