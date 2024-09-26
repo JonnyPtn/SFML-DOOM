@@ -61,6 +61,7 @@ export module menu;
 import system;
 import wad;
 import argv;
+import am_map;
 
 export patch_t *hu_font[HU_FONTSIZE];
 

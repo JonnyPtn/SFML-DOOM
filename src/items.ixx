@@ -19,11 +19,22 @@
 // DESCRIPTION:
 //
 //-----------------------------------------------------------------------------
-
+module;
 // We are referring to sprite numbers.
 #include "info.h"
+#include "doomdef.h"
 
-#include "d_items.h"
+export module items;
+
+typedef struct {
+  ammotype_t ammo;
+  int upstate;
+  int downstate;
+  int readystate;
+  int atkstate;
+  int flashstate;
+
+} weaponinfo_t;
 
 //
 // PSPRITE ACTIONS for waepons.
@@ -37,7 +48,7 @@
 // atkstate, i.e. attack/fire/hit frame
 // flashstate, muzzle flash
 //
-weaponinfo_t weaponinfo[NUMWEAPONS] = {
+export weaponinfo_t weaponinfo[NUMWEAPONS] = {
     {// fist
      am_noammo, S_PUNCHUP, S_PUNCHDOWN, S_PUNCH, S_PUNCH1, S_NULL},
     {// pistol

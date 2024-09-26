@@ -38,6 +38,7 @@
 
 import system;
 import am_map;
+import items;
 
 #define BONUSADD 6
 

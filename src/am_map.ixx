@@ -272,7 +272,6 @@ static int followplayer = 1; // specifies whether to follow the player around
 
 static bool stopped = true;
 
-extern bool viewactive;
 // extern byte screens[][SCREENWIDTH*SCREENHEIGHT];
 
 // Calculates the slope and slope according to the x-axis of a line

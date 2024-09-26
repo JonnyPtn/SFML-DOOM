@@ -42,7 +42,7 @@
 import menu;
 import system;
 import wad;
-
+import am_map;
 
 //
 // Locally used constants, shortcuts.
@@ -83,8 +83,6 @@ static bool message_nottobefuckedwith;
 
 static hu_stext_t w_message;
 static int message_counter;
-
-extern bool automapactive;
 
 static bool headsupactive = false;
 

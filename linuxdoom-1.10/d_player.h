@@ -25,7 +25,6 @@
 // of other structs: items (internal inventory),
 // animation states (closely tied to the sprites
 // used to represent them, unfortunately).
-#include "d_items.h"
 #include "p_pspr.h"
 
 // In addition, the player is just a special

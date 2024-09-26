@@ -44,6 +44,7 @@
 import main;
 import menu;
 import wad;
+import am_map;
 
 // ?
 // #include "doomstat.h"

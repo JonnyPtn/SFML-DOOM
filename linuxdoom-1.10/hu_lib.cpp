@@ -32,11 +32,10 @@
 #include "r_local.h"
 
 import system;
+import am_map;
 
 // bool : whether the screen is always erased
 #define noterased viewwindowx
-
-extern bool automapactive; // in AM_map.c
 
 void HUlib_init(void) {}
 

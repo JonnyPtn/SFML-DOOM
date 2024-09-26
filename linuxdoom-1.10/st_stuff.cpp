@@ -55,6 +55,7 @@
 #include "sounds.h"
 
 import wad;
+import items;
 import am_map;
 
 //

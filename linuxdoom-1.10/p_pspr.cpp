@@ -37,6 +37,8 @@
 
 #include "p_pspr.h"
 
+import items;
+
 #define LOWERSPEED FRACUNIT * 6
 #define RAISESPEED FRACUNIT * 6
 

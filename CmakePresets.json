@@ -6,13 +6,12 @@
       "displayName": "Default Config",
       "description": "Default build using default generator",
       "binaryDir": "out/build/${presetName}"
-    },
+    }
+  ],
+  "buildPresets": [
     {
-      "name": "ninja-multi",
-      "inherits": "default",
-      "displayName": "Ninja Multi-Config",
-      "description": "Build using Ninja Multi-Config generator",
-      "generator": "Ninja Multi-Config"
+      "name": "default",
+      "configurePreset": "default"
     }
   ]
 }
