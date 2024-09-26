@@ -40,7 +40,6 @@
 #include "p_inter.h"
 #include "p_local.h"
 
-#include "am_map.h"
 #include "m_cheat.h"
 
 #include "s_sound.h"
@@ -56,6 +55,7 @@
 #include "sounds.h"
 
 import wad;
+import am_map;
 
 //
 // STATUS BAR DATA

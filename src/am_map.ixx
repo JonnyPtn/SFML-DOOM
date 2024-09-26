@@ -39,8 +39,6 @@ module;
 // Data.
 #include "dstrings.h"
 
-#include "am_map.h"
-
 #include <SFML/Window.hpp>
 
 // Used by ST StatusBar stuff.

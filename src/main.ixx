@@ -39,7 +39,6 @@ module;
 
 #include "g_game.h"
 
-#include "am_map.h"
 #include "hu_stuff.h"
 #include "st_stuff.h"
 #include "wi_stuff.h"
@@ -59,6 +58,7 @@ import system;
 import menu;
 import wad;
 import argv;
+import am_map;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

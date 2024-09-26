@@ -30,8 +30,6 @@
 
 #include "m_random.h"
 
-#include "am_map.h"
-
 #include "p_local.h"
 
 #include "s_sound.h"
@@ -39,6 +37,7 @@
 #include "p_inter.h"
 
 import system;
+import am_map;
 
 #define BONUSADD 6
 

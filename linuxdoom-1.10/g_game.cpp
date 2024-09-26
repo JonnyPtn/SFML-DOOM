@@ -35,7 +35,6 @@
 #include "p_setup.h"
 #include "p_tick.h"
 
-#include "am_map.h"
 #include "hu_stuff.h"
 #include "st_stuff.h"
 #include "wi_stuff.h"
@@ -48,6 +47,7 @@ import system;
 import menu;
 import argv;
 import wad;
+import am_map;
 
 #include "p_local.h"
 
