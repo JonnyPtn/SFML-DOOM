@@ -26,7 +26,6 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "d_net.h"
 #include "doomdef.h"
 
 #include "m_bbox.h"
@@ -35,6 +34,7 @@
 #include "r_sky.h"
 
 import system;
+import net;
 
 // Fineangles in the SCREENWIDTH wide window.
 #define FIELDOFVIEW 2048

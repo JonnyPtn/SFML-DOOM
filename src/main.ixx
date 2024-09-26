@@ -21,7 +21,6 @@
 //-----------------------------------------------------------------------------
 module;
 
-#include "d_net.h"
 #include "doomdef.h"
 
 #include "dstrings.h"
@@ -59,6 +58,7 @@ import menu;
 import wad;
 import argv;
 import am_map;
+import net;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

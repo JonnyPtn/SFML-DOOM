@@ -24,7 +24,6 @@ module;
 
 #include "i_sound.h"
 
-#include "d_net.h"
 #include "g_game.h"
 #include "v_video.h"
 
@@ -91,7 +90,8 @@ export void I_Init(void) {
 // I_Quit
 //
 export void I_Quit(void) {
-  D_QuitNetGame();
+  // TODO JONNY circular dependency
+  //D_QuitNetGame();
   I_ShutdownSound();
   I_ShutdownMusic();
   // @TODO JONNY circular dependency
@@ -105,7 +105,8 @@ export void I_Quit(void) {
 export template <typename... Args>
 void I_Error(spdlog::format_string_t<Args...> fmt, Args &&...args) {
     spdlog::error(fmt, std::forward<Args>(args)...);
-    D_QuitNetGame();
+    // TODO JONNY circular dependency
+    //D_QuitNetGame();
 
 #if WIN32
     DebugBreak();

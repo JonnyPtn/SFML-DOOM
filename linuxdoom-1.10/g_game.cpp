@@ -48,6 +48,7 @@ import menu;
 import argv;
 import wad;
 import am_map;
+import net;
 
 #include "p_local.h"
 
@@ -624,8 +625,9 @@ void G_Ticker(void) {
         }
         if (players[i].mo)
           consistancy[i][buf] = players[i].mo->x;
-        else
-          consistancy[i][buf] = rndindex;
+        //else 
+          // TODO JOONNY rndindex needs to be visible here
+          //consistancy[i][buf] = rndindex;
       }
     }
   }

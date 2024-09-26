@@ -26,13 +26,13 @@
 #include <string>
 
 #include "d_event.h"
-#include "d_net.h"
 
 #include "doomstat.h"
 #include "i_net.h"
 
 import system;
 import argv;
+import net;
 
 // For some odd reason...
 #ifndef ntohl
