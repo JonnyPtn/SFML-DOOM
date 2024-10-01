@@ -22,12 +22,12 @@
 //-----------------------------------------------------------------------------
 
 
-#include "s_sound.h"
+
 
 #include "p_local.h"
 
 // Data.
-#include "sounds.h"
+
 
 // State.
 #include "r_state.h"
@@ -35,6 +35,7 @@
 import tick;
 import setup;
 import tables;
+import sound;
 
 //
 // TELEPORTATION

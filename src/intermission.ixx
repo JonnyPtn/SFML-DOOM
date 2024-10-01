@@ -30,13 +30,6 @@ module;
 
 #include "g_game.h"
 
-
-#include "s_sound.h"
-
-
-// Data.
-#include "sounds.h"
-
 // Needs access to LFB.
 #include "r_defs.h"
 
@@ -44,6 +37,7 @@ export module intermission;
 import wad;
 import doomstat;
 import video;
+import sound;
 
 typedef enum {
   NoState = -1,

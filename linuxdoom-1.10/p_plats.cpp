@@ -26,13 +26,13 @@
 
 #include "p_local.h"
 
-#include "s_sound.h"
+
 
 // State.
 #include "r_state.h"
 
 // Data.
-#include "sounds.h"
+
 
 #include <stdlib.h>
 
@@ -40,6 +40,7 @@ import system;
 import doomdef;
 import tick;
 import setup;
+import sound;
 
 plat_t *activeplats[MAXPLATS];
 

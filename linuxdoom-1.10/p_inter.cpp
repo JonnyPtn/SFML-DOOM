@@ -22,14 +22,14 @@
 //-----------------------------------------------------------------------------
 
 // Data.
-#include "sounds.h"
+
 
 
 #include "m_random.h"
 
 #include "p_local.h"
 
-#include "s_sound.h"
+
 
 #include "p_inter.h"
 #include "g_game.h"
@@ -43,6 +43,7 @@ import doomdef;
 import strings;
 import doomstat;
 import tables;
+import sound;
 
 #define BONUSADD 6
 

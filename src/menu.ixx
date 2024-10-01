@@ -41,11 +41,11 @@ module;
 
 #include "m_swap.h"
 
-#include "s_sound.h"
+
 
 
 // Data.
-#include "sounds.h"
+
 
 #include <functional>
 
@@ -63,6 +63,7 @@ import sound;
 import strings;
 import doomstat;
 import video;
+import sound;
 
 export patch_t *hu_font[HU_FONTSIZE];
 

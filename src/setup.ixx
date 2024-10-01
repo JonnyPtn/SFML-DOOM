@@ -32,7 +32,7 @@ module;
 #include "g_game.h"
 #include "p_local.h"
 
-#include "s_sound.h"
+
 #include "r_data.h"
 #include "r_things.h"
 
@@ -42,6 +42,7 @@ import system;
 import wad;
 import doomstat;
 import tick;
+import sound;
 
 //
 // MAP related Lookup tables.

@@ -25,12 +25,12 @@
 
 
 #include "p_local.h"
-#include "sounds.h"
+
 
 #include "hu_stuff.h"
 
 
-#include "s_sound.h"
+
 #include "g_game.h"
 
 
@@ -41,6 +41,7 @@ import tick;
 import setup;
 import tables;
 import status_bar;
+import sound;
 
 void G_PlayerReborn(int player);
 

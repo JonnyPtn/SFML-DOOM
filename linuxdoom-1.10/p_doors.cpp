@@ -23,19 +23,20 @@
 #include "p_local.h"
 
 
-#include "s_sound.h"
+
 
 // State.
 #include "r_state.h"
 
 // Data.
-#include "sounds.h"
+
 
 #include <stdlib.h>
 
 import strings;
 import tick;
 import setup;
+import sound;
 
 #if 0
 //

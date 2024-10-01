@@ -26,13 +26,13 @@
 
 #include "m_random.h"
 #include "p_local.h"
-#include "s_sound.h"
+
 #include "r_main.h"
 
 // State.
 
 // Data.
-#include "sounds.h"
+
 
 #include "p_pspr.h"
 
@@ -40,6 +40,7 @@ import items;
 import tick;
 import doomstat;
 import tables;
+import sound;
 
 #define LOWERSPEED FRACUNIT * 6
 #define RAISESPEED FRACUNIT * 6

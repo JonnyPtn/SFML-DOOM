@@ -25,7 +25,7 @@
 
 // Data.
 #include "m_fixed.h"
-#include "sounds.h"
+
 
 #include "info.h"
 
@@ -34,6 +34,8 @@
 
 #include <array>
 #include <string>
+
+import sound;
 
 std::array<const std::string, NUMSPRITES> sprnames = {
     "TROO", "SHTG", "PUNG", "PISG", "PISF", "SHTF", "SHT2", "CHGG", "CHGF",

@@ -38,10 +38,10 @@
 
 #include "p_local.h"
 
-#include "s_sound.h"
+
 
 // Data.
-#include "sounds.h"
+
 
 // SKY handling - still the wrong place.
 #include "r_data.h"
@@ -65,6 +65,7 @@ import intermission;
 import video;
 import tables;
 import status_bar;
+import sound;
 
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24

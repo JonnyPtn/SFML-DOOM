@@ -36,13 +36,13 @@
 
 #include "g_game.h"
 
-#include "s_sound.h"
+
 
 // State.
 #include "r_state.h"
 
 // Data.
-#include "sounds.h"
+
 
 #include <array>
 
@@ -51,6 +51,7 @@ import wad;
 import argv;
 import tick;
 import setup;
+import sound;
 
 //
 // Animating textures and planes

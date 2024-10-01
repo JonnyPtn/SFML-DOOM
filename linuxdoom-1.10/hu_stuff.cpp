@@ -29,13 +29,13 @@
 #include "hu_lib.h"
 #include "hu_stuff.h"
 
-#include "s_sound.h"
+
 #include "d_player.h"
 #include "g_game.h"
 
 
 // Data.
-#include "sounds.h"
+
 
 import menu;
 import system;

@@ -26,10 +26,10 @@
 
 #include "g_game.h"
 
-#include "s_sound.h"
+
 
 // Data.
-#include "sounds.h"
+
 
 // State.
 #include "r_state.h"
@@ -37,6 +37,7 @@
 import system;
 import doomstat;
 import setup;
+import sound;
 
 //
 // CHANGE THE TEXTURE OF A WALL SWITCH TO ITS OPPOSITE

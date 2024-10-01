@@ -29,7 +29,7 @@
 
 #include "p_local.h"
 
-#include "s_sound.h"
+
 
 #include "g_game.h"
 
@@ -37,7 +37,7 @@
 #include "r_state.h"
 
 // Data.
-#include "sounds.h"
+
 
 import main;
 import system;
@@ -45,6 +45,7 @@ import setup;
 import tick;
 import doomstat;
 import tables;
+import sound;
 
 typedef enum {
   DI_EAST,

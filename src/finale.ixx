@@ -25,12 +25,12 @@ module;
 
 // Functions.
 #include "m_swap.h"
-#include "s_sound.h"
+
 
 
 
 // Data.
-#include "sounds.h"
+
 #include "d_event.h"
 #include "g_game.h"
 #include "r_state.h"
@@ -48,6 +48,7 @@ import am_map;
 import strings;
 import doomstat;
 import video;
+import sound;
 
 // ?
 // // 

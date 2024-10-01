@@ -36,13 +36,13 @@ module;
 
 #include "m_cheat.h"
 
-#include "s_sound.h"
+
 
 // State.
 #include "r_main.h"
 
 // Data.
-#include "sounds.h"
+
 #include "m_swap.h"
 export module status_bar;
 import wad;
