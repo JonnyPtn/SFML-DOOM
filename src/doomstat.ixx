@@ -14,33 +14,23 @@
 // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
 // for more details.
 //
-// DESCRIPTION:
-//	Refresh (R_*) module, global header.
-//	All the rendering/drawing stuff is here.
-//
-//-----------------------------------------------------------------------------
-
-#pragma once
-
-// Binary Angles, sine/cosine/atan lookups.
-#include "tables.h"
-
-// Include the refresh/render data structs.
-#include "r_data.h"
-
-//
-// Separate header file for each module.
-//
-#include "r_bsp.h"
-#include "r_data.h"
-#include "r_draw.h"
-#include "r_main.h"
-#include "r_plane.h"
-#include "r_segs.h"
-#include "r_things.h"
-
-//-----------------------------------------------------------------------------
-//
 // $Log:$
 //
+// DESCRIPTION:
+//	Put all global tate variables here.
+//
 //-----------------------------------------------------------------------------
+
+export module doomstat;
+
+import doomdef;
+
+// Game Mode - identify IWAD as shareware, retail etc.
+export GameMode_t gamemode = indetermined;
+export GameMission_t gamemission = doom;
+
+// Language.
+export Language_t language = english;
+
+// Set if homebrew PWAD stuff has been added.
+export bool modifiedgame;

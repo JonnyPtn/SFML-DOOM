@@ -27,13 +27,12 @@
 
 #include <stdlib.h>
 
-#include "doomstat.h"
 
 #include "m_random.h"
 #include "z_zone.h"
 
 #include "p_local.h"
-#include "r_local.h"
+
 
 #include "g_game.h"
 
@@ -50,6 +49,8 @@
 import system;
 import wad;
 import argv;
+import tick;
+import setup;
 
 //
 // Animating textures and planes

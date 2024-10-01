@@ -269,5 +269,6 @@ struct mobj_t {
 
   // Thing being chased/attacked for tracers.
   mobj_t *tracer;
-
 };
+
+void P_SpawnMapThing(mapthing_t *mthing);

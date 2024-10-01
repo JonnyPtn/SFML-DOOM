@@ -23,19 +23,19 @@
 //
 //-----------------------------------------------------------------------------
 #include "z_zone.h"
+#include "r_main.h"
 
-#include "r_local.h"
 
 // Needs access to LFB (guess what).
 #include "v_video.h"
 
 // State.
-#include "doomstat.h"
 
 #include <stdlib.h>
 
 import system;
 import wad;
+import doomstat;
 
 // ?
 #define MAXWIDTH 1120

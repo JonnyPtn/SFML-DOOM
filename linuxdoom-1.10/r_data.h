@@ -27,6 +27,8 @@
 
 #include <string>
 
+static inline int *texturetranslation;
+
 // Retrieve column data for span blitting.
 std::byte *R_GetColumn(int tex, int col);
 

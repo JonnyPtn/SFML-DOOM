@@ -21,7 +21,7 @@
 //	set up initial state and misc. LUTs.
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include <math.h>
 
 #include "z_zone.h"
@@ -33,38 +33,40 @@
 #include "p_local.h"
 
 #include "s_sound.h"
+#include "r_data.h"
+#include "r_things.h"
 
-#include "doomstat.h"
+export module setup;
 
 import system;
 import wad;
-
-void P_SpawnMapThing(mapthing_t *mthing);
+import doomstat;
+import tick;
 
 //
 // MAP related Lookup tables.
 // Store VERTEXES, LINEDEFS, SIDEDEFS, etc.
 //
-int numvertexes;
-vertex_t *vertexes;
+export int numvertexes;
+export vertex_t *vertexes;
 
 int numsegs;
-seg_t *segs;
+export seg_t *segs;
 
 int numsectors;
-std::vector<sector_t> sectors;
+export std::vector<sector_t> sectors;
 
 int numsubsectors;
-subsector_t *subsectors;
+export subsector_t *subsectors;
 
-int numnodes;
-node_t *nodes;
+export int numnodes;
+export node_t *nodes;
 
-int numlines;
-line_t *lines;
+export int numlines;
+export line_t *lines;
 
-int numsides;
-side_t *sides;
+export int numsides;
+export side_t *sides;
 
 // BLOCKMAP
 // Created from axis aligned bounding box
@@ -74,16 +76,16 @@ side_t *sides;
 // by spatial subdivision in 2D.
 //
 // Blockmap size.
-int bmapwidth;
-int bmapheight;  // size in mapblocks
-short *blockmap; // int for larger maps
+export int bmapwidth;
+export int bmapheight;  // size in mapblocks
+export short *blockmap; // int for larger maps
 // offsets in blockmap are from here
-short *blockmaplump;
+export short *blockmaplump;
 // origin of block map
-fixed_t bmaporgx;
-fixed_t bmaporgy;
+export fixed_t bmaporgx;
+export fixed_t bmaporgy;
 // for thing chains
-mobj_t **blocklinks;
+export mobj_t **blocklinks;
 
 // REJECT
 // For fast sight rejection.
@@ -92,14 +94,14 @@ mobj_t **blocklinks;
 // Without special effect, this could be
 //  used as a PVS lookup as well.
 //
-std::byte *rejectmatrix;
+export std::byte *rejectmatrix;
 
 // Maintain single and multi player starting spots.
 #define MAX_DEATHMATCH_STARTS 10
 
-mapthing_t deathmatchstarts[MAX_DEATHMATCH_STARTS];
-mapthing_t *deathmatch_p;
-mapthing_t playerstarts[MAXPLAYERS];
+export mapthing_t deathmatchstarts[MAX_DEATHMATCH_STARTS];
+export mapthing_t *deathmatch_p;
+export mapthing_t playerstarts[MAXPLAYERS];
 
 //
 // P_LoadVertexes
@@ -491,7 +493,7 @@ void P_GroupLines(void) {
 //
 // P_SetupLevel
 //
-void P_SetupLevel(int episode, int map, int playermask, skill_t skill) {
+export void P_SetupLevel(int episode, int map, int playermask, skill_t skill) {
   int i;
   char lumpname[9];
   int lumpnum;
@@ -590,7 +592,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill) {
 //
 // P_Init
 //
-void P_Init(void) {
+export void P_Init(void) {
   P_InitSwitchList();
   P_InitPicAnims();
   R_InitSprites(sprnames);

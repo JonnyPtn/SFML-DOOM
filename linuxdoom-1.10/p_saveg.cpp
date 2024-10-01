@@ -25,14 +25,17 @@
 #include "z_zone.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
 
 #include <spdlog/spdlog.h>
 
 #include <stdlib.h>
 
+#include "g_game.h"
+
 import system;
+import tick;
+import setup;
 
 std::byte *save_p;
 

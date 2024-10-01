@@ -30,10 +30,9 @@
 
 #include "g_game.h"
 
-#include "r_local.h"
+
 #include "s_sound.h"
 
-#include "doomstat.h"
 
 // Data.
 #include "sounds.h"
@@ -43,6 +42,7 @@
 
 #include "wi_stuff.h"
 import wad;
+import doomstat;
 
 //
 // Data needed to add patches to full screen intermission pics.

@@ -21,16 +21,16 @@
 //	Thinker, Ticker.
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include "p_local.h"
 #include "z_zone.h"
+#include "g_game.h"
 
-#include "doomstat.h"
 
 #include <stdlib.h>
-import menu;
+export module tick;
 
-int leveltime;
+export int leveltime;
 
 //
 // THINKERS
@@ -41,18 +41,18 @@ int leveltime;
 //
 
 // Both the head and tail of the thinker list.
-thinker_t thinkercap;
+export thinker_t thinkercap;
 
 //
 // P_InitThinkers
 //
-void P_InitThinkers(void) { thinkercap.prev = thinkercap.next = &thinkercap; }
+export void P_InitThinkers(void) { thinkercap.prev = thinkercap.next = &thinkercap; }
 
 //
 // P_AddThinker
 // Adds a new thinker at the end of the list.
 //
-void P_AddThinker(thinker_t *thinker) {
+export void P_AddThinker(thinker_t *thinker) {
   thinkercap.prev->next = thinker;
   thinker->next = &thinkercap;
   thinker->prev = thinkercap.prev;
@@ -64,7 +64,7 @@ void P_AddThinker(thinker_t *thinker) {
 // Deallocation is lazy -- it will not actually be freed
 // until its thinking turn comes up.
 //
-void P_RemoveThinker(thinker_t *thinker) {
+export void P_RemoveThinker(thinker_t *thinker) {
   // FIXME: NOP.
   thinker->function.acv = (actionf_v)(-1);
 }
@@ -100,7 +100,7 @@ void P_RunThinkers(void) {
 // P_Ticker
 //
 
-void P_Ticker(void) {
+export void P_Ticker(void) {
   int i;
 
   // run the tic
@@ -108,7 +108,7 @@ void P_Ticker(void) {
     return;
 
   // pause if in menu and at least one tic has been run
-  if (!netgame && menuactive && !demoplayback &&
+  if (!netgame && /*menuactive &&*/ !demoplayback &&
       players[consoleplayer].viewz != 1) {
     return;
   }

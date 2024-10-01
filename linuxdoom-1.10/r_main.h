@@ -24,6 +24,10 @@
 #include "d_player.h"
 #include "r_data.h"
 
+//externs from doomstat.h
+static int viewangleoffset;
+static int centery;
+
 //
 // POV related.
 //
@@ -33,7 +37,7 @@ extern fixed_t viewsin;
 extern int viewwindowx;
 extern int viewwindowy;
 
-extern int centerx;
+static int centerx;
 extern int centery;
 
 extern fixed_t centerxfrac;

@@ -25,9 +25,11 @@
 
 // State.
 #include "r_state.h"
+#include "r_main.h"
 
 import doomdef;
 import system;
+import setup;
 
 //
 // P_CheckSight

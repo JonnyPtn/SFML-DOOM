@@ -26,14 +26,15 @@
 #include <stdlib.h>
 
 #include "z_zone.h"
+#include "r_plane.h"
+#include "r_draw.h"
+#include "r_main.h"
+#include "r_things.h"
 
-#include "doomstat.h"
-
-#include "r_local.h"
-#include "r_sky.h"
 
 import system;
 import wad;
+import sky;
 
 planefunction_t floorfunc;
 planefunction_t ceilingfunc;

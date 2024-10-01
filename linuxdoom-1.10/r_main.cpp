@@ -27,17 +27,22 @@
 #include <stdlib.h>
 
 #include "m_bbox.h"
+#include "r_defs.h"
 
-#include "r_local.h"
-#include "r_sky.h"
+#include "d_player.h"
+#include "r_main.h"
+#include "r_draw.h"
+#include "r_things.h"
+#include "r_plane.h"
+#include "r_bsp.h"
 
 import system;
 import net;
+import sky;
+import setup;
 
 // Fineangles in the SCREENWIDTH wide window.
 #define FIELDOFVIEW 2048
-
-int viewangleoffset;
 
 // increment every time a check is made
 int validcount = 1;
@@ -45,8 +50,6 @@ int validcount = 1;
 lighttable_t *fixedcolormap;
 extern lighttable_t **walllights;
 
-int centerx;
-int centery;
 
 fixed_t centerxfrac;
 fixed_t centeryfrac;

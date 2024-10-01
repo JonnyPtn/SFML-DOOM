@@ -30,8 +30,9 @@
 #include "hu_stuff.h"
 
 #include "s_sound.h"
+#include "d_player.h"
+#include "g_game.h"
 
-#include "doomstat.h"
 
 // Data.
 #include "sounds.h"
@@ -41,6 +42,7 @@ import system;
 import wad;
 import am_map;
 import strings;
+import doomstat;
 
 //
 // Locally used constants, shortcuts.

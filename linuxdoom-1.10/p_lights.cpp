@@ -32,6 +32,8 @@
 #include <stdlib.h>
 
 import doomdef;
+import tick;
+import setup;
 
 //
 // FIRELIGHT FLICKER

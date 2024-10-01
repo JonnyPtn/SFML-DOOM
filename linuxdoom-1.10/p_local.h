@@ -20,10 +20,14 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
+#include "d_player.h"
+#include "r_defs.h"
+#include "r_main.h"
+#include "r_draw.h"
 
 #ifndef __R_LOCAL__
 
-#include "r_local.h"
+
 
 #endif
 
@@ -57,19 +61,6 @@
 
 // follow a player exlusively for 3 seconds
 #define BASETHRESHOLD 100
-
-//
-// P_TICK
-//
-
-// both the head and tail of the thinker list
-extern thinker_t thinkercap;
-
-void P_InitThinkers(void);
-
-void P_AddThinker(thinker_t *thinker);
-
-void P_RemoveThinker(thinker_t *thinker);
 
 //
 // P_PSPR
@@ -219,18 +210,6 @@ void P_LineAttack(mobj_t *t1, angle_t angle, fixed_t distance, fixed_t slope,
                   int damage);
 
 void P_RadiusAttack(mobj_t *spot, mobj_t *source, int damage);
-
-//
-// P_SETUP
-//
-extern std::byte *rejectmatrix;  // for fast sight rejection
-extern short *blockmaplump; // offsets in blockmap are from here
-extern short *blockmap;
-extern int bmapwidth;
-extern int bmapheight; // in mapblocks
-extern fixed_t bmaporgx;
-extern fixed_t bmaporgy;    // origin of block map
-extern mobj_t **blocklinks; // for thing chains
 
 //
 // P_INTER

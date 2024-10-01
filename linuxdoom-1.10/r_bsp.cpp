@@ -28,12 +28,13 @@
 #include "r_things.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
 
 import system;
+import sky;
+import setup;
 
-// #include "r_local.h"
+// 
 
 seg_t *curline;
 side_t *sidedef;

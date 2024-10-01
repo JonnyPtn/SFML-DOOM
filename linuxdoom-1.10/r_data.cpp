@@ -28,10 +28,8 @@
 #include "m_swap.h"
 
 #include "p_local.h"
-#include "r_local.h"
 
-#include "doomstat.h"
-#include "r_sky.h"
+
 
 #ifdef LINUX
 #include <alloca.h>
@@ -45,8 +43,13 @@
 
 #include <spdlog/spdlog.h>
 
+#include "g_game.h"
+
 import system;
 import wad;
+import sky;
+import tick;
+import setup;
 
 //
 // Graphics.
@@ -135,7 +138,6 @@ std::vector<std::byte *> texturecomposite;
 
 // for global animation
 int *flattranslation;
-int *texturetranslation;
 
 // needed for pre rendering
 fixed_t *spritewidth;

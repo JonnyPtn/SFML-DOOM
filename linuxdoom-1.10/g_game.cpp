@@ -24,15 +24,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "doomstat.h"
 
 #include "m_random.h"
 #include "z_zone.h"
 
 #include "p_saveg.h"
-#include "p_setup.h"
-#include "p_tick.h"
-
 #include "hu_stuff.h"
 #include "st_stuff.h"
 #include "wi_stuff.h"
@@ -49,6 +45,10 @@ import am_map;
 import net;
 import finale;
 import strings;
+import sky;
+import tick;
+import doomstat;
+import setup;
 
 #include "p_local.h"
 
@@ -59,7 +59,6 @@ import strings;
 
 // SKY handling - still the wrong place.
 #include "r_data.h"
-#include "r_sky.h"
 
 #include "g_game.h"
 
@@ -95,45 +94,22 @@ void G_DoWorldDone(void);
 void G_DoSaveGame(void);
 
 gameaction_t gameaction;
-gamestate_t gamestate;
-skill_t gameskill;
-bool respawnmonsters;
-int gameepisode;
-int gamemap;
-
-bool paused;
 bool sendpause; // send a pause event next tic
 bool sendsave;  // send a save event next tic
-bool usergame;  // ok to save / end game
 
 bool timingdemo; // if true, exit with report on completion
-bool nodrawers;  // for comparative timing purposes
 bool noblit;     // for comparative timing purposes
 int starttime;      // for comparative timing purposes
 
 
-uint8_t deathmatch; // only if started as net death
-bool netgame;    // only true if packets are broadcast
-bool playeringame[MAXPLAYERS];
-player_t players[MAXPLAYERS];
-
-int consoleplayer; // player taking events and displaying
-int displayplayer; // view being displayed
-int gametic;
 int levelstarttic;                       // gametic at level start
-int totalkills, totalitems, totalsecret; // for intermission
 
 char demoname[32];
-bool demoplayback;
 bool netdemo;
 std::byte *demobuffer;
 std::byte *demo_p;
 std::byte *demoend;
-bool singledemo; // quit after playing a demo from cmdline
 
-bool precache = true; // if true, load all graphics at start
-
-wbstartstruct_t wminfo; // parms for world map / intermission
 
 short consistancy[MAXPLAYERS][BACKUPTICS];
 
@@ -198,7 +174,7 @@ char savedescription[32];
 #define BODYQUESIZE 32
 
 mobj_t *bodyque[BODYQUESIZE];
-int bodyqueslot;
+
 
 void *statcopy; // for statistics driver
 
@@ -1202,9 +1178,6 @@ void G_DoNewGame(void) {
   G_InitNew(d_skill, d_episode, d_map);
   gameaction = ga_nothing;
 }
-
-// The sky texture to be used instead of the F_SKY1 dummy.
-extern int skytexture;
 
 void G_InitNew(skill_t skill, int episode, int map) {
   int i;

@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "d_player.h"
+
 // #include "v_video.h"
 
 // States for the intermission

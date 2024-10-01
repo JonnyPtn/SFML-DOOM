@@ -31,11 +31,14 @@
 #include "st_stuff.h"
 
 #include "s_sound.h"
+#include "g_game.h"
 
-#include "doomstat.h"
 
 import main;
 import system;
+import sky;
+import tick;
+import setup;
 
 void G_PlayerReborn(int player);
 

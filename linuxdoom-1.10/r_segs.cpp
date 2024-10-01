@@ -22,12 +22,16 @@
 //-----------------------------------------------------------------------------
 
 #include <stdlib.h>
-#include "doomstat.h"
-
-#include "r_local.h"
-#include "r_sky.h"
+#include "tables.h"
+#include "r_bsp.h"
+#include "r_data.h"
+#include "r_main.h"
+#include "r_things.h"
+#include "r_draw.h"
+#include "r_plane.h"
 
 import system;
+import sky;
 
 // OPTIMIZE: closed two sided lines as single sided
 

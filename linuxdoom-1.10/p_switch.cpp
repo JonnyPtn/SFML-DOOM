@@ -32,10 +32,11 @@
 #include "sounds.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
 
 import system;
+import doomstat;
+import setup;
 
 //
 // CHANGE THE TEXTURE OF A WALL SWITCH TO ITS OPPOSITE

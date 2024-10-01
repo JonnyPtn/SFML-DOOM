@@ -32,10 +32,11 @@ module;
 #include "v_video.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
 
 #include <SFML/Window.hpp>
+
+#include "g_game.h"
 
 // Used by ST StatusBar stuff.
 #define AM_MSGHEADER (('a' << 24) + ('m' << 16))
@@ -46,6 +47,7 @@ export module am_map;
 
 import wad;
 import strings;
+import setup;
 
 // For use if I do walls with outsides/insides
 #define REDS (256 - 5 * 16)

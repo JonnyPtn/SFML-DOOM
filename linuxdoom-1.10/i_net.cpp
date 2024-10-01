@@ -24,10 +24,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include "g_game.h"
 
 #include "d_event.h"
 
-#include "doomstat.h"
 #include "i_net.h"
 
 import system;

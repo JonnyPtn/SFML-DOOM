@@ -31,11 +31,13 @@
 
 #include "p_local.h"
 
-#include "doomstat.h"
+#include "g_game.h"
+#include "r_main.h"
 
 import system;
 import wad;
 import sound;
+import doomstat;
 
 #define S_MAX_VOLUME 127
 
@@ -229,7 +231,7 @@ void S_StartSoundAtVolume(void *origin_p, int sfx_id, int volume) {
 
   // Check to see if it is audible,
   //  and if not, modify the params
-  if (origin && origin != players[consoleplayer].mo) {
+if (origin && origin != players[consoleplayer].mo) {
     rc = S_AdjustSoundParams(players[consoleplayer].mo, origin, &volume, &sep,
                              &pitch);
 

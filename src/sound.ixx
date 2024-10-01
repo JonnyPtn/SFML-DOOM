@@ -22,7 +22,6 @@
 //-----------------------------------------------------------------------------
 module;
 
-#include "doomstat.h"
 #include "sounds.h"
 #include <stdarg.h>
 #include <stdio.h>
@@ -38,6 +37,7 @@ module;
 #include <time.h>
 
 #include "z_zone.h"
+#include "g_game.h"
 
 #include <string>
 export module sound;

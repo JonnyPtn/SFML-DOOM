@@ -28,16 +28,20 @@
 #include "m_random.h"
 
 #include "p_local.h"
+#include "g_game.h"
 
 #include "s_sound.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
+#include "r_main.h"
 // Data.
 #include "sounds.h"
 import system;
 import doomdef;
+import sky;
+import tick;
+import setup;
 
 fixed_t tmbbox[4];
 mobj_t *tmthing;

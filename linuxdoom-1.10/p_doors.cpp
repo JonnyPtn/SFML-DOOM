@@ -26,7 +26,6 @@
 #include "s_sound.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
 
 // Data.
@@ -35,6 +34,8 @@
 #include <stdlib.h>
 
 import strings;
+import tick;
+import setup;
 
 #if 0
 //

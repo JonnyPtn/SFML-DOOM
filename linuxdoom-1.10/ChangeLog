@@ -458,8 +458,7 @@ Sat Aug 16 08:07:16 1997    <bk@hal.gamers.org>
 	  another anim_t in wi_stuff.h/c, now local as well,
 	  so collisions on header inclusion should not occur.
           #include "doomdef.h"
-          #include "doomstat.h"
-	  these should now be topmost includes.
+          	  these should now be topmost includes.
 	
 	* doomstat.h, doomdef.h, wi_stuff.h, d_player.h:
 	  I moved wbstartstruct_t to d_player.h, and wminfo

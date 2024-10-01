@@ -31,7 +31,7 @@
 
 #include "g_game.h"
 
-#include "r_local.h"
+
 #include "st_lib.h"
 #include "st_stuff.h"
 
@@ -46,7 +46,7 @@
 #include "v_video.h"
 
 // State.
-#include "doomstat.h"
+#include "r_main.h"
 
 // Data.
 #include "sounds.h"

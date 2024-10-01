@@ -28,12 +28,19 @@
 
 #include "z_zone.h"
 
-#include "r_local.h"
 
-#include "doomstat.h"
+#include "g_game.h"
+#include "r_defs.h"
+#include "r_state.h"
+#include "r_things.h"
+#include "r_draw.h"
+#include "r_main.h"
+#include "r_bsp.h"
+#include "r_segs.h"
 
 import system;
 import wad;
+import doomstat;
 
 #define MINZ (FRACUNIT * 4)
 #define BASEYCENTER 100

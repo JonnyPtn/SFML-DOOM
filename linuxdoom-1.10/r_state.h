@@ -49,7 +49,6 @@ extern int firstflat;
 
 // for global animation
 extern int *flattranslation;
-extern int *texturetranslation;
 
 // Sprite....
 extern int firstspritelump;
@@ -60,26 +59,6 @@ extern int numspritelumps;
 // Lookup tables for map data.
 //
 extern std::vector<spritedef_t> sprites;
-
-extern int numvertexes;
-extern vertex_t *vertexes;
-
-extern int numsegs;
-extern seg_t *segs;
-
-extern std::vector<sector_t> sectors;
-
-extern int numsubsectors;
-extern subsector_t *subsectors;
-
-extern int numnodes;
-extern node_t *nodes;
-
-extern int numlines;
-extern line_t *lines;
-
-extern int numsides;
-extern side_t *sides;
 
 //
 // POV data.

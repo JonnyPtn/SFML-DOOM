@@ -32,6 +32,9 @@
 // State.
 #include "r_state.h"
 
+import tick;
+import setup;
+
 //
 // TELEPORTATION
 //

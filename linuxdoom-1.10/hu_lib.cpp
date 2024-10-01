@@ -27,7 +27,8 @@
 
 #include "hu_lib.h"
 #include "r_draw.h"
-#include "r_local.h"
+#include "r_main.h"
+
 
 import doomdef;
 import system;

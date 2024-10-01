@@ -31,8 +31,10 @@
 
 // State.
 #include "r_state.h"
+#include "r_main.h"
 
 import doomdef;
+import setup;
 
 //
 // P_AproxDistance

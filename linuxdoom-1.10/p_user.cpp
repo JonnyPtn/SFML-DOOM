@@ -26,8 +26,11 @@
 #include "d_event.h"
 
 #include "p_local.h"
+#include "r_main.h"
 
-#include "doomstat.h"
+import tick;
+import doomstat;
+
 
 // Index of the special effects (INVUL inverse) map.
 #define INVERSECOLORMAP 32

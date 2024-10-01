@@ -34,7 +34,6 @@
 #include "g_game.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
 
 // Data.
@@ -42,6 +41,9 @@
 
 import main;
 import system;
+import setup;
+import tick;
+import doomstat;
 
 typedef enum {
   DI_EAST,

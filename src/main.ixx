@@ -21,7 +21,6 @@
 //-----------------------------------------------------------------------------
 module;
 
-#include "doomstat.h"
 #include "sounds.h"
 
 #include "s_sound.h"
@@ -37,8 +36,8 @@ module;
 #include "st_stuff.h"
 #include "wi_stuff.h"
 
-#include "p_setup.h"
-#include "r_local.h"
+#include "r_main.h"
+#include "r_draw.h"
 
 #include <SFML/Window/Event.hpp>
 
@@ -57,6 +56,8 @@ import net;
 import finale;
 import sound;
 import strings;
+import doomstat;
+import setup;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

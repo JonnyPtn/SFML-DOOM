@@ -28,7 +28,7 @@
 
 #include "m_swap.h"
 
-#include "r_local.h"
+
 #include "st_lib.h"
 #include "st_stuff.h"
 

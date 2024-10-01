@@ -24,27 +24,33 @@
 //
 //
 //-----------------------------------------------------------------------------
-
+module;
 // Needed for FRACUNIT.
 #include "m_fixed.h"
 
 // Needed for Flat retrieval.
 #include "r_data.h"
 
-#include "r_sky.h"
+export module sky;
+
+// SKY, store the number for name.
+export constexpr auto  SKYFLATNAME = "F_SKY1";
+
+// The sky map is 256*128*4 maps.
+export constexpr auto ANGLETOSKYSHIFT = 22;
 
 //
 // sky mapping
 //
-int skyflatnum;
-int skytexture;
-int skytexturemid;
+export int skyflatnum;
+export int skytexture;
+export int skytexturemid;
 
 //
 // R_InitSkyMap
 // Called whenever the view size changes.
 //
-void R_InitSkyMap(void) {
+export void R_InitSkyMap(void) {
   // skyflatnum = R_FlatNumForName ( SKYFLATNAME );
   skytexturemid = 100 * FRACUNIT;
 }

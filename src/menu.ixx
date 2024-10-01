@@ -33,7 +33,7 @@ module;
 #include "v_video.h"
 #include "z_zone.h"
 
-#include "r_local.h"
+
 
 #include "hu_stuff.h"
 
@@ -43,7 +43,6 @@ module;
 
 #include "s_sound.h"
 
-#include "doomstat.h"
 
 // Data.
 #include "sounds.h"
@@ -51,6 +50,8 @@ module;
 #include <functional>
 
 #include <cstddef>
+
+#include "r_main.h"
 
 export module menu;
 
@@ -60,6 +61,7 @@ import argv;
 import am_map;
 import sound;
 import strings;
+import doomstat;
 
 export patch_t *hu_font[HU_FONTSIZE];
 

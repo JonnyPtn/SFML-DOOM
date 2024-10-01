@@ -23,10 +23,35 @@
 
 #include "d_event.h"
 #include "d_ticcmd.h"
+#include "d_player.h"
 
 #include <SFML/Window.hpp>
 
 import doomdef;
+
+// previously externs in doomstat.h
+static int gamemap;
+static int gametic;
+static int gameepisode;
+static bool playeringame[MAXPLAYERS];
+static player_t players[MAXPLAYERS];
+static uint8_t deathmatch; // only if started as net death
+static bool netgame;    // only true if packets are broadcast
+static int consoleplayer; // player taking events and displaying
+static bool viewactive;
+static bool singledemo; // quit after playing a demo from cmdline
+static skill_t gameskill;
+static int totalkills, totalitems, totalsecret; // for intermission
+static wbstartstruct_t wminfo; // parms for world map / intermission
+static bool usergame;  // ok to save / end game
+static bool demoplayback;
+static gamestate_t gamestate;
+static bool paused;
+static int displayplayer; // view being displayed
+static int bodyqueslot;
+static bool precache = true; // if true, load all graphics at start
+static bool nodrawers;  // for comparative timing purposes
+static bool respawnmonsters;
 
 //
 // GAME

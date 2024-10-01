@@ -29,7 +29,6 @@
 #include "s_sound.h"
 
 // State.
-#include "doomstat.h"
 #include "r_state.h"
 
 // Data.
@@ -39,6 +38,8 @@
 
 import system;
 import doomdef;
+import tick;
+import setup;
 
 plat_t *activeplats[MAXPLATS];
 

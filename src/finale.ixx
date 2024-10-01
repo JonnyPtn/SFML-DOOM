@@ -32,9 +32,9 @@ module;
 // Data.
 #include "sounds.h"
 #include "d_event.h"
-
-#include "doomstat.h"
+#include "g_game.h"
 #include "r_state.h"
+#include "g_game.h"
 
 #include <SFML/Window.hpp>
 
@@ -46,10 +46,10 @@ import menu;
 import wad;
 import am_map;
 import strings;
+import doomstat;
 
 // ?
-// #include "doomstat.h"
-// #include "r_local.h"
+// // 
 // #include "f_finale.h"
 
 // Stage of animation:
