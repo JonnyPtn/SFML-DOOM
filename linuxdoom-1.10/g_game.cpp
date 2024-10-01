@@ -31,10 +31,22 @@
 #include "p_saveg.h"
 #include "hu_stuff.h"
 #include "st_stuff.h"
-#include "wi_stuff.h"
 
 // Needs access to LFB.
 #include "v_video.h"
+
+
+#include "p_local.h"
+
+#include "s_sound.h"
+
+// Data.
+#include "sounds.h"
+
+// SKY handling - still the wrong place.
+#include "r_data.h"
+
+#include "g_game.h"
 
 import main;
 import system;
@@ -49,18 +61,7 @@ import sky;
 import tick;
 import doomstat;
 import setup;
-
-#include "p_local.h"
-
-#include "s_sound.h"
-
-// Data.
-#include "sounds.h"
-
-// SKY handling - still the wrong place.
-#include "r_data.h"
-
-#include "g_game.h"
+import intermission;
 
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24

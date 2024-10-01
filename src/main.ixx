@@ -33,7 +33,6 @@ module;
 
 #include "hu_stuff.h"
 #include "st_stuff.h"
-#include "wi_stuff.h"
 
 #include "r_main.h"
 #include "r_draw.h"
@@ -58,6 +57,7 @@ import strings;
 import doomstat;
 import setup;
 import wipe;
+import intermission;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

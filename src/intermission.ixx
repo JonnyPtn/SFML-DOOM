@@ -20,7 +20,7 @@
 //	Intermission screens.
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include <stdio.h>
 
 
@@ -40,9 +40,16 @@
 // Needs access to LFB.
 #include "v_video.h"
 
-#include "wi_stuff.h"
+export module intermission;
 import wad;
 import doomstat;
+
+typedef enum {
+  NoState = -1,
+  StatCount,
+  ShowNextLoc
+
+} stateenum_t;
 
 //
 // Data needed to add patches to full screen intermission pics.
@@ -1251,7 +1258,7 @@ void WI_checkForAccelerate(void) {
 }
 
 // Updates stuff each tick
-void WI_Ticker(void) {
+export void WI_Ticker(void) {
   // counter for general background animation
   bcnt++;
 
@@ -1438,7 +1445,7 @@ void WI_loadData(void) {
 
 void WI_unloadData(void) { free(lnames); }
 
-void WI_Drawer(void) {
+export void WI_Drawer(void) {
   switch (state) {
   case StatCount:
     if (deathmatch)
@@ -1497,7 +1504,7 @@ void WI_initVariables(wbstartstruct_t *wbstartstruct) {
       wbs->epsd -= 3;
 }
 
-void WI_Start(wbstartstruct_t *wbstartstruct) {
+export void WI_Start(wbstartstruct_t *wbstartstruct) {
 
   WI_initVariables(wbstartstruct);
   WI_loadData();
