@@ -42,6 +42,7 @@ import doomdef;
 import sky;
 import tick;
 import setup;
+import tables;
 
 fixed_t tmbbox[4];
 mobj_t *tmthing;

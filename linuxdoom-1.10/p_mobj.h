@@ -23,7 +23,7 @@
 
 // Basics.
 #include "m_fixed.h"
-#include "tables.h"
+
 
 // We need the thinker_t stuff.
 #include "d_think.h"
@@ -36,6 +36,8 @@
 //  tied to animation frames.
 // Needs precompiled tables/data structures.
 #include "info.h"
+
+typedef unsigned angle_t;
 
 //
 // NOTES: mobj_t

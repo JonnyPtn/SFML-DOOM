@@ -41,6 +41,7 @@
 import system;
 import wad;
 import doomstat;
+import tables;
 
 #define MINZ (FRACUNIT * 4)
 #define BASEYCENTER 100

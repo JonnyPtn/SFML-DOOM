@@ -53,6 +53,7 @@ import items;
 import am_map;
 import strings;
 import video;
+import tables;
 
 //
 // STATUS BAR DATA

@@ -30,6 +30,7 @@
 
 import tick;
 import doomstat;
+import tables;
 
 
 // Index of the special effects (INVUL inverse) map.

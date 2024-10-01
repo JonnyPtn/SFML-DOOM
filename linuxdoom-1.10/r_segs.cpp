@@ -22,7 +22,7 @@
 //-----------------------------------------------------------------------------
 
 #include <stdlib.h>
-#include "tables.h"
+
 #include "r_bsp.h"
 #include "r_data.h"
 #include "r_main.h"
@@ -32,6 +32,7 @@
 
 import system;
 import sky;
+import tables;
 
 // OPTIMIZE: closed two sided lines as single sided
 

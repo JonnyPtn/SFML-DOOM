@@ -44,6 +44,7 @@ import system;
 import setup;
 import tick;
 import doomstat;
+import tables;
 
 typedef enum {
   DI_EAST,

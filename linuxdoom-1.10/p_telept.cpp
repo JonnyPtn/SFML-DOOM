@@ -34,6 +34,7 @@
 
 import tick;
 import setup;
+import tables;
 
 //
 // TELEPORTATION

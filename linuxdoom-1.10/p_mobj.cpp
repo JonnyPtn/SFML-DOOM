@@ -39,6 +39,7 @@ import system;
 import sky;
 import tick;
 import setup;
+import tables;
 
 void G_PlayerReborn(int player);
 

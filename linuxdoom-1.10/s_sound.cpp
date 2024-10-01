@@ -38,6 +38,7 @@ import system;
 import wad;
 import sound;
 import doomstat;
+import tables;
 
 #define S_MAX_VOLUME 127
 

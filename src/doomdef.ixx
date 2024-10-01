@@ -202,7 +202,7 @@ enum powerduration_t {
 // #include "m_swap.h"
 
 // Binary Angles, sine/cosine/atan lookups.
-// #include "tables.h"
+// 
 
 // Event type.
 // #include "d_event.h"

@@ -42,6 +42,7 @@ import items;
 import doomdef;
 import strings;
 import doomstat;
+import tables;
 
 #define BONUSADD 6
 

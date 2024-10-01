@@ -39,6 +39,7 @@
 import items;
 import tick;
 import doomstat;
+import tables;
 
 #define LOWERSPEED FRACUNIT * 6
 #define RAISESPEED FRACUNIT * 6

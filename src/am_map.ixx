@@ -49,6 +49,7 @@ import wad;
 import strings;
 import setup;
 import video;
+import tables;
 
 // For use if I do walls with outsides/insides
 #define REDS (256 - 5 * 16)

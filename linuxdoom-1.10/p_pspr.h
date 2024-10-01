@@ -24,7 +24,7 @@
 // Basic data types.
 // Needs fixed point, and BAM angles.
 #include "m_fixed.h"
-#include "tables.h"
+
 
 //
 // Needs to include the precompiled

@@ -63,6 +63,7 @@ import doomstat;
 import setup;
 import intermission;
 import video;
+import tables;
 
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24
