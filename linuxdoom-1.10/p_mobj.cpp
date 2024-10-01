@@ -28,7 +28,7 @@
 #include "sounds.h"
 
 #include "hu_stuff.h"
-#include "st_stuff.h"
+
 
 #include "s_sound.h"
 #include "g_game.h"
@@ -40,6 +40,7 @@ import sky;
 import tick;
 import setup;
 import tables;
+import status_bar;
 
 void G_PlayerReborn(int player);
 

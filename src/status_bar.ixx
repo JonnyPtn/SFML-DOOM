@@ -22,7 +22,7 @@
 //	Does palette indicators as well (red pain/berserk, bright pickup)
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include <stdio.h>
 
 #include "i_video.h"
@@ -33,7 +33,7 @@
 
 
 #include "st_lib.h"
-#include "st_stuff.h"
+
 
 #include "p_inter.h"
 #include "p_local.h"
@@ -47,13 +47,34 @@
 
 // Data.
 #include "sounds.h"
-
+export module status_bar;
 import wad;
 import items;
 import am_map;
 import strings;
 import video;
 import tables;
+
+// Size of statusbar.
+// Now sensitive for scaling.
+export constexpr auto ST_HEIGHT = 32 * SCREEN_MUL;
+export constexpr auto ST_WIDTH = SCREENWIDTH;
+export constexpr auto ST_Y = (SCREENHEIGHT - ST_HEIGHT);
+
+// States for status bar code.
+typedef enum {
+  AutomapState,
+  FirstPersonState
+
+} st_stateenum_t;
+
+// States for the chat code.
+typedef enum {
+  StartChatState,
+  WaitDestState,
+  GetChatState
+
+} st_chatstateenum_t;
 
 //
 // STATUS BAR DATA
@@ -466,7 +487,7 @@ void ST_refreshBackground(void) {
 
 // Respond to keyboard input events,
 //  intercept cheats.
-bool ST_Responder(const sf::Event &ev) {
+export bool ST_Responder(const sf::Event &ev) {
   /* JONNY TODO
   int		i;
 
@@ -882,7 +903,7 @@ void ST_updateWidgets(void) {
     st_chat = st_oldchat;
 }
 
-void ST_Ticker(void) {
+export void ST_Ticker(void) {
 
   st_clock++;
   st_randomnumber = M_Random();
@@ -987,7 +1008,7 @@ void ST_diffDraw(void) {
   ST_drawWidgets(false);
 }
 
-void ST_Drawer(bool fullscreen, bool refresh) {
+export void ST_Drawer(bool fullscreen, bool refresh) {
 
   st_statusbaron = (!fullscreen) || automapactive;
   st_firsttime = st_firsttime || refresh;
@@ -1193,7 +1214,7 @@ void ST_createWidgets(void) {
 
 static bool st_stopped = true;
 
-void ST_Start(void) {
+export void ST_Start(void) {
 
   if (!st_stopped)
     ST_Stop();
@@ -1212,7 +1233,7 @@ void ST_Stop(void) {
   st_stopped = true;
 }
 
-void ST_Init(void) {
+export void ST_Init(void) {
   veryfirsttime = 0;
   ST_loadData();
 }

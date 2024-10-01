@@ -30,7 +30,7 @@
 
 #include "p_saveg.h"
 #include "hu_stuff.h"
-#include "st_stuff.h"
+
 
 // Needs access to LFB.
 
@@ -64,6 +64,7 @@ import setup;
 import intermission;
 import video;
 import tables;
+import status_bar;
 
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24

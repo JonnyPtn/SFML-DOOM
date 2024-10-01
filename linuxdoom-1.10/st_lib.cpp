@@ -27,11 +27,12 @@
 
 
 #include "st_lib.h"
-#include "st_stuff.h"
+
 
 import system;
 import wad;
 import video;
+import status_bar;
 
 // in AM_map.c
 extern bool automapactive;

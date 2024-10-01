@@ -32,7 +32,7 @@ module;
 #include "g_game.h"
 
 #include "hu_stuff.h"
-#include "st_stuff.h"
+
 
 #include "r_main.h"
 #include "r_draw.h"
@@ -59,6 +59,7 @@ import setup;
 import wipe;
 import intermission;
 import video;
+import status_bar;
 
 // List of wad files
 std::vector<std::string> wadfilenames;
