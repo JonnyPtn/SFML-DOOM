@@ -49,12 +49,12 @@
 #include "doomstat.h"
 
 // Data.
-#include "dstrings.h"
 #include "sounds.h"
 
 import wad;
 import items;
 import am_map;
+import strings;
 
 //
 // STATUS BAR DATA

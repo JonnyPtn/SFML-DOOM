@@ -48,13 +48,13 @@ import wad;
 import am_map;
 import net;
 import finale;
+import strings;
 
 #include "p_local.h"
 
 #include "s_sound.h"
 
 // Data.
-#include "dstrings.h"
 #include "sounds.h"
 
 // SKY handling - still the wrong place.
@@ -1054,10 +1054,10 @@ void G_DoWorldDone(void) {
 //
 extern bool setsizeneeded;
 
-char savename[256];
+std::string savename;
 
-void G_LoadGame(char *name) {
-  strcpy(savename, name);
+void G_LoadGame(const std::string& name) {
+  savename = name;
   gameaction = ga_loadgame;
 }
 
@@ -1132,7 +1132,7 @@ void G_DoSaveGame(void) {
   char *description;
   int i;
 
-  snprintf(name, 100, SAVEGAMENAME "%d.dsg", savegameslot);
+  //snprintf(name, 100, SAVEGAMENAME "%d.dsg", savegameslot);
   description = savedescription;
 
   save_p = savebuffer = screens[1].data() + 0x4000;

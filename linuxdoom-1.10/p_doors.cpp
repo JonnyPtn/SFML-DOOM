@@ -30,10 +30,11 @@
 #include "r_state.h"
 
 // Data.
-#include "dstrings.h"
 #include "sounds.h"
 
 #include <stdlib.h>
+
+import strings;
 
 #if 0
 //

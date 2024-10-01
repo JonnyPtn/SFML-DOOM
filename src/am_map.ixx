@@ -35,9 +35,6 @@ module;
 #include "doomstat.h"
 #include "r_state.h"
 
-// Data.
-#include "dstrings.h"
-
 #include <SFML/Window.hpp>
 
 // Used by ST StatusBar stuff.
@@ -48,6 +45,7 @@ module;
 export module am_map;
 
 import wad;
+import strings;
 
 // For use if I do walls with outsides/insides
 #define REDS (256 - 5 * 16)

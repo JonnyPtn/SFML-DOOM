@@ -30,7 +30,6 @@ module;
 #include "z_zone.h"
 
 // Data.
-#include "dstrings.h"
 #include "sounds.h"
 #include "d_event.h"
 
@@ -46,6 +45,7 @@ export module finale;
 import menu;
 import wad;
 import am_map;
+import strings;
 
 // ?
 // #include "doomstat.h"

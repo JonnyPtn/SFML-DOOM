@@ -22,7 +22,6 @@
 module;
 
 #include "doomstat.h"
-#include "dstrings.h"
 #include "sounds.h"
 
 #include "s_sound.h"
@@ -57,6 +56,7 @@ import am_map;
 import net;
 import finale;
 import sound;
+import strings;
 
 // List of wad files
 std::vector<std::string> wadfilenames;
@@ -483,19 +483,19 @@ void IdentifyVersion(void) {
   if (M_CheckParm("-shdev")) {
     gamemode = shareware;
     devparm = true;
-    D_AddFile(DEVDATA "doom1.wad");
-    D_AddFile(DEVMAPS "data_se/texture1.lmp");
-    D_AddFile(DEVMAPS "data_se/pnames.lmp");
+    D_AddFile( "doom1.wad");
+    D_AddFile( "data_se/texture1.lmp");
+    D_AddFile( "data_se/pnames.lmp");
     return;
   }
 
   if (M_CheckParm("-regdev")) {
     gamemode = registered;
     devparm = true;
-    D_AddFile(DEVDATA "doom.wad");
-    D_AddFile(DEVMAPS "data_se/texture1.lmp");
-    D_AddFile(DEVMAPS "data_se/texture2.lmp");
-    D_AddFile(DEVMAPS "data_se/pnames.lmp");
+    D_AddFile( "doom.wad");
+    D_AddFile( "data_se/texture1.lmp");
+    D_AddFile( "data_se/texture2.lmp");
+    D_AddFile( "data_se/pnames.lmp");
     return;
   }
 
@@ -504,14 +504,14 @@ void IdentifyVersion(void) {
     devparm = true;
     /* I don't bother
     if(plutonia)
-        D_AddFile (DEVDATA"plutonia.wad");
+        D_AddFile ("plutonia.wad");
     else if(tnt)
-        D_AddFile (DEVDATA"tnt.wad");
+        D_AddFile ("tnt.wad");
     else*/
-    D_AddFile(DEVDATA "doom2.wad");
+    D_AddFile( "doom2.wad");
 
-    D_AddFile(DEVMAPS "cdata/texture1.lmp");
-    D_AddFile(DEVMAPS "cdata/pnames.lmp");
+    D_AddFile( "cdata/texture1.lmp");
+    D_AddFile( "cdata/pnames.lmp");
     return;
   }
 
@@ -580,7 +580,7 @@ export fixed_t sidemove[2] = {0x18, 0x28};
 //
 export void D_DoomMain(void) {
   int p;
-  char file[256];
+  std::string file;
 
   IdentifyVersion();
 
@@ -663,19 +663,19 @@ export void D_DoomMain(void) {
     case shareware:
     case retail:
     case registered:
-      snprintf(file, 256, "~" DEVMAPS "E%cM%c.wad", myargv[p + 1][0],
-               myargv[p + 2][0]);
-      printf("Warping to Episode %s, Map %s.\n", myargv[p + 1].c_str(),
-             myargv[p + 2].c_str());
+      //snprintf(file, 256, "~/E%cM%c.wad", myargv[p + 1][0],
+        //       myargv[p + 2][0]);
+      //printf("Warping to Episode %s, Map %s.\n", myargv[p + 1].c_str(),
+        //     myargv[p + 2].c_str());
       break;
 
     case commercial:
     default:
       p = atoi(myargv[p + 1].c_str());
-      if (p < 10)
-        snprintf(file, 256, "~" DEVMAPS "cdata/map0%i.wad", p);
-      else
-        snprintf(file, 256, "~" DEVMAPS "cdata/map%i.wad", p);
+      if (p < 10){}
+        //snprintf(file, 256, "~/cdata/map0%i.wad", p);
+      else{}
+        //snprintf(file, 256, "~/cdata/map%i.wad", p);
       break;
     }
     D_AddFile(file);
@@ -696,7 +696,7 @@ export void D_DoomMain(void) {
     p = M_CheckParm("-timedemo");
 
   if (p && p < myargc - 1) {
-    snprintf(file, 256, "%s.lmp", myargv[p + 1].c_str());
+    //snprintf(file, 256, "%s.lmp", myargv[p + 1].c_str());
     D_AddFile(file);
     printf("Playing demo %s.lmp.\n", myargv[p + 1].c_str());
   }
@@ -865,7 +865,7 @@ export void D_DoomMain(void) {
 
   p = M_CheckParm("-loadgame");
   if (p && p < myargc - 1) {
-    snprintf(file, 256, SAVEGAMENAME "%c.dsg", myargv[p + 1][0]);
+    file = std::format("{}{}.dsg",SAVEGAMENAME,myargv[p+1][0]);
     G_LoadGame(file);
   }
 

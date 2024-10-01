@@ -28,7 +28,6 @@ module;
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "dstrings.h"
 
 #include "i_video.h"
 #include "v_video.h"
@@ -60,6 +59,7 @@ import wad;
 import argv;
 import am_map;
 import sound;
+import strings;
 
 export patch_t *hu_font[HU_FONTSIZE];
 
@@ -120,7 +120,7 @@ std::function<void(int)> messageRoutine;
 
 #define SAVESTRINGSIZE 24
 
-char gammamsg[5][26] = {GAMMALVL0, GAMMALVL1, GAMMALVL2, GAMMALVL3, GAMMALVL4};
+std::array gammamsg = {GAMMALVL0, GAMMALVL1, GAMMALVL2, GAMMALVL3, GAMMALVL4};
 
 // we are going to be entering a savegame string
 int saveStringEnter;
@@ -138,7 +138,7 @@ export bool menuactive;
 extern bool sendpause;
 char savegamestrings[10][SAVESTRINGSIZE];
 
-char endstring[160];
+std::string endstring;
 
 //
 // MENU TYPEDEFS
@@ -264,7 +264,7 @@ int M_StringWidth(char *string);
 
 int M_StringHeight(char *string);
 
-void M_StartMessage(const char *string, std::function<void(int)> routine,
+void M_StartMessage(const std::string& string, std::function<void(int)> routine,
                     bool input);
 
 void M_StopMessage(void);
@@ -460,8 +460,7 @@ void M_DrawSaveLoadBorder(int x, int y) {
 // User wants to load this game
 //
 void M_LoadSelect(int choice) {
-  char name[256];
-  snprintf(name, 256, SAVEGAMENAME "%d.dsg", choice);
+  auto name = std::format("{}{}.dsg",SAVEGAMENAME,choice);
   G_LoadGame(name);
   M_ClearMenus();
 }
@@ -578,7 +577,7 @@ void M_QuickSave(void) {
     quickSaveSlot = -2; // means to pick a slot now
     return;
   }
-  snprintf(tempstring, 80, QSPROMPT, savegamestrings[quickSaveSlot]);
+  snprintf(tempstring, 80, QSPROMPT.c_str(), savegamestrings[quickSaveSlot]);
   M_StartMessage(tempstring, M_QuickSaveResponse, true);
 }
 
@@ -602,7 +601,7 @@ void M_QuickLoad(void) {
     M_StartMessage(QSAVESPOT, NULL, false);
     return;
   }
-  snprintf(tempstring, 80, QLPROMPT, savegamestrings[quickSaveSlot]);
+  snprintf(tempstring, 80, QLPROMPT.c_str(), savegamestrings[quickSaveSlot]);
   M_StartMessage(tempstring, M_QuickLoadResponse, true);
 }
 
@@ -888,10 +887,9 @@ void M_QuitDOOM(int choice) {
   // We pick index 0 which is language sensitive,
   //  or one at random, between 1 and maximum number.
   if (language != english)
-    snprintf(endstring, 160, "%s\n\n" DOSY, endmsg[0]);
+    endstring = std::format("{}\n\n{}", endmsg[0], DOSY);
   else
-    snprintf(endstring, 160, "%s\n\n" DOSY,
-             endmsg[(gametic % (NUM_QUITMESSAGES - 2)) + 1]);
+    endstring = std::format("{}\n\n{}", endmsg[(gametic % (NUM_QUITMESSAGES - 2)) + 1], DOSY);
 
   M_StartMessage(endstring, M_QuitResponse, true);
 }
@@ -982,11 +980,11 @@ void M_DrawSelCell(menu_t *menu, int item) {
       static_cast<patch_t *>(W_CacheLumpName("M_CELL2", PU_CACHE)));
 }
 
-void M_StartMessage(const char *string, std::function<void(int)> routine,
+void M_StartMessage(const std::string& message, std::function<void(int)> routine,
                     bool input) {
   messageLastMenuActive = menuactive;
   messageToPrint = 1;
-  messageString = string;
+  messageString = message.c_str();
   messageRoutine = routine;
   messageNeedsInput = input;
   menuactive = true;

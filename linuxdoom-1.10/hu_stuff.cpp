@@ -34,13 +34,13 @@
 #include "doomstat.h"
 
 // Data.
-#include "dstrings.h"
 #include "sounds.h"
 
 import menu;
 import system;
 import wad;
 import am_map;
+import strings;
 
 //
 // Locally used constants, shortcuts.
