@@ -27,7 +27,6 @@ module;
 #include "v_video.h"
 #include "z_zone.h"
 
-#include "f_wipe.h"
 #include "i_video.h"
 
 #include "g_game.h"
@@ -58,6 +57,7 @@ import sound;
 import strings;
 import doomstat;
 import setup;
+import wipe;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

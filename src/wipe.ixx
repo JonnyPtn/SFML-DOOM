@@ -20,20 +20,29 @@
 //	Mission begin melt/wipe screen special effect.
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include "i_video.h"
 #include "m_random.h"
 #include "v_video.h"
 #include "z_zone.h"
 
-#include "f_wipe.h"
 #include <stdlib.h>
-
+export module wipe;
 import doomdef;
 
 //
 //                       SCREEN WIPE PACKAGE
 //
+
+export enum {
+  // simple gradual pixel change for 8-bit only
+  wipe_ColorXForm,
+
+  // weird screen melt
+  wipe_Melt,
+
+  wipe_NUMWIPES
+};
 
 // when zero, stop the wipe
 static bool go = 0;
@@ -178,27 +187,25 @@ int wipe_exitMelt(int width, int height, int ticks) {
   return 0;
 }
 
-int wipe_StartScreen(int x, int y, int width, int height) {
+export int wipe_StartScreen(int x, int y, int width, int height) {
   wipe_scr_start = screens[2].data();
   I_ReadScreen(wipe_scr_start);
   return 0;
 }
 
-int wipe_EndScreen(int x, int y, int width, int height) {
+export int wipe_EndScreen(int x, int y, int width, int height) {
   wipe_scr_end = screens[3].data();
   I_ReadScreen(wipe_scr_end);
   V_DrawBlock(x, y, 0, width, height, wipe_scr_start); // restore start scr.
   return 0;
 }
 
-int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height,
+export int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height,
                     int ticks) {
   int rc;
   static int (*wipes[])(int, int, int) = {
       wipe_initColorXForm, wipe_doColorXForm, wipe_exitColorXForm,
       wipe_initMelt,       wipe_doMelt,       wipe_exitMelt};
-
-  void V_MarkRect(int, int, int, int);
 
   // initial stuff
   if (!go) {
