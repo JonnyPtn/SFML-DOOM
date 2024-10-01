@@ -23,9 +23,6 @@
 
 #include <ctype.h>
 
-#include "v_video.h"
-
-
 #include "m_swap.h"
 
 
@@ -34,6 +31,7 @@
 
 import system;
 import wad;
+import video;
 
 // in AM_map.c
 extern bool automapactive;

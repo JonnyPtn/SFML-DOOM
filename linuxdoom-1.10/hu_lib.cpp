@@ -23,7 +23,6 @@
 #include <ctype.h>
 
 #include "m_swap.h"
-#include "v_video.h"
 
 #include "hu_lib.h"
 #include "r_draw.h"
@@ -33,6 +32,7 @@
 import doomdef;
 import system;
 import am_map;
+import video;
 
 // bool : whether the screen is always erased
 #define noterased viewwindowx

@@ -33,7 +33,7 @@
 #include "st_stuff.h"
 
 // Needs access to LFB.
-#include "v_video.h"
+
 
 
 #include "p_local.h"
@@ -62,6 +62,7 @@ import tick;
 import doomstat;
 import setup;
 import intermission;
+import video;
 
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24

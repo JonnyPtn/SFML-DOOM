@@ -29,7 +29,7 @@
 #include <errno.h>
 #include <signal.h>
 
-#include "v_video.h"
+
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -39,6 +39,8 @@
 import main;
 import system;
 import argv;
+import video;
+import doomdef;
 
 #define POINTER_WARP_COUNTDOWN 1
 

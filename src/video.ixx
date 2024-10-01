@@ -24,22 +24,39 @@
 //-----------------------------------------------------------------------------
 
 
-
+module;
 #include "doomdata.h"
 
 #include "m_bbox.h"
 #include "m_swap.h"
+#include <array>
+#include <string>
+#include "r_defs.h"
 
-#include "v_video.h"
-
+export module video;
 import system;
+import doomdef;
 
-std::array<screen, 5> screens;
+//
+// VIDEO
+//
+
+#define CENTERY (SCREENHEIGHT / 2)
+
+// Screen 0 is the screen updated by I_Update screen.
+// Screen 1 is an extra buffer.
+using screen = std::array<std::byte, SCREENWIDTH * SCREENHEIGHT>;
+
+extern int dirtybox[4];
+
+export int usegamma = 0;
+
+export std::array<screen, 5> screens;
 
 int dirtybox[4];
 
 // Now where did these came from?
-unsigned char gammatable[5][256] = {
+export unsigned char gammatable[5][256] = {
     {1,   2,   3,   4,   5,   6,   7,   8,   9,   10,  11,  12,  13,  14,  15,
      16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,
      31,  32,  33,  34,  35,  36,  37,  38,  39,  40,  41,  42,  43,  44,  45,
@@ -139,7 +156,7 @@ unsigned char gammatable[5][256] = {
 //
 // V_MarkRect
 //
-void V_MarkRect(int x, int y, int width, int height) {
+export void V_MarkRect(int x, int y, int width, int height) {
   M_AddToBox(dirtybox, x, y);
   M_AddToBox(dirtybox, x + width - 1, y + height - 1);
 }
@@ -147,7 +164,7 @@ void V_MarkRect(int x, int y, int width, int height) {
 //
 // V_CopyRect
 //
-void V_CopyRect(int srcx, int srcy, int srcscrn, int width, int height,
+export void V_CopyRect(int srcx, int srcy, int srcscrn, int width, int height,
                 int destx, int desty, int destscrn) {
   std::byte *src;
   std::byte *dest;
@@ -177,7 +194,7 @@ void V_CopyRect(int srcx, int srcy, int srcscrn, int width, int height,
 // V_DrawPatch
 // Masks a column based masked pic to the screen.
 //
-void V_DrawPatch(int x, int y, int scrn, patch_t *patch) {
+export void V_DrawPatch(int x, int y, int scrn, patch_t *patch) {
 
   int count;
   int col;
@@ -280,7 +297,7 @@ void V_DrawPatchFlipped(int x, int y, int scrn, patch_t *patch) {
 // V_DrawPatchDirect
 // Draws directly to the screen on the pc.
 //
-void V_DrawPatchDirect(int x, int y, int scrn, patch_t *patch) {
+export void V_DrawPatchDirect(int x, int y, int scrn, patch_t *patch) {
   V_DrawPatch(x, y, scrn, patch);
 
   /*
@@ -340,7 +357,7 @@ void V_DrawPatchDirect(int x, int y, int scrn, patch_t *patch) {
 // V_DrawBlock
 // Draw a linear block of pixels into the view buffer.
 //
-void V_DrawBlock(int x, int y, int scrn, int width, int height, std::byte *src) {
+export void V_DrawBlock(int x, int y, int scrn, int width, int height, std::byte *src) {
   std::byte *dest;
 
 #ifdef RANGECHECK

@@ -29,7 +29,7 @@ module;
 #include "m_cheat.h"
 
 // Needs access to LFB.
-#include "v_video.h"
+
 
 // State.
 #include "r_state.h"
@@ -48,6 +48,7 @@ export module am_map;
 import wad;
 import strings;
 import setup;
+import video;
 
 // For use if I do walls with outsides/insides
 #define REDS (256 - 5 * 16)

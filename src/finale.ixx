@@ -26,7 +26,7 @@ module;
 // Functions.
 #include "m_swap.h"
 #include "s_sound.h"
-#include "v_video.h"
+
 
 
 // Data.
@@ -47,6 +47,7 @@ import wad;
 import am_map;
 import strings;
 import doomstat;
+import video;
 
 // ?
 // // 

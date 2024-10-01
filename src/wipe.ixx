@@ -23,12 +23,11 @@
 module;
 #include "i_video.h"
 #include "m_random.h"
-#include "v_video.h"
-
-
+#include <memory>
 #include <stdlib.h>
 export module wipe;
 import doomdef;
+import video;
 
 //
 //                       SCREEN WIPE PACKAGE

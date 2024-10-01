@@ -38,11 +38,12 @@ module;
 #include "sounds.h"
 
 // Needs access to LFB.
-#include "v_video.h"
+#include "r_defs.h"
 
 export module intermission;
 import wad;
 import doomstat;
+import video;
 
 typedef enum {
   NoState = -1,

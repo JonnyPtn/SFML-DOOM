@@ -24,7 +24,7 @@ module;
 #include "sounds.h"
 
 #include "s_sound.h"
-#include "v_video.h"
+
 
 
 #include "i_video.h"
@@ -58,6 +58,7 @@ import doomstat;
 import setup;
 import wipe;
 import intermission;
+import video;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

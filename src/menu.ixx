@@ -30,7 +30,7 @@ module;
 #include <sys/types.h>
 
 #include "i_video.h"
-#include "v_video.h"
+
 
 
 
@@ -62,6 +62,7 @@ import am_map;
 import sound;
 import strings;
 import doomstat;
+import video;
 
 export patch_t *hu_font[HU_FONTSIZE];
 

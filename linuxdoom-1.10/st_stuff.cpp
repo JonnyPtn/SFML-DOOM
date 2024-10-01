@@ -42,9 +42,6 @@
 
 #include "s_sound.h"
 
-// Needs access to LFB.
-#include "v_video.h"
-
 // State.
 #include "r_main.h"
 
@@ -55,6 +52,7 @@ import wad;
 import items;
 import am_map;
 import strings;
+import video;
 
 //
 // STATUS BAR DATA

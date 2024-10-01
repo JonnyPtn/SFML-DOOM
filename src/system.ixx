@@ -23,7 +23,7 @@ module;
 #include <stdlib.h>
 
 #include "g_game.h"
-#include "v_video.h"
+
 
 #include <spdlog/spdlog.h>
 
@@ -182,7 +182,7 @@ void I_Debug(spdlog::format_string_t<Args...> fmt, Args &&...args) {
 
       {"snd_channels", numChannels},
 
-      {"usegamma", usegamma},
+      //{"usegamma", usegamma},
       /*
       {"chatmacro0", (int *) &chat_macros[0],
       reinterpret_cast<intptr_t>(HUSTR_CHATMACRO0) },

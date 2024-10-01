@@ -25,10 +25,6 @@
 
 #include "r_main.h"
 
-
-// Needs access to LFB (guess what).
-#include "v_video.h"
-
 // State.
 
 #include <stdlib.h>
@@ -36,6 +32,7 @@
 import system;
 import wad;
 import doomstat;
+import video;
 
 // ?
 #define MAXWIDTH 1120
@@ -730,7 +727,6 @@ void R_VideoErase(unsigned ofs, int count) {
 // Draws the border around the view
 //  for different size windows?
 //
-void V_MarkRect(int x, int y, int width, int height);
 
 void R_DrawViewBorder(void) {
   int top;
