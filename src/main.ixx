@@ -300,7 +300,7 @@ int pagetic;
 // This cycles through the demo sequences.
 // FIXME - version dependend demo numbers?
 //
-export void D_DoAdvanceDemo(void) {
+void D_DoAdvanceDemo(void) {
   players[consoleplayer].playerstate = PST_LIVE; // not reborn
   advancedemo = false;
   usergame = false; // no save / end game here
