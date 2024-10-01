@@ -21,6 +21,7 @@
 //-----------------------------------------------------------------------------
 module;
 
+#include "doomstat.h"
 #include "dstrings.h"
 #include "sounds.h"
 
@@ -29,8 +30,6 @@ module;
 #include "z_zone.h"
 
 #include "f_wipe.h"
-
-#include "i_sound.h"
 #include "i_video.h"
 
 #include "g_game.h"
@@ -57,6 +56,7 @@ import argv;
 import am_map;
 import net;
 import finale;
+import sound;
 
 // List of wad files
 std::vector<std::string> wadfilenames;

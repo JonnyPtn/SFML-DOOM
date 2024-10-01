@@ -20,7 +20,10 @@
 //	System interface for sound.
 //
 //-----------------------------------------------------------------------------
+module;
 
+#include "doomstat.h"
+#include "sounds.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,14 +39,20 @@
 
 #include "z_zone.h"
 
-#include "i_sound.h"
-
 #include <string>
-
+export module sound;
 import system;
 import wad;
 import argv;
 import doomdef;
+
+// These are not used, but should be (menu).
+// Maximum volume of a sound effect.
+// Internal default is max out of 0-15.
+export int snd_SfxVolume = 8;
+
+// Maximum volume of music. Useless so far.
+export int snd_MusicVolume = 15;
 
 // Update all 30 millisecs, approx. 30fps synchronized.
 // Linux resolution is allegedly 10 millisecs,
@@ -306,7 +315,7 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
 // version.
 // See soundserver initdata().
 //
-void I_SetChannels() {
+export void I_SetChannels() {
   // Init internal lookups (raw data, mixing buffer, channels).
   // This function sets up internal lookups used during
   //  the mixing process.
@@ -344,7 +353,7 @@ void I_SetSfxVolume(int volume) {
 }
 
 // MUSIC API - dummy. Some code from DOS version.
-void I_SetMusicVolume(int volume) {
+export void I_SetMusicVolume(int volume) {
   // Internal state variable.
   snd_MusicVolume = volume;
   // Now set volume on output device.
@@ -355,7 +364,7 @@ void I_SetMusicVolume(int volume) {
 // Retrieve the raw data lump index
 //  for a given SFX name.
 //
-int I_GetSfxLumpNum(sfxinfo_t *sfx) {
+export int I_GetSfxLumpNum(sfxinfo_t *sfx) {
   if (W_CheckNumForName(sfx->name) != -1) {
     return W_GetNumForName(sfx->name);
   } else {
@@ -376,7 +385,7 @@ int I_GetSfxLumpNum(sfxinfo_t *sfx) {
 // Pitching (that is, increased speed of playback)
 //  is set, but currently not used by mixing.
 //
-int I_StartSound(int id, int vol, int sep, int pitch, int priority) {
+export int I_StartSound(int id, int vol, int sep, int pitch, int priority) {
 
   // UNUSED
   priority = 0;
@@ -391,7 +400,7 @@ int I_StartSound(int id, int vol, int sep, int pitch, int priority) {
   return id;
 }
 
-void I_StopSound(int handle) {
+export void I_StopSound(int handle) {
   // You need the handle returned by StartSound.
   // Would be looping all channels,
   //  tracking down the handle,
@@ -401,7 +410,7 @@ void I_StopSound(int handle) {
   handle = 0;
 }
 
-int I_SoundIsPlaying(int handle) {
+export int I_SoundIsPlaying(int handle) {
   // Ouch.
   return gametic < handle;
 }
@@ -419,7 +428,7 @@ int I_SoundIsPlaying(int handle) {
 //
 // This function currently supports only 16bit.
 //
-void I_UpdateSound(void) {
+export void I_UpdateSound(void) {
   // Debug. Count buffer misses with interrupt.
   static int misses = 0;
 
@@ -538,7 +547,7 @@ void I_SubmitSound(void) {
   //  write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
 }
 
-void I_UpdateSoundParams(int handle, int vol, int sep, int pitch) {
+export void I_UpdateSoundParams(int handle, int vol, int sep, int pitch) {
   // I fail too see that this is used.
   // Would be using the handle to identify
   //  on which channel the sound might be active,
@@ -645,23 +654,23 @@ void I_ShutdownMusic(void) {}
 static int looping = 0;
 static int musicdies = -1;
 
-void I_PlaySong(int handle, int looping) {
+export void I_PlaySong(int handle, int looping) {
   // UNUSED.
   handle = looping = 0;
   musicdies = gametic + TICRATE * 30;
 }
 
-void I_PauseSong(int handle) {
+export void I_PauseSong(int handle) {
   // UNUSED.
   handle = 0;
 }
 
-void I_ResumeSong(int handle) {
+export void I_ResumeSong(int handle) {
   // UNUSED.
   handle = 0;
 }
 
-void I_StopSong(int handle) {
+export void I_StopSong(int handle) {
   // UNUSED.
   handle = 0;
 
@@ -669,12 +678,12 @@ void I_StopSong(int handle) {
   musicdies = 0;
 }
 
-void I_UnRegisterSong(int handle) {
+export void I_UnRegisterSong(int handle) {
   // UNUSED.
   handle = 0;
 }
 
-int I_RegisterSong(void *data) {
+export int I_RegisterSong(void *data) {
   // UNUSED.
   data = NULL;
 

@@ -23,7 +23,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "i_sound.h"
 #include "s_sound.h"
 #include "sounds.h"
 
@@ -36,6 +35,7 @@
 
 import system;
 import wad;
+import sound;
 
 #define S_MAX_VOLUME 127
 

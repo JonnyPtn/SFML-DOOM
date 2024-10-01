@@ -48,7 +48,6 @@ module;
 
 // Data.
 #include "sounds.h"
-#include "i_sound.h"
 
 #include <functional>
 
@@ -60,6 +59,7 @@ import system;
 import wad;
 import argv;
 import am_map;
+import sound;
 
 export patch_t *hu_font[HU_FONTSIZE];
 

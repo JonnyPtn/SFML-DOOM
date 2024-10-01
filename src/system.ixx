@@ -22,8 +22,6 @@ module;
 
 #include <stdlib.h>
 
-#include "i_sound.h"
-
 #include "g_game.h"
 #include "v_video.h"
 
@@ -82,7 +80,7 @@ export int I_GetTime(void) {
 // I_Init
 //
 export void I_Init(void) {
-  I_InitSound();
+  //I_InitSound();
   //  I_InitGraphics();
 }
 
@@ -92,8 +90,8 @@ export void I_Init(void) {
 export void I_Quit(void) {
   // TODO JONNY circular dependency
   //D_QuitNetGame();
-  I_ShutdownSound();
-  I_ShutdownMusic();
+  //I_ShutdownSound();
+  //I_ShutdownMusic();
   // @TODO JONNY circular dependency
   //M_SaveDefaults();
   exit(0);
