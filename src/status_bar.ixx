@@ -31,10 +31,6 @@ module;
 
 #include "g_game.h"
 
-
-#include "st_lib.h"
-
-
 #include "p_inter.h"
 #include "p_local.h"
 
@@ -47,6 +43,7 @@ module;
 
 // Data.
 #include "sounds.h"
+#include "m_swap.h"
 export module status_bar;
 import wad;
 import items;
@@ -54,6 +51,7 @@ import am_map;
 import strings;
 import video;
 import tables;
+import system;
 
 // Size of statusbar.
 // Now sensitive for scaling.
@@ -75,6 +73,99 @@ typedef enum {
   GetChatState
 
 } st_chatstateenum_t;
+
+//
+// Typedefs of widgets
+//
+
+// Number widget
+
+typedef struct {
+  // upper right-hand corner
+  //  of the number (right-justified)
+  int x;
+  int y;
+
+  // max # of digits in number
+  int width;
+
+  // last number value
+  int oldnum;
+
+  // pointer to current value
+  int *num;
+
+  // pointer to bool stating
+  //  whether to update number
+  bool *on;
+
+  // list of patches for 0-9
+  patch_t **p;
+
+  // user data
+  int data;
+
+} st_number_t;
+
+// Percent widget ("child" of number widget,
+//  or, more precisely, contains a number widget.)
+typedef struct {
+  // number information
+  st_number_t n;
+
+  // percent sign graphic
+  patch_t *p;
+
+} st_percent_t;
+
+// Multiple Icon widget
+typedef struct {
+  // center-justified location of icons
+  int x;
+  int y;
+
+  // last icon number
+  int oldinum;
+
+  // pointer to current icon
+  int *inum;
+
+  // pointer to bool stating
+  //  whether to update icon
+  bool *on;
+
+  // list of icons
+  patch_t **p;
+
+  // user data
+  int data;
+
+} st_multicon_t;
+
+// Binary Icon widget
+
+typedef struct {
+  // center-justified location of icon
+  int x;
+  int y;
+
+  // last icon value
+  int oldval;
+
+  // pointer to current icon status
+  bool *val;
+
+  // pointer to bool
+  //  stating whether to update icon
+  bool *on;
+
+  patch_t *p; // icon
+  int data;   // user data
+
+} st_binicon_t;
+
+#define BG 4
+#define FG 0
 
 //
 // STATUS BAR DATA
@@ -960,6 +1051,133 @@ void ST_doPaletteStuff(void) {
   }
 }
 
+//
+// Hack display negative frags.
+//  Loads and store the stminus lump.
+//
+patch_t *sttminus;
+
+//
+// A fairly efficient way to draw a number
+//  based on differences from the old number.
+// Note: worth the trouble?
+//
+void STlib_drawNum(st_number_t *n, bool refresh) {
+
+  int numdigits = n->width;
+  int num = *n->num;
+
+  int w = SHORT(n->p[0]->width);
+  int h = SHORT(n->p[0]->height);
+  int x = n->x;
+
+  int neg;
+
+  n->oldnum = *n->num;
+
+  neg = num < 0;
+
+  if (neg) {
+    if (numdigits == 2 && num < -9)
+      num = -9;
+    else if (numdigits == 3 && num < -99)
+      num = -99;
+
+    num = -num;
+  }
+
+  // clear the area
+  x = n->x - numdigits * w;
+
+  if (n->y - ST_Y < 0)
+    I_Error("drawNum: n->y - ST_Y < 0");
+
+  V_CopyRect(x, n->y - ST_Y, BG, w * numdigits, h, x, n->y, FG);
+
+  // if non-number, do not draw it
+  if (num == 1994)
+    return;
+
+  x = n->x;
+
+  // in the special case of 0, you draw 0
+  if (!num)
+    V_DrawPatch(x - w, n->y, FG, n->p[0]);
+
+  // draw the new number
+  while (num && numdigits--) {
+    x -= w;
+    V_DrawPatch(x, n->y, FG, n->p[num % 10]);
+    num /= 10;
+  }
+
+  // draw a minus sign if necessary
+  if (neg)
+    V_DrawPatch(x - 8, n->y, FG, sttminus);
+}
+
+//
+void STlib_updateNum(st_number_t *n, bool refresh) {
+  if (*n->on)
+    STlib_drawNum(n, refresh);
+}
+
+void STlib_updatePercent(st_percent_t *per, int refresh) {
+  if (refresh && *per->n.on)
+    V_DrawPatch(per->n.x, per->n.y, FG, per->p);
+
+  STlib_updateNum(&per->n, refresh);
+}
+
+
+void STlib_updateBinIcon(st_binicon_t *bi, bool refresh) {
+  int x;
+  int y;
+  int w;
+  int h;
+
+  if ( *bi->on && (bi->oldval != int{ *bi->val } || refresh) )
+  {
+    x = bi->x - SHORT(bi->p->leftoffset);
+    y = bi->y - SHORT(bi->p->topoffset);
+    w = SHORT(bi->p->width);
+    h = SHORT(bi->p->height);
+
+    if (y - ST_Y < 0)
+      I_Error("updateBinIcon: y - ST_Y < 0");
+
+    if (*bi->val)
+      V_DrawPatch(bi->x, bi->y, FG, bi->p);
+    else
+      V_CopyRect(x, y - ST_Y, BG, w, h, x, y, FG);
+
+    bi->oldval = *bi->val;
+  }
+}
+
+void STlib_updateMultIcon(st_multicon_t *mi, bool refresh) {
+  int w;
+  int h;
+  int x;
+  int y;
+
+  if (*mi->on && (mi->oldinum != *mi->inum || refresh) && (*mi->inum != -1)) {
+    if (mi->oldinum != -1) {
+      x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset);
+      y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset);
+      w = SHORT(mi->p[mi->oldinum]->width);
+      h = SHORT(mi->p[mi->oldinum]->height);
+
+      if (y - ST_Y < 0)
+        I_Error("updateMultIcon: y - ST_Y < 0");
+
+      V_CopyRect(x, y - ST_Y, BG, w, h, x, y, FG);
+    }
+    V_DrawPatch(mi->x, mi->y, FG, mi->p[*mi->inum]);
+    mi->oldinum = *mi->inum;
+  }
+}
+
 void ST_drawWidgets(bool refresh) {
   int i;
 
@@ -1107,6 +1325,10 @@ void ST_loadData(void) {
   ST_loadGraphics();
 }
 
+void STlib_init(void) {
+  sttminus = (patch_t *)W_CacheLumpName("STTMINUS");
+}
+
 void ST_initData(void) {
 
   int i;
@@ -1135,6 +1357,47 @@ void ST_initData(void) {
 
   STlib_init();
 }
+
+// ?
+void STlib_initNum(st_number_t *n, int x, int y, patch_t **pl, int *num,
+                   bool *on, int width) {
+  n->x = x;
+  n->y = y;
+  n->oldnum = 0;
+  n->width = width;
+  n->num = num;
+  n->on = on;
+  n->p = pl;
+}
+
+//
+void STlib_initPercent(st_percent_t *p, int x, int y, patch_t **pl, int *num,
+                       bool *on, patch_t *percent) {
+  STlib_initNum(&p->n, x, y, pl, num, on, 3);
+  p->p = percent;
+}
+
+void STlib_initMultIcon(st_multicon_t *i, int x, int y, patch_t **il, int *inum,
+                        bool *on) {
+  i->x = x;
+  i->y = y;
+  i->oldinum = -1;
+  i->inum = inum;
+  i->on = on;
+  i->p = il;
+}
+
+
+void STlib_initBinIcon(st_binicon_t *b, int x, int y, patch_t *i, bool *val,
+                       bool *on) {
+  b->x = x;
+  b->y = y;
+  b->oldval = 0;
+  b->val = val;
+  b->on = on;
+  b->p = i;
+}
+
 
 void ST_createWidgets(void) {
 
@@ -1237,3 +1500,4 @@ export void ST_Init(void) {
   veryfirsttime = 0;
   ST_loadData();
 }
+
