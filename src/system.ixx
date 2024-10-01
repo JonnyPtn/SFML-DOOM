@@ -103,8 +103,6 @@ export void I_Quit(void) {
 export template <typename... Args>
 void I_Error(spdlog::format_string_t<Args...> fmt, Args &&...args) {
     spdlog::error(fmt, std::forward<Args>(args)...);
-    // TODO JONNY circular dependency
-    //D_QuitNetGame();
 
 #if WIN32
     DebugBreak();

@@ -732,10 +732,7 @@ export void I_SetChannels() {
   int *steptablemid = steptable + 128;
 
   // Okay, reset internal mixing channels to zero.
-  /*for (i=0; i<NUM_CHANNELS; i++)
-  {
-    channels[i] = 0;
-  }*/
+  channels = {};
 
   // This table provides step widths for pitch parameters.
   // I fail to see that this is currently used.

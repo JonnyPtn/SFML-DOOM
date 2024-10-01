@@ -300,7 +300,7 @@ int pagetic;
 // This cycles through the demo sequences.
 // FIXME - version dependend demo numbers?
 //
-void D_DoAdvanceDemo(void) {
+export void D_DoAdvanceDemo(void) {
   players[consoleplayer].playerstate = PST_LIVE; // not reborn
   advancedemo = false;
   usergame = false; // no save / end game here
@@ -750,8 +750,6 @@ export void D_DoomMain(void) {
 
   // init subsystems
   M_LoadDefaults(); // load before initing other systems
-
-  spdlog::info("Z_Init: Init zone memory allocation daemon.");
 
   spdlog::info("W_Init: Init WADfiles.");
   W_InitMultipleFiles(wadfilenames);
