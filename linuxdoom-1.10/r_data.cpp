@@ -23,7 +23,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "z_zone.h"
+
 
 #include "m_swap.h"
 
@@ -212,7 +212,7 @@ void R_GenerateComposite(int texnum) {
 
   // Composite the columns together.
   for (const auto &patch : texture.patches) {
-    realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch.patch, PU_CACHE));
+    realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch.patch));
     x1 = patch.originx;
     x2 = x1 + SHORT(realpatch->width);
 
@@ -264,7 +264,7 @@ void R_GenerateLookup(int texnum) {
   memset(patchcount, 0, texture.width);
 
   for (const auto &patch : texture.patches) {
-    realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch.patch, PU_CACHE));
+    realpatch = static_cast<patch_t *>(W_CacheLumpNum(patch.patch));
     x1 = patch.originx;
     x2 = x1 + SHORT(realpatch->width);
 
@@ -316,7 +316,7 @@ std::byte *R_GetColumn(int tex, int col) {
   ofs = texturecolumnofs[tex][col];
 
   if (lump > 0)
-    return (std::byte *)W_CacheLumpNum(lump, PU_CACHE) + ofs;
+    return (std::byte *)W_CacheLumpNum(lump) + ofs;
 
   if (!texturecomposite[tex])
     R_GenerateComposite(tex);
@@ -358,7 +358,7 @@ void R_InitTextures(void) {
   int temp3;
 
   // Load the patch names from pnames.lmp.
-  names = static_cast<char *>(W_CacheLumpName("PNAMES", PU_STATIC));
+  names = static_cast<char *>(W_CacheLumpName("PNAMES"));
   nummappatches = LONG(*((int *)names));
   name_p = names + 4;
   std::vector<int> patchlookup(nummappatches);
@@ -376,13 +376,13 @@ void R_InitTextures(void) {
   // Load the map texture definitions from textures.lmp.
   // The data is contained in one or two lumps,
   //  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
-  maptex = maptex1 = static_cast<int *>(W_CacheLumpName("TEXTURE1", PU_STATIC));
+  maptex = maptex1 = static_cast<int *>(W_CacheLumpName("TEXTURE1"));
   numtextures1 = LONG(*maptex);
   maxoff = W_LumpLength(W_GetNumForName({"TEXTURE1"}));
   directory = maptex + 1;
 
   if (W_CheckNumForName("TEXTURE2") != -1) {
-    maptex2 = static_cast<int *>(W_CacheLumpName("TEXTURE2", PU_STATIC));
+    maptex2 = static_cast<int *>(W_CacheLumpName("TEXTURE2"));
     numtextures2 = LONG(*maptex2);
     maxoff2 = W_LumpLength(W_GetNumForName("TEXTURE2"));
   } else {
@@ -516,7 +516,7 @@ void R_InitSpriteLumps(void) {
       printf(".");
 
     patch =
-        static_cast<patch_t *>(W_CacheLumpNum(firstspritelump + i, PU_CACHE));
+        static_cast<patch_t *>(W_CacheLumpNum(firstspritelump + i));
     spritewidth[i] = SHORT(patch->width) << FRACBITS;
     spriteoffset[i] = SHORT(patch->leftoffset) << FRACBITS;
     spritetopoffset[i] = SHORT(patch->topoffset) << FRACBITS;
@@ -649,7 +649,7 @@ void R_PrecacheLevel(void) {
     if (flatpresent[i]) {
       lump = firstflat + i;
       flatmemory += lumpinfo[lump].size;
-      W_CacheLumpNum(lump, PU_CACHE);
+      W_CacheLumpNum(lump);
     }
   }
 
@@ -681,7 +681,7 @@ void R_PrecacheLevel(void) {
     for (const auto &patch : texture.patches) {
       lump = patch.patch;
       texturememory += lumpinfo[lump].size;
-      W_CacheLumpNum(lump, PU_CACHE);
+      W_CacheLumpNum(lump);
     }
   }
 
@@ -704,7 +704,7 @@ void R_PrecacheLevel(void) {
       for (k = 0; k < 8; k++) {
         lump = firstspritelump + sf->lump[k];
         spritememory += lumpinfo[lump].size;
-        W_CacheLumpNum(lump, PU_CACHE);
+        W_CacheLumpNum(lump);
       }
     }
   }

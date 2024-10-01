@@ -27,7 +27,7 @@ module;
 #include "m_swap.h"
 #include "s_sound.h"
 #include "v_video.h"
-#include "z_zone.h"
+
 
 // Data.
 #include "sounds.h"
@@ -258,7 +258,7 @@ void F_TextWrite(void) {
   int cy;
 
   // erase the entire screen to a tiled background
-  src = static_cast<std::byte *>(W_CacheLumpName(finaleflat, PU_CACHE));
+  src = static_cast<std::byte *>(W_CacheLumpName(finaleflat));
   dest = screens[0].data();
 
   for (y = 0; y < SCREENHEIGHT; y++) {
@@ -569,7 +569,7 @@ void F_CastDrawer(void) {
 
   // erase the entire screen to a background
   V_DrawPatch(0, 0, 0,
-              static_cast<patch_t *>(W_CacheLumpName("BOSSBACK", PU_CACHE)));
+              static_cast<patch_t *>(W_CacheLumpName("BOSSBACK")));
 
   F_CastPrint(castorder[castnum].name);
 
@@ -580,7 +580,7 @@ void F_CastDrawer(void) {
   flip = (bool)sprframe.flip[0];
 
   patch =
-      static_cast<patch_t *>(W_CacheLumpNum(lump + firstspritelump, PU_CACHE));
+      static_cast<patch_t *>(W_CacheLumpNum(lump + firstspritelump));
   if (flip){}
     // TODO JONNY circular dep
     //V_DrawPatchFlipped(160, 170, 0, patch);
@@ -627,8 +627,8 @@ void F_BunnyScroll(void) {
   int stage;
   static int laststage;
 
-  p1 = static_cast<patch_t *>(W_CacheLumpName("PFUB2", PU_LEVEL));
-  p2 = static_cast<patch_t *>(W_CacheLumpName("PFUB1", PU_LEVEL));
+  p1 = static_cast<patch_t *>(W_CacheLumpName("PFUB2"));
+  p2 = static_cast<patch_t *>(W_CacheLumpName("PFUB1"));
 
   V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
@@ -649,7 +649,7 @@ void F_BunnyScroll(void) {
     return;
   if (finalecount < 1180) {
     V_DrawPatch((SCREENWIDTH - 13 * 8) / 2, (SCREENHEIGHT - 8 * 8) / 2, 0,
-                static_cast<patch_t *>(W_CacheLumpName("END0", PU_CACHE)));
+                static_cast<patch_t *>(W_CacheLumpName("END0")));
     laststage = 0;
     return;
   }
@@ -664,7 +664,7 @@ void F_BunnyScroll(void) {
 
   snprintf(name, 10, "END%i", stage);
   V_DrawPatch((SCREENWIDTH - 13 * 8) / 2, (SCREENHEIGHT - 8 * 8) / 2, 0,
-              static_cast<patch_t *>(W_CacheLumpName(name, PU_CACHE)));
+              static_cast<patch_t *>(W_CacheLumpName(name)));
 }
 
 //
@@ -684,22 +684,22 @@ export void F_Drawer(void) {
       if (gamemode == retail)
         V_DrawPatch(
             0, 0, 0,
-            static_cast<patch_t *>(W_CacheLumpName("CREDIT", PU_CACHE)));
+            static_cast<patch_t *>(W_CacheLumpName("CREDIT")));
       else
         V_DrawPatch(0, 0, 0,
-                    static_cast<patch_t *>(W_CacheLumpName("HELP2", PU_CACHE)));
+                    static_cast<patch_t *>(W_CacheLumpName("HELP2")));
       break;
     case 2:
       V_DrawPatch(
           0, 0, 0,
-          static_cast<patch_t *>(W_CacheLumpName("VICTORY2", PU_CACHE)));
+          static_cast<patch_t *>(W_CacheLumpName("VICTORY2")));
       break;
     case 3:
       F_BunnyScroll();
       break;
     case 4:
       V_DrawPatch(0, 0, 0,
-                  static_cast<patch_t *>(W_CacheLumpName("ENDPIC", PU_CACHE)));
+                  static_cast<patch_t *>(W_CacheLumpName("ENDPIC")));
       break;
     }
   }

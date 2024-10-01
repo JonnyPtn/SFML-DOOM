@@ -23,7 +23,7 @@
 module;
 
 #include "m_swap.h"
-#include "z_zone.h"
+
 
 #include <array>
 #include <cctype>
@@ -65,6 +65,15 @@ struct lumpinfo_t {
   int32_t position = {};
   int32_t size = {};
 };
+
+typedef struct memblock_s {
+  int size;    // including the header and possibly tiny fragments
+  void **user; // NULL if a free block
+  int tag;     // purgelevel
+  int id;      // should be ZONEID
+  struct memblock_s *next;
+  struct memblock_s *prev;
+} memblock_t;
 
 //
 // GLOBALS
@@ -368,7 +377,7 @@ export void W_ReadLump(int lump, void *dest) {
 //
 // W_CacheLumpNum
 //
-export void *W_CacheLumpNum(uint32_t lump, int tag) {
+export void *W_CacheLumpNum(uint32_t lump) {
   if (lump >= lumpinfo.size()) {
     I_Error("W_CacheLumpNum: {} out of bounds", lump);
   }
@@ -390,60 +399,6 @@ export void *W_CacheLumpNum(uint32_t lump, int tag) {
 //
 // W_CacheLumpName
 //
-export void *W_CacheLumpName(const std::string &name, int tag) {
-  return W_CacheLumpNum(W_GetNumForName(name), tag);
-}
-
-//
-// W_Profile
-//
-int info[2500][10];
-int profilecount;
-
-void W_Profile(void) {
-  int i;
-  memblock_t *block;
-  void *ptr;
-  char ch;
-  FILE *f;
-  int j;
-  char name[9];
-
-  for (i = 0; i < lumpinfo.size(); i++) {
-    ptr = lumpcache[i];
-    if (!ptr) {
-      ch = ' ';
-      continue;
-    } else {
-      block = (memblock_t *)((std::byte *)ptr - sizeof(memblock_t));
-      if (block->tag < PU_PURGELEVEL)
-        ch = 'S';
-      else
-        ch = 'P';
-    }
-    info[i][profilecount] = ch;
-  }
-  profilecount++;
-
-  f = fopen("waddump.txt", "w");
-  name[8] = 0;
-
-  for (i = 0; i < lumpinfo.size(); i++) {
-    memcpy(name, lumpinfo[i].name, 8);
-
-    for (j = 0; j < 8; j++)
-      if (!name[j])
-        break;
-
-    for (; j < 8; j++)
-      name[j] = ' ';
-
-    fprintf(f, "%s ", name);
-
-    for (j = 0; j < profilecount; j++)
-      fprintf(f, "    %c", info[i][j]);
-
-    fprintf(f, "\n");
-  }
-  fclose(f);
+export void *W_CacheLumpName(const std::string &name) {
+  return W_CacheLumpNum(W_GetNumForName(name));
 }

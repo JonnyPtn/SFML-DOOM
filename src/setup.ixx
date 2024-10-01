@@ -24,7 +24,7 @@
 module;
 #include <math.h>
 
-#include "z_zone.h"
+
 
 #include "m_bbox.h"
 #include "m_swap.h"
@@ -120,7 +120,7 @@ void P_LoadVertexes(int lump) {
   vertexes = static_cast<vertex_t *>(malloc(numvertexes * sizeof(vertex_t)));
 
   // Load data into cache.
-  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump));
 
   ml = (mapvertex_t *)data;
   li = vertexes;
@@ -151,7 +151,7 @@ void P_LoadSegs(int lump) {
   numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
   segs = static_cast<seg_t *>(malloc(numsegs * sizeof(seg_t)));
   memset(segs, 0, numsegs * sizeof(seg_t));
-  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump));
 
   ml = (mapseg_t *)data;
   li = segs;
@@ -188,7 +188,7 @@ void P_LoadSubsectors(int lump) {
   numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
   subsectors =
       static_cast<subsector_t *>(malloc(numsubsectors * sizeof(subsector_t)));
-  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump));
 
   ms = (mapsubsector_t *)data;
   memset(subsectors, 0, numsubsectors * sizeof(subsector_t));
@@ -213,7 +213,7 @@ void P_LoadSectors(int lump) {
 
   numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
   sectors.resize(numsectors);
-  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump));
 
   ms = (mapsector_t *)data;
   ss = sectors.data();
@@ -242,7 +242,7 @@ void P_LoadNodes(int lump) {
 
   numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
   nodes = static_cast<node_t *>(malloc(numnodes * sizeof(node_t)));
-  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump));
 
   mn = (mapnode_t *)data;
   no = nodes;
@@ -272,7 +272,7 @@ void P_LoadThings(int lump) {
   int numthings;
   bool spawn;
 
-  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump));
   numthings = W_LumpLength(lump) / sizeof(mapthing_t);
 
   mt = (mapthing_t *)data;
@@ -325,7 +325,7 @@ void P_LoadLineDefs(int lump) {
   numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
   lines = static_cast<line_t *>(malloc(numlines * sizeof(line_t)));
   memset(lines, 0, numlines * sizeof(line_t));
-  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump));
 
   mld = (maplinedef_t *)data;
   ld = lines;
@@ -394,7 +394,7 @@ void P_LoadSideDefs(int lump) {
   numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
   sides = static_cast<side_t *>(malloc(numsides * sizeof(side_t)));
   memset(sides, 0, numsides * sizeof(side_t));
-  data = static_cast<std::byte *>(W_CacheLumpNum(lump, PU_STATIC));
+  data = static_cast<std::byte *>(W_CacheLumpNum(lump));
 
   msd = (mapsidedef_t *)data;
   sd = sides;
@@ -417,7 +417,7 @@ void P_LoadBlockMap(int lump) {
   int i;
   int count;
 
-  blockmaplump = static_cast<short *>(W_CacheLumpNum(lump, PU_LEVEL));
+  blockmaplump = static_cast<short *>(W_CacheLumpNum(lump));
   blockmap = blockmaplump + 4;
   count = W_LumpLength(lump) / 2;
 
@@ -511,17 +511,6 @@ export void P_SetupLevel(int episode, int map, int playermask, skill_t skill) {
   // Make sure all sounds are stopped before freeTags.
   S_Start();
 
-#if 0 // UNUSED
-    if (debugfile)
-    {
-    freeTags (PU_LEVEL, std::numeric_limits<int>::max());
-    Z_FileDumpHeap (debugfile);
-    }
-    else
-#endif
-  freeTags(PU_LEVEL, PU_PURGELEVEL - 1);
-
-  // UNUSED W_Profile ();
   P_InitThinkers();
 
   // if working with a devlopment map, reload it
@@ -557,7 +546,7 @@ export void P_SetupLevel(int episode, int map, int playermask, skill_t skill) {
   P_LoadSegs(lumpnum + ML_SEGS);
 
   rejectmatrix =
-      static_cast<std::byte *>(W_CacheLumpNum(lumpnum + ML_REJECT, PU_LEVEL));
+      static_cast<std::byte *>(W_CacheLumpNum(lumpnum + ML_REJECT));
   P_GroupLines();
 
   bodyqueslot = 0;

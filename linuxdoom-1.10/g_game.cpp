@@ -26,7 +26,7 @@
 
 
 #include "m_random.h"
-#include "z_zone.h"
+
 
 #include "p_saveg.h"
 #include "hu_stuff.h"
@@ -407,7 +407,6 @@ void G_DoLoadLevel(void) {
   displayplayer = consoleplayer; // view the guy you are playing
   starttime = I_GetTime();
   gameaction = ga_nothing;
-  Z_CheckHeap();
 
   // clear cmd building stuff
   gamekeydown = {};
@@ -1365,7 +1364,7 @@ void G_DoPlayDemo(void) {
 
   gameaction = ga_nothing;
   demobuffer = demo_p =
-      static_cast<std::byte *>(W_CacheLumpName(defdemoname.c_str(), PU_STATIC));
+      static_cast<std::byte *>(W_CacheLumpName(defdemoname.c_str()));
   if (*demo_p++ != std::byte{VERSION}) {
     fprintf(stderr, "Demo is from a different game version!\n");
     gameaction = ga_nothing;

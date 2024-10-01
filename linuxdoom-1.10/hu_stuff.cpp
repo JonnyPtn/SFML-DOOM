@@ -22,7 +22,7 @@
 
 #include <ctype.h>
 
-#include "z_zone.h"
+
 
 #include "m_swap.h"
 
@@ -244,7 +244,7 @@ void HU_Init(void) {
   j = HU_FONTSTART;
   for (i = 0; i < HU_FONTSIZE; i++) {
     snprintf(buffer, 9, "STCFN%.3d", j++);
-    hu_font[i] = (patch_t *)W_CacheLumpName(buffer, PU_STATIC);
+    hu_font[i] = (patch_t *)W_CacheLumpName(buffer);
   }
 }
 

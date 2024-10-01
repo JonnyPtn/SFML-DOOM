@@ -36,7 +36,7 @@ module;
 #include <signal.h>
 #include <time.h>
 
-#include "z_zone.h"
+
 #include "g_game.h"
 
 #include <string>
@@ -171,7 +171,7 @@ void *getsfx(char *sfxname, int *len) {
   //	     sfxname, sfxlump, size );
   // fflush( stderr );
 
-  sfx = (unsigned char *)W_CacheLumpNum(sfxlump, PU_STATIC);
+  sfx = (unsigned char *)W_CacheLumpNum(sfxlump);
 
   // Pads the sound effect out to the mixing buffer size.
   // The original realloc would interfere with zone memory.

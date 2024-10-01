@@ -24,7 +24,7 @@ module;
 #include "i_video.h"
 #include "m_random.h"
 #include "v_video.h"
-#include "z_zone.h"
+
 
 #include <stdlib.h>
 export module wipe;
@@ -210,7 +210,7 @@ export int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height,
   // initial stuff
   if (!go) {
     go = 1;
-    // wipe_scr = (byte *) malloc(width*height, PU_STATIC, 0); // DEBUG
+    // wipe_scr = (byte *) malloc(width*height, 0); // DEBUG
     wipe_scr = screens[0].data();
     (*wipes[wipeno * 3])(width, height, ticks);
   }

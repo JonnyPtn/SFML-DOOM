@@ -23,7 +23,7 @@
 
 #include <stdio.h>
 
-#include "z_zone.h"
+
 
 #include "m_random.h"
 #include "m_swap.h"
@@ -1302,7 +1302,7 @@ void WI_loadData(void) {
   }
 
   // background
-  bg = static_cast<patch_t *>(W_CacheLumpName(name, PU_CACHE));
+  bg = static_cast<patch_t *>(W_CacheLumpName(name));
   V_DrawPatch(0, 0, 1, bg);
 
   // UNUSED unsigned char *pic = screens[1];
@@ -1321,23 +1321,23 @@ void WI_loadData(void) {
     lnames = (patch_t **)malloc(sizeof(patch_t *) * NUMCMAPS);
     for (i = 0; i < NUMCMAPS; i++) {
       snprintf(name, 9, "CWILV%2.2d", i);
-      lnames[i] = static_cast<patch_t *>(W_CacheLumpName(name, PU_STATIC));
+      lnames[i] = static_cast<patch_t *>(W_CacheLumpName(name));
     }
   } else {
     lnames = (patch_t **)malloc(sizeof(patch_t *) * NUMMAPS);
     for (i = 0; i < NUMMAPS; i++) {
       snprintf(name, 9, "WILV%d%d", wbs->epsd, i);
-      lnames[i] = static_cast<patch_t *>(W_CacheLumpName(name, PU_STATIC));
+      lnames[i] = static_cast<patch_t *>(W_CacheLumpName(name));
     }
 
     // you are here
-    yah[0] = static_cast<patch_t *>(W_CacheLumpName("WIURH0", PU_STATIC));
+    yah[0] = static_cast<patch_t *>(W_CacheLumpName("WIURH0"));
 
     // you are here (alt.)
-    yah[1] = static_cast<patch_t *>(W_CacheLumpName("WIURH1", PU_STATIC));
+    yah[1] = static_cast<patch_t *>(W_CacheLumpName("WIURH1"));
 
     // splat
-    splat = static_cast<patch_t *>(W_CacheLumpName("WISPLAT", PU_STATIC));
+    splat = static_cast<patch_t *>(W_CacheLumpName("WISPLAT"));
 
     if (wbs->epsd < 3) {
       for (j = 0; j < NUMANIMS[wbs->epsd]; j++) {
@@ -1347,7 +1347,7 @@ void WI_loadData(void) {
           if (wbs->epsd != 1 || j != 8) {
             // animations
             snprintf(name, 9, "WIA%d%.2d%.2d", wbs->epsd, j, i);
-            a->p[i] = static_cast<patch_t *>(W_CacheLumpName(name, PU_STATIC));
+            a->p[i] = static_cast<patch_t *>(W_CacheLumpName(name));
           } else {
             // HACK ALERT!
             a->p[i] = anims[1][4].p[i];
@@ -1358,81 +1358,81 @@ void WI_loadData(void) {
   }
 
   // More hacks on minus sign.
-  wiminus = static_cast<patch_t *>(W_CacheLumpName("WIMINUS", PU_STATIC));
+  wiminus = static_cast<patch_t *>(W_CacheLumpName("WIMINUS"));
 
   for (i = 0; i < 10; i++) {
     // numbers 0-9
     snprintf(name, 9, "WINUM%d", i);
-    num[i] = static_cast<patch_t *>(W_CacheLumpName(name, PU_STATIC));
+    num[i] = static_cast<patch_t *>(W_CacheLumpName(name));
   }
 
   // percent sign
-  percent = static_cast<patch_t *>(W_CacheLumpName("WIPCNT", PU_STATIC));
+  percent = static_cast<patch_t *>(W_CacheLumpName("WIPCNT"));
 
   // "finished"
-  finished = static_cast<patch_t *>(W_CacheLumpName("WIF", PU_STATIC));
+  finished = static_cast<patch_t *>(W_CacheLumpName("WIF"));
 
   // "entering"
-  entering = static_cast<patch_t *>(W_CacheLumpName("WIENTER", PU_STATIC));
+  entering = static_cast<patch_t *>(W_CacheLumpName("WIENTER"));
 
   // "kills"
-  kills = static_cast<patch_t *>(W_CacheLumpName("WIOSTK", PU_STATIC));
+  kills = static_cast<patch_t *>(W_CacheLumpName("WIOSTK"));
 
   // "scrt"
-  secret = static_cast<patch_t *>(W_CacheLumpName("WIOSTS", PU_STATIC));
+  secret = static_cast<patch_t *>(W_CacheLumpName("WIOSTS"));
 
   // "secret"
-  sp_secret = static_cast<patch_t *>(W_CacheLumpName("WISCRT2", PU_STATIC));
+  sp_secret = static_cast<patch_t *>(W_CacheLumpName("WISCRT2"));
 
   // Yuck.
   if (french) {
     // "items"
     if (netgame && !deathmatch)
-      items = static_cast<patch_t *>(W_CacheLumpName("WIOBJ", PU_STATIC));
+      items = static_cast<patch_t *>(W_CacheLumpName("WIOBJ"));
     else
-      items = static_cast<patch_t *>(W_CacheLumpName("WIOSTI", PU_STATIC));
+      items = static_cast<patch_t *>(W_CacheLumpName("WIOSTI"));
   } else
-    items = static_cast<patch_t *>(W_CacheLumpName("WIOSTI", PU_STATIC));
+    items = static_cast<patch_t *>(W_CacheLumpName("WIOSTI"));
 
   // "frgs"
-  frags = static_cast<patch_t *>(W_CacheLumpName("WIFRGS", PU_STATIC));
+  frags = static_cast<patch_t *>(W_CacheLumpName("WIFRGS"));
 
   // ":"
-  colon = static_cast<patch_t *>(W_CacheLumpName("WICOLON", PU_STATIC));
+  colon = static_cast<patch_t *>(W_CacheLumpName("WICOLON"));
 
   // "time"
   // JONNY TODO
-  // time = W_CacheLumpName("WITIME", PU_STATIC);
+  // time = W_CacheLumpName("WITIME");
 
   // "sucks"
-  sucks = static_cast<patch_t *>(W_CacheLumpName("WISUCKS", PU_STATIC));
+  sucks = static_cast<patch_t *>(W_CacheLumpName("WISUCKS"));
 
   // "par"
-  par = static_cast<patch_t *>(W_CacheLumpName("WIPAR", PU_STATIC));
+  par = static_cast<patch_t *>(W_CacheLumpName("WIPAR"));
 
   // "killers" (vertical)
-  killers = static_cast<patch_t *>(W_CacheLumpName("WIKILRS", PU_STATIC));
+  killers = static_cast<patch_t *>(W_CacheLumpName("WIKILRS"));
 
   // "victims" (horiz)
-  victims = static_cast<patch_t *>(W_CacheLumpName("WIVCTMS", PU_STATIC));
+  victims = static_cast<patch_t *>(W_CacheLumpName("WIVCTMS"));
 
   // "total"
-  total = static_cast<patch_t *>(W_CacheLumpName("WIMSTT", PU_STATIC));
+  total = static_cast<patch_t *>(W_CacheLumpName("WIMSTT"));
 
   // your face
-  star = static_cast<patch_t *>(W_CacheLumpName("STFST01", PU_STATIC));
+  star = static_cast<patch_t *>(W_CacheLumpName("STFST01"));
 
   // dead face
-  bstar = static_cast<patch_t *>(W_CacheLumpName("STFDEAD0", PU_STATIC));
+  bstar = static_cast<patch_t *>(W_CacheLumpName("STFDEAD0"));
 
   for (i = 0; i < MAXPLAYERS; i++) {
     // "1,2,3,4"
     snprintf(name, 9, "STPB%d", i);
-    p[i] = static_cast<patch_t *>(W_CacheLumpName(name, PU_STATIC));
+    p[i] = static_cast<patch_t *>(W_CacheLumpName(name));
 
     // "1,2,3,4"
     snprintf(name, 9, "WIBP%d", i + 1);
-    bp[i] = static_cast<patch_t *>(W_CacheLumpName(name, PU_STATIC));
+    bp[i] = static_cast<patch_t *>(W_CacheLumpName(name));
   }
 }
 

@@ -25,7 +25,7 @@ module;
 
 #include "s_sound.h"
 #include "v_video.h"
-#include "z_zone.h"
+
 
 #include "i_video.h"
 
@@ -137,7 +137,7 @@ std::string pagename;
 //
 void D_PageDrawer(void) {
   V_DrawPatch(0, 0, 0,
-              static_cast<patch_t *>(W_CacheLumpName(pagename, PU_CACHE)));
+              static_cast<patch_t *>(W_CacheLumpName(pagename)));
 }
 
 //
@@ -226,7 +226,7 @@ void D_Display(void) {
 
   // clean up border stuff
   if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-    I_SetPalette(static_cast<std::byte *>(W_CacheLumpName("PLAYPAL", PU_CACHE)));
+    I_SetPalette(static_cast<std::byte *>(W_CacheLumpName("PLAYPAL")));
 
   // see if the border needs to be initially drawn
   if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL) {
@@ -257,7 +257,7 @@ void D_Display(void) {
       y = viewwindowy + 4;
     V_DrawPatchDirect(
         viewwindowx + (scaledviewwidth - 68) / 2, y, 0,
-        static_cast<patch_t *>(W_CacheLumpName("M_PAUSE", PU_CACHE)));
+        static_cast<patch_t *>(W_CacheLumpName("M_PAUSE")));
   }
 
   // menus go directly to the screen
@@ -750,7 +750,6 @@ export void D_DoomMain(void) {
   M_LoadDefaults(); // load before initing other systems
 
   spdlog::info("Z_Init: Init zone memory allocation daemon.");
-  Z_Init();
 
   spdlog::info("W_Init: Init WADfiles.");
   W_InitMultipleFiles(wadfilenames);

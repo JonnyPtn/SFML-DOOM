@@ -26,7 +26,7 @@
 
 #include "m_swap.h"
 
-#include "z_zone.h"
+
 
 
 #include "g_game.h"
@@ -304,7 +304,7 @@ void R_DrawVisSprite(vissprite_t *vis, int x1, int x2) {
   patch_t *patch;
 
   patch = static_cast<patch_t *>(
-      W_CacheLumpNum(vis->patch + firstspritelump, PU_CACHE));
+      W_CacheLumpNum(vis->patch + firstspritelump));
 
   dc_colormap = vis->colormap;
 

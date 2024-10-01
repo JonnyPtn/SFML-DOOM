@@ -25,7 +25,7 @@ module;
 
 #include "p_local.h"
 #include "st_stuff.h"
-#include "z_zone.h"
+
 #include "m_cheat.h"
 
 // Needs access to LFB.
@@ -463,7 +463,7 @@ void AM_loadPics(void) {
 
   for (i = 0; i < 10; i++) {
     snprintf(namebuf, 9, "AMMNUM%d", i);
-    marknums[i] = static_cast<patch_t *>(W_CacheLumpName(namebuf, PU_STATIC));
+    marknums[i] = static_cast<patch_t *>(W_CacheLumpName(namebuf));
   }
 }
 

@@ -25,7 +25,7 @@
 
 #include <stdlib.h>
 
-#include "z_zone.h"
+
 #include "r_plane.h"
 #include "r_draw.h"
 #include "r_main.h"
@@ -346,7 +346,7 @@ void R_DrawPlanes(void) {
 
     // regular flat
     ds_source = static_cast<std::byte *>(
-        W_CacheLumpNum(firstflat + flattranslation[pl->picnum], PU_STATIC));
+        W_CacheLumpNum(firstflat + flattranslation[pl->picnum]));
 
     planeheight = abs(pl->height - viewz);
     light = (pl->lightlevel >> LIGHTSEGSHIFT) + extralight;
