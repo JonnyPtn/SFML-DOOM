@@ -160,7 +160,7 @@ void I_FinishUpdate(void) {
   // UNUSED static unsigned char *bigscreen=0;
 
   // draws little dots on the bottom of the screen
-  if (devparm) {
+#if !NDEBUG
 
     i = I_GetTime();
     tics = i - lasttic;
@@ -172,7 +172,7 @@ void I_FinishUpdate(void) {
       screens[0][(SCREENHEIGHT - 1) * SCREENWIDTH + i] = std::byte{0xff};
     for (; i < 20 * 2; i += 2)
       screens[0][(SCREENHEIGHT - 1) * SCREENWIDTH + i] = std::byte{0x0};
-  }
+#endif
 
   uint8_t colouredPixels[SCREENHEIGHT * SCREENWIDTH * 4] = {0};
   for (int i = 0; i < SCREENHEIGHT * SCREENWIDTH; i++) {

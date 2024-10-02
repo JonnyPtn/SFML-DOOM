@@ -452,13 +452,6 @@ bool G_Responder(const sf::Event &ev) {
   }
 
   if (gamestate == GS_LEVEL) {
-#if 0
-        if (devparm && ev->type == ev_keydown && ev->data1 == ';')
-        {
-            G_DeathMatchSpawnPlayer (0);
-            return true;
-        }
-#endif
     if (HU_Responder(ev))
       return true; // chat ate the event
     if (ST_Responder(ev))

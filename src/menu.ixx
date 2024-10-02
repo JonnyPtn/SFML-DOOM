@@ -1228,12 +1228,6 @@ export bool M_Responder(const sf::Event &ev) {
   //	return true;
   //    }
 
-  // @todo JONNY devparm causes circular dependency
-  if (/*devparm &&*/ key == sf::Keyboard::Key::F1) {
-    G_ScreenShot();
-    return true;
-  }
-
   // F-Keys
   if (!menuactive)
     switch (key) {

@@ -46,11 +46,9 @@ import video;
 import status_bar;
 import hud;
 
-// List of wad files
+// List of wad files we populate on start up
 std::vector<std::string> wadfilenames;
-void D_AddFile(std::string_view file) { wadfilenames.emplace_back(file); }
 
-export bool devparm;     // started game with -devparm
 export bool nomonsters;  // checkparm of -nomonsters
 export bool respawnparm; // checkparm of -respawn
 export bool fastparm;    // checkparm of -fast
@@ -429,12 +427,7 @@ export void D_StartTitle(void) {
 // should be executed (notably loading PWAD's).
 //
 void IdentifyVersion(void) {
-  char *home;
   std::string waddir = "wads";
-  auto doomwaddir = getenv("DOOMWADDIR");
-  if (doomwaddir) {
-    waddir = doomwaddir;
-  }
 
   spdlog::info("WAD directory: {}", (std::filesystem::current_path() / waddir).string());
 
@@ -461,36 +454,33 @@ void IdentifyVersion(void) {
 
   if (M_CheckParm("-shdev")) {
     gamemode = shareware;
-    devparm = true;
-    D_AddFile( "doom1.wad");
-    D_AddFile( "data_se/texture1.lmp");
-    D_AddFile( "data_se/pnames.lmp");
+    wadfilenames.emplace_back( "doom1.wad");
+    wadfilenames.emplace_back( "data_se/texture1.lmp");
+    wadfilenames.emplace_back( "data_se/pnames.lmp");
     return;
   }
 
   if (M_CheckParm("-regdev")) {
     gamemode = registered;
-    devparm = true;
-    D_AddFile( "doom.wad");
-    D_AddFile( "data_se/texture1.lmp");
-    D_AddFile( "data_se/texture2.lmp");
-    D_AddFile( "data_se/pnames.lmp");
+    wadfilenames.emplace_back( "doom.wad");
+    wadfilenames.emplace_back( "data_se/texture1.lmp");
+    wadfilenames.emplace_back( "data_se/texture2.lmp");
+    wadfilenames.emplace_back( "data_se/pnames.lmp");
     return;
   }
 
   if (M_CheckParm("-comdev")) {
     gamemode = commercial;
-    devparm = true;
     /* I don't bother
     if(plutonia)
-        D_AddFile ("plutonia.wad");
+        wadfilenames.emplace_back ("plutonia.wad");
     else if(tnt)
-        D_AddFile ("tnt.wad");
+        wadfilenames.emplace_back ("tnt.wad");
     else*/
-    D_AddFile( "doom2.wad");
+    wadfilenames.emplace_back( "doom2.wad");
 
-    D_AddFile( "cdata/texture1.lmp");
-    D_AddFile( "cdata/pnames.lmp");
+    wadfilenames.emplace_back( "cdata/texture1.lmp");
+    wadfilenames.emplace_back( "cdata/pnames.lmp");
     return;
   }
 
@@ -500,43 +490,43 @@ void IdentifyVersion(void) {
     // Let's handle languages in config files, okay?
     language = french;
     printf("French version\n");
-    D_AddFile(doom2fwad.c_str());
+    wadfilenames.emplace_back(doom2fwad.c_str());
     return;
   }
 
   if (std::filesystem::exists(doom2wad)) {
     gamemode = commercial;
-    D_AddFile(doom2wad.c_str());
+    wadfilenames.emplace_back(doom2wad.c_str());
     return;
   }
 
   if (std::filesystem::exists(plutoniawad)) {
     gamemode = commercial;
-    D_AddFile(plutoniawad.c_str());
+    wadfilenames.emplace_back(plutoniawad.c_str());
     return;
   }
 
   if (std::filesystem::exists(tntwad)) {
     gamemode = commercial;
-    D_AddFile(tntwad.c_str());
+    wadfilenames.emplace_back(tntwad.c_str());
     return;
   }
 
   if (std::filesystem::exists(doomuwad)) {
     gamemode = retail;
-    D_AddFile(doomuwad.c_str());
+    wadfilenames.emplace_back(doomuwad.c_str());
     return;
   }
 
   if (std::filesystem::exists(doomwad)) {
     gamemode = registered;
-    D_AddFile(doomwad.c_str());
+    wadfilenames.emplace_back(doomwad.c_str());
     return;
   }
 
   if (std::filesystem::exists(doom1wad)) {
     gamemode = shareware;
-    D_AddFile(doom1wad.c_str());
+    wadfilenames.emplace_back(doom1wad.c_str());
     return;
   }
 
@@ -568,7 +558,6 @@ export void D_DoomMain(void) {
   nomonsters = M_CheckParm("-nomonsters");
   respawnparm = M_CheckParm("-respawn");
   fastparm = M_CheckParm("-fast");
-  devparm = M_CheckParm("-devparm");
   if (M_CheckParm("-altdeath"))
     deathmatch = 2;
   else if (M_CheckParm("-deathmatch"))
@@ -608,8 +597,9 @@ export void D_DoomMain(void) {
     break;
   }
 
-  if (devparm)
+#if !NDEBUG
     printf(D_DEVSTR);
+#endif
 
   // turbo option
   if ((p = M_CheckParm("-turbo"))) {
@@ -657,7 +647,7 @@ export void D_DoomMain(void) {
         //snprintf(file, 256, "~/cdata/map%i.wad", p);
       break;
     }
-    D_AddFile(file);
+    wadfilenames.emplace_back(file);
   }
 
   p = M_CheckParm("-file");
@@ -666,7 +656,7 @@ export void D_DoomMain(void) {
     // until end of parms or another - preceded parm
     modifiedgame = true; // homebrew levels
     while (++p != myargc && myargv[p][0] != '-')
-      D_AddFile(myargv[p].c_str());
+      wadfilenames.emplace_back(myargv[p].c_str());
   }
 
   p = M_CheckParm("-playdemo");
@@ -676,7 +666,7 @@ export void D_DoomMain(void) {
 
   if (p && p < myargc - 1) {
     //snprintf(file, 256, "%s.lmp", myargv[p + 1].c_str());
-    D_AddFile(file);
+    wadfilenames.emplace_back(file);
     printf("Playing demo %s.lmp.\n", myargv[p + 1].c_str());
   }
 
