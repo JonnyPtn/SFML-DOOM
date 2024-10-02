@@ -15,6 +15,7 @@
 //
 //-----------------------------------------------------------------------------
 module;
+#include "i_video.h"
 #include <filesystem>
 #include <fstream>
 #include <spdlog/spdlog.h>
@@ -81,8 +82,7 @@ void I_Debug( spdlog::format_string_t<Args...> fmt, Args &&...args ) {
 //
 export void I_Init( void ) {
 	//I_InitSound();
-	//I_InitGraphics();
-	I_Error( "Not implemented" );
+	I_InitGraphics();
 }
 
 //
