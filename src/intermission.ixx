@@ -610,8 +610,9 @@ void WI_drawTime(int x, int y, int t) {
   }
 }
 
+void WI_unloadData( void ) { free( lnames ); }
+
 void WI_End(void) {
-  void WI_unloadData(void);
   WI_unloadData();
 }
 
@@ -1437,8 +1438,6 @@ void WI_loadData(void) {
     bp[i] = static_cast<patch_t *>(W_CacheLumpName(name));
   }
 }
-
-void WI_unloadData(void) { free(lnames); }
 
 export void WI_Drawer(void) {
   switch (state) {

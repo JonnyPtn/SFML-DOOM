@@ -495,7 +495,7 @@ listen:
 // CheckAbort
 //
 void CheckAbort(void) {
-  int stoptic;
+    int stoptic{};
 
 // TODO JONNY circular dependency
   //stoptic = I_GetTime() + 2;

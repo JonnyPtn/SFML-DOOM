@@ -167,7 +167,7 @@ export enum ammotype_t {
 };
 
 // Power up artifacts.
-enum powertype_t {
+export enum powertype_t {
   pw_invulnerability,
   pw_strength,
   pw_invisibility,
@@ -183,7 +183,7 @@ enum powertype_t {
 //  how many seconds till expiration,
 //  assuming TICRATE is 35 ticks/second.
 //
-enum powerduration_t {
+export enum powerduration_t {
   INVULNTICS = (30 * TICRATE),
   INVISTICS = (60 * TICRATE),
   INFRATICS = (120 * TICRATE),
