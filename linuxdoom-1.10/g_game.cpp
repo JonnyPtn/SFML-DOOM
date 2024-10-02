@@ -208,11 +208,6 @@ void G_BuildTiccmd(ticcmd_t *cmd) {
   int forward;
   int side;
 
-  ticcmd_t *base;
-
-  base = I_BaseTiccmd(); // empty, or external driver
-  memcpy(cmd, base, sizeof(*cmd));
-
   cmd->consistancy = consistancy[consoleplayer][maketic % BACKUPTICS];
 
   strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe] ||
