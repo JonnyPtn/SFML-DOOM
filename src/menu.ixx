@@ -31,21 +31,9 @@ module;
 
 #include "i_video.h"
 
-
-
-
-
-#include "hu_stuff.h"
-
 #include "g_game.h"
 
 #include "m_swap.h"
-
-
-
-
-// Data.
-
 
 #include <functional>
 
@@ -64,8 +52,7 @@ import strings;
 import doomstat;
 import video;
 import sound;
-
-export patch_t *hu_font[HU_FONTSIZE];
+import hud;
 
 //
 // M_DrawText

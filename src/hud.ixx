@@ -19,30 +19,53 @@
 // DESCRIPTION:  Heads-up displays
 //
 //-----------------------------------------------------------------------------
-
+module;
 #include <ctype.h>
-
-
-
 #include "m_swap.h"
-
-#include "hu_lib.h"
-#include "hu_stuff.h"
-
-
 #include "d_player.h"
 #include "g_game.h"
+#include "r_defs.h"
+#include "r_main.h"
+#include "r_draw.h"
+export module hud;
 
-
-// Data.
-
-
-import menu;
 import system;
 import wad;
 import am_map;
 import strings;
 import doomstat;
+import video;
+
+//
+// Globally visible constants.
+//
+export constexpr auto HU_FONTSTART = '!'; // the first font characters
+export constexpr auto HU_FONTEND = '_';   // the last font characters
+
+// Calculate # of glyphs in font.
+export constexpr auto HU_FONTSIZE = (HU_FONTEND - HU_FONTSTART + 1);
+
+#define HU_BROADCAST 5
+
+#define HU_MSGREFRESH KEY_ENTER
+#define HU_MSGX 0
+#define HU_MSGY 0
+#define HU_MSGWIDTH 64 // in characters
+#define HU_MSGHEIGHT 1 // in lines
+
+#define HU_MSGTIMEOUT (4 * TICRATE)
+
+
+// background and foreground screen numbers
+// different from other modules.
+#define BG 1
+#define FG 0
+
+// font stuff
+#define HU_CHARERASE KEY_BACKSPACE
+
+#define HU_MAXLINES 4
+#define HU_MAXLINELENGTH 80
 
 //
 // Locally used constants, shortcuts.
@@ -61,30 +84,83 @@ import doomstat;
 #define HU_INPUTWIDTH 64
 #define HU_INPUTHEIGHT 1
 
+//
+// Typedefs of widgets
+//
+
+// Text Line widget
+//  (parent of Scrolling Text and Input Text widgets)
+typedef struct
+{
+    // left-justified position of scrolling text window
+    int x;
+    int y;
+
+    patch_t **f;                  // font
+    int sc;                       // start character
+    char l[HU_MAXLINELENGTH + 1]; // line of text
+    int len;                      // current line length
+
+    // whether this line needs to be udpated
+    int needsupdate;
+
+} hu_textline_t;
+
+// Scrolling Text window widget
+//  (child of Text Line widget)
+typedef struct
+{
+    hu_textline_t l[HU_MAXLINES]; // text lines to draw
+    int h;                        // height in lines
+    int cl;                       // current line number
+
+    // pointer to bool stating whether to update window
+    bool *on;
+    bool laston; // last value of *->on.
+
+} hu_stext_t;
+
+// Input Text Line widget
+//  (child of Text Line widget)
+typedef struct
+{
+    hu_textline_t l; // text line to input on
+
+    // left margin past which I am not to delete characters
+    int lm;
+
+    // pointer to bool stating whether to update window
+    bool *on;
+    bool laston; // last value of *->on;
+
+} hu_itext_t;
+
 std::array chat_macros = {HUSTR_CHATMACRO0, HUSTR_CHATMACRO1, HUSTR_CHATMACRO2,
                           HUSTR_CHATMACRO3, HUSTR_CHATMACRO4, HUSTR_CHATMACRO5,
                           HUSTR_CHATMACRO6, HUSTR_CHATMACRO7, HUSTR_CHATMACRO8,
                           HUSTR_CHATMACRO9};
 
-std::array player_names = {HUSTR_PLRGREEN, HUSTR_PLRINDIGO, HUSTR_PLRBROWN,
+export std::array player_names = {HUSTR_PLRGREEN, HUSTR_PLRINDIGO, HUSTR_PLRBROWN,
                            HUSTR_PLRRED};
 
 char chat_char; // remove later.
-static player_t *plr;
-static hu_textline_t w_title;
+inline player_t *plr;
+inline hu_textline_t w_title;
 bool chat_on;
-static hu_itext_t w_chat;
-static bool always_off = false;
-static char chat_dest[MAXPLAYERS];
-static hu_itext_t w_inputbuffer[MAXPLAYERS];
+inline hu_itext_t w_chat;
+inline bool always_off = false;
+inline char chat_dest[MAXPLAYERS];
+inline hu_itext_t w_inputbuffer[MAXPLAYERS];
 
-static bool message_on;
-static bool message_nottobefuckedwith;
+inline bool message_on;
+inline bool message_nottobefuckedwith;
 
-static hu_stext_t w_message;
-static int message_counter;
+inline hu_stext_t w_message;
+inline int message_counter;
 
-static bool headsupactive = false;
+inline bool headsupactive = false;
+
+export patch_t *hu_font[HU_FONTSIZE];
 
 //
 // Builtin map names.
@@ -229,7 +305,252 @@ char ForeignTranslation(unsigned char ch) {
   return ch < 128 ? frenchKeyMap[ch] : ch;
 }
 
-void HU_Init(void) {
+// bool : whether the screen is always erased
+#define noterased viewwindowx
+
+void HUlib_init( void ) {}
+
+void HUlib_clearTextLine( hu_textline_t *t ) {
+    t->len = 0;
+    t->l[0] = 0;
+    t->needsupdate = true;
+}
+
+void HUlib_initTextLine( hu_textline_t *t, int x, int y, patch_t **f, int sc ) {
+    t->x = x;
+    t->y = y;
+    t->f = f;
+    t->sc = sc;
+    HUlib_clearTextLine( t );
+}
+
+bool HUlib_addCharToTextLine( hu_textline_t *t, char ch ) {
+
+    if ( t->len == HU_MAXLINELENGTH )
+        return false;
+    else
+    {
+        t->l[t->len++] = ch;
+        t->l[t->len] = 0;
+        t->needsupdate = 4;
+        return true;
+    }
+}
+
+bool HUlib_delCharFromTextLine( hu_textline_t *t ) {
+
+    if ( !t->len )
+        return false;
+    else
+    {
+        t->l[--t->len] = 0;
+        t->needsupdate = 4;
+        return true;
+    }
+}
+
+void HUlib_drawTextLine( hu_textline_t *l, bool drawcursor ) {
+
+    int i;
+    int w;
+    int x;
+    unsigned char c;
+
+    // draw the new stuff
+    x = l->x;
+    for ( i = 0; i < l->len; i++ )
+    {
+        c = toupper( l->l[i] );
+        if ( c != ' ' && c >= l->sc && c <= '_' )
+        {
+            w = SHORT( l->f[c - l->sc]->width );
+            if ( x + w > SCREENWIDTH )
+                break;
+            V_DrawPatchDirect( x, l->y, FG, l->f[c - l->sc] );
+            x += w;
+        }
+        else
+        {
+            x += 4;
+            if ( x >= SCREENWIDTH )
+                break;
+        }
+    }
+
+    // draw the cursor if requested
+    if ( drawcursor && x + SHORT( l->f['_' - l->sc]->width ) <= SCREENWIDTH )
+    {
+        V_DrawPatchDirect( x, l->y, FG, l->f['_' - l->sc] );
+    }
+}
+
+// sorta called by HU_Erase and just better darn get things straight
+void HUlib_eraseTextLine( hu_textline_t *l ) {
+    int lh;
+    int y;
+    int yoffset;
+
+    // Only erases when NOT in automap and the screen is reduced,
+    // and the text must either need updating or refreshing
+    // (because of a recent change back from the automap)
+
+    if ( !automapactive && viewwindowx && l->needsupdate )
+    {
+        lh = SHORT( l->f[0]->height ) + 1;
+        for ( y = l->y, yoffset = y * SCREENWIDTH; y < l->y + lh;
+              y++, yoffset += SCREENWIDTH )
+        {
+            if ( y < viewwindowy || y >= viewwindowy + viewheight )
+                R_VideoErase( yoffset, SCREENWIDTH ); // erase entire line
+            else
+            {
+                R_VideoErase( yoffset, viewwindowx ); // erase left border
+                R_VideoErase( yoffset + viewwindowx + viewwidth, viewwindowx );
+                // erase right border
+            }
+        }
+    }
+    if ( l->needsupdate )
+        l->needsupdate--;
+}
+
+void HUlib_initSText( hu_stext_t *s, int x, int y, int h, patch_t **font,
+                      int startchar, bool *on ) {
+
+    int i;
+
+    s->h = h;
+    s->on = on;
+    s->laston = true;
+    s->cl = 0;
+    for ( i = 0; i < h; i++ )
+        HUlib_initTextLine( &s->l[i], x, y - i * (SHORT( font[0]->height ) + 1), font,
+                            startchar );
+}
+
+void HUlib_addLineToSText( hu_stext_t *s ) {
+
+    int i;
+
+    // add a clear line
+    if ( ++s->cl == s->h )
+        s->cl = 0;
+    HUlib_clearTextLine( &s->l[s->cl] );
+
+    // everything needs updating
+    for ( i = 0; i < s->h; i++ )
+        s->l[i].needsupdate = 4;
+}
+
+void HUlib_addMessageToSText( hu_stext_t *s, char *prefix, const char *msg ) {
+    HUlib_addLineToSText( s );
+    if ( prefix )
+        while ( *prefix )
+            HUlib_addCharToTextLine( &s->l[s->cl], *(prefix++) );
+
+    while ( *msg )
+        HUlib_addCharToTextLine( &s->l[s->cl], *(msg++) );
+}
+
+void HUlib_drawSText( hu_stext_t *s ) {
+    int i, idx;
+    hu_textline_t *l;
+
+    if ( !*s->on )
+        return; // if not on, don't draw
+
+    // draw everything
+    for ( i = 0; i < s->h; i++ )
+    {
+        idx = s->cl - i;
+        if ( idx < 0 )
+            idx += s->h; // handle queue of lines
+
+        l = &s->l[idx];
+
+        // need a decision made here on whether to skip the draw
+        HUlib_drawTextLine( l, false ); // no cursor, please
+    }
+}
+
+void HUlib_eraseSText( hu_stext_t *s ) {
+
+    int i;
+
+    for ( i = 0; i < s->h; i++ )
+    {
+        if ( s->laston && !*s->on )
+            s->l[i].needsupdate = 4;
+        HUlib_eraseTextLine( &s->l[i] );
+    }
+    s->laston = *s->on;
+}
+
+void HUlib_initIText( hu_itext_t *it, int x, int y, patch_t **font,
+                      int startchar, bool *on ) {
+    it->lm = 0; // default left margin is start of text
+    it->on = on;
+    it->laston = true;
+    HUlib_initTextLine( &it->l, x, y, font, startchar );
+}
+
+// The following deletion routines adhere to the left margin restriction
+void HUlib_delCharFromIText( hu_itext_t *it ) {
+    if ( it->l.len != it->lm )
+        HUlib_delCharFromTextLine( &it->l );
+}
+
+void HUlib_eraseLineFromIText( hu_itext_t *it ) {
+    while ( it->lm != it->l.len )
+        HUlib_delCharFromTextLine( &it->l );
+}
+
+// Resets left margin as well
+void HUlib_resetIText( hu_itext_t *it ) {
+    it->lm = 0;
+    HUlib_clearTextLine( &it->l );
+}
+
+void HUlib_addPrefixToIText( hu_itext_t *it, char *str ) {
+    while ( *str )
+        HUlib_addCharToTextLine( &it->l, *(str++) );
+    it->lm = it->l.len;
+}
+
+// wrapper function for handling general keyed input.
+// returns true if it ate the key
+bool HUlib_keyInIText( hu_itext_t *it, unsigned char ch ) {
+    // JONNY TODO
+    //    if (ch >= ' ' && ch <= '_')
+    //  	HUlib_addCharToTextLine(&it->l, (char) ch);
+    //    else
+    //	if (ch == KEY_BACKSPACE)
+    //	    HUlib_delCharFromIText(it);
+    //	else
+    //	    if (ch != KEY_ENTER)
+    return false; // did not eat key
+
+    return true; // ate the key
+}
+
+void HUlib_drawIText( hu_itext_t *it ) {
+
+    hu_textline_t *l = &it->l;
+
+    if ( !*it->on )
+        return;
+    HUlib_drawTextLine( l, true ); // draw the line w/ cursor
+}
+
+void HUlib_eraseIText( hu_itext_t *it ) {
+    if ( it->laston && !*it->on )
+        it->l.needsupdate = 4;
+    HUlib_eraseTextLine( &it->l );
+    it->laston = *it->on;
+}
+
+
+export void HU_Init(void) {
 
   int i;
   int j;
@@ -250,7 +571,7 @@ void HU_Init(void) {
 
 void HU_Stop(void) { headsupactive = false; }
 
-void HU_Start(void) {
+export void HU_Start(void) {
 
   int i;
   const char *s;
@@ -260,7 +581,8 @@ void HU_Start(void) {
 
   plr = &players[consoleplayer];
   message_on = false;
-  message_dontfuckwithme = false;
+  // JONNY TODO CIRCULAR DEPENDENCY
+  //message_dontfuckwithme = false;
   message_nottobefuckedwith = false;
   chat_on = false;
 
@@ -307,7 +629,7 @@ void HU_Start(void) {
   headsupactive = true;
 }
 
-void HU_Drawer(void) {
+export void HU_Drawer(void) {
 
   HUlib_drawSText(&w_message);
   HUlib_drawIText(&w_chat);
@@ -315,14 +637,14 @@ void HU_Drawer(void) {
     HUlib_drawTextLine(&w_title, false);
 }
 
-void HU_Erase(void) {
+export void HU_Erase(void) {
 
   HUlib_eraseSText(&w_message);
   HUlib_eraseIText(&w_chat);
   HUlib_eraseTextLine(&w_title);
 }
 
-void HU_Ticker(void) {
+export void HU_Ticker(void) {
 
   int i;
   char c;
@@ -333,17 +655,19 @@ void HU_Ticker(void) {
     message_nottobefuckedwith = false;
   }
 
-  if (showMessages || message_dontfuckwithme) {
+  // JONNY TODO CIRCULAR DEPENDENCY
+  if (showMessages /* || message_dontfuckwithme*/ ) {
 
     // display message if necessary
     if ((plr->message && !message_nottobefuckedwith) ||
-        (plr->message && message_dontfuckwithme)) {
+        (plr->message /*&& message_dontfuckwithme*/)) {
       HUlib_addMessageToSText(&w_message, 0, plr->message);
       plr->message = 0;
       message_on = true;
       message_counter = HU_MSGTIMEOUT;
-      message_nottobefuckedwith = message_dontfuckwithme;
-      message_dontfuckwithme = 0;
+      // JONNY TODO CIRCULAR DEPENDENCY
+      /*message_nottobefuckedwith = message_dontfuckwithme;
+      message_dontfuckwithme = 0;*/
     }
 
   } // else message_on = false;
@@ -403,7 +727,7 @@ void HU_queueChatChar(char c) {
   }
 }
 
-char HU_dequeueChatChar(void) {
+export char HU_dequeueChatChar(void) {
   char c;
 
   if (head != tail) {
@@ -416,7 +740,7 @@ char HU_dequeueChatChar(void) {
   return c;
 }
 
-bool HU_Responder(const sf::Event &ev) {
+export bool HU_Responder(const sf::Event &ev) {
 
   static char lastmessage[HU_MAXLINELENGTH + 1];
   const char *macromessage;

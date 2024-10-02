@@ -49,6 +49,7 @@ import strings;
 import doomstat;
 import video;
 import sound;
+import hud;
 
 // ?
 // // 
@@ -245,8 +246,6 @@ export void F_Ticker(void) {
 //
 // F_TextWrite
 //
-
-#include "hu_stuff.h"
 
 void F_TextWrite(void) {
   std::byte *src;

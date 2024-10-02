@@ -29,7 +29,6 @@
 
 
 #include "p_saveg.h"
-#include "hu_stuff.h"
 
 
 // Needs access to LFB.
@@ -66,6 +65,7 @@ import video;
 import tables;
 import status_bar;
 import sound;
+import hud;
 
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24
@@ -592,7 +592,6 @@ void G_Ticker(void) {
       if (cmd->forwardmove > TURBOTHRESHOLD && !(gametic & 31) &&
           ((gametic >> 5) & 3) == i) {
         static char turbomessage[80];
-        extern std::array<const char *, 4> player_names;
         snprintf(turbomessage, 80, "%s is turbo!", player_names[i]);
         players[consoleplayer].message = turbomessage;
       }

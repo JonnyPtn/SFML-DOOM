@@ -27,10 +27,6 @@
 #include "p_local.h"
 
 
-#include "hu_stuff.h"
-
-
-
 #include "g_game.h"
 
 
@@ -42,6 +38,7 @@ import setup;
 import tables;
 import status_bar;
 import sound;
+import hud;
 
 void G_PlayerReborn(int player);
 
