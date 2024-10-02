@@ -57,3 +57,6 @@ else()
 endif()
 
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/wads ${WADS_DEST})
+
+# It should be the default startup project
+set_property(DIRECTORY . PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})
