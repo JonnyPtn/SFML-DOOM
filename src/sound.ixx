@@ -615,7 +615,7 @@ void *getsfx(char *sfxname, int *len) {
 int addsfx(int sfxid, int volume, int step, int seperation) {
   static unsigned short handlenums = 0;
 
-  int i;
+  int i{};
   int rc = -1;
 
   int oldest = gametic;
