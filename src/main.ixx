@@ -20,26 +20,13 @@
 //
 //-----------------------------------------------------------------------------
 module;
-
-
-
-
-
-
-
 #include "i_video.h"
-
 #include "g_game.h"
-
 #include "r_main.h"
 #include "r_draw.h"
-
 #include <SFML/Window/Event.hpp>
-
 #include <spdlog/spdlog.h>
-
 #include <filesystem>
-
 export module main;
 
 import system;
@@ -86,8 +73,6 @@ export skill_t startskill;
 export int startepisode;
 export int startmap;
 export bool autostart;
-
-export FILE *debugfile;
 
 export bool advancedemo;
 
@@ -378,13 +363,6 @@ export bool demorecording;
 void D_DoomLoop(void) {
   if (demorecording)
     G_BeginRecording();
-
-  if (M_CheckParm("-debugfile")) {
-    char filename[20];
-    snprintf(filename, 20, "debug%i.txt", consoleplayer);
-    printf("debug output to: %s\n", filename);
-    debugfile = fopen(filename, "w");
-  }
 
   I_InitGraphics();
 

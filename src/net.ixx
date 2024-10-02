@@ -231,26 +231,6 @@ void HSendPacket(int node, int flags) {
   doomcom.remotenode = node;
   doomcom.datalength = NetbufferSize();
 
-  // TODO JONNY circular dependency
-  /*
-  if (debugfile) {
-    int i;
-    int realretrans;
-    if (netbuffer->checksum & NCMD_RETRANSMIT)
-      realretrans = ExpandTics(static_cast<int>(netbuffer->retransmitfrom));
-    else
-      realretrans = -1;
-
-    fprintf(debugfile, "send (%i + %i, R %i) [%i] ",
-            ExpandTics(static_cast<int>(netbuffer->starttic)), static_cast<int>(netbuffer->numtics), static_cast<int>(realretrans),
-            doomcom.datalength);
-
-    for (i = 0; i < doomcom.datalength; i++)
-      fprintf(debugfile, "%i ", static_cast<int>(((std::byte *)netbuffer)[i]));
-
-    fprintf(debugfile, "\n");
-  }*/
-
   I_NetCmd();
 }
 
@@ -279,42 +259,12 @@ bool HGetPacket(void) {
     return false;
 
   if (doomcom.datalength != NetbufferSize()) {
-    // TODO JONNY circular dependency
-    //if (debugfile)
-      //fprintf(debugfile, "bad packet length %i\n", doomcom.datalength);
     return false;
   }
 
   if (NetbufferChecksum() != (netbuffer->checksum & NCMD_CHECKSUM)) {
-    // TODO JONNY circular dependency
-    //if (debugfile)
-      //fprintf(debugfile, "bad packet checksum\n");
     return false;
   }
-
-// TODO JONNY circular dependency
-/*
-  if (debugfile) {
-    int realretrans;
-    int i;
-
-    if (netbuffer->checksum & NCMD_SETUP)
-      fprintf(debugfile, "setup packet\n");
-    else {
-      if (netbuffer->checksum & NCMD_RETRANSMIT)
-        realretrans = ExpandTics(static_cast<int>(netbuffer->retransmitfrom));
-      else
-        realretrans = -1;
-
-      fprintf(debugfile, "get %i = (%i + %i, R %i)[%i] ", doomcom.remotenode,
-              ExpandTics(static_cast<int>(netbuffer->starttic)), static_cast<int>(netbuffer->numtics), static_cast<int>(realretrans),
-              doomcom.datalength);
-
-      for (i = 0; i < doomcom.datalength; i++)
-        fprintf(debugfile, "%i ", static_cast<int>(((std::byte *)netbuffer)[i]));
-      fprintf(debugfile, "\n");
-    }
-  }*/
   return true;
 }
 
@@ -366,9 +316,6 @@ void GetPackets(void) {
     // check for retransmit request
     if (resendcount[netnode] <= 0 && (netbuffer->checksum & NCMD_RETRANSMIT)) {
       resendto[netnode] = ExpandTics(static_cast<int>(netbuffer->retransmitfrom));
-      // TODO JONNY circular dependency
-      //if (debugfile)
-        //fprintf(debugfile, "retransmit from %i\n", resendto[netnode]);
       resendcount[netnode] = RESENDCOUNT;
     } else
       resendcount[netnode]--;
@@ -378,20 +325,12 @@ void GetPackets(void) {
       continue;
 
     if (realend < nettics[netnode]) {
-      // TODO JONNY circular dependency
-      //if (debugfile)
-        //fprintf(debugfile, "out of order packet (%i + %i)\n", realstart,
-                //static_cast<int>(netbuffer->numtics));
       continue;
     }
 
     // check for a missed packet
     if (realstart > nettics[netnode]) {
       // stop processing until the other system resends the missed tics
-      // TODO JONNY circular dependency
-      //if (debugfile)
-        //fprintf(debugfile, "missed tics from %i (%i - %i)\n", netnode,
-                //realstart, nettics[netnode]);
       remoteresend[netnode] = true;
       continue;
     }
@@ -635,10 +574,6 @@ export void D_CheckNetGame(void) {
 void D_QuitNetGame(void) {
   int i, j;
 
-// TODO JONNY circular dependency
-  //if (debugfile)
-  //  fclose(debugfile);
-
   if (!netgame || !usergame || consoleplayer == -1 || demoplayback)
     return;
 
@@ -698,10 +633,6 @@ export void TryRunTics(void) {
     counts = 1;
 
   frameon++;
-// TODO JONNY circular dependency
-  //if (debugfile)
-  //  fprintf(debugfile, "=======real: %i  avail: %i  game: %i\n", realtics,
-  //          availabletics, counts);
 
   if (!demoplayback) {
     // ideally nettics[0] should be 1 - 3 tics above lowtic
