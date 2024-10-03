@@ -27,7 +27,7 @@ include(FetchContent)
 # SFML we take from master - can pin to an SFML 3 release when there is one
 # We use this for window, audio and graphics
 set(SFML_STATIC_LIBRARIES ON)
-set(SFML_FIND_COMPONENTS Graphics)
+set(SFML_FIND_COMPONENTS Graphics Audio)
 FetchContent_Declare(
         sfml
         GIT_REPOSITORY    https://github.com/sfml/sfml
@@ -47,7 +47,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(sfml spdlog)
 
 # Link them
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE SFML::Graphics spdlog::spdlog)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE SFML::Graphics SFML::Audio spdlog::spdlog)
 
 # Sym link the wads folder into the build output
 if(APPLE)

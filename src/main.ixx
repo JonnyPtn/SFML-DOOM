@@ -45,6 +45,7 @@ import intermission;
 import video;
 import status_bar;
 import hud;
+import sound;
 
 // List of wad files we populate on start up
 std::vector<std::string> wadfilenames;
@@ -390,9 +391,6 @@ void D_DoomLoop(void) {
 
     // Update display, next frame, with current state.
     D_Display();
-
-    // Sound mixing for the buffer is snychronous.
-    I_UpdateSound();
   }
 }
 
@@ -793,6 +791,8 @@ export void D_DoomMain(void) {
   printf("\nP_Init: Init Playloop state.\n");
   P_Init();
 
+  I_InitSound();
+  
   printf("I_Init: Setting up machine state.\n");
   I_Init();
 

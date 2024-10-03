@@ -21,7 +21,10 @@ module;
 #include "r_main.h"
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/Listener.hpp>
+#include <algorithm>
 #include <string>
+#include <ranges>
 export module sound;
 
 import system;
@@ -424,6 +427,13 @@ const auto SAMPLERATE = 11025; // Hz
 
 struct channel_t
 {
+  channel_t(sfxinfo_t* info, void* origin, int vol, int pitch ) : 
+  sfxinfo(info),
+  origin(origin),
+  sound(info->data)
+  {
+    sound.play();
+  };
 	// sound information (if null, channel avail.)
 	sfxinfo_t *sfxinfo;
 
@@ -501,37 +511,15 @@ export int I_SoundIsPlaying( int handle ) {
 	return gametic < handle;
 }
 
-void I_InitSound() {
-	I_Log( "I_InitSound: " );
+struct dmx_header
+{
+  uint16_t format;
+  uint16_t sample_rate;
+  uint32_t sample_count;
+};
+static_assert(sizeof(dmx_header) == 8);
 
-	for ( auto& sound : S_sfx)
-	{
-		// Alias? Example is the chaingun sound linked to pistol.
-		if ( !sound.link )
-		{
-			// Load data from WAD file.
-			auto sfxlump = I_GetSfxLumpNum( sound.name);
-			auto sfx = W_CacheLumpNum( sfxlump );
-			auto length = W_LumpLength( sfxlump );
-			sound.data.loadFromMemory( sfx, length );
-		}
-		else
-		{
-			// Previously loaded already?
-			S_sfx[i].data = S_sfx[i].link->data;
-			lengths[i] = lengths[(S_sfx[i].link - S_sfx) / sizeof( sfxinfo_t )];
-		}
-	}
-
-	fprintf( stderr, " pre-cached all sound data\n" );
-
-	// Now initialize mixbuffer with zero.
-	for ( i = 0; i < MIXBUFFERSIZE; i++ )
-		mixbuffer[i] = 0;
-
-	// Finished initialization.
-	fprintf( stderr, "I_InitSound: sound module ready\n" );
-}
+export void I_InitSound();
 
 //
 // MUSIC API.
@@ -588,51 +576,6 @@ int I_QrySongPlaying( int handle ) {
 	return looping || musicdies > gametic;
 }
 
-//
-// Experimental stuff.
-// A Linux timer interrupt, for asynchronous
-//  sound output.
-// I ripped this out of the Timer class in
-//  our Difference Engine, including a few
-//  SUN remains...
-//
-#ifdef sun
-typedef sigset_t tSigSet;
-#else
-typedef int tSigSet;
-#endif
-
-// We might use SIGVTALRM and ITIMER_VIRTUAL, if the process
-//  time independend timer happens to get lost due to heavy load.
-// SIGALRM and ITIMER_REAL doesn't really work well.
-// There are issues with profiling as well.
-// static int /*__itimer_which*/  itimer = ITIMER_REAL;
-
-// static int sig = SIGALRM;
-
-// Interrupt handler.
-void I_HandleSoundTimer( int ignore ) {
-	// Debug.
-	// fprintf( stderr, "%c", '+' ); fflush( stderr );
-
-	// Feed sound device if necesary.
-	if ( flag )
-	{
-		// See I_SubmitSound().
-		// Write it to DSP device.
-		//    write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
-
-		// Reset flag counter.
-		flag = 0;
-	}
-	else
-		return;
-
-	// UNUSED, but required.
-	ignore = 0;
-	return;
-}
-
 
 // when to clip out sounds
 // Does not fit the large outdoor areas.
@@ -676,8 +619,6 @@ static bool mus_paused;
 // music currently being played
 static musicinfo_t *mus_playing = 0;
 
-static int nextcleanup;
-
 export void S_SetSfxVolume( int volume ) {
 
 	if ( volume < 0 || volume > 127 )
@@ -718,8 +659,7 @@ export void S_Init( int sfxVolume, int musicVolume ) {
 	//channels = (channel_t *)malloc(numChannels * sizeof(channel_t));
 
 	// Free all channels for use
-	for ( i = 0; i < numChannels; i++ )
-		channels[i].sfxinfo = 0;
+  channels = {};
 
 	// no sounds are playing, and they are not mus_paused
 	mus_paused = 0;
@@ -781,21 +721,16 @@ export void S_ChangeMusic( int musicnum, int looping ) {
 //  determines music if any, changes music.
 //
 export void S_Start( void ) {
-	int cnum;
-	int mnum;
 
 	// kill all playing sounds at start of level
 	//  (trust me - a good idea)
-	for ( cnum = 0; cnum < numChannels; cnum++ )
-		if ( channels[cnum].sfxinfo )
-			S_StopChannel( cnum );
+  channels = {};
 
 	// start new music for the level
 	mus_paused = 0;
 
-	if ( gamemode == commercial )
-		mnum = mus_runnin + gamemap - 1;
-	else
+	auto mnum = mus_runnin + gamemap - 1;
+	if ( gamemode != commercial )
 	{
 		int spmus[] = {
 			// Song - Who? - Where?
@@ -822,48 +757,24 @@ export void S_Start( void ) {
 	//      mnum -= mus_e3m9;
 
 	S_ChangeMusic( mnum, true );
-
-	nextcleanup = 15;
-}
-
-export void S_StopSound( void *origin ) {
-
-	int cnum;
-
-	for ( cnum = 0; cnum < numChannels; cnum++ )
-	{
-		if ( channels[cnum].sfxinfo && channels[cnum].origin == origin )
-		{
-			S_StopChannel( cnum );
-			break;
-		}
-	}
 }
 
 void S_StartSoundAtVolume( void *origin_p, int sfx_id, int volume ) {
-
-	int rc;
-	int sep;
-	int pitch;
-	int priority;
-	sfxinfo_t *sfx;
-	int cnum;
-
 	mobj_t *origin = (mobj_t *)origin_p;
-
 	I_Debug( "S_StartSoundAtVolume: playing sound {} ({})", sfx_id, S_sfx[sfx_id].name );
 
 	// check for bogus sound #
-	if ( sfx_id < 1 || sfx_id > NUMSFX )
+	if ( sfx_id < 1 || sfx_id > NUMSFX)
 		I_Error( "Bad sfx #: %d", sfx_id );
 
-	sfx = &S_sfx[sfx_id];
+	auto sfx = &S_sfx[sfx_id];
+
+  auto pitch = NORM_PITCH;
 
 	// Initialize sound parameters
 	if ( sfx->link )
 	{
 		pitch = sfx->pitch;
-		priority = sfx->priority;
 		volume += sfx->volume;
 
 		if ( volume < 1 )
@@ -871,32 +782,6 @@ void S_StartSoundAtVolume( void *origin_p, int sfx_id, int volume ) {
 
 		if ( volume > snd_SfxVolume )
 			volume = snd_SfxVolume;
-	}
-	else
-	{
-		pitch = NORM_PITCH;
-		priority = NORM_PRIORITY;
-	}
-
-	// Check to see if it is audible,
-	//  and if not, modify the params
-	if ( origin && origin != players[consoleplayer].mo )
-	{
-		rc = S_AdjustSoundParams( players[consoleplayer].mo, origin, &volume, &sep,
-								  &pitch );
-
-		if ( origin->x == players[consoleplayer].mo->x &&
-			 origin->y == players[consoleplayer].mo->y )
-		{
-			sep = NORM_SEP;
-		}
-
-		if ( !rc )
-			return;
-	}
-	else
-	{
-		sep = NORM_SEP;
 	}
 
 	// hacks to vary the sfx pitches
@@ -919,15 +804,6 @@ void S_StartSoundAtVolume( void *origin_p, int sfx_id, int volume ) {
 			pitch = 255;
 	}
 
-	// kill old sound
-	S_StopSound( origin );
-
-	// try to find a channel
-	cnum = S_getChannel( origin, sfx );
-
-	if ( cnum < 0 )
-		return;
-
 	//
 	// This is supposed to handle the loading/caching.
 	// For some odd reason, the caching is done nearly
@@ -936,31 +812,19 @@ void S_StartSoundAtVolume( void *origin_p, int sfx_id, int volume ) {
 
 	// get lumpnum if necessary
 	if ( sfx->lumpnum < 0 )
-		sfx->lumpnum = I_GetSfxLumpNum( sfx );
+		sfx->lumpnum = I_GetSfxLumpNum( sfx->name );
 
-#ifndef SNDSRV
 	// cache data if necessary
-	if ( !sfx->data )
+	if ( !sfx->data.getSampleCount() )
 	{
-		fprintf( stderr, "S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n" );
-
-		// DOS remains, 8bit handling
-		// sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum);
-		// fprintf( stderr,
-		//	     "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
-		//       sfx_id, sfx->lumpnum, (int)sfx->data );
+		I_Error( "S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n" );
 	}
-#endif
 
 	// increase the usefulness
 	if ( sfx->usefulness++ < 0 )
 		sfx->usefulness = 1;
 
-	// Assigns the handle to one of the channels in the
-	//  mix/output buffer.
-	channels[cnum].handle = I_StartSound( sfx_id,
-										  /*sfx->data,*/
-										  volume, sep, pitch, priority );
+	channels.emplace_back( sfx, origin, volume, pitch );
 }
 
 export void S_StartSound( void *origin, int sfx_id ) {
@@ -1025,6 +889,10 @@ export void S_StartSound( void *origin, int sfx_id ) {
 #endif
 }
 
+export void S_StopSound(void *origin)
+{
+  std::erase_if(channels,[origin](channel_t& channel){return channel.origin == origin;}); 
+}
 
 //
 // Stop and resume music, during game PAUSE.
@@ -1049,94 +917,12 @@ export void S_ResumeSound( void ) {
 // Updates music & sounds
 //
 export void S_UpdateSounds( void *listener_p ) {
-	int audible;
-	int cnum;
-	int volume;
-	int sep;
-	int pitch;
-	sfxinfo_t *sfx;
-	channel_t *c;
 
 	mobj_t *listener = (mobj_t *)listener_p;
+  //sf::Listener::setPosition...
 
-	// Clean up unused data.
-	// This is currently not done for 16bit (sounds cached static).
-	// DOS 8bit remains.
-	/*if (gametic > nextcleanup)
-	{
-		for (i=1 ; i<NUMSFX ; i++)
-		{
-			if (S_sfx[i].usefulness < 1
-				&& S_sfx[i].usefulness > -1)
-			{
-				if (--S_sfx[i].usefulness == -1)
-				{
-					Z_ChangeTag(S_sfx[i].data);
-					S_sfx[i].data = 0;
-				}
-			}
-		}
-		nextcleanup = gametic + 15;
-	}*/
-
-	for ( cnum = 0; cnum < numChannels; cnum++ )
-	{
-		c = &channels[cnum];
-		sfx = c->sfxinfo;
-
-		if ( c->sfxinfo )
-		{
-			if ( I_SoundIsPlaying( c->handle ) )
-			{
-				// initialize parameters
-				volume = snd_SfxVolume;
-				pitch = NORM_PITCH;
-				sep = NORM_SEP;
-
-				if ( sfx->link )
-				{
-					pitch = sfx->pitch;
-					volume += sfx->volume;
-					if ( volume < 1 )
-					{
-						S_StopChannel( cnum );
-						continue;
-					}
-					else if ( volume > snd_SfxVolume )
-					{
-						volume = snd_SfxVolume;
-					}
-				}
-
-				// check non-local sounds for distance clipping
-				//  or modify their params
-				if ( c->origin && listener_p != c->origin )
-				{
-					audible =
-						S_AdjustSoundParams( listener, static_cast<mobj_t *>(c->origin),
-											 &volume, &sep, &pitch );
-
-					if ( !audible )
-					{
-						S_StopChannel( cnum );
-					}
-					else
-						I_UpdateSoundParams( c->handle, volume, sep, pitch );
-				}
-			}
-			else
-			{
-				// if channel is allocated but sound has stopped,
-				//  free it
-				S_StopChannel( cnum );
-			}
-		}
-	}
-	// kill music if it is a single-play && finished
-	// if (	mus_playing
-	//      && !I_QrySongPlaying(mus_playing->handle)
-	//      && !mus_paused )
-	// S_StopMusic();
+  auto stopped = [](channel_t& channel){ return channel.sound.getStatus() == sf::Sound::Status::Stopped;};
+  std::erase_if(channels,stopped);
 }
 
 //
@@ -1147,151 +933,42 @@ export void S_StartMusic( int m_id ) {
 	// S_ChangeMusic(m_id, false);
 }
 
+module : private;
 
-void S_StopChannel( int cnum ) {
+void I_InitSound() {
+	I_Log( "I_InitSound: " );
 
-	int i;
-	channel_t *c = &channels[cnum];
-
-	if ( c->sfxinfo )
+	for ( auto& sound : S_sfx)
 	{
-		// stop the sound playing
-		if ( I_SoundIsPlaying( c->handle ) )
+		// Alias? Example is the chaingun sound linked to pistol.
+		if ( !sound.link )
 		{
-#ifdef SAWDEBUG
-			if ( c->sfxinfo == &S_sfx[sfx_sawful] )
-				fprintf( stderr, "stopped\n" );
-#endif
-			I_StopSound( c->handle );
-		}
+			// Load data from WAD file.
+			auto sfxlump = I_GetSfxLumpNum( sound.name);
+			auto sfx = W_CacheLumpNum( sfxlump );
+			auto length = W_LumpLength( sfxlump );
 
-		// check to see
-		//  if other channels are playing the sound
-		for ( i = 0; i < numChannels; i++ )
-		{
-			if ( cnum != i && c->sfxinfo == channels[i].sfxinfo )
-			{
-				break;
-			}
-		}
+      // Sound lumps are stored in some format with a small header and samples
+      auto header = *static_cast<dmx_header*>(sfx);
+      sfx = static_cast<char*>(sfx) + sizeof(dmx_header);
 
-		// degrade usefulness of sound data
-		c->sfxinfo->usefulness--;
-
-		c->sfxinfo = 0;
-	}
-}
-
-//
-// Changes volume, stereo-separation, and pitch variables
-//  from the norm of a sound effect to be played.
-// If the sound is not audible, returns a 0.
-// Otherwise, modifies parameters and returns 1.
-//
-int S_AdjustSoundParams( mobj_t *listener, mobj_t *source, int *vol, int *sep,
-						 int *pitch ) {
-	fixed_t approx_dist;
-	fixed_t adx;
-	fixed_t ady;
-	angle_t angle;
-
-	// calculate the distance to sound origin
-	//  and clip it if necessary
-	adx = abs( listener->x - source->x );
-	ady = abs( listener->y - source->y );
-
-	// From _GG1_ p.428. Appox. eucledian distance fast.
-	approx_dist = adx + ady - ((adx < ady ? adx : ady) >> 1);
-
-	if ( gamemap != 8 && approx_dist > S_CLIPPING_DIST )
-	{
-		return 0;
-	}
-
-	// angle of source to listener
-	angle = R_PointToAngle2( listener->x, listener->y, source->x, source->y );
-
-	if ( angle > listener->angle )
-		angle = angle - listener->angle;
-	else
-		angle = angle + (0xffffffff - listener->angle);
-
-	angle >>= ANGLETOFINESHIFT;
-
-	// stereo separation
-	*sep = 128 - (FixedMul( S_STEREO_SWING, finesine[angle] ) >> FRACBITS);
-
-	// volume calculation
-	if ( approx_dist < S_CLOSE_DIST )
-	{
-		*vol = snd_SfxVolume;
-	}
-	else if ( gamemap == 8 )
-	{
-		if ( approx_dist > S_CLIPPING_DIST )
-			approx_dist = S_CLIPPING_DIST;
-
-		*vol = 15 + ((snd_SfxVolume - 15) *
-					  ((S_CLIPPING_DIST - approx_dist) >> FRACBITS)) /
-			S_ATTENUATOR;
-	}
-	else
-	{
-		// distance effect
-		*vol = (snd_SfxVolume * ((S_CLIPPING_DIST - approx_dist) >> FRACBITS)) /
-			S_ATTENUATOR;
-	}
-
-	return (*vol > 0);
-}
-
-//
-// S_getChannel :
-//   If none available, return -1.  Otherwise channel #.
-//
-int S_getChannel( void *origin, sfxinfo_t *sfxinfo ) {
-	// channel number to use
-	int cnum;
-
-	channel_t *c;
-
-	// Find an open channel
-	for ( cnum = 0; cnum < numChannels; cnum++ )
-	{
-		if ( !channels[cnum].sfxinfo )
-			break;
-		else if ( origin && channels[cnum].origin == origin )
-		{
-			S_StopChannel( cnum );
-			break;
-		}
-	}
-
-	// None available
-	if ( cnum == numChannels )
-	{
-		// Look for lower priority
-		for ( cnum = 0; cnum < numChannels; cnum++ )
-			if ( channels[cnum].sfxinfo->priority >= sfxinfo->priority )
-				break;
-
-		if ( cnum == numChannels )
-		{
-			// FUCK!  No lower priority.  Sorry, Charlie.
-			return -1;
+      // But the samples are unsigned 8 bit samples, whereas SFML requires signed 16 bit, so we must convert
+      std::vector<int16_t> samples(header.sample_count);
+      for (auto i : std::ranges::iota_view{0u,samples.size()})
+      {
+        samples[i] = (static_cast<uint8_t*>(sfx)[i] * 256) ^ 0x8000;
+      }
+			if (!sound.data.loadFromSamples( samples.data(), samples.size(), 1, header.sample_rate, {sf::SoundChannel::Mono} ))
+      {
+        I_Error("Failed to load sound: {}", sound.name);
+      }
 		}
 		else
 		{
-			// Otherwise, kick out lower priority.
-			S_StopChannel( cnum );
+			// Previously loaded already?
+			sound.data = sound.link->data;
 		}
 	}
 
-	c = &channels[cnum];
-
-	// channel is decided to be cnum.
-	c->sfxinfo = sfxinfo;
-	c->origin = origin;
-
-	return cnum;
+	I_Log("Sounds initialised");
 }
