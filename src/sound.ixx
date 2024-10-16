@@ -91,7 +91,7 @@ struct musicinfo_t
 //
 // Identifiers for all sfx in game.
 //
-enum sfxenum_t
+export enum sfxenum_t
 {
 	sfx_None,
 	sfx_pistol,
@@ -341,7 +341,7 @@ musicinfo_t S_music[] = {
 //
 // Identifiers for all music in game.
 //
-enum musicenum_t
+export enum musicenum_t
 {
 	mus_None,
 	mus_e1m1,
