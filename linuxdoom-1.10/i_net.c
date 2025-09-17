@@ -67,12 +67,12 @@ boolean NetListen (void);
 // NETWORKING
 //
 
-int	DOOMPORT =	(IPPORT_USERRESERVED +0x1d );
+int	DOOMPORT = 12;// JONNY NOTE was: (IPPORT_USERRESERVED +0x1d );
 
 int			sendsocket;
 int			insocket;
 
-struct	sockaddr_in	sendaddress[MAXNETNODES];
+//JONNY TODO struct	sockaddr_in	sendaddress[MAXNETNODES];
 
 void	(*netget) (void);
 void	(*netsend) (void);
@@ -86,7 +86,7 @@ int UDPsocket (void)
     int	s;
 	
     // allocate a socket
-    s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    //JONNY TODOs = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (s<0)
 	I_Error ("can't create socket: %s",strerror(errno));
 		
@@ -102,14 +102,14 @@ BindToLocalPort
   int	port )
 {
     int			v;
-    struct sockaddr_in	address;
+    //JONNY TODOstruct sockaddr_in	address;
 	
-    memset (&address, 0, sizeof(address));
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = port;
+    //JONNY TODOmemset (&address, 0, sizeof(address));
+    //JONNY TODOaddress.sin_family = AF_INET;
+    //JONNY TODOaddress.sin_addr.s_addr = INADDR_ANY;
+    //JONNY TODOaddress.sin_port = port;
 			
-    v = bind (s, (void *)&address, sizeof(address));
+    //JONNY TODOv = bind (s, (void *)&address, sizeof(address));
     if (v == -1)
 	I_Error ("BindToPort: bind: %s", strerror(errno));
 }
@@ -140,9 +140,9 @@ void PacketSend (void)
     }
 		
     //printf ("sending %i\n",gametic);		
-    c = sendto (sendsocket , &sw, doomcom->datalength
-		,0,(void *)&sendaddress[doomcom->remotenode]
-		,sizeof(sendaddress[doomcom->remotenode]));
+    //JONNY TODOc = sendto (sendsocket , &sw, doomcom->datalength
+        //JONNY TODO,0,(void *)&sendaddress[doomcom->remotenode]
+        //JONNY TODO,sizeof(sendaddress[doomcom->remotenode]));
 	
     //	if (c == -1)
     //		I_Error ("SendPacket error: %s",strerror(errno));
@@ -156,13 +156,13 @@ void PacketGet (void)
 {
     int			i;
     int			c;
-    struct sockaddr_in	fromaddress;
+    //JONNY TODOstruct sockaddr_in	fromaddress;
     int			fromlen;
     doomdata_t		sw;
 				
-    fromlen = sizeof(fromaddress);
-    c = recvfrom (insocket, &sw, sizeof(sw), 0
-		  , (struct sockaddr *)&fromaddress, &fromlen );
+    //JONNY TODOfromlen = sizeof(fromaddress);
+    //JONNY TODOc = recvfrom (insocket, &sw, sizeof(sw), 0
+    //JONNY TODO	  , (struct sockaddr *)&fromaddress, &fromlen );
     if (c == -1 )
     {
 	if (errno != EWOULDBLOCK)
@@ -180,8 +180,8 @@ void PacketGet (void)
 
     // find remote node number
     for (i=0 ; i<doomcom->numnodes ; i++)
-	if ( fromaddress.sin_addr.s_addr == sendaddress[i].sin_addr.s_addr )
-	    break;
+        //JONNY TODOif ( fromaddress.sin_addr.s_addr == sendaddress[i].sin_addr.s_addr )
+    //JONNY TODO    break;
 
     if (i == doomcom->numnodes)
     {
@@ -220,15 +220,15 @@ int GetLocalAddress (void)
     int			v;
 
     // get local address
-    v = gethostname (hostname, sizeof(hostname));
+    //JONNY TODOv = gethostname (hostname, sizeof(hostname));
     if (v == -1)
 	I_Error ("GetLocalAddress : gethostname: errno %d",errno);
 	
-    hostentry = gethostbyname (hostname);
+    //JONNY TODOhostentry = gethostbyname (hostname);
     if (!hostentry)
 	I_Error ("GetLocalAddress : gethostbyname: couldn't get local host");
 		
-    return *(int *)hostentry->h_addr_list[0];
+    //JONNY TODOreturn *(int *)hostentry->h_addr_list[0];
 }
 
 
@@ -296,20 +296,20 @@ void I_InitNetwork (void)
     i++;
     while (++i < myargc && myargv[i][0] != '-')
     {
-	sendaddress[doomcom->numnodes].sin_family = AF_INET;
-	sendaddress[doomcom->numnodes].sin_port = htons(DOOMPORT);
+        //JONNY TODOsendaddress[doomcom->numnodes].sin_family = AF_INET;
+    //JONNY TODOsendaddress[doomcom->numnodes].sin_port = htons(DOOMPORT);
 	if (myargv[i][0] == '.')
 	{
-	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
-		= inet_addr (myargv[i]+1);
+        //JONNY TODO    sendaddress[doomcom->numnodes].sin_addr.s_addr 
+    //JONNY TODO	= inet_addr (myargv[i]+1);
 	}
 	else
 	{
-	    hostentry = gethostbyname (myargv[i]);
+        //JONNY TODOhostentry = gethostbyname (myargv[i]);
 	    if (!hostentry)
 		I_Error ("gethostbyname: couldn't find %s", myargv[i]);
-	    sendaddress[doomcom->numnodes].sin_addr.s_addr 
-		= *(int *)hostentry->h_addr_list[0];
+        //JONNY TODOsendaddress[doomcom->numnodes].sin_addr.s_addr 
+        //JONNY TODO= *(int *)hostentry->h_addr_list[0];
 	}
 	doomcom->numnodes++;
     }
@@ -320,7 +320,7 @@ void I_InitNetwork (void)
     // build message to receive
     insocket = UDPsocket ();
     BindToLocalPort (insocket,htons(DOOMPORT));
-    ioctl (insocket, FIONBIO, &trueval);
+    //JONNY TODOioctl (insocket, FIONBIO, &trueval);
 
     sendsocket = UDPsocket ();
 }
