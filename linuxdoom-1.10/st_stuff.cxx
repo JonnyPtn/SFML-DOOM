@@ -1180,21 +1180,21 @@ void ST_loadGraphics(void)
 	for (j=0;j<ST_NUMSTRAIGHTFACES;j++)
 	{
 	    sprintf(namebuf, "STFST%d%d", i, j);
-	    faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	    faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 	}
 	sprintf(namebuf, "STFTR%d0", i);	// turn right
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 	sprintf(namebuf, "STFTL%d0", i);	// turn left
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 	sprintf(namebuf, "STFOUCH%d", i);	// ouch!
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 	sprintf(namebuf, "STFEVL%d", i);	// evil grin ;)
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 	sprintf(namebuf, "STFKILL%d", i);	// pissed off
-	faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
+	faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
     }
-    faces[facenum++] = W_CacheLumpName("STFGOD0", PU_STATIC);
-    faces[facenum++] = W_CacheLumpName("STFDEAD0", PU_STATIC);
+    faces[facenum++] = (patch_t*)W_CacheLumpName("STFGOD0", PU_STATIC);
+    faces[facenum++] = (patch_t*)W_CacheLumpName("STFDEAD0", PU_STATIC);
 
 }
 
@@ -1458,7 +1458,7 @@ void ST_Stop (void)
     if (st_stopped)
 	return;
 
-    I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
+// JONNY TODO    I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
 
     st_stopped = true;
 }

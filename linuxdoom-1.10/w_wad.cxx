@@ -22,6 +22,7 @@
 //-----------------------------------------------------------------------------
 
 
+#include <cstdlib>
 #include <ctype.h>
 #include <fcntl.h>
 #include <string.h>
@@ -160,7 +161,7 @@ void W_AddFile (char *filename)
 	reloadlump = numlumps;
     }
 		
-    if ( (handle = open (filename,O_RDONLY | O_BINARY)) == -1)
+    // JONNY TODO if ( (handle = open (filename,O_RDONLY | O_BINARY)) == -1)
     {
 	printf (" couldn't open %s\n",filename);
 	return;
@@ -169,7 +170,7 @@ void W_AddFile (char *filename)
     printf (" adding %s\n",filename);
     startlump = numlumps;
 	
-    if (strcmpi (filename+strlen(filename)-3 , "wad" ) )
+    // JONNY TODO if (strcmpi (filename+strlen(filename)-3 , "wad" ) )
     {
 	// single lump file
 	fileinfo = &singleinfo;
@@ -178,10 +179,10 @@ void W_AddFile (char *filename)
 	ExtractFileBase (filename, singleinfo.name);
 	numlumps++;
     }
-    else 
+    // JONNY TODO  else 
     {
 	// WAD file
-	read (handle, &header, sizeof(header));
+    // JONNY TODO read (handle, &header, sizeof(header));
 	if (strncmp(header.identification,"IWAD",4))
 	{
 	    // Homebrew levels?
@@ -196,15 +197,15 @@ void W_AddFile (char *filename)
 	header.numlumps = LONG(header.numlumps);
 	header.infotableofs = LONG(header.infotableofs);
 	length = header.numlumps*sizeof(filelump_t);
-	fileinfo = alloca (length);
-	lseek (handle, header.infotableofs, SEEK_SET);
-	read (handle, fileinfo, length);
+    // JONNY TODO fileinfo = alloca (length);
+    // JONNY TODO lseek (handle, header.infotableofs, SEEK_SET);
+    // JONNY TODO read (handle, fileinfo, length);
 	numlumps += header.numlumps;
     }
 
     
     // Fill in lumpinfo
-    lumpinfo = realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
+   // JONNY TODO lumpinfo = realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
 
     if (!lumpinfo)
 	I_Error ("Couldn't realloc lumpinfo");
@@ -221,8 +222,8 @@ void W_AddFile (char *filename)
 	strncpy (lump_p->name, fileinfo->name, 8);
     }
 	
-    if (reloadname)
-	close (handle);
+    // JONNY TODO     if (reloadname)
+        // JONNY TODO close (handle);
 }
 
 
@@ -246,16 +247,16 @@ void W_Reload (void)
     if (!reloadname)
 	return;
 		
-    if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
+    // JONNY TODO if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
 	I_Error ("W_Reload: couldn't open %s",reloadname);
 
-    read (handle, &header, sizeof(header));
+    // JONNY TODO read (handle, &header, sizeof(header));
     lumpcount = LONG(header.numlumps);
     header.infotableofs = LONG(header.infotableofs);
     length = lumpcount*sizeof(filelump_t);
-    fileinfo = alloca (length);
-    lseek (handle, header.infotableofs, SEEK_SET);
-    read (handle, fileinfo, length);
+    // JONNY TODO fileinfo = alloca (length);
+    // JONNY TODO lseek (handle, header.infotableofs, SEEK_SET);
+    // JONNY TODO read (handle, fileinfo, length);
     
     // Fill in lumpinfo
     lump_p = &lumpinfo[reloadlump];
@@ -271,7 +272,7 @@ void W_Reload (void)
 	lump_p->size = LONG(fileinfo->size);
     }
 	
-    close (handle);
+    // JONNY TODO     close (handle);
 }
 
 
@@ -297,7 +298,7 @@ void W_InitMultipleFiles (char** filenames)
     numlumps = 0;
 
     // will be realloced as lumps are added
-    lumpinfo = malloc(1);	
+    lumpinfo = (lumpinfo_t*)malloc(1);	
 
     for ( ; *filenames ; filenames++)
 	W_AddFile (*filenames);
@@ -307,7 +308,7 @@ void W_InitMultipleFiles (char** filenames)
     
     // set up caching
     size = numlumps * sizeof(*lumpcache);
-    lumpcache = malloc (size);
+    lumpcache = (void**)malloc (size);
     
     if (!lumpcache)
 	I_Error ("Couldn't allocate lumpcache");
@@ -395,7 +396,7 @@ int W_CheckNumForName (const char* name)
 // W_GetNumForName
 // Calls W_CheckNumForName, but bombs out if not found.
 //
-int W_GetNumForName (char* name)
+int W_GetNumForName (const char* name)
 {
     int	i;
 
@@ -446,21 +447,21 @@ W_ReadLump
     if (l->handle == -1)
     {
 	// reloadable file, so use open / read / close
-	if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
+    // JONNY TODO if ( (handle = open (reloadname,O_RDONLY | O_BINARY)) == -1)
 	    I_Error ("W_ReadLump: couldn't open %s",reloadname);
     }
     else
 	handle = l->handle;
 		
-    lseek (handle, l->position, SEEK_SET);
-    c = read (handle, dest, l->size);
+    // JONNY TODO lseek (handle, l->position, SEEK_SET);
+    // JONNY TODO c = read (handle, dest, l->size);
 
     if (c < l->size)
 	I_Error ("W_ReadLump: only read %i of %i on lump %i",
 		 c,l->size,lump);	
 
-    if (l->handle == -1)
-	close (handle);
+    // JONNY TODO     if (l->handle == -1)
+        // JONNY TODO close (handle);
 		
     // ??? I_EndRead ();
 }
@@ -486,7 +487,7 @@ W_CacheLumpNum
 	// read the lump in
 	
 	//printf ("cache miss on lump %i\n",lump);
-	ptr = Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
+	ptr = (byte*)Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
 	W_ReadLump (lump, lumpcache[lump]);
     }
     else
