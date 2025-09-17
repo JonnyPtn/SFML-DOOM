@@ -25,6 +25,8 @@
 //-----------------------------------------------------------------------------
 
 
+#include <cstdlib>
+#include <__msvc_filebuf.hpp>
 static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 
 #define	BGCOLOR		7
@@ -76,6 +78,8 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 
 
 #include "d_main.h"
+
+#include <filesystem>
 
 //
 // D-DoomLoop()
@@ -196,7 +200,7 @@ void D_Display (void)
     static  boolean		menuactivestate = false;
     static  boolean		inhelpscreensstate = false;
     static  boolean		fullscreen = false;
-    static  gamestate_t		oldgamestate = -1;
+    static  gamestate_t		oldgamestate = (gamestate_t )-1;
     static  int			borderdrawcount;
     int				nowtime;
     int				tics;
@@ -215,7 +219,7 @@ void D_Display (void)
     if (setsizeneeded)
     {
 	R_ExecuteSetViewSize ();
-	oldgamestate = -1;                      // force background redraw
+	oldgamestate = (gamestate_t )-1;                      // force background redraw
 	borderdrawcount = 3;
     }
 
@@ -272,7 +276,7 @@ void D_Display (void)
     
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-	I_SetPalette (W_CacheLumpName ("PLAYPAL",PU_CACHE));
+	I_SetPalette ((byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -307,7 +311,7 @@ void D_Display (void)
 	else
 	    y = viewwindowy+4;
 	V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68)/2,
-			  y,0,W_CacheLumpName ("M_PAUSE", PU_CACHE));
+			  y,0,(patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
     }
 
 
@@ -413,7 +417,7 @@ void D_DoomLoop (void)
 //
 int             demosequence;
 int             pagetic;
-char                    *pagename;
+const char      *pagename;
 
 
 //
@@ -433,7 +437,7 @@ void D_PageTicker (void)
 //
 void D_PageDrawer (void)
 {
-    V_DrawPatch (0,0, 0, W_CacheLumpName(pagename, PU_CACHE));
+    V_DrawPatch (0,0, 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
 }
 
 
@@ -540,7 +544,7 @@ char            title[128];
 //
 // D_AddFile
 //
-void D_AddFile (char *file)
+void D_AddFile (const char *file)
 {
     int     numwadfiles;
     char    *newfile;
@@ -548,7 +552,7 @@ void D_AddFile (char *file)
     for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
 	;
 
-    newfile = malloc (strlen(file)+1);
+    newfile = (char*)malloc (strlen(file)+1);
     strcpy (newfile, file);
 	
     wadfiles[numwadfiles] = newfile;
@@ -655,7 +659,7 @@ void IdentifyVersion (void)
 	return;
     }
 
-    if ( !access (doom2fwad,R_OK) )
+    if ( !std::filesystem::exists (doom2fwad) )
     {
 	gamemode = commercial;
 	// C'est ridicule!
@@ -666,42 +670,42 @@ void IdentifyVersion (void)
 	return;
     }
 
-    if ( !access (doom2wad,R_OK) )
+    if ( !std::filesystem::exists(doom2wad) )
     {
 	gamemode = commercial;
 	D_AddFile (doom2wad);
 	return;
     }
 
-    if ( !access (plutoniawad, R_OK ) )
+    if ( !std::filesystem::exists(plutoniawad ) )
     {
       gamemode = commercial;
       D_AddFile (plutoniawad);
       return;
     }
 
-    if ( !access ( tntwad, R_OK ) )
+    if ( !std::filesystem::exists( tntwad ) )
     {
       gamemode = commercial;
       D_AddFile (tntwad);
       return;
     }
 
-    if ( !access (doomuwad,R_OK) )
+    if ( !std::filesystem::exists(doomuwad) )
     {
       gamemode = retail;
       D_AddFile (doomuwad);
       return;
     }
 
-    if ( !access (doomwad,R_OK) )
+    if ( !std::filesystem::exists(doomwad) )
     {
       gamemode = registered;
       D_AddFile (doomwad);
       return;
     }
 
-    if ( !access (doom1wad,R_OK) )
+    if ( !std::filesystem::exists(doom1wad) )
     {
       gamemode = shareware;
       D_AddFile (doom1wad);
@@ -748,7 +752,7 @@ void FindResponseFile (void)
 	    fseek (handle,0,SEEK_END);
 	    size = ftell(handle);
 	    fseek (handle,0,SEEK_SET);
-	    file = malloc (size);
+	    file = (char*)malloc (size);
 	    fread (file,size,1,handle);
 	    fclose (handle);
 			
@@ -757,7 +761,7 @@ void FindResponseFile (void)
 		moreargs[index++] = myargv[k];
 			
 	    firstargv = myargv[0];
-	    myargv = malloc(sizeof(char *)*MAXARGVS);
+	    myargv = (char**)malloc(sizeof(char *)*MAXARGVS);
 	    memset(myargv,0,sizeof(char *)*MAXARGVS);
 	    myargv[0] = firstargv;
 			
@@ -874,13 +878,6 @@ void D_DoomMain (void)
     if (devparm)
 	printf(D_DEVSTR);
     
-    if (M_CheckParm("-cdrom"))
-    {
-	printf(D_CDROM);
-	mkdir("c:\\doomdata",0);
-	strcpy (basedefault,"c:/doomdata/default.cfg");
-    }	
-    
     // turbo option
     if ( (p=M_CheckParm ("-turbo")) )
     {
@@ -917,7 +914,7 @@ void D_DoomMain (void)
 	  case shareware:
 	  case retail:
 	  case registered:
-	    sprintf (file,"~"DEVMAPS"E%cM%c.wad",
+	    sprintf (file,"~" DEVMAPS "E%cM%c.wad",
 		     myargv[p+1][0], myargv[p+2][0]);
 	    printf("Warping to Episode %s, Map %s.\n",
 		   myargv[p+1],myargv[p+2]);
@@ -927,9 +924,9 @@ void D_DoomMain (void)
 	  default:
 	    p = atoi (myargv[p+1]);
 	    if (p<10)
-	      sprintf (file,"~"DEVMAPS"cdata/map0%i.wad", p);
+	      sprintf (file,"~" DEVMAPS "cdata/map0%i.wad", p);
 	    else
-	      sprintf (file,"~"DEVMAPS"cdata/map%i.wad", p);
+	      sprintf (file,"~" DEVMAPS "cdata/map%i.wad", p);
 	    break;
 	}
 	D_AddFile (file);
@@ -967,7 +964,7 @@ void D_DoomMain (void)
     p = M_CheckParm ("-skill");
     if (p && p < myargc-1)
     {
-	startskill = myargv[p+1][0]-'1';
+	startskill = (skill_t)(myargv[p+1][0]-'1');
 	autostart = true;
     }
 
@@ -1030,7 +1027,7 @@ void D_DoomMain (void)
 	{
 	    "e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
 	    "e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
-	    "dphoof","bfgga0","heada1","cybra1","spida1d1"
+	    "dphoof","bfgga0","heada1","cybra1"/*,"spida1d1"*/ // JONNY NOTE: not sure if this last name is needed but it's the wrong size
 	};
 	int i;
 	
@@ -1151,7 +1148,7 @@ void D_DoomMain (void)
     if (p && p < myargc-1)
     {
 	if (M_CheckParm("-cdrom"))
-	    sprintf(file, "c:\\doomdata\\"SAVEGAMENAME"%c.dsg",myargv[p+1][0]);
+	    sprintf(file, "c:\\doomdata\\" SAVEGAMENAME "%c.dsg",myargv[p+1][0]);
 	else
 	    sprintf(file, SAVEGAMENAME"%c.dsg",myargv[p+1][0]);
 	G_LoadGame (file);

@@ -7,6 +7,9 @@
 *.tlog
 *.log
 *.recipe
+*.module.json
+*.d.json
+*.json.command
 
 # Cmake generated files
 CMakeLists.txt.user
