@@ -32,7 +32,7 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 
 
-char* endmsg[NUM_QUITMESSAGES+1]=
+const char* endmsg[NUM_QUITMESSAGES+1]=
 {
   // DOOM1
   QUITMSG,
