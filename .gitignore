@@ -24,6 +24,8 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
+CPackConfig.cmake
+CpackSourceConfig.cmake
 
 # Build outputs
 *.obj
