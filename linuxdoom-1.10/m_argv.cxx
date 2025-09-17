@@ -44,7 +44,7 @@ int M_CheckParm (const char *check)
 
     for (i = 1;i<myargc;i++)
     {
-	if ( !strcasecmp(check, myargv[i]) )
+	// JONNY TODO if ( !strcasecmp(check, myargv[i]) )
 	    return i;
     }
 
