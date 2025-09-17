@@ -53,7 +53,7 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 #ifdef SNDSERV
 // Separate sound server process.
 FILE*	sndserver=0;
-char*	sndserver_filename = "./sndserver ";
+const char*	sndserver_filename = "./sndserver ";
 #elif SNDINTR
 
 // Update all 30 millisecs, approx. 30fps synchronized.
@@ -156,7 +156,7 @@ myioctl
     int		rc;
     extern int	errno;
     
-    rc = ioctl(fd, command, arg);  
+    // JONNY TODO rc = ioctl(fd, command, arg);  
     if (rc < 0)
     {
 	fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
@@ -657,7 +657,7 @@ void
 I_SubmitSound(void)
 {
   // Write it to DSP device.
-  write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
+  // JONNY TODO  write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
 }
 
 
