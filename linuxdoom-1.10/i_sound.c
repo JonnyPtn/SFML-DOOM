@@ -30,19 +30,10 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 
 #include <math.h>
 
-#include <sys/time.h>
 #include <sys/types.h>
 
-#ifndef LINUX
-#include <sys/filio.h>
-#endif
 
 #include <fcntl.h>
-#include <unistd.h>
-#include <sys/ioctl.h>
-
-// Linux voxware output.
-#include <linux/soundcard.h>
 
 // Timer stuff. Experimental.
 #include <time.h>
@@ -748,12 +739,12 @@ I_InitSound()
     sprintf(buffer, "%s", sndserver_filename);
   
   // start sound process
-  if ( !access(buffer, X_OK) )
+  // JONNY TODO if ( !access(buffer, X_OK) )
   {
     strcat(buffer, " -quiet");
-    sndserver = popen(buffer, "w");
+    // JONNY TODO   sndserver = popen(buffer, "w");
   }
-  else
+  // JONNY TODO else
     fprintf(stderr, "Could not start sound server [%s]\n", buffer);
 #else
     
@@ -909,9 +900,9 @@ int I_QrySongPlaying(int handle)
 //  time independend timer happens to get lost due to heavy load.
 // SIGALRM and ITIMER_REAL doesn't really work well.
 // There are issues with profiling as well.
-static int /*__itimer_which*/  itimer = ITIMER_REAL;
+// JONNY TODO static int /*__itimer_which*/  itimer = ITIMER_REAL;
 
-static int sig = SIGALRM;
+// JONNY TODO static int sig = SIGALRM;
 
 // Interrupt handler.
 void I_HandleSoundTimer( int ignore )
@@ -924,7 +915,7 @@ void I_HandleSoundTimer( int ignore )
   {
     // See I_SubmitSound().
     // Write it to DSP device.
-    write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
+   // JONNY TODO  write(audio_fd, mixbuffer, SAMPLECOUNT*BUFMUL);
 
     // Reset flag counter.
     flag = 0;
@@ -941,10 +932,10 @@ void I_HandleSoundTimer( int ignore )
 int I_SoundSetTimer( int duration_of_tick )
 {
   // Needed for gametick clockwork.
-  struct itimerval    value;
-  struct itimerval    ovalue;
-  struct sigaction    act;
-  struct sigaction    oact;
+ // JONNY TODO  struct itimerval    value;
+ // JONNY TODO  struct itimerval    ovalue;
+ // JONNY TODO  struct sigaction    act;
+ // JONNY TODO  struct sigaction    oact;
 
   int res;
   
@@ -952,21 +943,21 @@ int I_SoundSetTimer( int duration_of_tick )
   //     signal( _sig, handle_SIG_TICK );
   
   // Now we have to change this attribute for repeated calls.
-  act.sa_handler = I_HandleSoundTimer;
+  // JONNY TODO act.sa_handler = I_HandleSoundTimer;
 #ifndef sun    
   //ac	t.sa_mask = _sig;
 #endif
-  act.sa_flags = SA_RESTART;
+ // JONNY TODO  act.sa_flags = SA_RESTART;
   
-  sigaction( sig, &act, &oact );
+ // JONNY TODO  sigaction( sig, &act, &oact );
 
-  value.it_interval.tv_sec    = 0;
-  value.it_interval.tv_usec   = duration_of_tick;
-  value.it_value.tv_sec       = 0;
-  value.it_value.tv_usec      = duration_of_tick;
+ // JONNY TODO  value.it_interval.tv_sec    = 0;
+ // JONNY TODO  value.it_interval.tv_usec   = duration_of_tick;
+  // JONNY TODO value.it_value.tv_sec       = 0;
+  // JONNY TODO value.it_value.tv_usec      = duration_of_tick;
 
   // Error is -1.
-  res = setitimer( itimer, &value, &ovalue );
+ // JONNY TODO  res = setitimer( itimer, &value, &ovalue );
 
   // Debug.
   if ( res == -1 )
