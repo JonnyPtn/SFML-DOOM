@@ -20,6 +20,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <chrono>
 static const char
 rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
@@ -29,8 +30,6 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <string.h>
 
 #include <stdarg.h>
-#include <sys/time.h>
-#include <unistd.h>
 
 #include "doomdef.h"
 #include "m_misc.h"
@@ -87,16 +86,12 @@ byte* I_ZoneBase (int*	size)
 //
 int  I_GetTime (void)
 {
-    struct timeval	tp;
-    struct timezone	tzp;
-    int			newtics;
-    static int		basetime=0;
-  
-    gettimeofday(&tp, &tzp);
-    if (!basetime)
-	basetime = tp.tv_sec;
-    newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;
-    return newtics;
+    using namespace std::chrono;
+    using tic = duration<int, std::ratio<1, 70>>;
+    const auto now = steady_clock::now();
+    static const auto basetime = now;
+    const auto tics = duration_cast<tic>(now - basetime).count();
+    return tics;
 }
 
 
@@ -123,19 +118,6 @@ void I_Quit (void)
     exit(0);
 }
 
-void I_WaitVBL(int count)
-{
-#ifdef SGI
-    sginap(1);                                           
-#else
-#ifdef SUN
-    sleep(0);
-#else
-    usleep (count * (1000000/70) );                                
-#endif
-#endif
-}
-
 void I_BeginRead(void)
 {
 }
@@ -159,7 +141,7 @@ byte*	I_AllocLow(int length)
 //
 extern boolean demorecording;
 
-void I_Error (const char *error, ...)
+void I_Error (char *error, ...)
 {
     va_list	argptr;
 
