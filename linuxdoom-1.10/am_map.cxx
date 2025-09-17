@@ -507,7 +507,7 @@ void AM_loadPics(void)
     for (i=0;i<10;i++)
     {
 	sprintf(namebuf, "AMMNUM%d", i);
-	marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
+	marknums[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
     }
 
 }
@@ -559,11 +559,11 @@ void AM_LevelInit(void)
 //
 void AM_Stop (void)
 {
-    static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
+    // JONNY TODO static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
 
     AM_unloadPics();
     automapactive = false;
-    ST_Responder(&st_notify);
+    // JONNY TODO ST_Responder(&st_notify);
     stopped = true;
 }
 
@@ -783,17 +783,17 @@ void AM_doFollowPlayer(void)
 //
 void AM_updateLightLev(void)
 {
-    static nexttic = 0;
+    // JONNY TODO static nexttic = 0;
     //static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
     static int litelevels[] = { 0, 4, 7, 10, 12, 14, 15, 15 };
     static int litelevelscnt = 0;
    
     // Change light level
-    if (amclock>nexttic)
+	// JONNY TODO if (amclock>nexttic)
     {
 	lightlev = litelevels[litelevelscnt++];
-	if (litelevelscnt == sizeof(litelevels)/sizeof(int)) litelevelscnt = 0;
-	nexttic = amclock + 6 - (amclock % 6);
+	// JONNY TODO if (litelevelscnt == sizeof(litelevels)/sizeof(int)) litelevelscnt = 0;
+	// JONNY TODO nexttic = amclock + 6 - (amclock % 6);
     }
 
 }
@@ -856,9 +856,9 @@ AM_clipMline
 	TOP	=8
     };
     
-    register	outcode1 = 0;
-    register	outcode2 = 0;
-    register	outside;
+	// JONNY TODO register	outcode1 = 0;
+	// JONNY TODO register	outcode2 = 0;
+	// JONNY TODO register	outside;
     
     fpoint_t	tmp;
     int		dx;
@@ -874,31 +874,31 @@ AM_clipMline
 
     
     // do trivial rejects and outcodes
-    if (ml->a.y > m_y2)
-	outcode1 = TOP;
-    else if (ml->a.y < m_y)
-	outcode1 = BOTTOM;
+	// JONNY TODO if (ml->a.y > m_y2)
+		// JONNY TODO outcode1 = TOP;
+	// JONNY TODO else if (ml->a.y < m_y)
+		// JONNY TODO outcode1 = BOTTOM;
 
-    if (ml->b.y > m_y2)
-	outcode2 = TOP;
-    else if (ml->b.y < m_y)
-	outcode2 = BOTTOM;
+    // JONNY TODO if (ml->b.y > m_y2)
+	// JONNY TODO outcode2 = TOP;
+    // JONNY TODO else if (ml->b.y < m_y)
+	// JONNY TODO outcode2 = BOTTOM;
     
-    if (outcode1 & outcode2)
+	// JONNY TODO if (outcode1 & outcode2)
 	return false; // trivially outside
 
-    if (ml->a.x < m_x)
-	outcode1 |= LEFT;
-    else if (ml->a.x > m_x2)
-	outcode1 |= RIGHT;
+    // JONNY TODO if (ml->a.x < m_x)
+	// JONNY TODO outcode1 |= LEFT;
+    // JONNY TODO else if (ml->a.x > m_x2)
+	// JONNY TODO outcode1 |= RIGHT;
     
-    if (ml->b.x < m_x)
-	outcode2 |= LEFT;
-    else if (ml->b.x > m_x2)
-	outcode2 |= RIGHT;
+    // JONNY TODO if (ml->b.x < m_x)
+	// JONNY TODO outcode2 |= LEFT;
+    // JONNY TODO else if (ml->b.x > m_x2)
+	// JONNY TODO outcode2 |= RIGHT;
     
-    if (outcode1 & outcode2)
-	return false; // trivially outside
+    // JONNY TODO if (outcode1 & outcode2)
+	// JONNY TODO return false; // trivially outside
 
     // transform to frame-buffer coordinates.
     fl->a.x = CXMTOF(ml->a.x);
@@ -906,44 +906,44 @@ AM_clipMline
     fl->b.x = CXMTOF(ml->b.x);
     fl->b.y = CYMTOF(ml->b.y);
 
-    DOOUTCODE(outcode1, fl->a.x, fl->a.y);
-    DOOUTCODE(outcode2, fl->b.x, fl->b.y);
+    // JONNY TODO DOOUTCODE(outcode1, fl->a.x, fl->a.y);
+// JONNY TODO     DOOUTCODE(outcode2, fl->b.x, fl->b.y);
 
-    if (outcode1 & outcode2)
+	// JONNY TODO if (outcode1 & outcode2)
 	return false;
 
-    while (outcode1 | outcode2)
+	// JONNY TODO     while (outcode1 | outcode2)
     {
 	// may be partially inside box
 	// find an outside point
-	if (outcode1)
-	    outside = outcode1;
-	else
-	    outside = outcode2;
+	// JONNY TODO if (outcode1)
+	// JONNY TODO     outside = outcode1;
+	// JONNY TODO else
+	// JONNY TODO     outside = outcode2;
 	
 	// clip to each side
-	if (outside & TOP)
+	// JONNY TODO if (outside & TOP)
 	{
 	    dy = fl->a.y - fl->b.y;
 	    dx = fl->b.x - fl->a.x;
 	    tmp.x = fl->a.x + (dx*(fl->a.y))/dy;
 	    tmp.y = 0;
 	}
-	else if (outside & BOTTOM)
+	// JONNY TODO else if (outside & BOTTOM)
 	{
 	    dy = fl->a.y - fl->b.y;
 	    dx = fl->b.x - fl->a.x;
 	    tmp.x = fl->a.x + (dx*(fl->a.y-f_h))/dy;
 	    tmp.y = f_h-1;
 	}
-	else if (outside & RIGHT)
+	// JONNY TODO else if (outside & RIGHT)
 	{
 	    dy = fl->b.y - fl->a.y;
 	    dx = fl->b.x - fl->a.x;
 	    tmp.y = fl->a.y + (dy*(f_w-1 - fl->a.x))/dx;
 	    tmp.x = f_w-1;
 	}
-	else if (outside & LEFT)
+	// JONNY TODO else if (outside & LEFT)
 	{
 	    dy = fl->b.y - fl->a.y;
 	    dx = fl->b.x - fl->a.x;
@@ -951,18 +951,18 @@ AM_clipMline
 	    tmp.x = 0;
 	}
 
-	if (outside == outcode1)
+	// JONNY TODO if (outside == outcode1)
 	{
 	    fl->a = tmp;
-	    DOOUTCODE(outcode1, fl->a.x, fl->a.y);
+		// JONNY TODO     DOOUTCODE(outcode1, fl->a.x, fl->a.y);
 	}
-	else
+	// JONNY TODO else
 	{
 	    fl->b = tmp;
-	    DOOUTCODE(outcode2, fl->b.x, fl->b.y);
+		// JONNY TODO     DOOUTCODE(outcode2, fl->b.x, fl->b.y);
 	}
 	
-	if (outcode1 & outcode2)
+	// JONNY TODO if (outcode1 & outcode2)
 	    return false; // trivially outside
     }
 
@@ -989,7 +989,7 @@ AM_drawFline
     register int ay;
     register int d;
     
-    static fuck = 0;
+	// JONNY TODO static fuck = 0;
 
     // For debugging only
     if (      fl->a.x < 0 || fl->a.x >= f_w
@@ -997,7 +997,7 @@ AM_drawFline
 	   || fl->b.x < 0 || fl->b.x >= f_w
 	   || fl->b.y < 0 || fl->b.y >= f_h)
     {
-	fprintf(stderr, "fuck %d \r", fuck++);
+		// JONNY TODO fprintf(stderr, "fuck %d \r", fuck++);
 	return;
     }
 
