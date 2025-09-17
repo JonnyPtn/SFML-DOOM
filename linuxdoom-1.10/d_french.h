@@ -27,7 +27,6 @@
 // D_Main.C
 //
 #define D_DEVSTR	"MODE DEVELOPPEMENT ON.\n"
-#define D_CDROM		"VERSION CD-ROM: DEFAULT.CFG DANS C:\\DOOMDATA\n"
 
 //
 //	M_Menu.C
