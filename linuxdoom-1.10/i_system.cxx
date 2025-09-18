@@ -20,6 +20,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <cassert>
 #include <chrono>
 static const char
 rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
@@ -158,6 +159,8 @@ void I_Error (const char *error, ...)
 	G_CheckDemoStatus();
 
     D_QuitNetGame ();
+
+    assert( false );
     
     exit(-1);
 }
