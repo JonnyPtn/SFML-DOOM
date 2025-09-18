@@ -17,6 +17,10 @@
 # Xcode files
 *.xcodeproj
 *.xcsettings
+*.DependencyMetadataFileList
+*.DependencyStaticMetadataFileList
+*.resp
+XCBuildData
 
 # Mac system files
 .DS_Store
