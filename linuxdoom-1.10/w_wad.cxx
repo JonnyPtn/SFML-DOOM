@@ -25,10 +25,13 @@
 #include <cstdlib>
 #include <ctype.h>
 #include <fcntl.h>
+#include <filesystem>
+#include <ios>
 #include <string.h>
 #include <string>
 #include <vector>
 #include <sys/stat.h>
+#include <fstream>
 static const char
 rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
 
@@ -72,18 +75,6 @@ void**			lumpcache;
 
 
 #define strcmpi	strcasecmp
-
-
-int filelength (int handle) 
-{ 
-    struct stat	fileinfo;
-    
-    if (fstat (handle,&fileinfo) == -1)
-	I_Error ("Error fstating");
-
-    return fileinfo.st_size;
-}
-
 
 void
 ExtractFileBase
@@ -141,49 +132,47 @@ int			reloadlump;
 char*			reloadname;
 
 
-void W_AddFile (std::string filename)
+void W_AddFile (std::filesystem::path filepath)
 {
     wadinfo_t		header;
     lumpinfo_t*		lump_p;
     unsigned		i;
-    int			handle;
     int			length;
     int			startlump;
     filelump_t*		fileinfo;
     filelump_t		singleinfo;
-    int			storehandle;
     
     // open the file and add to directory
-		
-    // JONNY TODO if ( (handle = open (filename,O_RDONLY | O_BINARY)) == -1)
+    auto file = std::ifstream( filepath, std::ios::binary );
+    if (!file.good())
     {
-	printf (" couldn't open %s\n",filename);
+	printf (" couldn't open %s\n",filepath);
 	return;
     }
 
-    printf (" adding %s\n",filename);
+    printf (" adding %s\n",filepath);
     startlump = numlumps;
 	
-    // JONNY TODO if (strcmpi (filename+strlen(filename)-3 , "wad" ) )
+    if (filepath.extension() != ".wad" )
     {
 	// single lump file
 	fileinfo = &singleinfo;
 	singleinfo.filepos = 0;
-	singleinfo.size = LONG(filelength(handle));
-	ExtractFileBase (filename.c_str(), singleinfo.name);
+    singleinfo.size = std::filesystem::file_size( filepath );
+	ExtractFileBase (filepath.string().c_str(), singleinfo.name);
 	numlumps++;
     }
-    // JONNY TODO  else 
+     else 
     {
 	// WAD file
-    // JONNY TODO read (handle, &header, sizeof(header));
+        file.read( reinterpret_cast<char*>(&header), sizeof( header ) );
 	if (strncmp(header.identification,"IWAD",4))
 	{
 	    // Homebrew levels?
 	    if (strncmp(header.identification,"PWAD",4))
 	    {
 		I_Error ("Wad file %s doesn't have IWAD "
-			 "or PWAD id\n", filename);
+			 "or PWAD id\n", filepath);
 	    }
 	    
 	    // ???modifiedgame = true;		
@@ -191,33 +180,29 @@ void W_AddFile (std::string filename)
 	header.numlumps = LONG(header.numlumps);
 	header.infotableofs = LONG(header.infotableofs);
 	length = header.numlumps*sizeof(filelump_t);
-    // JONNY TODO fileinfo = alloca (length);
-    // JONNY TODO lseek (handle, header.infotableofs, SEEK_SET);
-    // JONNY TODO read (handle, fileinfo, length);
+    fileinfo = (filelump_t*)alloca (length);
+    file.seekg (header.infotableofs, SEEK_SET);
+    file.read(reinterpret_cast<char*>(fileinfo), length);
 	numlumps += header.numlumps;
     }
 
     
     // Fill in lumpinfo
-   // JONNY TODO lumpinfo = realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
+   lumpinfo = (lumpinfo_t*)realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
 
     if (!lumpinfo)
 	I_Error ("Couldn't realloc lumpinfo");
 
     lump_p = &lumpinfo[startlump];
 	
-    storehandle = reloadname ? -1 : handle;
 	
     for (i=startlump ; i<numlumps ; i++,lump_p++, fileinfo++)
     {
-	lump_p->handle = storehandle;
+	lump_p->handle = -1; // JONNY TODO - do we need to store the file handle here so it can load more later?
 	lump_p->position = LONG(fileinfo->filepos);
 	lump_p->size = LONG(fileinfo->size);
 	strncpy (lump_p->name, fileinfo->name, 8);
     }
-	
-    // JONNY TODO     if (reloadname)
-        // JONNY TODO close (handle);
 }
 
 
