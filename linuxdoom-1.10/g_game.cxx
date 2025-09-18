@@ -673,7 +673,7 @@ void G_Ticker (void)
 		&& !(gametic&31) && ((gametic>>5)&3) == i )
 	    {
 		static char turbomessage[80];
-		extern char *player_names[4];
+		extern const char *player_names[4];
 		sprintf (turbomessage, "%s is turbo!",player_names[i]);
 		players[consoleplayer].message = turbomessage;
 	    }

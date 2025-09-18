@@ -114,7 +114,6 @@ void I_Quit (void)
     I_ShutdownSound();
     I_ShutdownMusic();
     M_SaveDefaults ();
-    I_ShutdownGraphics();
     exit(0);
 }
 
@@ -141,7 +140,7 @@ byte*	I_AllocLow(int length)
 //
 extern boolean demorecording;
 
-void I_Error (char *error, ...)
+void I_Error (const char *error, ...)
 {
     va_list	argptr;
 
@@ -159,7 +158,6 @@ void I_Error (char *error, ...)
 	G_CheckDemoStatus();
 
     D_QuitNetGame ();
-    I_ShutdownGraphics();
     
     exit(-1);
 }

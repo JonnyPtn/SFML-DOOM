@@ -225,7 +225,7 @@ void M_WriteText(int x, int y, const char *string);
 int  M_StringWidth(char *string);
 int  M_StringHeight(const char *string);
 void M_StartControlPanel(void);
-void M_StartMessage(const char *string,void *routine,boolean input);
+void M_StartMessage(const char *string, void(*routine)(int),boolean input);
 void M_StopMessage(void);
 void M_ClearMenus (void);
 
@@ -1080,7 +1080,6 @@ void M_QuitResponse(int ch)
 	    S_StartSound(NULL,quitsounds2[(gametic>>2)&7]);
 	else
 	    S_StartSound(NULL,quitsounds[(gametic>>2)&7]);
-	I_WaitVBL(105);
     }
     I_Quit ();
 }

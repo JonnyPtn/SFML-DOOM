@@ -217,7 +217,7 @@ char*		mousetype;
 char*		mousedev;
 #endif
 
-extern char*	chat_macros[];
+extern const char*	chat_macros[];
 
 
 

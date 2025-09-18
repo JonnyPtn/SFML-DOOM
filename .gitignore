@@ -30,3 +30,5 @@ CpackSourceConfig.cmake
 # Build outputs
 *.obj
 *.pdb
+*.exe
+*.ilk

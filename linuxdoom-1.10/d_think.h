@@ -42,13 +42,35 @@ typedef  void (*actionf_v)();
 typedef  void (*actionf_p1)( void* );
 typedef  void (*actionf_p2)( void*, void* );
 
-typedef union
+typedef struct mobj_s;
+typedef struct player_s;
+typedef struct pspdef_s;
+
+typedef union actionf_t
 {
+    actionf_t(){}
+    actionf_t(int)
+    {
+	    
+    }
+    actionf_t(void(*func)())
+    {
+        acv = func;
+    }
+
+    actionf_t( void(*func)(mobj_s*) )
+    {
+        acp1 = (void(*)(void*))func;
+    }
+    actionf_t( void(*func)(player_s*, pspdef_s*) )
+    {
+        acp2 = (void(*)(void*, void*))func;
+    }
   actionf_p1	acp1;
   actionf_v	acv;
   actionf_p2	acp2;
 
-} actionf_t;
+};
 
 
 
