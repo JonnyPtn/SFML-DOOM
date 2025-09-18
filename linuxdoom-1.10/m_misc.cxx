@@ -117,13 +117,13 @@ M_WriteFile
     int		handle;
     int		count;
 	
-    handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
+    // JONNY TODO handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
 
     if (handle == -1)
 	return false;
 
-    count = write (handle, source, length);
-    close (handle);
+    // JONNY TODO count = write (handle, source, length);
+    // JONNY TODO close (handle);
 	
     if (count < length)
 	return false;
@@ -144,15 +144,15 @@ M_ReadFile
     struct stat	fileinfo;
     byte		*buf;
 	
-    handle = open (name, O_RDONLY | O_BINARY, 0666);
+    // JONNY TODO handle = open (name, O_RDONLY | O_BINARY, 0666);
     if (handle == -1)
 	I_Error ("Couldn't read file %s", name);
     if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Couldn't read file %s", name);
     length = fileinfo.st_size;
-    buf = Z_Malloc (length, PU_STATIC, NULL);
-    count = read (handle, buf, length);
-    close (handle);
+    buf = (byte*)Z_Malloc (length, PU_STATIC, NULL);
+    // JONNY TODO count = read (handle, buf, length);
+    // JONNY TODO close (handle);
 	
     if (count < length)
 	I_Error ("Couldn't read file %s", name);
@@ -223,7 +223,7 @@ extern char*	chat_macros[];
 
 typedef struct
 {
-    char*	name;
+    const char*	name;
     int*	location;
     int		defaultvalue;
     int		scantranslate;		// PC scan code hack
@@ -450,7 +450,7 @@ WritePCXfile
     pcx_t*	pcx;
     byte*	pack;
 	
-    pcx = Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
+    pcx = (pcx_t*)Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
 
     pcx->manufacturer = 0x0a;		// PCX id
     pcx->version = 5;			// 256 color
@@ -516,7 +516,7 @@ void M_ScreenShot (void)
     {
 	lbmname[4] = i/10 + '0';
 	lbmname[5] = i%10 + '0';
-	if (access(lbmname,0) == -1)
+	// JONNY TODO if (access(lbmname,0) == -1)
 	    break;	// file doesn't exist
     }
     if (i==100)
@@ -525,7 +525,7 @@ void M_ScreenShot (void)
     // save the pcx file
     WritePCXfile (lbmname, linear,
 		  SCREENWIDTH, SCREENHEIGHT,
-		  W_CacheLumpName ("PLAYPAL",PU_CACHE));
+		  (byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 	
     players[consoleplayer].message = "screen shot";
 }
