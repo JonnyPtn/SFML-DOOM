@@ -684,6 +684,9 @@ int R_FlatNumForName (const char* name)
 // Check whether texture is available.
 // Filter out NoTexture indicator.
 //
+#if _WIN32
+#define strncasecmp(x,y,z) _strnicmp(x,y,z)
+#endif
 int	R_CheckTextureNumForName (const char *name)
 {
     int		i;
@@ -693,7 +696,7 @@ int	R_CheckTextureNumForName (const char *name)
 	return 0;
 		
     for (i=0 ; i<numtextures ; i++)
-	// JONNY TODO if (!strncasecmp (textures[i]->name, name, 8) )
+	if (!strncasecmp (textures[i]->name, name, 8) )
 	    return i;
 		
     return -1;
