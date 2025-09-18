@@ -552,9 +552,6 @@ void R_InitTextures (void)
 	totalwidth += texture->width;
     }
 
-    free (maptex1);
-    if (maptex2)
-	free (maptex2);
     
     // Precalculate whatever possible.	
     for (i=0 ; i<numtextures ; i++)
