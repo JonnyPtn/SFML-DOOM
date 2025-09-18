@@ -52,7 +52,7 @@ rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
 #include "doomtype.h"
 #include "m_swap.h"
 #include "i_system.h"
-#include "z_zone.h"
+
 
 #ifdef __GNUG__
 #pragma implementation "w_wad.h"
@@ -338,8 +338,7 @@ W_ReadLump
 //
 void*
 W_CacheLumpNum
-( int		lump,
-  int		tag )
+( int		lump)
 {
     byte*	ptr;
 
@@ -355,7 +354,7 @@ W_CacheLumpNum
     else
     {
 	//printf ("cache hit on lump %i\n",lump);
-	//Z_ChangeTag (lumpcache[lump],tag);
+	//
     }
 	
     return lumpcache[lump].data();
@@ -368,10 +367,9 @@ W_CacheLumpNum
 //
 void*
 W_CacheLumpName
-( const char*		name,
-  int		tag )
+( const char*		name)
 {
-    return W_CacheLumpNum (W_GetNumForName(name), tag);
+    return W_CacheLumpNum (W_GetNumForName(name));
 }
 
 
@@ -384,7 +382,6 @@ int		profilecount;
 void W_Profile (void)
 {
     int		i;
-    memblock_t*	block;
     void*	ptr;
     char	ch;
     FILE*	f;
@@ -401,11 +398,6 @@ void W_Profile (void)
 	}
 	else
 	{
-	    block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
-	    if (block->tag < PU_PURGELEVEL)
-		ch = 'S';
-	    else
-		ch = 'P';
 	}
 	info[i][profilecount] = ch;
     }

@@ -22,11 +22,12 @@
 //-----------------------------------------------------------------------------
 
 
+#include <cstdlib>
 static const char rcsid[] = "$Id: f_wipe.c,v 1.2 1997/02/03 22:45:09 b1 Exp $";
 
 
 
-#include "z_zone.h"
+
 #include "i_video.h"
 #include "v_video.h"
 #include "m_random.h"
@@ -57,7 +58,7 @@ wipe_shittyColMajorXform
     int		y;
     short*	dest;
 
-    dest = (short*) Z_Malloc(width*height*2, PU_STATIC, 0);
+    dest = (short*) malloc(width*height*2);
 
     for(y=0;y<height;y++)
 	for(x=0;x<width;x++)
@@ -65,7 +66,6 @@ wipe_shittyColMajorXform
 
     memcpy(array, dest, width*height*2);
 
-    Z_Free(dest);
 
 }
 
@@ -155,7 +155,7 @@ wipe_initMelt
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
+    y = (int *) malloc(width*sizeof(int));
     y[0] = -(M_Random()%16);
     for (i=1;i<width;i++)
     {
@@ -229,7 +229,6 @@ wipe_exitMelt
   int	height,
   int	ticks )
 {
-    Z_Free(y);
     return 0;
 }
 
@@ -280,7 +279,7 @@ wipe_ScreenWipe
     if (!go)
     {
 	go = 1;
-	// wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, 0); // DEBUG
+	// wipe_scr = (byte *) malloc(width*height); // DEBUG
 	wipe_scr = screens[0];
 	(*wipes[wipeno*3])(width, height, ticks);
     }

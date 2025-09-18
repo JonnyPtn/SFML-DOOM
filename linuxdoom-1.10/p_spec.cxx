@@ -34,7 +34,7 @@ rcsid[] = "$Id: p_spec.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 #include "doomstat.h"
 
 #include "i_system.h"
-#include "z_zone.h"
+
 #include "m_argv.h"
 #include "m_random.h"
 #include "w_wad.h"
@@ -1190,7 +1190,7 @@ int EV_DoDonut(line_t*	line)
 	    s3 = s2->lines[i]->backsector;
 	    
 	    //	Spawn rising slime
-	    floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = (floormove_t*)malloc(sizeof(*floor));
 	    P_AddThinker (&floor->thinker);
 	    s2->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -1204,7 +1204,7 @@ int EV_DoDonut(line_t*	line)
 	    floor->floordestheight = s3->floorheight;
 	    
 	    //	Spawn lowering donut-hole
-	    floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	    floor = (floormove_t*)malloc(sizeof(*floor));
 	    P_AddThinker (&floor->thinker);
 	    s1->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;

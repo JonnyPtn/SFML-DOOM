@@ -30,7 +30,7 @@ rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 #include "doomdef.h" 
 #include "doomstat.h"
 
-#include "z_zone.h"
+
 #include "f_finale.h"
 #include "m_argv.h"
 #include "m_misc.h"
@@ -485,7 +485,6 @@ void G_DoLoadLevel (void)
     displayplayer = consoleplayer;		// view the guy you are playing    
     starttime = I_GetTime (); 
     gameaction = ga_nothing; 
-    Z_CheckHeap ();
     
     // clear cmd building stuff
     memset (gamekeydown, 0, sizeof(gamekeydown)); 
@@ -1242,7 +1241,7 @@ void G_DoLoadGame (void)
 	I_Error ("Bad savegame");
     
     // done 
-    Z_Free (savebuffer); 
+    free (savebuffer); 
  
     if (setsizeneeded)
 	R_ExecuteSetViewSize ();
@@ -1536,7 +1535,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParm ("-maxdemo");
     if (i && i<myargc-1)
 	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = (byte*)Z_Malloc (maxsize,PU_STATIC,NULL); 
+    demobuffer = (byte*)malloc(maxsize); 
     demoend = demobuffer + maxsize;
 	
     demorecording = true; 
@@ -1582,7 +1581,7 @@ void G_DoPlayDemo (void)
     int             i, episode, map; 
 	 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname, PU_STATIC); 
+    demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname); 
     if ( *demo_p++ != VERSION)
     {
       fprintf( stderr, "Demo is from a different game version!\n");
@@ -1657,7 +1656,7 @@ boolean G_CheckDemoStatus (void)
 	if (singledemo) 
 	    I_Quit (); 
 			 
-	Z_ChangeTag (demobuffer, PU_CACHE); 
+	
 	demoplayback = false; 
 	netdemo = false;
 	netgame = false;
@@ -1675,7 +1674,7 @@ boolean G_CheckDemoStatus (void)
     { 
 	*demo_p++ = DEMOMARKER; 
 	M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
-	Z_Free (demobuffer); 
+	free (demobuffer); 
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 
     } 

@@ -30,7 +30,7 @@ rcsid[] = "$Id: r_plane.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 #include <stdlib.h>
 
 #include "i_system.h"
-#include "z_zone.h"
+
 #include "w_wad.h"
 
 #include "doomdef.h"
@@ -421,8 +421,7 @@ void R_DrawPlanes (void)
 	
 	// regular flat
 	ds_source = (byte*)W_CacheLumpNum(firstflat +
-				   flattranslation[pl->picnum],
-				   PU_STATIC);
+				   flattranslation[pl->picnum]);
 	
 	planeheight = abs(pl->height-viewz);
 	light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;
@@ -448,6 +447,6 @@ void R_DrawPlanes (void)
 			pl->bottom[x]);
 	}
 	
-	Z_ChangeTag (ds_source, PU_CACHE);
+	
     }
 }

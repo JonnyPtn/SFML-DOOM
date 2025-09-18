@@ -34,7 +34,7 @@ rcsid[] = "$Id: s_sound.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 #include "sounds.h"
 #include "s_sound.h"
 
-#include "z_zone.h"
+
 #include "m_random.h"
 #include "w_wad.h"
 
@@ -177,7 +177,7 @@ void S_Init
   // (the maximum numer of sounds rendered
   // simultaneously) within zone memory.
   channels =
-    (channel_t *) Z_Malloc(numChannels*sizeof(channel_t), PU_STATIC, 0);
+    (channel_t *) malloc(numChannels*sizeof(channel_t));
   
   // Free all channels for use
   for (i=0 ; i<numChannels ; i++)
@@ -372,7 +372,7 @@ S_StartSoundAtVolume
 	     "S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
 
     // DOS remains, 8bit handling
-    //sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
+    //sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum);
     // fprintf( stderr,
     //	     "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
     //       sfx_id, sfx->lumpnum, (int)sfx->data );
@@ -542,7 +542,7 @@ void S_UpdateSounds(void* listener_p)
 	    {
 		if (--S_sfx[i].usefulness == -1)
 		{
-		    Z_ChangeTag(S_sfx[i].data, PU_CACHE);
+		    
 		    S_sfx[i].data = 0;
 		}
 	    }
@@ -676,7 +676,7 @@ S_ChangeMusic
     }
 
     // load & register it
-    music->data = (void *) W_CacheLumpNum(music->lumpnum, PU_MUSIC);
+    music->data = (void *) W_CacheLumpNum(music->lumpnum);
     music->handle = I_RegisterSong(music->data);
 
     // play it
@@ -695,7 +695,7 @@ void S_StopMusic(void)
 
 	I_StopSong(mus_playing->handle);
 	I_UnRegisterSong(mus_playing->handle);
-	Z_ChangeTag(mus_playing->data, PU_CACHE);
+	
 	
 	mus_playing->data = 0;
 	mus_playing = 0;

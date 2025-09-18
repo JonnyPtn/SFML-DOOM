@@ -21,11 +21,12 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <cstdlib>
 static const char
 rcsid[] = "$Id: p_floor.c,v 1.4 1997/02/03 16:47:54 b1 Exp $";
 
 
-#include "z_zone.h"
+
 #include "doomdef.h"
 #include "p_local.h"
 
@@ -279,7 +280,7 @@ EV_DoFloor
 	
 	// new floor thinker
 	rtn = 1;
-	floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	floor = (floormove_t*)malloc(sizeof(*floor));
 	P_AddThinker (&floor->thinker);
 	sec->specialdata = floor;
 	floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -482,7 +483,7 @@ EV_BuildStairs
 	
 	// new floor thinker
 	rtn = 1;
-	floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+	floor = (floormove_t*)malloc(sizeof(*floor));
 	P_AddThinker (&floor->thinker);
 	sec->specialdata = floor;
 	floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
@@ -535,7 +536,7 @@ EV_BuildStairs
 					
 		sec = tsec;
 		secnum = newsecnum;
-		floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
+		floor = (floormove_t*)malloc(sizeof(*floor));
 
 		P_AddThinker (&floor->thinker);
 

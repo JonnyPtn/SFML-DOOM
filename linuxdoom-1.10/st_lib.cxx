@@ -29,7 +29,7 @@ rcsid[] = "$Id: st_lib.c,v 1.4 1997/02/03 16:47:56 b1 Exp $";
 
 #include "doomdef.h"
 
-#include "z_zone.h"
+
 #include "v_video.h"
 
 #include "m_swap.h"
@@ -57,7 +57,7 @@ patch_t*		sttminus;
 
 void STlib_init(void)
 {
-    sttminus = (patch_t *) W_CacheLumpName("STTMINUS", PU_STATIC);
+    sttminus = (patch_t *) W_CacheLumpName("STTMINUS");
 }
 
 

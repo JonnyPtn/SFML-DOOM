@@ -26,7 +26,7 @@ static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
 #include <stdio.h>
 
 
-#include "z_zone.h"
+
 #include "doomdef.h"
 #include "st_stuff.h"
 #include "p_local.h"
@@ -507,17 +507,8 @@ void AM_loadPics(void)
     for (i=0;i<10;i++)
     {
 	sprintf(namebuf, "AMMNUM%d", i);
-	marknums[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
+	marknums[i] = (patch_t*)W_CacheLumpName(namebuf);
     }
-
-}
-
-void AM_unloadPics(void)
-{
-    int i;
-  
-    for (i=0;i<10;i++)
-	Z_ChangeTag(marknums[i], PU_CACHE);
 
 }
 
@@ -561,7 +552,6 @@ void AM_Stop (void)
 {
     // JONNY TODO static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
 
-    AM_unloadPics();
     automapactive = false;
     // JONNY TODO ST_Responder(&st_notify);
     stopped = true;

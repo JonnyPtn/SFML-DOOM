@@ -37,7 +37,7 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include "doomdef.h"
 
-#include "z_zone.h"
+
 
 #include "m_swap.h"
 #include "m_argv.h"
@@ -150,7 +150,7 @@ M_ReadFile
     if (fstat (handle,&fileinfo) == -1)
 	I_Error ("Couldn't read file %s", name);
     length = fileinfo.st_size;
-    buf = (byte*)Z_Malloc (length, PU_STATIC, NULL);
+    buf = (byte*)malloc(length);
     // JONNY TODO count = read (handle, buf, length);
     // JONNY TODO close (handle);
 	
@@ -450,7 +450,7 @@ WritePCXfile
     pcx_t*	pcx;
     byte*	pack;
 	
-    pcx = (pcx_t*)Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
+    pcx = (pcx_t*)malloc(width*height*2+1000);
 
     pcx->manufacturer = 0x0a;		// PCX id
     pcx->version = 5;			// 256 color
@@ -492,7 +492,7 @@ WritePCXfile
     length = pack - (byte *)pcx;
     M_WriteFile (filename, pcx, length);
 
-    Z_Free (pcx);
+    free (pcx);
 }
 
 
@@ -525,7 +525,7 @@ void M_ScreenShot (void)
     // save the pcx file
     WritePCXfile (lbmname, linear,
 		  SCREENWIDTH, SCREENHEIGHT,
-		  (byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+		  (byte*)W_CacheLumpName ("PLAYPAL"));
 	
     players[consoleplayer].message = "screen shot";
 }

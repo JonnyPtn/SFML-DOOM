@@ -34,7 +34,7 @@ rcsid[] = "$Id: r_things.c,v 1.5 1997/02/03 16:47:56 b1 Exp $";
 #include "m_swap.h"
 
 #include "i_system.h"
-#include "z_zone.h"
+
 #include "w_wad.h"
 
 #include "r_local.h"
@@ -196,7 +196,7 @@ void R_InitSpriteDefs (char** namelist)
     if (!numsprites)
 	return;
 		
-    sprites = (spritedef_t*)Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
+    sprites = (spritedef_t*)malloc(numsprites *sizeof(*sprites));
 	
     start = firstspritelump-1;
     end = lastspritelump+1;
@@ -274,7 +274,7 @@ void R_InitSpriteDefs (char** namelist)
 	// allocate space for the frames present and copy sprtemp to it
 	sprites[i].numframes = maxframe;
 	sprites[i].spriteframes = 
-	    (spriteframe_t*)Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+	    (spriteframe_t*)malloc(maxframe * sizeof(spriteframe_t));
 	memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
     }
 
@@ -405,7 +405,7 @@ R_DrawVisSprite
     patch_t*		patch;
 	
 	
-    patch = (patch_t*)W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+    patch = (patch_t*)W_CacheLumpNum (vis->patch+firstspritelump);
 
     dc_colormap = vis->colormap;
     

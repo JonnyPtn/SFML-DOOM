@@ -39,7 +39,7 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 #include <time.h>
 #include <signal.h>
 
-#include "z_zone.h"
+
 
 #include "i_system.h"
 #include "i_sound.h"
@@ -214,14 +214,14 @@ getsfx
     //	     sfxname, sfxlump, size );
     //fflush( stderr );
     
-    sfx = (unsigned char*)W_CacheLumpNum( sfxlump, PU_STATIC );
+    sfx = (unsigned char*)W_CacheLumpNum( sfxlump );
 
     // Pads the sound effect out to the mixing buffer size.
     // The original realloc would interfere with zone memory.
     paddedsize = ((size-8 + (SAMPLECOUNT-1)) / SAMPLECOUNT) * SAMPLECOUNT;
 
     // Allocate from zone memory.
-    paddedsfx = (unsigned char*)Z_Malloc( paddedsize+8, PU_STATIC, 0 );
+    paddedsfx = (unsigned char*)malloc( paddedsize+8);
     // ddt: (unsigned char *) realloc(sfx, paddedsize+8);
     // This should interfere with zone memory handling,
     //  which does not kick in in the soundserver.
@@ -231,8 +231,6 @@ getsfx
     for (i=size ; i<paddedsize+8 ; i++)
         paddedsfx[i] = 128;
 
-    // Remove the cached lump.
-    Z_Free( sfx );
     
     // Preserve padded length.
     *len = paddedsize;
