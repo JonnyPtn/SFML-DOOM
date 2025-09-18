@@ -11,6 +11,12 @@
 *.d.json
 *.json.command
 
+# vscode files
+.vscode
+
+# Mac system files
+.DS_Store
+
 # Cmake generated files
 CMakeLists.txt.user
 CMakeCache.txt
