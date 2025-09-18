@@ -26,6 +26,8 @@
 #include <ctype.h>
 #include <fcntl.h>
 #include <string.h>
+#include <string>
+#include <vector>
 #include <sys/stat.h>
 static const char
 rcsid[] = "$Id: w_wad.c,v 1.5 1997/02/03 16:47:57 b1 Exp $";
@@ -85,10 +87,10 @@ int filelength (int handle)
 
 void
 ExtractFileBase
-( char*		path,
+( const char*		path,
   char*		dest )
 {
-    char*	src;
+    const char*	src;
     int		length;
 
     src = path + strlen(path) - 1;
@@ -139,7 +141,7 @@ int			reloadlump;
 char*			reloadname;
 
 
-void W_AddFile (char *filename)
+void W_AddFile (std::string filename)
 {
     wadinfo_t		header;
     lumpinfo_t*		lump_p;
@@ -152,14 +154,6 @@ void W_AddFile (char *filename)
     int			storehandle;
     
     // open the file and add to directory
-
-    // handle reload indicator.
-    if (filename[0] == '~')
-    {
-	filename++;
-	reloadname = filename;
-	reloadlump = numlumps;
-    }
 		
     // JONNY TODO if ( (handle = open (filename,O_RDONLY | O_BINARY)) == -1)
     {
@@ -176,7 +170,7 @@ void W_AddFile (char *filename)
 	fileinfo = &singleinfo;
 	singleinfo.filepos = 0;
 	singleinfo.size = LONG(filelength(handle));
-	ExtractFileBase (filename, singleinfo.name);
+	ExtractFileBase (filename.c_str(), singleinfo.name);
 	numlumps++;
     }
     // JONNY TODO  else 
@@ -290,24 +284,26 @@ void W_Reload (void)
 // The name searcher looks backwards, so a later file
 //  does override all earlier ones.
 //
-void W_InitMultipleFiles (char** filenames)
+void W_InitMultipleFiles (const std::vector<std::string>& filenames)
 {	
-    int		size;
-    
+    if (filenames.empty())
+    {
+        I_Error( "No wads found or provided" );
+    }
     // open all the files, load headers, and count lumps
     numlumps = 0;
 
     // will be realloced as lumps are added
     lumpinfo = (lumpinfo_t*)malloc(1);	
 
-    for ( ; *filenames ; filenames++)
-	W_AddFile (*filenames);
+    for ( const auto& name : filenames)
+		W_AddFile (name);
 
     if (!numlumps)
 	I_Error ("W_InitFiles: no files found");
     
     // set up caching
-    size = numlumps * sizeof(*lumpcache);
+    auto size = numlumps * sizeof(*lumpcache);
     lumpcache = (void**)malloc (size);
     
     if (!lumpcache)
@@ -323,13 +319,9 @@ void W_InitMultipleFiles (char** filenames)
 // W_InitFile
 // Just initialize from a single file.
 //
-void W_InitFile (char* filename)
+void W_InitFile (const std::string& filename)
 {
-    char*	names[2];
-
-    names[0] = filename;
-    names[1] = NULL;
-    W_InitMultipleFiles (names);
+    W_InitMultipleFiles( { filename } );
 }
 
 

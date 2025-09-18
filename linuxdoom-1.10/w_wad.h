@@ -23,6 +23,9 @@
 #ifndef __W_WAD__
 #define __W_WAD__
 
+#include <vector>
+#include <string>
+
 
 #ifdef __GNUG__
 #pragma interface
@@ -66,7 +69,7 @@ extern	void**		lumpcache;
 extern	lumpinfo_t*	lumpinfo;
 extern	int		numlumps;
 
-void    W_InitMultipleFiles (char** filenames);
+void    W_InitMultipleFiles( const std::vector<std::string>& filenames );
 void    W_Reload (void);
 
 int	W_CheckNumForName (const char* name);

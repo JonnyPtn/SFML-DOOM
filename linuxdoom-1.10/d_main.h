@@ -25,6 +25,9 @@
 #ifndef __D_MAIN__
 #define __D_MAIN__
 
+#include <vector>
+#include <string>
+
 #include "d_event.h"
 
 #ifdef __GNUG__
@@ -33,8 +36,7 @@
 
 
 
-#define MAXWADFILES             20
-extern char*		wadfiles[MAXWADFILES];
+static std::vector<std::string> wadfiles;
 
 void D_AddFile (const char *file);
 

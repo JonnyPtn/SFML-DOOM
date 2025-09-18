@@ -93,9 +93,6 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 void D_DoomLoop (void);
 
 
-char*		wadfiles[MAXWADFILES];
-
-
 boolean		devparm;	// started game with -devparm
 boolean         nomonsters;	// checkparm of -nomonsters
 boolean         respawnparm;	// checkparm of -respawn
@@ -546,16 +543,7 @@ char            title[128];
 //
 void D_AddFile (const char *file)
 {
-    int     numwadfiles;
-    char    *newfile;
-	
-    for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
-	;
-
-    newfile = (char*)malloc (strlen(file)+1);
-    strcpy (newfile, file);
-	
-    wadfiles[numwadfiles] = newfile;
+	wadfiles.push_back( file );
 }
 
 //
@@ -657,7 +645,7 @@ void IdentifyVersion (void)
 	return;
     }
 
-    if ( !std::filesystem::exists (doom2fwad) )
+    if ( std::filesystem::exists (doom2fwad) )
     {
 	gamemode = commercial;
 	// C'est ridicule!
@@ -668,42 +656,42 @@ void IdentifyVersion (void)
 	return;
     }
 
-    if ( !std::filesystem::exists(doom2wad) )
+    if ( std::filesystem::exists(doom2wad) )
     {
 	gamemode = commercial;
 	D_AddFile (doom2wad);
 	return;
     }
 
-    if ( !std::filesystem::exists(plutoniawad ) )
+    if ( std::filesystem::exists(plutoniawad ) )
     {
       gamemode = commercial;
       D_AddFile (plutoniawad);
       return;
     }
 
-    if ( !std::filesystem::exists( tntwad ) )
+    if ( std::filesystem::exists( tntwad ) )
     {
       gamemode = commercial;
       D_AddFile (tntwad);
       return;
     }
 
-    if ( !std::filesystem::exists(doomuwad) )
+    if ( std::filesystem::exists(doomuwad) )
     {
       gamemode = retail;
       D_AddFile (doomuwad);
       return;
     }
 
-    if ( !std::filesystem::exists(doomwad) )
+    if ( std::filesystem::exists(doomwad) )
     {
       gamemode = registered;
       D_AddFile (doomwad);
       return;
     }
 
-    if ( !std::filesystem::exists(doom1wad) )
+    if ( std::filesystem::exists(doom1wad) )
     {
       gamemode = shareware;
       D_AddFile (doom1wad);
