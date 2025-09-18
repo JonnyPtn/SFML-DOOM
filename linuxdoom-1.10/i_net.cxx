@@ -229,6 +229,7 @@ int GetLocalAddress (void)
 	I_Error ("GetLocalAddress : gethostbyname: couldn't get local host");
 		
     //JONNY TODOreturn *(int *)hostentry->h_addr_list[0];
+    return -1;
 }
 
 
