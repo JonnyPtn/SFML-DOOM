@@ -36,7 +36,7 @@
 
 
 
-static std::vector<std::string> wadfiles;
+inline std::vector<std::string> wadfiles;
 
 void D_AddFile (const char *file);
 

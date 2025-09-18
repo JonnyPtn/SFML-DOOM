@@ -216,13 +216,13 @@ void R_InitSpriteDefs (char** namelist)
 	//  filling in the frames for whatever is found
 	for (l=start+1 ; l<end ; l++)
 	{
-	    if (*(int *)lumpinfo[l].name == intname)
+	    if (*(int *)lumpinfo[l].name.c_str() == intname)
 	    {
 		frame = lumpinfo[l].name[4] - 'A';
 		rotation = lumpinfo[l].name[5] - '0';
 
 		if (modifiedgame)
-		    patched = W_GetNumForName (lumpinfo[l].name);
+		    patched = W_GetNumForName (lumpinfo[l].name.c_str());
 		else
 		    patched = l;
 

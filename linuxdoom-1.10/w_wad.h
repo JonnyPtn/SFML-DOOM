@@ -25,6 +25,7 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 
 
 #ifdef __GNUG__
@@ -45,35 +46,32 @@ typedef struct
 } wadinfo_t;
 
 
-typedef struct
+struct filelump_t
 {
     int			filepos;
     int			size;
-    char		name[8];
+    char		name[8]{};
     
-} filelump_t;
+};
 
 //
 // WADFILE I/O related stuff.
 //
-typedef struct
+struct lumpinfo_t
 {
-    char	name[8];
-    int		handle;
+    std::string	name{};
+    std::shared_ptr<std::ifstream>		handle;
     int		position;
     int		size;
-} lumpinfo_t;
+};
 
 
-extern	void**		lumpcache;
-extern	lumpinfo_t*	lumpinfo;
-extern	int		numlumps;
+inline std::vector<lumpinfo_t>		lumpinfo;
 
 void    W_InitMultipleFiles( const std::vector<std::string>& filenames );
-void    W_Reload (void);
 
-int	W_CheckNumForName (const char* name);
-int	W_GetNumForName (const char* name);
+int	W_CheckNumForName ( std::string name);
+int	W_GetNumForName ( const std::string& name);
 
 int	W_LumpLength (int lump);
 void    W_ReadLump (int lump, void *dest);

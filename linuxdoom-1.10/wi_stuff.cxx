@@ -373,7 +373,7 @@ static patch_t*		items;
 static patch_t*		frags;
 
 // Time sucks.
-static patch_t*		time;
+// JONNY TODO clashes with time() static patch_t*		time;
 static patch_t*		par;
 static patch_t*		sucks;
 
@@ -1456,7 +1456,7 @@ void WI_drawStats(void)
     V_DrawPatch(SP_STATSX, SP_STATSY+2*lh, FB, sp_secret);
     WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY+2*lh, cnt_secret[0]);
 
-    V_DrawPatch(SP_TIMEX, SP_TIMEY, FB, time);
+    // JONNY TODO clashes with time() V_DrawPatch(SP_TIMEX, SP_TIMEY, FB, time);
     WI_drawTime(SCREENWIDTH/2 - SP_TIMEX, SP_TIMEY, cnt_time);
 
     if (wbs->epsd < 3)
@@ -1669,7 +1669,7 @@ void WI_loadData(void)
     colon = (patch_t*)W_CacheLumpName("WICOLON", PU_STATIC);
 
     // "time"
-    time = (patch_t*)W_CacheLumpName("WITIME", PU_STATIC);
+	// JONNY TODO clashes with time() time = (patch_t*)W_CacheLumpName("WITIME", PU_STATIC);
 
     // "sucks"
     sucks = (patch_t*)W_CacheLumpName("WISUCKS", PU_STATIC);
