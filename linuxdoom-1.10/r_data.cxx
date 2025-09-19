@@ -153,9 +153,9 @@ std::vector<int>		flattranslation;
 std::vector<int>		texturetranslation;
 
 // needed for pre rendering
-fixed_t*	spritewidth;
-fixed_t*	spriteoffset;
-fixed_t*	spritetopoffset;
+std::vector<fixed_t>	spritewidth;
+std::vector<fixed_t>	spriteoffset;
+std::vector<fixed_t>	spritetopoffset;
 
 lighttable_t	*colormaps;
 
@@ -586,9 +586,9 @@ void R_InitSpriteLumps( void )
 	lastspritelump = W_GetNumForName( "S_END" ) - 1;
 
 	numspritelumps = lastspritelump - firstspritelump + 1;
-	spritewidth = (fixed_t*)malloc( numspritelumps * 4 );
-	spriteoffset = (fixed_t*)malloc( numspritelumps * 4 );
-	spritetopoffset = (fixed_t*)malloc( numspritelumps * 4 );
+	spritewidth.resize( numspritelumps * 4 );
+	spriteoffset.resize(numspritelumps*4);
+	spritetopoffset.resize( numspritelumps * 4 );
 
 	for ( i = 0; i < numspritelumps; i++ )
 	{

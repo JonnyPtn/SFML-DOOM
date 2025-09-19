@@ -1449,7 +1449,7 @@ void ST_Stop (void)
     if (st_stopped)
 	return;
 
-// JONNY TODO    I_SetPalette (W_CacheLumpNum (lu_palette));
+	I_SetPalette ((byte*)W_CacheLumpNum (lu_palette));
 
     st_stopped = true;
 }
