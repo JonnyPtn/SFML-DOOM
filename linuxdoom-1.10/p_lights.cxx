@@ -243,7 +243,7 @@ void EV_TurnTagLightsOff(line_t* line)
     sector_t*		tsec;
     line_t*		templine;
 	
-    sector = sectors;
+    sector = sectors.data();
     
     for (j = 0;j < numsectors; j++, sector++)
     {
@@ -279,7 +279,7 @@ EV_LightTurnOn
     sector_t*	temp;
     line_t*	templine;
 	
-    sector = sectors;
+    sector = sectors.data();
 	
     for (i=0;i<numsectors;i++, sector++)
     {

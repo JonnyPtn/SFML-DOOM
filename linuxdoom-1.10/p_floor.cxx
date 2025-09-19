@@ -413,7 +413,7 @@ EV_DoFloor
 	    {
 		if ( twoSided(secnum, i) )
 		{
-		    if (getSide(secnum,i,0)->sector-sectors == secnum)
+		    if (getSide(secnum,i,0)->sector-sectors.data() == secnum )
 		    {
 			sec = getSector(secnum,i,1);
 
@@ -518,13 +518,13 @@ EV_BuildStairs
 		    continue;
 					
 		tsec = (sec->lines[i])->frontsector;
-		newsecnum = tsec-sectors;
+		newsecnum = tsec-sectors.data();
 		
 		if (secnum != newsecnum)
 		    continue;
 
 		tsec = (sec->lines[i])->backsector;
-		newsecnum = tsec - sectors;
+		newsecnum = tsec - sectors.data();
 
 		if (tsec->floorpic != texture)
 		    continue;

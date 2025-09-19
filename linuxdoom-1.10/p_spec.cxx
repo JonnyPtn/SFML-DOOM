@@ -1267,7 +1267,7 @@ void P_SpawnSpecials (void)
     }
     
     //	Init special SECTORs.
-    sector = sectors;
+    sector = sectors.data();
     for (i=0 ; i<numsectors ; i++, sector++)
     {
 	if (!sector->special)

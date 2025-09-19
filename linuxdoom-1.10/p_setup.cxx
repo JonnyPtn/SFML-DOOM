@@ -60,7 +60,7 @@ int		numsegs;
 seg_t*		segs;
 
 int		numsectors;
-sector_t*	sectors;
+std::vector<sector_t>	sectors;
 
 int		numsubsectors;
 subsector_t*	subsectors;
@@ -234,12 +234,11 @@ void P_LoadSectors (int lump)
     sector_t*		ss;
 	
     numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-    sectors = (sector_t*)malloc(numsectors*sizeof(sector_t));	
-    memset (sectors, 0, numsectors*sizeof(sector_t));
+    sectors.resize(numsectors);
     data = (byte*)W_CacheLumpNum (lump);
 	
     ms = (mapsector_t *)data;
-    ss = sectors;
+    ss = sectors.data();
     for (i=0 ; i<numsectors ; i++, ss++, ms++)
     {
 	ss->floorheight = SHORT(ms->floorheight)<<FRACBITS;
@@ -532,7 +531,7 @@ void P_GroupLines (void)
 	
     // build line tables for each sector	
     linebuffer = (line_t**)malloc(total*4);
-    sector = sectors;
+    sector = sectors.data();
     for (i=0 ; i<numsectors ; i++, sector++)
     {
 	M_ClearBox (bbox);

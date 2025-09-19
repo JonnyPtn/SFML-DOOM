@@ -93,7 +93,7 @@ EV_Teleport
 
 		sector = m->subsector->sector;
 		// wrong sector
-		if (sector-sectors != i )
+		if (sector-sectors.data() != i )
 		    continue;	
 
 		oldx = thing->x;

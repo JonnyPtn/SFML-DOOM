@@ -115,13 +115,9 @@ typedef struct
 typedef struct
 {
 	// Keep name for switch changing, etc.
-	char	name[8];
+	std::string name;
 	short	width;
 	short	height;
-
-	// All the patches[patchcount]
-	//  are drawn back to front into the cached texture.
-	short	patchcount;
 	std::vector<texpatch_t>	patches;
 
 } texture_t;
@@ -146,10 +142,10 @@ std::vector<texture_t>	textures;
 
 std::vector<int>			texturewidthmask;
 // needed for texture pegging
-fixed_t*		textureheight;
+std::vector<fixed_t>		textureheight;
 std::vector<int>			texturecompositesize;
-short**			texturecolumnlump;
-unsigned short**	texturecolumnofs;
+std::vector<std::vector<short>>			texturecolumnlump;
+std::vector<std::vector<unsigned short>>	texturecolumnofs;
 std::vector<std::vector<byte>>			texturecomposite;
 
 // for global animation
@@ -244,8 +240,8 @@ void R_GenerateComposite( int texnum )
 
 	texturecomposite[texnum].resize( texturecompositesize[texnum] );
 
-	collump = texturecolumnlump[texnum];
-	colofs = texturecolumnofs[texnum];
+	collump = texturecolumnlump[texnum].data();
+	colofs = texturecolumnofs[texnum].data();
 
 	// Composite the columns together.
 	patch = &texture->patches[0];
@@ -305,8 +301,8 @@ void R_GenerateLookup( int texnum )
 	texturecomposite[texnum] = {};
 
 	texturecompositesize[texnum] = 0;
-	collump = texturecolumnlump[texnum];
-	colofs = texturecolumnofs[texnum];
+	collump = texturecolumnlump[texnum].data();
+	colofs = texturecolumnofs[texnum].data();
 
 	// Now count the number of columns
 	//  that are covered by more than one patch.
@@ -467,12 +463,12 @@ void R_InitTextures( void )
 	numtextures = numtextures1 + numtextures2;
 
 	textures.resize(numtextures);
-	texturecolumnlump = (short**)malloc( numtextures * 4 );
-	texturecolumnofs = (unsigned short**)malloc( numtextures * 4 );
+	texturecolumnlump.resize( numtextures );
+	texturecolumnofs.resize( numtextures );
 	texturecomposite.resize(numtextures);
 	texturecompositesize.resize(numtextures);
 	texturewidthmask.resize( numtextures );
-	textureheight = (fixed_t*)malloc( numtextures * 4 );
+	textureheight.resize(numtextures);
 
 	totalwidth = 0;
 
@@ -512,14 +508,13 @@ void R_InitTextures( void )
 
 		texture->width = SHORT( mtexture->width );
 		texture->height = SHORT( mtexture->height );
-		texture->patchcount = SHORT( mtexture->patchcount );
 		texture->patches.resize( mtexture->patchcount );
+		texture->name = mtexture->name;
 
-		memcpy( texture->name, mtexture->name, sizeof( texture->name ) );
 		mpatch = &mtexture->patches[0];
 		patch = &texture->patches[0];
 
-		for ( j = 0; j < texture->patchcount; j++, mpatch++, patch++ )
+		for ( j = 0; j < texture->patches.size(); j++, mpatch++, patch++ )
 		{
 			patch->originx = SHORT( mpatch->originx );
 			patch->originy = SHORT( mpatch->originy );
@@ -530,8 +525,8 @@ void R_InitTextures( void )
 						 texture->name );
 			}
 		}
-		texturecolumnlump[i] = (short*)malloc( texture->width * 2 );
-		texturecolumnofs[i] = (unsigned short*)malloc( texture->width * 2 );
+		texturecolumnlump[i].resize(texture->width);
+		texturecolumnofs[i].resize( texture->width );
 
 		j = 1;
 		while ( j * 2 <= texture->width )
@@ -684,7 +679,7 @@ int	R_CheckTextureNumForName( const char *name )
 		return 0;
 
 	for ( i = 0; i < numtextures; i++ )
-		if ( !strncasecmp( textures[i].name, name, 8 ) )
+		if ( !strncasecmp( textures[i].name.c_str(), name, 8) )
 			return i;
 
 	return -1;
@@ -789,7 +784,7 @@ void R_PrecacheLevel( void )
 
 		texture = &textures[i];
 
-		for ( j = 0; j < texture->patchcount; j++ )
+		for ( j = 0; j < texture->patches.size(); j++ )
 		{
 			lump = texture->patches[j].patch;
 			texturememory += lumpinfo[lump].size;
