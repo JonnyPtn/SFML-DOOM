@@ -83,7 +83,7 @@ void	(*netsend) (void);
 //
 int UDPsocket (void)
 {
-    int	s;
+    int	s{};
 	
     // allocate a socket
     //JONNY TODOs = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -101,7 +101,7 @@ BindToLocalPort
 ( int	s,
   int	port )
 {
-    int			v;
+    int			v{};
     //JONNY TODOstruct sockaddr_in	address;
 	
     //JONNY TODOmemset (&address, 0, sizeof(address));
@@ -155,10 +155,10 @@ void PacketSend (void)
 void PacketGet (void)
 {
     int			i;
-    int			c;
+    int			c{};
     //JONNY TODOstruct sockaddr_in	fromaddress;
     int			fromlen;
-    doomdata_t		sw;
+    doomdata_t		sw{};
 				
     //JONNY TODOfromlen = sizeof(fromaddress);
     //JONNY TODOc = recvfrom (insocket, &sw, sizeof(sw), 0
@@ -216,8 +216,8 @@ void PacketGet (void)
 int GetLocalAddress (void)
 {
     char		hostname[1024];
-    struct hostent*	hostentry;	// host information entry
-    int			v;
+    struct hostent*	hostentry{};	// host information entry
+    int			v{};
 
     // get local address
     //JONNY TODOv = gethostname (hostname, sizeof(hostname));
@@ -241,7 +241,7 @@ void I_InitNetwork (void)
     boolean		trueval = true;
     int			i;
     int			p;
-    struct hostent*	hostentry;	// host information entry
+    struct hostent*	hostentry{};	// host information entry
 	
     doomcom = (doomcom_t*)malloc (sizeof (*doomcom) );
     memset (doomcom, 0, sizeof(*doomcom) );

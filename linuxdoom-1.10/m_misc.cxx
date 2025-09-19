@@ -114,8 +114,8 @@ M_WriteFile
   void*		source,
   int		length )
 {
-    int		handle;
-    int		count;
+    int		handle{};
+    int		count{};
 	
     // JONNY TODO handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
 
@@ -140,7 +140,7 @@ M_ReadFile
 ( char const*	name,
   byte**	buffer )
 {
-    int	handle, count, length;
+    int	handle{}, count{}, length{};
     struct stat	fileinfo;
     byte		*buf;
 	

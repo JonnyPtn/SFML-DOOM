@@ -1317,7 +1317,7 @@ boolean PIT_ChangeSector (mobj_t*	thing)
 //
 // P_ChangeSector
 //
-boolean
+bool
 P_ChangeSector
 ( sector_t*	sector,
   boolean	crunch )

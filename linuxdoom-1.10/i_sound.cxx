@@ -153,7 +153,7 @@ myioctl
   int	command,
   int*	arg )
 {   
-    int		rc;
+    int		rc{};
     extern int	errno;
     
     // JONNY TODO rc = ioctl(fd, command, arg);  
@@ -935,7 +935,7 @@ int I_SoundSetTimer( int duration_of_tick )
  // JONNY TODO  struct sigaction    act;
  // JONNY TODO  struct sigaction    oact;
 
-  int res;
+    int res{};
   
   // This sets to SA_ONESHOT and SA_NOMASK, thus we can not use it.
   //     signal( _sig, handle_SIG_TICK );

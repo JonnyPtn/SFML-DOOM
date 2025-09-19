@@ -137,11 +137,11 @@ void W_AddFile (std::filesystem::path filepath)
     auto file = std::make_shared<std::ifstream>( filepath, std::ios::binary );
     if (!file->good())
     {
-		printf (" couldn't open %s\n",filepath.c_str());
+		printf (" couldn't open %s\n",filepath.string().c_str());
 	return;
     }
 
-	printf (" adding %s\n",filepath.c_str());
+	printf (" adding %s\n",filepath.string().c_str());
     startlump = lumpinfo.size();
 	
     if (filepath.extension() != ".wad" )

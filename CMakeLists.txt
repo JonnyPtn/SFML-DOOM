@@ -16,12 +16,11 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-target_compile_options(${PROJECT_NAME} PRIVATE -w)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics)
-target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS=1)
 set_target_properties(${PROJECT_NAME} PROPERTIES 
     DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     XCODE_GENERATE_SCHEME ON
-    MACOSX_BUNDLE ON)
+    MACOSX_BUNDLE ON
+    COMPILE_WARNING_AS_ERROR ON)
 set_property(DIRECTORY . PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})

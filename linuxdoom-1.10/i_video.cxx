@@ -117,6 +117,7 @@ int sfKeyToDoom( sf::Keyboard::Key key )
 	case LAlt:
 	case RAlt: return KEY_RALT;
 	}
+	return 0;
 }
 
 static int	lastmousex = 0;
@@ -385,8 +386,8 @@ void I_ReadScreen( byte* scr )
 void UploadNewPalette(byte *palette)
 {
 
-	register int	i;
-	register int	c;
+	int	i;
+	int	c;
 	static boolean	firstcall = true;
 
 		// initialize the colormap
@@ -492,7 +493,10 @@ void I_InitGraphics( void )
 	// grabs the pointer so it is restricted to this window
 	X_mainWindow.setMouseCursorGrabbed( grabMouse );
 
-	texture.resize( { X_width, X_height } );
+	if ( !texture.resize( { X_width, X_height } ) )
+	{
+		I_Error( "Failed to resize texture" );
+	}
 	pixelBuffer.resize( X_width* X_height );
 
 	if ( multiply == 1 )
