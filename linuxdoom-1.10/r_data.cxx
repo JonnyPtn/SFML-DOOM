@@ -522,7 +522,7 @@ void R_InitTextures( void )
 			if ( patch->patch == -1 )
 			{
 				I_Error( "R_InitTextures: Missing patch in texture %s",
-						 texture->name );
+						 texture->name.c_str() );
 			}
 		}
 		texturecolumnlump[i].resize(texture->width);
@@ -654,7 +654,7 @@ int R_FlatNumForName( const std::string& name )
 
 	if ( i == -1 )
 	{
-		I_Error( "R_FlatNumForName: %s not found", name );
+		I_Error( "R_FlatNumForName: %s not found", name.c_str() );
 	}
 	return i - firstflat;
 }
