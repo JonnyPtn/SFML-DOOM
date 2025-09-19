@@ -98,7 +98,7 @@ int NetbufferSize (void)
 //
 unsigned NetbufferChecksum (void)
 {
-    unsigned		c;
+	unsigned		c{};
     int		i,l;
 
     c = 0x1234567;
@@ -109,8 +109,8 @@ unsigned NetbufferChecksum (void)
 #endif
 
     // JONNY TODO l = (NetbufferSize () - (int)&(((doomdata_t *)0)->retransmitfrom))/4;
-    for (i=0 ; i<l ; i++)
-	c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i+1);
+    // JONNY TODO for (i=0 ; i<l ; i++)
+	// JONNY TODO c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i+1);
 
     return c & NCMD_CHECKSUM;
 }

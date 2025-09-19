@@ -48,14 +48,11 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 #define POINTER_WARP_COUNTDOWN	1
 
-sf::Window		X_mainWindow;
+sf::RenderWindow		X_mainWindow;
 int		X_screen;
 sf::Image		image;
-int		X_width;
-int		X_height;
-
-// MIT SHared Memory extension.
-boolean		doShm;
+unsigned int		X_width;
+unsigned int		X_height;
 
 int		X_shmeventtype;
 
@@ -392,45 +389,10 @@ void I_FinishUpdate (void)
 	// JONNY TODO Expand4 ((unsigned *)(screens[0]), (double *) (image->data));
     }
 
-    if (doShm)
-    {
-
-		// JONNY TODO
-		/*if (!XShmPutImage(	X_display,
-				X_mainWindow,
-				X_gc,
-				image,
-				0, 0,
-				0, 0,
-				X_width, X_height,
-				True ))*/
-	    I_Error("XShmPutImage() failed\n");
-
-	// wait for it to finish and processes all input events
-	shmFinished = false;
-	do
-	{
-	    I_GetEvent();
-	} while (!shmFinished);
-
-    }
-    else
-    {
-
 	// draw the image
-		// JONNY TODO 
-	/*XPutImage(	X_display,
-			X_mainWindow,
-			X_gc,
-			image,
-			0, 0,
-			0, 0,
-			X_width, X_height );
-
-	// sync up with server
-	XSync(X_display, False);
-	*/
-    }
+	sf::Texture texture( image );
+	sf::Sprite sprite( texture );
+	X_mainWindow.draw( sprite );
 
 }
 
@@ -567,161 +529,22 @@ void I_InitGraphics(void)
 	    I_Error("bad -geom parameter");
     }
 
-    // open the display
-   // JONNY TODO  X_display = XOpenDisplay(displayname);
-   // JONNY TODO  if (!X_display)
-    {
-	if (displayname)
-	    I_Error("Could not open display [%s]", displayname);
-	else
-	    I_Error("Could not open display (DISPLAY=[%s])", getenv("DISPLAY"));
-    }
-
-    // use the default visual 
-   // JONNY TODO  X_screen = DefaultScreen(X_display);
-   // JONNY TODO  if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
-	I_Error("xdoom currently only supports 256-color PseudoColor screens");
-	// JONNY TODO   X_visual = X_visualinfo.visual;
-
-    // check for the MITSHM extension
-  // JONNY TODO   doShm = XShmQueryExtension(X_display);
-
-    // even if it's available, make sure it's a local connection
-    if (doShm)
-    {
-	if (!displayname) displayname = (char *) getenv("DISPLAY");
-	if (displayname)
-	{
-	    d = displayname;
-	    while (*d && (*d != ':')) d++;
-	    if (*d) *d = 0;
-		// JONNY TODO    if (!(!strcasecmp(displayname, "unix") || !*displayname)) doShm = false;
-	}
-    }
-
-    fprintf(stderr, "Using MITSHM extension\n");
-
-    // create the colormap
-  // JONNY TODO   X_cmap = XCreateColormap(X_display, RootWindow(X_display,
-	// JONNY TODO 					   X_screen), X_visual, AllocAll);
-
-    // setup attributes for main window
-   // JONNY TODO  attribmask = CWEventMask | CWColormap | CWBorderPixel;
-   // JONNY TODO  attribs.event_mask =
-	// JONNY TODO KeyPressMask
-	// JONNY TODO | KeyReleaseMask
-	// | PointerMotionMask | ButtonPressMask | ButtonReleaseMask
-	// JONNY TODO | ExposureMask;
-
- // JONNY TODO    attribs.colormap = X_cmap;
-  // JONNY TODO   attribs.border_pixel = 0;
-
     // create the main window
-  // JONNY TODO   X_mainWindow = XCreateWindow(	X_display,
-	// JONNY TODO 				RootWindow(X_display, X_screen),
-	// JONNY TODO 				x, y,
-	// JONNY TODO 				X_width, X_height,
-	// JONNY TODO 				0, // borderwidth
-	// JONNY TODO 				8, // depth
-	// JONNY TODO 					// JONNY TODO 				InputOutput,
-	// JONNY TODO 				X_visual,
-	// JONNY TODO 				attribmask,
-						// JONNY TODO 				&attribs );
+	X_mainWindow.create( sf::VideoMode{ {X_width, X_height} }, "SFML-DOOM");
 
 	// JONNY TODO XDefineCursor(X_display, X_mainWindow,
 		  // JONNY TODO createnullcursor( X_display, X_mainWindow ) );
 
-    // create the GC
-    // JONNY TODO valuemask = GCGraphicsExposures;
-    // JONNY TODO xgcvalues.graphics_exposures = False;
-    // JONNY TODO X_gc = XCreateGC(	X_display,
-  	// JONNY TODO 		X_mainWindow,
-  	// JONNY TODO 		valuemask,
-  	// JONNY TODO 		&xgcvalues );
-	// JONNY TODO 
-    // JONNY TODO // map the window
-    // JONNY TODO XMapWindow(X_display, X_mainWindow);
-
-    // wait until it is OK to draw
-    oktodraw = 0;
-    while (!oktodraw)
-    {
-	// JONNY TODO XNextEvent(X_display, &X_event);
-	// JONNY TODO if (X_event.type == Expose
-	// JONNY TODO     && !X_event.xexpose.count)
-	// JONNY TODO {
-	// JONNY TODO     oktodraw = 1;
-	// JONNY TODO }
-    }
-
     // grabs the pointer so it is restricted to this window
-    if (grabMouse)
-	// JONNY TODO XGrabPointer(X_display, X_mainWindow, True,
-	// JONNY TODO 	     ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
-	// JONNY TODO 	     GrabModeAsync, GrabModeAsync,
-	// JONNY TODO 	     X_mainWindow, None, CurrentTime);
-	// JONNY TODO 
-    if (doShm)
-    {
+	X_mainWindow.setMouseCursorGrabbed( grabMouse );
 
-		// JONNY TODO X_shmeventtype = XShmGetEventBase(X_display) + ShmCompletion;
+	image.resize( { X_width, X_height } );
+   
 
-	// create the image
-	// JONNY TODO image = XShmCreateImage(	X_display,
-	// JONNY TODO 				X_visual,
-	// JONNY TODO 				8,
-	// JONNY TODO 				ZPixmap,
-	// JONNY TODO 				0,
-	// JONNY TODO 				&X_shminfo,
-	// JONNY TODO 				X_width,
-	// JONNY TODO 				X_height );
-
-	// JONNY TODO grabsharedmemory(image->bytes_per_line * image->height);
-
-
-	// UNUSED
-	// create the shared memory segment
-	// X_shminfo.shmid = shmget (IPC_PRIVATE,
-	// image->bytes_per_line * image->height, IPC_CREAT | 0777);
-	// if (X_shminfo.shmid < 0)
-	// {
-	// perror("");
-	// I_Error("shmget() failed in InitGraphics()");
-	// }
-	// fprintf(stderr, "shared memory id=%d\n", X_shminfo.shmid);
-	// attach to the shared memory segment
-	// image->data = X_shminfo.shmaddr = shmat(X_shminfo.shmid, 0, 0);
-	
-
-	// JONNY TODO if (!image->data)
-	{
-	    perror("");
-	    I_Error("shmat() failed in InitGraphics()");
-	}
-
-	// get the X server to attach to it
-	// JONNY TODO if (!XShmAttach(X_display, &X_shminfo))
-	    I_Error("XShmAttach() failed in InitGraphics()");
-
-    }
-    else
-    {
-	// JONNY TODO image = XCreateImage(	X_display,
-    // JONNY TODO 				X_visual,
-    // JONNY TODO 				8,
-    // JONNY TODO 				ZPixmap,
-    // JONNY TODO 				0,
-    // JONNY TODO 				(char*)malloc(X_width * X_height),
-    // JONNY TODO 				X_width, X_height,
-    // JONNY TODO 				8,
-    // JONNY TODO 				X_width );
-	// JONNY TODO 
-    }
-
-	// JONNY TODO  if (multiply == 1)
-		// JONNY TODO screens[0] = (unsigned char *) (image->data);
-   // JONNY TODO  else
-	// JONNY TODO screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
+	if ( multiply == 1 )
+		screens[0] = (unsigned char *)(image.getPixelsPtr());
+	else
+		screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
 
 }
 
