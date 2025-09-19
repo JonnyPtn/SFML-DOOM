@@ -284,16 +284,16 @@ default_t	defaults[] =
 
     {"usegamma",&usegamma, 0},
 
-    {"chatmacro0", (int *) &chat_macros[0], (int) HUSTR_CHATMACRO0 },
-    {"chatmacro1", (int *) &chat_macros[1], (int) HUSTR_CHATMACRO1 },
-    {"chatmacro2", (int *) &chat_macros[2], (int) HUSTR_CHATMACRO2 },
-    {"chatmacro3", (int *) &chat_macros[3], (int) HUSTR_CHATMACRO3 },
-    {"chatmacro4", (int *) &chat_macros[4], (int) HUSTR_CHATMACRO4 },
-    {"chatmacro5", (int *) &chat_macros[5], (int) HUSTR_CHATMACRO5 },
-    {"chatmacro6", (int *) &chat_macros[6], (int) HUSTR_CHATMACRO6 },
-    {"chatmacro7", (int *) &chat_macros[7], (int) HUSTR_CHATMACRO7 },
-    {"chatmacro8", (int *) &chat_macros[8], (int) HUSTR_CHATMACRO8 },
-    {"chatmacro9", (int *) &chat_macros[9], (int) HUSTR_CHATMACRO9 }
+	{"chatmacro0", (int *) &chat_macros[0], static_cast<int>((intptr_t) HUSTR_CHATMACRO0) },
+	{"chatmacro1", (int *) &chat_macros[1], static_cast<int>((intptr_t) HUSTR_CHATMACRO1) },
+	{"chatmacro2", (int *) &chat_macros[2], static_cast<int>((intptr_t) HUSTR_CHATMACRO2) },
+	{"chatmacro3", (int *) &chat_macros[3], static_cast<int>((intptr_t) HUSTR_CHATMACRO3) },
+    {"chatmacro4", (int *) &chat_macros[4], static_cast<int>((intptr_t)  HUSTR_CHATMACRO4)},
+    {"chatmacro5", (int *) &chat_macros[5], static_cast<int>((intptr_t)  HUSTR_CHATMACRO5)},
+    {"chatmacro6", (int *) &chat_macros[6], static_cast<int>((intptr_t)  HUSTR_CHATMACRO6)},
+    {"chatmacro7", (int *) &chat_macros[7], static_cast<int>((intptr_t)  HUSTR_CHATMACRO7)},
+    {"chatmacro8", (int *) &chat_macros[8], static_cast<int>((intptr_t)  HUSTR_CHATMACRO8)},
+    {"chatmacro9", (int *) &chat_macros[9], static_cast<int>((intptr_t)  HUSTR_CHATMACRO9)}
 
 };
 
@@ -391,7 +391,7 @@ void M_LoadDefaults (void)
 			    *defaults[i].location = parm;
 			else
 			    *defaults[i].location =
-				(int) newstring;
+				(intptr_t) newstring;
 			break;
 		    }
 	    }

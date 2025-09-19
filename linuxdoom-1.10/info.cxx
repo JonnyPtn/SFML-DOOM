@@ -133,6 +133,7 @@ void A_SpawnSound( mobj_t* mo );
 void A_SpawnFly( mobj_t* mo );
 void A_BrainExplode( mobj_t* mo );
 
+#define NULL 0
 
 state_t	states[NUMSTATES] = {
     {SPR_TROO,0,-1,{NULL},S_NULL,0,0},	// S_NULL

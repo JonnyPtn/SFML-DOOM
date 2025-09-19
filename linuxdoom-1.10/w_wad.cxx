@@ -137,11 +137,11 @@ void W_AddFile (std::filesystem::path filepath)
     auto file = std::make_shared<std::ifstream>( filepath, std::ios::binary );
     if (!file->good())
     {
-	printf (" couldn't open %s\n",filepath);
+		printf (" couldn't open %s\n",filepath.c_str());
 	return;
     }
 
-    printf (" adding %s\n",filepath);
+	printf (" adding %s\n",filepath.c_str());
     startlump = lumpinfo.size();
 	
     if (filepath.extension() != ".wad" )
@@ -162,7 +162,7 @@ void W_AddFile (std::filesystem::path filepath)
 	    if (strncmp(header.identification,"PWAD",4))
 	    {
 		I_Error ("Wad file %s doesn't have IWAD "
-			 "or PWAD id\n", filepath);
+			 "or PWAD id\n", filepath.c_str());
 	    }
 	    
 	    // ???modifiedgame = true;		
@@ -171,7 +171,7 @@ void W_AddFile (std::filesystem::path filepath)
 	header.infotableofs = LONG(header.infotableofs);
 	length = header.numlumps*sizeof(filelump_t);
     fileinfo = (filelump_t*)alloca (length);
-    file->seekg (header.infotableofs, SEEK_SET);
+    file->seekg (header.infotableofs);
     file->read(reinterpret_cast<char*>(fileinfo), length);
 	numlumps += header.numlumps;
     }
@@ -278,7 +278,7 @@ int W_GetNumForName ( const std::string& name)
     i = W_CheckNumForName (name);
     
     if (i == -1)
-      I_Error ("W_GetNumForName: %s not found!", name);
+      I_Error ("W_GetNumForName: %s not found!", name.c_str());
       
     return i;
 }
@@ -416,7 +416,7 @@ void W_Profile (void)
 	for ( ; j<8 ; j++)
 	    name[j] = ' ';
 
-	fprintf (f,"%s ",name);
+		fprintf (f,"%s ",name.c_str());
 
 	for (j=0 ; j<profilecount ; j++)
 	    fprintf (f,"    %c",info[i][j]);

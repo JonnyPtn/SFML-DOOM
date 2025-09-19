@@ -194,18 +194,18 @@ mline_t cheat_player_arrow[] = {
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
-    { { -.867*R, -.5*R }, { .867*R, -.5*R } },
-    { { .867*R, -.5*R } , { 0, R } },
-    { { 0, R }, { -.867*R, -.5*R } }
+	{ { static_cast<fixed_t>(-.867*R), static_cast<fixed_t>(-.5*R) }, { static_cast<fixed_t>(.867*R), static_cast<fixed_t>(-.5*R) } },
+	{ { static_cast<fixed_t>(.867*R), static_cast<fixed_t>(-.5*R) } , { 0, R } },
+	{ { 0, R }, { static_cast<fixed_t>(-.867*R), static_cast<fixed_t>(-.5*R) } }
 };
 #undef R
 #define NUMTRIANGLEGUYLINES (sizeof(triangle_guy)/sizeof(mline_t))
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
-    { { -.5*R, -.7*R }, { R, 0 } },
-    { { R, 0 }, { -.5*R, .7*R } },
-    { { -.5*R, .7*R }, { -.5*R, -.7*R } }
+	{ { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(-.7*R) }, { R, 0 } },
+	{ { R, 0 }, { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(.7*R) } },
+	{ { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(.7*R) }, { static_cast<fixed_t>(-.5*R), static_cast<fixed_t>(-.7*R) } }
 };
 #undef R
 #define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))
@@ -969,15 +969,15 @@ AM_drawFline
 ( fline_t*	fl,
   int		color )
 {
-    register int x;
-    register int y;
-    register int dx;
-    register int dy;
-    register int sx;
-    register int sy;
-    register int ax;
-    register int ay;
-    register int d;
+	int x;
+	int y;
+	int dx;
+	int dy;
+	int sx;
+	int sy;
+    int ax;
+	int ay;
+    int d;
     
 	// JONNY TODO static fuck = 0;
 
