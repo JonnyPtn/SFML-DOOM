@@ -89,7 +89,7 @@ struct maptexture_t
 	boolean		masked;
 	short		width;
 	short		height;
-	void		**columndirectory;	// OBSOLETE
+	char		padding[4];	// OBSOLETE
 	short		patchcount;
 	mappatch_t	patches[1];
 };
