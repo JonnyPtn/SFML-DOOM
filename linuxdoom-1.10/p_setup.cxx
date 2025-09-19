@@ -54,25 +54,25 @@ void	P_SpawnMapThing (mapthing_t*	mthing);
 // Store VERTEXES, LINEDEFS, SIDEDEFS, etc.
 //
 int		numvertexes;
-vertex_t*	vertexes;
+std::vector<vertex_t>	vertexes;
 
 int		numsegs;
-seg_t*		segs;
+std::vector<seg_t>		segs;
 
 int		numsectors;
 std::vector<sector_t>	sectors;
 
 int		numsubsectors;
-subsector_t*	subsectors;
+std::vector<subsector_t>	subsectors;
 
 int		numnodes;
-node_t*		nodes;
+std::vector<node_t>		nodes;
 
 int		numlines;
-line_t*		lines;
+std::vector<line_t>		lines;
 
 int		numsides;
-side_t*		sides;
+std::vector<side_t>		sides;
 
 
 // BLOCKMAP
@@ -131,13 +131,13 @@ void P_LoadVertexes (int lump)
     numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
 
     // Allocate zone memory for buffer.
-    vertexes = (vertex_t*)malloc(numvertexes*sizeof(vertex_t));	
+	vertexes.resize( numvertexes );
 
     // Load data into cache.
     data = (byte*)W_CacheLumpNum (lump);
 	
     ml = (mapvertex_t *)data;
-    li = vertexes;
+    li = vertexes.data();
 
     // Copy and convert vertex coordinates,
     // internal representation as fixed.
@@ -165,12 +165,11 @@ void P_LoadSegs (int lump)
     int			side;
 	
     numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-    segs = (seg_t*)malloc(numsegs*sizeof(seg_t));	
-    memset (segs, 0, numsegs*sizeof(seg_t));
+	segs.resize( numsegs );
     data = (byte*)W_CacheLumpNum (lump);
 	
     ml = (mapseg_t *)data;
-    li = segs;
+    li = segs.data();
     for (i=0 ; i<numsegs ; i++, li++, ml++)
     {
 	li->v1 = &vertexes[SHORT(ml->v1)];
@@ -205,12 +204,11 @@ void P_LoadSubsectors (int lump)
     subsector_t*	ss;
 	
     numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-    subsectors = (subsector_t*)malloc(numsubsectors*sizeof(subsector_t));	
+	subsectors.resize( numsubsectors );
     data = (byte*)W_CacheLumpNum (lump);
 	
     ms = (mapsubsector_t *)data;
-    memset (subsectors,0, numsubsectors*sizeof(subsector_t));
-    ss = subsectors;
+    ss = subsectors.data();
     
     for (i=0 ; i<numsubsectors ; i++, ss++, ms++)
     {
@@ -268,11 +266,11 @@ void P_LoadNodes (int lump)
     node_t*	no;
 	
     numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-    nodes = (node_t*)malloc(numnodes*sizeof(node_t));	
+	nodes.resize( numnodes );
     data = (byte*)W_CacheLumpNum (lump);
 	
     mn = (mapnode_t *)data;
-    no = nodes;
+    no = nodes.data();
     
     for (i=0 ; i<numnodes ; i++, no++, mn++)
     {
@@ -361,12 +359,11 @@ void P_LoadLineDefs (int lump)
     vertex_t*		v2;
 	
     numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-    lines = (line_t*)malloc(numlines*sizeof(line_t));	
-    memset (lines, 0, numlines*sizeof(line_t));
+	lines.resize( numlines );
     data = (byte*)W_CacheLumpNum (lump);
 	
     mld = (maplinedef_t *)data;
-    ld = lines;
+    ld = lines.data();
     for (i=0 ; i<numlines ; i++, mld++, ld++)
     {
 	ld->flags = SHORT(mld->flags);
@@ -440,12 +437,12 @@ void P_LoadSideDefs (int lump)
     side_t*		sd;
 	
     numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-    sides = (side_t*)malloc(numsides*sizeof(side_t));	
-    memset (sides, 0, numsides*sizeof(side_t));
+	sides.resize( numsides );
+
     data = (byte*)W_CacheLumpNum (lump);
 	
     msd = (mapsidedef_t *)data;
-    sd = sides;
+    sd = sides.data();
     for (i=0 ; i<numsides ; i++, msd++, sd++)
     {
 	sd->textureoffset = SHORT(msd->textureoffset)<<FRACBITS;
@@ -507,7 +504,7 @@ void P_GroupLines (void)
     int			block;
 	
     // look up sector number for each subsector
-    ss = subsectors;
+    ss = subsectors.data();
     for (i=0 ; i<numsubsectors ; i++, ss++)
     {
 	seg = &segs[ss->firstline];
@@ -515,7 +512,7 @@ void P_GroupLines (void)
     }
 
     // count number of lines in each sector
-    li = lines;
+    li = lines.data();
     total = 0;
     for (i=0 ; i<numlines ; i++, li++)
     {
@@ -536,7 +533,7 @@ void P_GroupLines (void)
     {
 	M_ClearBox (bbox);
 	sector->lines = linebuffer;
-	li = lines;
+	li = lines.data();
 	for (j=0 ; j<numlines ; j++, li++)
 	{
 	    if (li->frontsector == sector || li->backsector == sector)

@@ -75,28 +75,28 @@ extern int		numspritelumps;
 // Lookup tables for map data.
 //
 extern int		numsprites;
-extern spritedef_t*	sprites;
+extern std::vector < spritedef_t>	sprites;
 
 extern int		numvertexes;
-extern vertex_t*	vertexes;
+extern std::vector<vertex_t>	vertexes;
 
 extern int		numsegs;
-extern seg_t*		segs;
+extern std::vector < seg_t>		segs;
 
 extern int		numsectors;
 extern std::vector<sector_t>	sectors;
 
 extern int		numsubsectors;
-extern subsector_t*	subsectors;
+extern std::vector < subsector_t>	subsectors;
 
 extern int		numnodes;
-extern node_t*		nodes;
+extern std::vector < node_t>		nodes;
 
 extern int		numlines;
-extern line_t*		lines;
+extern std::vector < line_t>		lines;
 
 extern int		numsides;
-extern side_t*		sides;
+extern std::vector < side_t>		sides;
 
 
 //

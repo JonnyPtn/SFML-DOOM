@@ -808,7 +808,7 @@ R_PointInSubsector
 
     // single subsector is a special case
     if (!numnodes)				
-	return subsectors;
+	return subsectors.data();
 		
     nodenum = numnodes-1;
 

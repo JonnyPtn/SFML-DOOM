@@ -137,7 +137,7 @@ void P_ArchiveWorld (void)
 
     
     // do lines
-    for (i=0, li = lines ; i<numlines ; i++,li++)
+    for (i=0, li = lines.data() ; i<numlines ; i++,li++)
     {
 	*put++ = li->flags;
 	*put++ = li->special;
@@ -191,7 +191,7 @@ void P_UnArchiveWorld (void)
     }
     
     // do lines
-    for (i=0, li = lines ; i<numlines ; i++,li++)
+    for (i=0, li = lines.data() ; i<numlines ; i++,li++)
     {
 	li->flags = *get++;
 	li->special = *get++;

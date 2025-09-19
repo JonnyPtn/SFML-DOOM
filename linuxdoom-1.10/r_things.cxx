@@ -88,7 +88,7 @@ short		screenheightarray[SCREENWIDTH];
 
 // variables used to look up
 //  and range check thing_t sprites patches
-spritedef_t*	sprites;
+std::vector < spritedef_t>	sprites;
 int		numsprites;
 
 spriteframe_t	sprtemp[29];
@@ -196,7 +196,7 @@ void R_InitSpriteDefs (char** namelist)
     if (!numsprites)
 	return;
 		
-    sprites = (spritedef_t*)malloc(numsprites *sizeof(*sprites));
+    sprites.resize( numsprites );
 	
     start = firstspritelump-1;
     end = lastspritelump+1;

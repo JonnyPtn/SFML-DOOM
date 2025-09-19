@@ -508,7 +508,7 @@ P_TryMove
 	    if (side != oldside)
 	    {
 		if (ld->special)
-		    P_CrossSpecialLine (ld-lines, oldside, thing);
+		    P_CrossSpecialLine (ld-lines.data(), oldside, thing);
 	    }
 	}
     }
