@@ -553,55 +553,26 @@ void D_AddFile (const char *file)
 //
 void IdentifyVersion (void)
 {
-
-    char*	doom1wad;
-    char*	doomwad;
-    char*	doomuwad;
-    char*	doom2wad;
-
-    char*	doom2fwad;
-    char*	plutoniawad;
-    char*	tntwad;
-
-    const char *home;
-    const char *doomwaddir;
-    doomwaddir = getenv("DOOMWADDIR");
-    if (!doomwaddir)
-	doomwaddir = ".";
-
     // Commercial.
-    doom2wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(doom2wad, "%s/doom2.wad", doomwaddir);
+	const auto doom2wad = "doom2.wad";
 
     // Retail.
-    doomuwad = (char*)malloc(strlen(doomwaddir)+1+8+1);
-    sprintf(doomuwad, "%s/doomu.wad", doomwaddir);
+	const auto doomuwad = "doomu.wad";
     
     // Registered.
-    doomwad = (char*)malloc(strlen(doomwaddir)+1+8+1);
-    sprintf(doomwad, "%s/doom.wad", doomwaddir);
+	const auto doomwad = "doom.wad";
     
     // Shareware.
-    doom1wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(doom1wad, "%s/doom1.wad", doomwaddir);
+	const auto doom1wad = "doom1.wad";
 
-     // Bug, dear Shawn.
-    // Insufficient malloc, caused spurious realloc errors.
-    plutoniawad = (char*)malloc(strlen(doomwaddir)+1+/*9*/12+1);
-    sprintf(plutoniawad, "%s/plutonia.wad", doomwaddir);
+	// Plutonia.
+	const auto plutoniawad = "plutonia.wad";
 
-    tntwad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-    sprintf(tntwad, "%s/tnt.wad", doomwaddir);
-
+	// TNT.
+	const auto tntwad = "tnt.wad";
 
     // French stuff.
-    doom2fwad = (char*)malloc(strlen(doomwaddir)+1+10+1);
-    sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
-
-	home = std::filesystem::current_path().string().c_str();
-    if (!home)
-      I_Error("Please set $HOME to your home directory");
-    sprintf(basedefault, "%s/.doomrc", home);
+	const auto doom2fwad = "doom2f.wad";
 
     if (M_CheckParm ("-shdev"))
     {
@@ -705,79 +676,6 @@ void IdentifyVersion (void)
     //I_Error ("Game mode indeterminate\n");
 }
 
-//
-// Find a Response File
-//
-void FindResponseFile (void)
-{
-    int             i;
-#define MAXARGVS        100
-	
-    for (i = 1;i < myargc;i++)
-	if (myargv[i][0] == '@')
-	{
-	    FILE *          handle;
-	    int             size;
-	    int             k;
-	    int             index;
-	    int             indexinfile;
-	    char    *infile;
-	    char    *file;
-	    char    *moreargs[20];
-	    char    *firstargv;
-			
-	    // READ THE RESPONSE FILE INTO MEMORY
-	    handle = fopen (&myargv[i][1],"rb");
-	    if (!handle)
-	    {
-		printf ("\nNo such response file!");
-		exit(1);
-	    }
-	    printf("Found response file %s!\n",&myargv[i][1]);
-	    fseek (handle,0,SEEK_END);
-	    size = ftell(handle);
-	    fseek (handle,0,SEEK_SET);
-	    file = (char*)malloc (size);
-	    fread (file,size,1,handle);
-	    fclose (handle);
-			
-	    // KEEP ALL CMDLINE ARGS FOLLOWING @RESPONSEFILE ARG
-	    for (index = 0,k = i+1; k < myargc; k++)
-		moreargs[index++] = myargv[k];
-			
-	    firstargv = myargv[0];
-	    myargv = (char**)malloc(sizeof(char *)*MAXARGVS);
-	    memset(myargv,0,sizeof(char *)*MAXARGVS);
-	    myargv[0] = firstargv;
-			
-	    infile = file;
-	    indexinfile = k = 0;
-	    indexinfile++;  // SKIP PAST ARGV[0] (KEEP IT)
-	    do
-	    {
-		myargv[indexinfile++] = infile+k;
-		while(k < size &&
-		      ((*(infile+k)>= ' '+1) && (*(infile+k)<='z')))
-		    k++;
-		*(infile+k) = 0;
-		while(k < size &&
-		      ((*(infile+k)<= ' ') || (*(infile+k)>'z')))
-		    k++;
-	    } while(k < size);
-			
-	    for (k = 0;k < index;k++)
-		myargv[indexinfile++] = moreargs[k];
-	    myargc = indexinfile;
-	
-	    // DISPLAY ARGS
-	    printf("%d command-line args:\n",myargc);
-	    for (k=1;k<myargc;k++)
-		printf("%s\n",myargv[k]);
-
-	    break;
-	}
-}
-
 
 //
 // D_DoomMain
@@ -787,8 +685,6 @@ void D_DoomMain (void)
     int             p;
     char                    file[256];
 
-    FindResponseFile ();
-	
     IdentifyVersion ();
 	
     setbuf (stdout, NULL);
