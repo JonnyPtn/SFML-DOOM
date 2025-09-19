@@ -25,13 +25,6 @@
 
 #include "doomdef.h"
 
-// UNIX hack, to be removed.
-#ifdef SNDSERV
-#include <stdio.h>
-extern FILE* sndserver;
-extern const char* sndserver_filename;
-#endif
-
 #include "doomstat.h"
 #include "sounds.h"
 

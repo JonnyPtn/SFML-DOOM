@@ -173,7 +173,7 @@ void I_GetEvent( void )
 			event.type = ev_mouse;
 			event.data2 = mouseEvent->position.x;
 			event.data3 = mouseEvent->position.y;
-			D_PostEvent( &event );
+			// JONNY TODO mouse movement a bit wacky currently D_PostEvent( &event );
 		}
 	}
 

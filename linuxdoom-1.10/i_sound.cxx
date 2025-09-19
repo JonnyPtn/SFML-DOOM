@@ -49,25 +49,6 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 
 #include "doomdef.h"
 
-// UNIX hack, to be removed.
-#ifdef SNDSERV
-// Separate sound server process.
-FILE*	sndserver=0;
-const char*	sndserver_filename = "./sndserver ";
-#elif SNDINTR
-
-// Update all 30 millisecs, approx. 30fps synchronized.
-// Linux resolution is allegedly 10 millisecs,
-//  scale is microseconds.
-#define SOUND_INTERVAL     500
-
-// Get the interrupt. Set duration in millisecs.
-int I_SoundSetTimer( int duration_of_tick );
-void I_SoundDelTimer( void );
-#else
-// None?
-#endif
-
 
 // A quick hack to establish a protocol between
 // synchronous mix buffer updates and asynchronous
@@ -468,15 +449,6 @@ I_StartSound
   // UNUSED
   priority = 0;
   
-#ifdef SNDSERV 
-    if (sndserver)
-    {
-	fprintf(sndserver, "p%2.2x%2.2x%2.2x%2.2x\n", id, pitch, vol, sep);
-	fflush(sndserver);
-    }
-    // warning: control reaches end of non-void function.
-    return id;
-#else
     // Debug.
     //fprintf( stderr, "starting sound %d", id );
     
@@ -486,7 +458,6 @@ I_StartSound
     // fprintf( stderr, "/handle is %d\n", id );
     
     return id;
-#endif
 }
 
 
@@ -681,14 +652,6 @@ I_UpdateSoundParams
 
 void I_ShutdownSound(void)
 {    
-#ifdef SNDSERV
-  if (sndserver)
-  {
-    // Send a "quit" command.
-    fprintf(sndserver, "q\n");
-    fflush(sndserver);
-  }
-#else
   // Wait till all pending sounds are finished.
   int done = 0;
   int i;
@@ -711,8 +674,7 @@ void I_ShutdownSound(void)
 #endif
   
   // Cleaning up -releasing the DSP device.
-  close ( audio_fd );
-#endif
+  // JONNY TODO close ( audio_fd );
 
   // Done.
   return;
@@ -725,27 +687,7 @@ void I_ShutdownSound(void)
 
 void
 I_InitSound()
-{ 
-#ifdef SNDSERV
-  char buffer[256];
-  
-  if (getenv("DOOMWADDIR"))
-    sprintf(buffer, "%s/%s",
-	    getenv("DOOMWADDIR"),
-	    sndserver_filename);
-  else
-    sprintf(buffer, "%s", sndserver_filename);
-  
-  // start sound process
-  // JONNY TODO if ( !access(buffer, X_OK) )
-  {
-    strcat(buffer, " -quiet");
-    // JONNY TODO   sndserver = popen(buffer, "w");
-  }
-  // JONNY TODO else
-    fprintf(stderr, "Could not start sound server [%s]\n", buffer);
-#else
-    
+{     
   int i;
   
 #ifdef SNDINTR
@@ -756,34 +698,34 @@ I_InitSound()
   // Secure and configure sound device first.
   fprintf( stderr, "I_InitSound: ");
   
-  audio_fd = open("/dev/dsp", O_WRONLY);
+  // JONNY TODO audio_fd = open("/dev/dsp", O_WRONLY);
   if (audio_fd<0)
     fprintf(stderr, "Could not open /dev/dsp\n");
   
                      
   i = 11 | (2<<16);                                           
-  myioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &i);
-  myioctl(audio_fd, SNDCTL_DSP_RESET, 0);
+  // JONNY TODO myioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &i);
+  // JONNY TODO myioctl(audio_fd, SNDCTL_DSP_RESET, 0);
   
   i=SAMPLERATE;
   
-  myioctl(audio_fd, SNDCTL_DSP_SPEED, &i);
+  // JONNY TODO myioctl(audio_fd, SNDCTL_DSP_SPEED, &i);
   
   i=1;
-  myioctl(audio_fd, SNDCTL_DSP_STEREO, &i);
+  // JONNY TODO myioctl(audio_fd, SNDCTL_DSP_STEREO, &i);
   
-  myioctl(audio_fd, SNDCTL_DSP_GETFMTS, &i);
+  // JONNY TODO myioctl(audio_fd, SNDCTL_DSP_GETFMTS, &i);
   
-  if (i&=AFMT_S16_LE)    
-    myioctl(audio_fd, SNDCTL_DSP_SETFMT, &i);
-  else
-    fprintf(stderr, "Could not play signed 16 data\n");
+ // JONNY TODO  if (i&=AFMT_S16_LE)    
+      // JONNY TODO   myioctl(audio_fd, SNDCTL_DSP_SETFMT, &i);
+  // JONNY TODO else
+      // JONNY TODO   fprintf(stderr, "Could not play signed 16 data\n");
 
-  fprintf(stderr, " configured audio device\n" );
+  // JONNY TODO fprintf(stderr, " configured audio device\n" );
 
     
   // Initialize external data (all sounds) at start, keep static.
-  fprintf( stderr, "I_InitSound: ");
+  // JONNY TODO fprintf( stderr, "I_InitSound: ");
   
   for (i=1 ; i<NUMSFX ; i++)
   { 
@@ -791,7 +733,7 @@ I_InitSound()
     if (!S_sfx[i].link)
     {
       // Load data from WAD file.
-      S_sfx[i].data = getsfx( S_sfx[i].name, &lengths[i] );
+     // JONNY TODO  S_sfx[i].data = getsfx( S_sfx[i].name, &lengths[i] );
     }	
     else
     {
@@ -810,7 +752,6 @@ I_InitSound()
   // Finished initialization.
   fprintf(stderr, "I_InitSound: sound module ready\n");
     
-#endif
 }
 
 

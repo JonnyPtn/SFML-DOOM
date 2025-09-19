@@ -180,7 +180,7 @@ fixed_t		angleturn[3] = {640, 1280, 320};	// + slow turn
  
 #define NUMKEYS		256 
 
-boolean         gamekeydown[NUMKEYS]; 
+bool         gamekeydown[NUMKEYS]; 
 int             turnheld;				// for accelerative turning 
  
 boolean		mousearray[4]; 
