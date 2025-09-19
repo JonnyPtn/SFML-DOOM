@@ -93,6 +93,44 @@ void I_StartFrame (void)
 
 }
 
+int sfKeyToDoom( sf::Keyboard::Key key )
+{
+	using enum sf::Keyboard::Key;
+	switch ( key )
+	{
+	case Left: return KEY_LEFTARROW;
+	case Right: return KEY_RIGHTARROW;
+	case Down: return KEY_DOWNARROW;
+	case Up: return KEY_UPARROW;
+	case Escape: return KEY_ESCAPE;
+	case Enter: return KEY_ENTER;
+	case Tab: return KEY_TAB;
+	case F1: return KEY_F1;
+	case F2: return KEY_F2;
+	case F3: return KEY_F3;
+	case F4: return KEY_F4;
+	case F5: return KEY_F5;
+	case F6: return KEY_F6;
+	case F7: return KEY_F7;
+	case F8: return KEY_F8;
+	case F9: return KEY_F9;
+	case F10: return KEY_F10;
+	case F11: return KEY_F11;
+	case F12: return KEY_F12;
+	case Delete:
+	case Backspace: return KEY_BACKSPACE;
+	case Pause: return KEY_PAUSE;
+	case Equal: return KEY_EQUALS;
+	case Subtract: return KEY_MINUS;
+	case LShift:
+	case RShift: return KEY_RSHIFT;
+	case LControl:
+	case RControl: return KEY_RCTRL;
+	case LAlt:
+	case RAlt: return KEY_RALT;
+	}
+}
+
 static int	lastmousex = 0;
 static int	lastmousey = 0;
 boolean		mousemoved = false;
@@ -100,65 +138,61 @@ boolean		shmFinished;
 
 void I_GetEvent(void)
 {
-
     event_t event;
-	// JONNY TODO
-/*
-    // put event-grabbing stuff in here
-    XNextEvent(X_display, &X_event);
-    switch (X_event.type)
-    {
-      case KeyPress:
-	event.type = ev_keydown;
-	event.data1 = xlatekey();
-	D_PostEvent(&event);
-	// fprintf(stderr, "k");
-	break;
-      case KeyRelease:
-	event.type = ev_keyup;
-	event.data1 = xlatekey();
-	D_PostEvent(&event);
-	// fprintf(stderr, "ku");
-	break;
-      case ButtonPress:
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xbutton.state & Button1Mask)
-	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0)
-	    | (X_event.xbutton.button == Button1)
-	    | (X_event.xbutton.button == Button2 ? 2 : 0)
-	    | (X_event.xbutton.button == Button3 ? 4 : 0);
-	event.data2 = event.data3 = 0;
-	D_PostEvent(&event);
-	// fprintf(stderr, "b");
-	break;
-      case ButtonRelease:
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xbutton.state & Button1Mask)
-	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0);
-	// suggest parentheses around arithmetic in operand of |
-	event.data1 =
-	    event.data1
-	    ^ (X_event.xbutton.button == Button1 ? 1 : 0)
-	    ^ (X_event.xbutton.button == Button2 ? 2 : 0)
-	    ^ (X_event.xbutton.button == Button3 ? 4 : 0);
-	event.data2 = event.data3 = 0;
-	D_PostEvent(&event);
-	// fprintf(stderr, "bu");
-	break;
-      case MotionNotify:
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xmotion.state & Button1Mask)
-	    | (X_event.xmotion.state & Button2Mask ? 2 : 0)
-	    | (X_event.xmotion.state & Button3Mask ? 4 : 0);
-	event.data2 = (X_event.xmotion.x - lastmousex) << 2;
-	event.data3 = (lastmousey - X_event.xmotion.y) << 2;
 
-	if (event.data2 || event.data3)
+	// put event-grabbing stuff in here
+	while ( auto sfEvent = X_mainWindow.pollEvent() )
+	{
+		if ( auto keyEvent = sfEvent->getIf<sf::Event::KeyPressed>() )
+		{
+			event.type = ev_keydown;
+			event.data1 = sfKeyToDoom( keyEvent->code );
+			D_PostEvent( &event );
+		}
+		else if ( auto keyEvent = sfEvent->getIf<sf::Event::KeyReleased>() )
+		{
+			event.type = ev_keyup;
+			event.data1 = sfKeyToDoom( keyEvent->code );
+			D_PostEvent( &event );
+		}
+		else if ( auto mouseEvent = sfEvent->getIf<sf::Event::MouseButtonPressed>() )
+		{
+			event.type = ev_mouse;
+			using enum sf::Mouse::Button;
+			switch ( mouseEvent->button )
+			{
+			case Left: event.data1 = 1;
+			case Right: event.data1 = 2;
+			case Middle: event.data1 = 4;
+			}
+			D_PostEvent( &event );
+		}
+		else if ( auto mouseEvent = sfEvent->getIf<sf::Event::MouseButtonReleased>() )
+		{
+			event.type = ev_mouse;
+			using enum sf::Mouse::Button;
+			switch ( mouseEvent->button )
+			{
+			case Left: event.data1 = 1;
+			case Right: event.data1 = 2;
+			case Middle: event.data1 = 4;
+			}
+			D_PostEvent( &event );
+		}
+		else if ( auto mouseEvent = sfEvent->getIf<sf::Event::MouseMoved>() )
+		{
+			event.type = ev_mouse;
+			event.data2 = mouseEvent->position.x;
+			event.data3 = mouseEvent->position.y;
+			D_PostEvent( &event );
+		}
+	}
+ 
+	// TODO JONNY - needed?
+	/*
+		event.data2 = (X_event.xmotion.x - lastmousex) << 2;
+	event.data3 = (lastmousey - X_event.xmotion.y) << 2;
+	if ( event.data2 || event.data3 )
 	{
 	    lastmousex = X_event.xmotion.x;
 	    lastmousey = X_event.xmotion.y;
@@ -172,18 +206,7 @@ void I_GetEvent(void)
 	    {
 		mousemoved = true;
 	    }
-	}
-	break;
-	
-      case Expose:
-      case ConfigureNotify:
-	break;
-	
-      default:
-	if (doShm && X_event.type == X_shmeventtype) shmFinished = true;
-	break;
-    }
-	*/	
+	}*/
 }
 
 // JONNY TODO
@@ -217,33 +240,8 @@ createnullcursor
 //
 void I_StartTic (void)
 {
-	// JONNY TODO
-    /*if (!X_display)
-	return;
-
-    while (XPending(X_display))
 	I_GetEvent();
-
-    // Warp the pointer back to the middle of the window
-    //  or it will wander off - that is, the game will
-    //  loose input focus within X11.
-    if (grabMouse)
-    {
-	if (!--doPointerWarp)
-	{
-	    XWarpPointer( X_display,
-			  None,
-			  X_mainWindow,
-			  0, 0,
-			  0, 0,
-			  X_width/2, X_height/2);
-
-	    doPointerWarp = POINTER_WARP_COUNTDOWN;
-	}
-    }
-
-    mousemoved = false;
-	*/
+	X_mainWindow.clear();
 }
 
 
@@ -393,6 +391,7 @@ void I_FinishUpdate (void)
 	sf::Texture texture( image );
 	sf::Sprite sprite( texture );
 	X_mainWindow.draw( sprite );
+	X_mainWindow.display();
 
 }
 
