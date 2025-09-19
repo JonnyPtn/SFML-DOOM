@@ -128,7 +128,7 @@ char            demoname[32];
 boolean         demorecording; 
 boolean         demoplayback; 
 boolean		netdemo; 
-byte*		demobuffer;
+std::vector<byte>		demobuffer;
 byte*		demo_p;
 byte*		demoend; 
 boolean         singledemo;            	// quit after playing a demo from cmdline 
@@ -1535,8 +1535,8 @@ void G_RecordDemo (char* name)
     i = M_CheckParm ("-maxdemo");
     if (i && i<myargc-1)
 	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = (byte*)malloc(maxsize); 
-    demoend = demobuffer + maxsize;
+    demobuffer.resize( maxsize );
+    demoend = demobuffer.data() + maxsize;
 	
     demorecording = true; 
 } 
@@ -1546,7 +1546,7 @@ void G_BeginRecording (void)
 { 
     int             i; 
 		
-    demo_p = demobuffer;
+    demo_p = demobuffer.data();
 	
     *demo_p++ = VERSION;
     *demo_p++ = gameskill; 
@@ -1581,7 +1581,7 @@ void G_DoPlayDemo (void)
     int             i, episode, map; 
 	 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname); 
+    // JONNY TODO demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname); 
     if ( *demo_p++ != VERSION)
     {
       fprintf( stderr, "Demo is from a different game version!\n");
@@ -1673,8 +1673,7 @@ boolean G_CheckDemoStatus (void)
     if (demorecording) 
     { 
 	*demo_p++ = DEMOMARKER; 
-	M_WriteFile (demoname, demobuffer, demo_p - demobuffer); 
-	free (demobuffer); 
+	M_WriteFile (demoname, demobuffer.data(), demo_p - demobuffer.data());
 	demorecording = false; 
 	I_Error ("Demo %s recorded",demoname); 
     } 

@@ -56,15 +56,14 @@ wipe_shittyColMajorXform
 {
     int		x;
     int		y;
-    short*	dest;
+    std::vector<short>	dest( width * height * 2 );
 
-    dest = (short*) malloc(width*height*2);
 
     for(y=0;y<height;y++)
 	for(x=0;x<width;x++)
 	    dest[x*height+y] = array[y*width+x];
 
-    memcpy(array, dest, width*height*2);
+    memcpy(array, dest.data(), width * height * 2);
 
 
 }
@@ -135,7 +134,7 @@ wipe_exitColorXForm
 }
 
 
-static int*	y;
+static std::vector<int>	y;
 
 int
 wipe_initMelt
@@ -155,7 +154,7 @@ wipe_initMelt
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
-    y = (int *) malloc(width*sizeof(int));
+    y.resize( width );
     y[0] = -(M_Random()%16);
     for (i=1;i<width;i++)
     {
