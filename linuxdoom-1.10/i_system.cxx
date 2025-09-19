@@ -73,12 +73,6 @@ int  I_GetHeapSize (void)
     return mb_used*1024*1024;
 }
 
-byte* I_ZoneBase (int*	size)
-{
-    *size = mb_used*1024*1024;
-    return (byte *) malloc (*size);
-}
-
 
 
 //
@@ -124,15 +118,6 @@ void I_BeginRead(void)
 
 void I_EndRead(void)
 {
-}
-
-byte*	I_AllocLow(int length)
-{
-    byte*	mem;
-        
-    mem = (byte *)malloc (length);
-    memset (mem,0,length);
-    return mem;
 }
 
 

@@ -1582,7 +1582,8 @@ void G_DoPlayDemo (void)
 	 
     gameaction = ga_nothing; 
     // JONNY TODO demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname); 
-    if ( *demo_p++ != VERSION)
+
+   /* if ( *demo_p++ != VERSION )
     {
       fprintf( stderr, "Demo is from a different game version!\n");
       gameaction = ga_nothing;
@@ -1612,7 +1613,7 @@ void G_DoPlayDemo (void)
     precache = true; 
 
     usergame = false; 
-    demoplayback = true; 
+    demoplayback = true; */
 } 
 
 //

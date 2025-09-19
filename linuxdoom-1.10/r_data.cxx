@@ -149,8 +149,8 @@ std::vector<std::vector<unsigned short>>	texturecolumnofs;
 std::vector<std::vector<byte>>			texturecomposite;
 
 // for global animation
-int*		flattranslation;
-int*		texturetranslation;
+std::vector<int>		flattranslation;
+std::vector<int>		texturetranslation;
 
 // needed for pre rendering
 fixed_t*	spritewidth;
@@ -544,7 +544,7 @@ void R_InitTextures( void )
 		R_GenerateLookup( i );
 
 	// Create translation table for global animation.
-	texturetranslation = (int*)malloc( (numtextures + 1) * 4 );
+	texturetranslation.resize( numtextures + 1 );
 
 	for ( i = 0; i < numtextures; i++ )
 		texturetranslation[i] = i;
@@ -564,7 +564,7 @@ void R_InitFlats( void )
 	numflats = lastflat - firstflat + 1;
 
 	// Create translation table for global animation.
-	flattranslation = (int*)malloc( (numflats + 1) * 4 );
+	flattranslation.resize( numflats + 1 );
 
 	for ( i = 0; i < numflats; i++ )
 		flattranslation[i] = i;

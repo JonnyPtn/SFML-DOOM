@@ -60,8 +60,8 @@ extern int		viewheight;
 extern int		firstflat;
 
 // for global animation
-extern int*		flattranslation;	
-extern int*		texturetranslation;	
+extern std::vector<int>		flattranslation;	
+extern std::vector<int>		texturetranslation;	
 
 
 // Sprite....
