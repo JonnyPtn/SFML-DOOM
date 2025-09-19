@@ -38,13 +38,16 @@ char**		myargv;
 // in the program's command line arguments.
 // Returns the argument number (1 to argc-1)
 // or 0 if not present
+#if WIN32
+#define strcasecmp _stricmp
+#endif
 int M_CheckParm (const char *check)
 {
     int		i;
 
     for (i = 1;i<myargc;i++)
     {
-	// JONNY TODO if ( !strcasecmp(check, myargv[i]) )
+	if ( !strcasecmp(check, myargv[i]) )
 	    return i;
     }
 

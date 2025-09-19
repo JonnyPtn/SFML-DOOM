@@ -50,6 +50,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 #define POINTER_WARP_COUNTDOWN	1
 
 sf::RenderWindow		X_mainWindow;
+std::vector<uint8_t>	pixelBuffer;
 sf::Texture				texture;
 int		X_screen;
 unsigned int		X_width;
@@ -68,20 +69,6 @@ int		doPointerWarp = POINTER_WARP_COUNTDOWN;
 // According to Dave Taylor, it still is a bonehead thing
 // to use ....
 static int	multiply = 1;
-
-
-//
-//  Translates the key currently in X_event
-//
-
-int xlatekey( void )
-{
-
-	int rc;
-	// JONNY TODO
-	return rc;
-
-}
 
 
 
@@ -292,8 +279,8 @@ void I_FinishUpdate( void )
 		unsigned int fouripixels;
 
 		ilineptr = (unsigned int *)(screens[0]);
-		// JONNY TODO for (i=0 ; i<2 ; i++)
-		// JONNY TODO     olineptrs[i] = (unsigned int *) &image->data[i*X_width];
+		for (i=0 ; i<2 ; i++)
+		   olineptrs[i] = (unsigned int *) &pixelBuffer[i*X_width];
 
 		y = SCREENHEIGHT;
 		while ( y-- )
@@ -335,8 +322,8 @@ void I_FinishUpdate( void )
 		unsigned int fouripixels;
 
 		ilineptr = (unsigned int *)(screens[0]);
-		// JONNY TODO for (i=0 ; i<3 ; i++)
-			// JONNY TODO olineptrs[i] = (unsigned int *) &image->data[i*X_width];
+		for (i=0 ; i<3 ; i++)
+			olineptrs[i] = (unsigned int *) &pixelBuffer[i*X_width];
 
 		y = SCREENHEIGHT;
 		while ( y-- )
@@ -387,20 +374,20 @@ void I_FinishUpdate( void )
 	{
 		// Broken. Gotta fix this some day.
 		void Expand4( unsigned *, double * );
-		// JONNY TODO Expand4 ((unsigned *)(screens[0]), (double *) (image->data));
+		Expand4 ((unsigned *)(screens[0]), (double *) (pixelBuffer.data()));
 	}
 
-	uint8_t colouredPixels[SCREENHEIGHT * SCREENWIDTH * 4] = { 0 };
-	for ( int i = 0; i < SCREENHEIGHT * SCREENWIDTH; i++ )
+	std::vector<uint8_t> colouredPixels( pixelBuffer.size() * 4 );
+	for ( int i = 0; i < pixelBuffer.size(); i++ )
 	{
-		colouredPixels[i * 4] = colors[static_cast<int>(screens[0][i])].r;
-		colouredPixels[i * 4 + 1] = colors[static_cast<int>(screens[0][i])].g;
-		colouredPixels[i * 4 + 2] = colors[static_cast<int>(screens[0][i])].b;
+		colouredPixels[i * 4] = colors[static_cast<int>(pixelBuffer[i])].r;
+		colouredPixels[i * 4 + 1] = colors[static_cast<int>(pixelBuffer[i])].g;
+		colouredPixels[i * 4 + 2] = colors[static_cast<int>(pixelBuffer[i])].b;
 		colouredPixels[i * 4 + 3] = 255;
 	}
 
 	// draw the image
-	texture.update( colouredPixels );
+	texture.update( colouredPixels.data() );
 	sf::Sprite sprite( texture );
 	X_mainWindow.draw( sprite );
 	X_mainWindow.display();
@@ -535,8 +522,16 @@ void I_InitGraphics( void )
 	X_mainWindow.setMouseCursorGrabbed( grabMouse );
 
 	texture.resize( { X_width, X_height } );
+	pixelBuffer.resize( X_width* X_height );
 
-	screens[0] = (unsigned char *)malloc( SCREENWIDTH * SCREENHEIGHT );
+	if ( multiply == 1 )
+	{
+		screens[0] = pixelBuffer.data();
+	}
+	else
+	{
+		screens[0] = (unsigned char *)malloc( SCREENWIDTH * SCREENHEIGHT );
+	}
 
 }
 
