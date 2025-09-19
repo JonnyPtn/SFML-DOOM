@@ -197,32 +197,6 @@ void I_GetEvent( void )
 	}*/
 }
 
-// JONNY TODO
-/*
-Cursor
-createnullcursor
-( Display*	display,
-  Window	root )
-{
-	Pixmap cursormask;
-	XGCValues xgc;
-	GC gc;
-	XColor dummycolour;
-	Cursor cursor;
-
-	cursormask = XCreatePixmap(display, root, 1, 1, 1/*depth*//*;
-	xgc.function = GXclear;
-	gc =  XCreateGC(display, cursormask, GCFunction, &xgc);
-	XFillRectangle(display, cursormask, gc, 0, 0, 1, 1);
-	dummycolour.pixel = 0;
-	dummycolour.red = 0;
-	dummycolour.flags = 04;
-	cursor = XCreatePixmapCursor(display, cursormask, cursormask,
-				 &dummycolour,&dummycolour, 0,0);
-	XFreePixmap(display,cursormask);
-	XFreeGC(display,gc);
-	return cursor;
-}*/
 //
 // I_StartTic
 //
@@ -514,9 +488,6 @@ void I_InitGraphics( void )
 
 	// create the main window
 	X_mainWindow.create( sf::VideoMode{ {X_width, X_height} }, "SFML-DOOM" );
-
-	// JONNY TODO XDefineCursor(X_display, X_mainWindow,
-		  // JONNY TODO createnullcursor( X_display, X_mainWindow ) );
 
 	// grabs the pointer so it is restricted to this window
 	X_mainWindow.setMouseCursorGrabbed( grabMouse );

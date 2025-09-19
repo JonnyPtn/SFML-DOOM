@@ -26,6 +26,7 @@
 
 #include "r_defs.h"
 #include "r_state.h"
+#include <string>
 
 #ifdef __GNUG__
 #pragma interface
@@ -46,7 +47,7 @@ void R_PrecacheLevel (void);
 // Retrieval.
 // Floor/ceiling opaque texture tiles,
 // lookup by name. For animation?
-int R_FlatNumForName (const char* name);
+int R_FlatNumForName (const std::string& name);
 
 
 // Called by P_Ticker for switches and animations,

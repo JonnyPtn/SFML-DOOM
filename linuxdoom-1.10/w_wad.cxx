@@ -249,6 +249,11 @@ int W_NumLumps (void)
 //
 int W_CheckNumForName (std::string name)
 {
+    if ( name.length() > 8 )
+    {
+        printf( "Name too long: %s", name.c_str() );
+        name = name.substr( 0, 8 );
+    }
     // Must be upper case
     std::transform( name.begin(), name.end(), name.begin(), ::toupper );
     // scan backwards so patch lump files take precedence
