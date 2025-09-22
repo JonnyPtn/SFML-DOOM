@@ -175,6 +175,10 @@ void I_GetEvent( void )
 			event.data3 = mouseEvent->position.y;
 			// JONNY TODO mouse movement a bit wacky currently D_PostEvent( &event );
 		}
+		else if (sfEvent->is<sf::Event::Closed	>())
+		{
+			exit(0);
+		}
 	}
 
 	// TODO JONNY - needed?

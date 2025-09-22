@@ -350,8 +350,8 @@ fixed_t		sprtopscreen;
 
 void R_DrawMaskedColumn (const column_t* column)
 {
-    int		topscreen;
-    int 	bottomscreen;
+    int32_t		topscreen;
+    int32_t 	bottomscreen;
     fixed_t	basetexturemid;
 	
     basetexturemid = dc_texturemid;
