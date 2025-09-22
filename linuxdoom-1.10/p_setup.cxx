@@ -482,77 +482,69 @@ void P_GroupLines (void)
     line_t**		linebuffer;
     int			i;
     int			j;
-    int			total;
-    line_t*		li;
-    sector_t*		sector;
-    subsector_t*	ss;
-    seg_t*		seg;
     fixed_t		bbox[4];
     int			block;
 	
     // look up sector number for each subsector
-    ss = subsectors.data();
-    for (i=0 ; i<numsubsectors ; i++, ss++)
+	for (auto& subsector : subsectors)
     {
-	seg = &segs[ss->firstline];
-	ss->sector = seg->sidedef->sector;
+	const auto& seg = segs[subsector.firstline];
+	subsector.sector = seg.sidedef->sector;
     }
 
     // count number of lines in each sector
-    li = lines.data();
-    total = 0;
-    for (i=0 ; i<numlines ; i++, li++)
+    auto total = 0;
+	for (const auto& line : lines)
     {
 	total++;
-	li->frontsector->linecount++;
+	line.frontsector->linecount++;
 
-	if (li->backsector && li->backsector != li->frontsector)
+	if (line.backsector && line.backsector != line.frontsector)
 	{
-	    li->backsector->linecount++;
+	    line.backsector->linecount++;
 	    total++;
 	}
     }
 	
     // build line tables for each sector	
     linebuffer = (line_t**)malloc(total*sizeof(void*));
-    sector = sectors.data();
-    for (i=0 ; i<numsectors ; i++, sector++)
+	for (auto& sector : sectors)
     {
 	M_ClearBox (bbox);
-	sector->lines = linebuffer;
-	li = lines.data();
+	sector.lines = linebuffer;
+	auto li = lines.data();
 	for (j=0 ; j<numlines ; j++, li++)
 	{
-	    if (li->frontsector == sector || li->backsector == sector)
+	    if (li->frontsector == &sector || li->backsector == &sector)
 	    {
 		*linebuffer++ = li;
 		M_AddToBox (bbox, li->v1->x, li->v1->y);
 		M_AddToBox (bbox, li->v2->x, li->v2->y);
 	    }
 	}
-	if (linebuffer - sector->lines != sector->linecount)
+	if (linebuffer - sector.lines != sector.linecount)
 	    I_Error ("P_GroupLines: miscounted");
 			
 	// set the degenmobj_t to the middle of the bounding box
-	sector->soundorg.x = (bbox[BOXRIGHT]+bbox[BOXLEFT])/2;
-	sector->soundorg.y = (bbox[BOXTOP]+bbox[BOXBOTTOM])/2;
+	sector.soundorg.x = (bbox[BOXRIGHT]+bbox[BOXLEFT])/2;
+	sector.soundorg.y = (bbox[BOXTOP]+bbox[BOXBOTTOM])/2;
 		
 	// adjust bounding box to map blocks
 	block = (bbox[BOXTOP]-bmaporgy+MAXRADIUS)>>MAPBLOCKSHIFT;
 	block = block >= bmapheight ? bmapheight-1 : block;
-	sector->blockbox[BOXTOP]=block;
+	sector.blockbox[BOXTOP]=block;
 
 	block = (bbox[BOXBOTTOM]-bmaporgy-MAXRADIUS)>>MAPBLOCKSHIFT;
 	block = block < 0 ? 0 : block;
-	sector->blockbox[BOXBOTTOM]=block;
+	sector.blockbox[BOXBOTTOM]=block;
 
 	block = (bbox[BOXRIGHT]-bmaporgx+MAXRADIUS)>>MAPBLOCKSHIFT;
 	block = block >= bmapwidth ? bmapwidth-1 : block;
-	sector->blockbox[BOXRIGHT]=block;
+	sector.blockbox[BOXRIGHT]=block;
 
 	block = (bbox[BOXLEFT]-bmaporgx-MAXRADIUS)>>MAPBLOCKSHIFT;
 	block = block < 0 ? 0 : block;
-	sector->blockbox[BOXLEFT]=block;
+	sector.blockbox[BOXLEFT]=block;
     }
 	
 }
