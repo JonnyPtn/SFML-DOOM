@@ -514,7 +514,7 @@ void P_GroupLines (void)
     }
 	
     // build line tables for each sector	
-    linebuffer = (line_t**)malloc(total*4);
+    linebuffer = (line_t**)malloc(total*sizeof(void*));
     sector = sectors.data();
     for (i=0 ; i<numsectors ; i++, sector++)
     {
