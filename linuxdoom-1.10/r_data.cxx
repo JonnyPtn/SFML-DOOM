@@ -134,7 +134,6 @@ int		numpatches;
 
 int		firstspritelump;
 int		lastspritelump;
-int		numspritelumps;
 
 int		numtextures;
 std::vector<texture_t>	textures;
@@ -580,12 +579,12 @@ void R_InitSpriteLumps( void )
 	firstspritelump = W_GetNumForName( "S_START" ) + 1;
 	lastspritelump = W_GetNumForName( "S_END" ) - 1;
 
-	numspritelumps = lastspritelump - firstspritelump + 1;
-	spritewidth.resize( numspritelumps * 4 );
-	spriteoffset.resize(numspritelumps*4);
-	spritetopoffset.resize( numspritelumps * 4 );
+	const auto count = lastspritelump - firstspritelump + 1;
+	spritewidth.resize( count );
+	spriteoffset.resize( count );
+	spritetopoffset.resize( count );
 
-	for ( i = 0; i < numspritelumps; i++ )
+	for ( i = 0; i < count; i++ )
 	{
 		if ( !(i & 63) )
 			printf( "." );

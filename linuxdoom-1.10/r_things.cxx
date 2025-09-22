@@ -348,7 +348,7 @@ short*		mceilingclip;
 fixed_t		spryscale;
 fixed_t		sprtopscreen;
 
-void R_DrawMaskedColumn (column_t* column)
+void R_DrawMaskedColumn (const column_t* column)
 {
     int		topscreen;
     int 	bottomscreen;
@@ -373,7 +373,7 @@ void R_DrawMaskedColumn (column_t* column)
 
 	if (dc_yl <= dc_yh)
 	{
-	    dc_source = (byte *)column + 3;
+	    dc_source = (const byte *)column + 3;
 	    dc_texturemid = basetexturemid - (column->topdelta<<FRACBITS);
 	    // dc_source = (byte *)column + 3 - column->topdelta;
 
@@ -381,7 +381,7 @@ void R_DrawMaskedColumn (column_t* column)
 	    //  or (SHADOW) R_DrawFuzzColumn.
 	    colfunc ();	
 	}
-	column = (column_t *)(  (byte *)column + column->length + 4);
+	column = (const column_t *)(  (const byte *)column + column->length + 4);
     }
 	
     dc_texturemid = basetexturemid;
@@ -399,13 +399,11 @@ R_DrawVisSprite
   int			x1,
   int			x2 )
 {
-    column_t*		column;
     int			texturecolumn;
     fixed_t		frac;
-    patch_t*		patch;
 	
 	
-    patch = (patch_t*)W_CacheLumpNum (vis->patch+firstspritelump);
+    const auto* patch = (const patch_t*)W_CacheLumpNum (vis->patch+firstspritelump);
 
     dc_colormap = vis->colormap;
     
@@ -434,7 +432,7 @@ R_DrawVisSprite
 	if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
 	    I_Error ("R_DrawSpriteRange: bad texturecolumn");
 #endif
-	column = (column_t *) ((byte *)patch +
+	const auto* column = (const column_t *) ((const byte *)patch +
 			       LONG(patch->columnofs[texturecolumn]));
 	R_DrawMaskedColumn (column);
     }

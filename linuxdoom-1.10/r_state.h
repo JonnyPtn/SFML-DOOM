@@ -67,7 +67,6 @@ extern std::vector<int>		texturetranslation;
 // Sprite....
 extern int		firstspritelump;
 extern int		lastspritelump;
-extern int		numspritelumps;
 
 
 

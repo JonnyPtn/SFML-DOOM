@@ -49,7 +49,7 @@ extern fixed_t		pspritescale;
 extern fixed_t		pspriteiscale;
 
 
-void R_DrawMaskedColumn (column_t* column);
+void R_DrawMaskedColumn (const column_t* column);
 
 
 void R_SortVisSprites (void);
