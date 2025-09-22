@@ -479,7 +479,6 @@ void P_LoadBlockMap (int lump)
 //
 void P_GroupLines (void)
 {
-    line_t**		linebuffer;
     int			i;
     int			j;
     fixed_t		bbox[4];
@@ -507,22 +506,20 @@ void P_GroupLines (void)
     }
 	
     // build line tables for each sector	
-    linebuffer = (line_t**)malloc(total*sizeof(void*));
 	for (auto& sector : sectors)
     {
 	M_ClearBox (bbox);
-	sector.lines = linebuffer;
 	auto li = lines.data();
 	for (j=0 ; j<numlines ; j++, li++)
 	{
 	    if (li->frontsector == &sector || li->backsector == &sector)
 	    {
-		*linebuffer++ = li;
+			sector.lines.emplace_back( li );
 		M_AddToBox (bbox, li->v1->x, li->v1->y);
 		M_AddToBox (bbox, li->v2->x, li->v2->y);
 	    }
 	}
-	if (linebuffer - sector.lines != sector.linecount)
+	if (sector.lines.size() != sector.linecount)
 	    I_Error ("P_GroupLines: miscounted");
 			
 	// set the degenmobj_t to the middle of the bounding box

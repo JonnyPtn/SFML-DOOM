@@ -35,6 +35,8 @@
 // to handle sound origins in sectors.
 #include "d_think.h"
 // SECTORS do store MObjs anyway.
+#include <vector>
+
 #include "p_mobj.h"
 
 
@@ -130,7 +132,7 @@ typedef	struct
     void*	specialdata;
 
     int			linecount;
-    struct line_s**	lines;	// [linecount] size
+    std::vector<line_s*>	lines;	// [linecount] size
     
 } sector_t;
 
