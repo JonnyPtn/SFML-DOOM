@@ -79,8 +79,8 @@ void R_ClearDrawSegs (void)
 //
 typedef	struct
 {
-    int	first;
-    int last;
+    int32_t	first;
+    int32_t last;
     
 } cliprange_t;
 

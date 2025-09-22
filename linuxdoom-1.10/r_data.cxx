@@ -224,52 +224,37 @@ R_DrawColumnInCache
 //
 void R_GenerateComposite( int texnum )
 {
-	texture_t*		texture;
-	texpatch_t*		patch;
-	int			x;
-	int			x1;
-	int			x2;
-	int			i;
-	column_t*		patchcol;
-	short*		collump;
-	unsigned short*	colofs;
+	const auto& texture = textures[texnum];
 
-	texture = &textures[texnum];
-
+	assert( texturecomposite[texnum].empty() );
 	texturecomposite[texnum].resize( texturecompositesize[texnum] );
 
-	collump = texturecolumnlump[texnum].data();
-	colofs = texturecolumnofs[texnum].data();
-
-	// Composite the columns together.
-	patch = &texture->patches[0];
-
-	for ( const auto& patch : texture->patches )
+	for ( const auto& patch : texture.patches )
 	{
 		const auto* realpatch = (const patch_t*)W_CacheLumpNum( patch.patch );
-		x1 = patch.originx;
-		x2 = x1 + SHORT( realpatch->width );
-
+		auto x1 = patch.originx;
+		auto x2 = x1 + SHORT( realpatch->width );
+		int x;
 		if ( x1 < 0 )
 			x = 0;
 		else
 			x = x1;
 
-		if ( x2 > texture->width )
-			x2 = texture->width;
+		if ( x2 > texture.width )
+			x2 = texture.width;
 
 		for ( ; x < x2; x++ )
 		{
 			// Column does not have multiple patches?
-			if ( collump[x] >= 0 )
+			if ( texturecolumnlump[texnum][x] >= 0 )
 				continue;
 
-			patchcol = (column_t *)((byte *)realpatch
+			auto* patchcol = (column_t *)((byte *)realpatch
 									 + LONG( realpatch->columnofs[x - x1] ));
 			R_DrawColumnInCache( patchcol,
-								 texturecomposite[texnum].data() + colofs[x],
+								 texturecomposite[texnum].data() + texturecolumnofs[texnum][x],
 								 patch.originy,
-								 texture->height );
+								 texture.height );
 		}
 
 	}
@@ -437,14 +422,14 @@ void R_InitTextures( void )
 	// Load the map texture definitions from textures.lmp.
 	// The data is contained in one or two lumps,
 	//  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
-	const auto* maptex = maptex1 = (const int*)W_CacheLumpName( "TEXTURE1" );
+	const auto* maptex = maptex1 = (const int32_t*)W_CacheLumpName( "TEXTURE1" );
 	numtextures1 = LONG( *maptex );
 	maxoff = W_LumpLength( W_GetNumForName( "TEXTURE1" ) );
 	directory = maptex + 1;
 
 	if ( W_CheckNumForName( "TEXTURE2" ) != -1 )
 	{
-		maptex2 = (const int*)W_CacheLumpName( "TEXTURE2" );
+		maptex2 = (const int32_t*)W_CacheLumpName( "TEXTURE2" );
 		numtextures2 = LONG( *maptex2 );
 		maxoff2 = W_LumpLength( W_GetNumForName( "TEXTURE2" ) );
 	}
@@ -573,9 +558,6 @@ void R_InitFlats( void )
 //
 void R_InitSpriteLumps( void )
 {
-	int		i;
-	const patch_t	*patch;
-
 	firstspritelump = W_GetNumForName( "S_START" ) + 1;
 	lastspritelump = W_GetNumForName( "S_END" ) - 1;
 
@@ -584,12 +566,12 @@ void R_InitSpriteLumps( void )
 	spriteoffset.resize( count );
 	spritetopoffset.resize( count );
 
-	for ( i = 0; i < count; i++ )
+	for ( auto i = 0; i < count; i++ )
 	{
 		if ( !(i & 63) )
 			printf( "." );
 
-		patch = (const patch_t*)W_CacheLumpNum( firstspritelump + i );
+		const auto* patch = (const patch_t*)W_CacheLumpNum( firstspritelump + i );
 		spritewidth[i] = SHORT( patch->width ) << FRACBITS;
 		spriteoffset[i] = SHORT( patch->leftoffset ) << FRACBITS;
 		spritetopoffset[i] = SHORT( patch->topoffset ) << FRACBITS;

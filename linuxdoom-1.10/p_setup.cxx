@@ -252,31 +252,29 @@ void P_LoadSectors (int lump)
 //
 void P_LoadNodes (int lump)
 {
-    int		i;
     int		j;
     int		k;
     mapnode_t*	mn;
-    node_t*	no;
 	
     auto numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
 	nodes.resize( numnodes );
     const auto* data = (const byte*)W_CacheLumpNum (lump);
 	
     mn = (mapnode_t *)data;
-    no = nodes.data();
-    
-    for (i=0 ; i<numnodes ; i++, no++, mn++)
+
+    for (auto& node : nodes)
     {
-	no->x = SHORT(mn->x)<<FRACBITS;
-	no->y = SHORT(mn->y)<<FRACBITS;
-	no->dx = SHORT(mn->dx)<<FRACBITS;
-	no->dy = SHORT(mn->dy)<<FRACBITS;
+	node.x = SHORT(mn->x)<<FRACBITS;
+	node.y = SHORT(mn->y)<<FRACBITS;
+	node.dx = SHORT(mn->dx)<<FRACBITS;
+	node.dy = SHORT(mn->dy)<<FRACBITS;
 	for (j=0 ; j<2 ; j++)
 	{
-	    no->children[j] = SHORT(mn->children[j]);
+		node.children[j] = SHORT(mn->children[j]);
 	    for (k=0 ; k<4 ; k++)
-		no->bbox[j][k] = SHORT(mn->bbox[j][k])<<FRACBITS;
+			node.bbox[j][k] = SHORT(mn->bbox[j][k])<<FRACBITS;
 	}
+	mn++;
     }
 	
     

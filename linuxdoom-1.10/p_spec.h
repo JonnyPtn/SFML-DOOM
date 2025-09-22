@@ -349,13 +349,13 @@ typedef struct
     fixed_t	speed;
 
     // 1 = up, 0 = waiting at top, -1 = down
-    int             direction;
+    int32_t             direction;
     
     // tics to wait at the top
-    int             topwait;
+    int32_t             topwait;
     // (keep in case a door going down is reset)
     // when it reaches 0, start going down
-    int             topcountdown;
+    int32_t             topcountdown;
     
 } vldoor_t;
 
