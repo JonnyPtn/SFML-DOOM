@@ -85,9 +85,9 @@ std::vector<side_t>		sides;
 // Blockmap size.
 int		bmapwidth;
 int		bmapheight;	// size in mapblocks
-short*		blockmap;	// int for larger maps
+const short*		blockmap;	// int for larger maps
 // offsets in blockmap are from here
-short*		blockmaplump;		
+const short*		blockmaplump;		
 // origin of block map
 fixed_t		bmaporgx;
 fixed_t		bmaporgy;
@@ -102,7 +102,7 @@ mobj_t**	blocklinks;
 // Without special effect, this could be
 //  used as a PVS lookup as well.
 //
-byte*		rejectmatrix;
+const byte*		rejectmatrix;
 
 
 // Maintain single and multi player starting spots.
@@ -121,9 +121,7 @@ mapthing_t	playerstarts[MAXPLAYERS];
 //
 void P_LoadVertexes (int lump)
 {
-    byte*		data;
     int			i;
-    mapvertex_t*	ml;
     vertex_t*		li;
 
     // Determine number of lumps:
@@ -134,9 +132,9 @@ void P_LoadVertexes (int lump)
 	vertexes.resize( numvertexes );
 
     // Load data into cache.
-    data = (byte*)W_CacheLumpNum (lump);
+    const auto* data = (const byte*)W_CacheLumpNum (lump);
 	
-    ml = (mapvertex_t *)data;
+    const auto* ml = (const mapvertex_t *)data;
     li = vertexes.data();
 
     // Copy and convert vertex coordinates,
@@ -156,7 +154,6 @@ void P_LoadVertexes (int lump)
 //
 void P_LoadSegs (int lump)
 {
-    byte*		data;
     int			i;
     mapseg_t*		ml;
     seg_t*		li;
@@ -166,7 +163,7 @@ void P_LoadSegs (int lump)
 	
     numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
 	segs.resize( numsegs );
-    data = (byte*)W_CacheLumpNum (lump);
+    const auto* data = (const byte*)W_CacheLumpNum (lump);
 	
     ml = (mapseg_t *)data;
     li = segs.data();
@@ -198,14 +195,13 @@ void P_LoadSegs (int lump)
 //
 void P_LoadSubsectors (int lump)
 {
-    byte*		data;
     int			i;
     mapsubsector_t*	ms;
     subsector_t*	ss;
 	
     numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
 	subsectors.resize( numsubsectors );
-    data = (byte*)W_CacheLumpNum (lump);
+    const auto* data = (const byte*)W_CacheLumpNum (lump);
 	
     ms = (mapsubsector_t *)data;
     ss = subsectors.data();
@@ -226,14 +222,13 @@ void P_LoadSubsectors (int lump)
 //
 void P_LoadSectors (int lump)
 {
-    byte*		data;
     int			i;
     mapsector_t*	ms;
     sector_t*		ss;
 	
     numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
     sectors.resize(numsectors);
-    data = (byte*)W_CacheLumpNum (lump);
+    const auto* data = (const byte*)W_CacheLumpNum (lump);
 	
     ms = (mapsector_t *)data;
     ss = sectors.data();
@@ -258,7 +253,6 @@ void P_LoadSectors (int lump)
 //
 void P_LoadNodes (int lump)
 {
-    byte*	data;
     int		i;
     int		j;
     int		k;
@@ -267,7 +261,7 @@ void P_LoadNodes (int lump)
 	
     numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
 	nodes.resize( numnodes );
-    data = (byte*)W_CacheLumpNum (lump);
+    const auto* data = (const byte*)W_CacheLumpNum (lump);
 	
     mn = (mapnode_t *)data;
     no = nodes.data();
@@ -295,13 +289,12 @@ void P_LoadNodes (int lump)
 //
 void P_LoadThings (int lump)
 {
-    byte*		data;
     int			i;
     mapthing_t*		mt;
     int			numthings;
     boolean		spawn;
 	
-    data = (byte*)W_CacheLumpNum (lump);
+    const auto* data = (const byte*)W_CacheLumpNum (lump);
     numthings = W_LumpLength (lump) / sizeof(mapthing_t);
 	
     mt = (mapthing_t *)data;
@@ -351,7 +344,6 @@ void P_LoadThings (int lump)
 //
 void P_LoadLineDefs (int lump)
 {
-    byte*		data;
     int			i;
     maplinedef_t*	mld;
     line_t*		ld;
@@ -360,7 +352,7 @@ void P_LoadLineDefs (int lump)
 	
     numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
 	lines.resize( numlines );
-    data = (byte*)W_CacheLumpNum (lump);
+    const auto* data = (const byte*)W_CacheLumpNum (lump);
 	
     mld = (maplinedef_t *)data;
     ld = lines.data();
@@ -431,7 +423,6 @@ void P_LoadLineDefs (int lump)
 //
 void P_LoadSideDefs (int lump)
 {
-    byte*		data;
     int			i;
     mapsidedef_t*	msd;
     side_t*		sd;
@@ -439,7 +430,7 @@ void P_LoadSideDefs (int lump)
     numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
 	sides.resize( numsides );
 
-    data = (byte*)W_CacheLumpNum (lump);
+    const auto* data = (const byte*)W_CacheLumpNum (lump);
 	
     msd = (mapsidedef_t *)data;
     sd = sides.data();
@@ -465,12 +456,8 @@ void P_LoadBlockMap (int lump)
     int		i;
     int		count;
 	
-    blockmaplump = (short*)W_CacheLumpNum (lump);
+    blockmaplump = (const short*)W_CacheLumpNum (lump);
     blockmap = blockmaplump+4;
-    count = W_LumpLength (lump)/2;
-
-    for (i=0 ; i<count ; i++)
-	blockmaplump[i] = SHORT(blockmaplump[i]);
 		
     bmaporgx = blockmaplump[0]<<FRACBITS;
     bmaporgy = blockmaplump[1]<<FRACBITS;
@@ -648,7 +635,7 @@ P_SetupLevel
     P_LoadNodes (lumpnum+ML_NODES);
     P_LoadSegs (lumpnum+ML_SEGS);
 	
-    rejectmatrix = (byte*)W_CacheLumpNum (lumpnum+ML_REJECT);
+    rejectmatrix = (const byte*)W_CacheLumpNum (lumpnum+ML_REJECT);
     P_GroupLines ();
 
     bodyqueslot = 0;

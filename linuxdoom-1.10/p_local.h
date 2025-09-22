@@ -243,9 +243,9 @@ P_RadiusAttack
 //
 // P_SETUP
 //
-extern byte*		rejectmatrix;	// for fast sight rejection
-extern short*		blockmaplump;	// offsets in blockmap are from here
-extern short*		blockmap;
+extern const byte*		rejectmatrix;	// for fast sight rejection
+extern const short*		blockmaplump;	// offsets in blockmap are from here
+extern const short*		blockmap;
 extern int		bmapwidth;
 extern int		bmapheight;	// in mapblocks
 extern fixed_t		bmaporgx;

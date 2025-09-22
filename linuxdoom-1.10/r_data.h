@@ -33,7 +33,7 @@
 #endif
 
 // Retrieve column data for span blitting.
-byte*
+const byte*
 R_GetColumn
 ( int		tex,
   int		col );

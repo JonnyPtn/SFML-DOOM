@@ -260,7 +260,6 @@ extern	patch_t *hu_font[HU_FONTSIZE];
 
 void F_TextWrite (void)
 {
-    byte*	src;
     byte*	dest;
     
     int		x,y,w;
@@ -271,7 +270,7 @@ void F_TextWrite (void)
     int		cy;
     
     // erase the entire screen to a tiled background
-    src = (byte*)W_CacheLumpName ( finaleflat );
+    const auto* src = (const byte*)W_CacheLumpName ( finaleflat );
     dest = screens[0];
 	
     for (y=0 ; y<SCREENHEIGHT ; y++)
@@ -585,7 +584,7 @@ void F_CastDrawer (void)
     patch_t*		patch;
     
     // erase the entire screen to a background
-    V_DrawPatch (0,0,0, (patch_t*)W_CacheLumpName ("BOSSBACK"));
+    V_DrawPatch (0,0,0, (const patch_t*)W_CacheLumpName ("BOSSBACK"));
 
     F_CastPrint (castorder[castnum].name);
     

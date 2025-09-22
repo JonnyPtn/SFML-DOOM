@@ -272,7 +272,7 @@ void D_Display (void)
     
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-	I_SetPalette ((byte*)W_CacheLumpName ("PLAYPAL"));
+	I_SetPalette ((const byte*)W_CacheLumpName ("PLAYPAL"));
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -307,7 +307,7 @@ void D_Display (void)
 	else
 	    y = viewwindowy+4;
 	V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68)/2,
-			  y,0,(patch_t*)W_CacheLumpName ("M_PAUSE"));
+			  y,0,(const patch_t*)W_CacheLumpName ("M_PAUSE"));
     }
 
 
@@ -433,7 +433,7 @@ void D_PageTicker (void)
 //
 void D_PageDrawer (void)
 {
-    V_DrawPatch (0,0, 0, (patch_t*)W_CacheLumpName(pagename));
+    V_DrawPatch (0,0, 0, (const patch_t*)W_CacheLumpName(pagename));
 }
 
 

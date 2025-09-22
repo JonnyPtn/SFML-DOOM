@@ -205,7 +205,7 @@ V_DrawPatch
 ( int		x,
   int		y,
   int		scrn,
-  patch_t*	patch ) 
+  const patch_t*	patch ) 
 { 
 
     int		count;
@@ -338,7 +338,7 @@ V_DrawPatchDirect
 ( int		x,
   int		y,
   int		scrn,
-  patch_t*	patch ) 
+  const patch_t*	patch ) 
 {
     V_DrawPatch (x,y,scrn, patch); 
 

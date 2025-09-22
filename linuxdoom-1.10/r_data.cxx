@@ -227,7 +227,6 @@ void R_GenerateComposite( int texnum )
 {
 	texture_t*		texture;
 	texpatch_t*		patch;
-	patch_t*		realpatch;
 	int			x;
 	int			x1;
 	int			x2;
@@ -248,7 +247,7 @@ void R_GenerateComposite( int texnum )
 
 	for ( const auto& patch : texture->patches )
 	{
-		realpatch = (patch_t*)W_CacheLumpNum( patch.patch );
+		const auto* realpatch = (const patch_t*)W_CacheLumpNum( patch.patch );
 		x1 = patch.originx;
 		x2 = x1 + SHORT( realpatch->width );
 
@@ -287,7 +286,6 @@ void R_GenerateLookup( int texnum )
 	texture_t*		texture;
 	byte*		patchcount;	// patchcount[texture->width]
 	texpatch_t*		patch;
-	patch_t*		realpatch;
 	int			x;
 	int			x1;
 	int			x2;
@@ -313,7 +311,7 @@ void R_GenerateLookup( int texnum )
 
 	for ( const auto& patch : texture->patches )
 	{
-		realpatch = (patch_t*)W_CacheLumpNum( patch.patch );
+		const auto* realpatch = (const patch_t*)W_CacheLumpNum( patch.patch );
 		x1 = patch.originx;
 		x2 = x1 + SHORT( realpatch->width );
 
@@ -365,7 +363,7 @@ void R_GenerateLookup( int texnum )
 //
 // R_GetColumn
 //
-byte*
+const byte*
 R_GetColumn
 ( int		tex,
   int		col )
@@ -378,7 +376,7 @@ R_GetColumn
 	ofs = texturecolumnofs[tex][col];
 
 	if ( lump > 0 )
-		return (byte *)W_CacheLumpNum( lump ) + ofs;
+		return (const byte *)W_CacheLumpNum( lump ) + ofs;
 
 	if ( texturecomposite[tex].empty() )
 		R_GenerateComposite( tex );
@@ -404,13 +402,10 @@ void R_InitTextures( void )
 	int			i;
 	int			j;
 
-	int*		maptex;
-	int*		maptex2;
-	int*		maptex1;
+	const int*		maptex2;
+	const int*		maptex1;
 
 	char		name[9];
-	char*		names;
-	char*		name_p;
 
 	int			totalwidth;
 	int			nummappatches;
@@ -420,7 +415,7 @@ void R_InitTextures( void )
 	int			numtextures1;
 	int			numtextures2;
 
-	int*		directory;
+	const int*		directory;
 
 	int			temp1;
 	int			temp2;
@@ -429,9 +424,9 @@ void R_InitTextures( void )
 
 	// Load the patch names from pnames.lmp.
 	name[8] = 0;
-	names = (char*)W_CacheLumpName( "PNAMES" );
+	const auto* names = (const char*)W_CacheLumpName( "PNAMES" );
 	nummappatches = LONG( *((int *)names) );
-	name_p = names + 4;
+	const auto* name_p = names + 4;
 	std::vector<int> patchlookup(nummappatches);
 
 	for ( i = 0; i < nummappatches; i++ )
@@ -443,14 +438,14 @@ void R_InitTextures( void )
 	// Load the map texture definitions from textures.lmp.
 	// The data is contained in one or two lumps,
 	//  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
-	maptex = maptex1 = (int*)W_CacheLumpName( "TEXTURE1" );
+	const auto* maptex = maptex1 = (const int*)W_CacheLumpName( "TEXTURE1" );
 	numtextures1 = LONG( *maptex );
 	maxoff = W_LumpLength( W_GetNumForName( "TEXTURE1" ) );
 	directory = maptex + 1;
 
 	if ( W_CheckNumForName( "TEXTURE2" ) != -1 )
 	{
-		maptex2 = (int*)W_CacheLumpName( "TEXTURE2" );
+		maptex2 = (const int*)W_CacheLumpName( "TEXTURE2" );
 		numtextures2 = LONG( *maptex2 );
 		maxoff2 = W_LumpLength( W_GetNumForName( "TEXTURE2" ) );
 	}
@@ -580,7 +575,7 @@ void R_InitFlats( void )
 void R_InitSpriteLumps( void )
 {
 	int		i;
-	patch_t	*patch;
+	const patch_t	*patch;
 
 	firstspritelump = W_GetNumForName( "S_START" ) + 1;
 	lastspritelump = W_GetNumForName( "S_END" ) - 1;
@@ -595,7 +590,7 @@ void R_InitSpriteLumps( void )
 		if ( !(i & 63) )
 			printf( "." );
 
-		patch = (patch_t*)W_CacheLumpNum( firstspritelump + i );
+		patch = (const patch_t*)W_CacheLumpNum( firstspritelump + i );
 		spritewidth[i] = SHORT( patch->width ) << FRACBITS;
 		spriteoffset[i] = SHORT( patch->leftoffset ) << FRACBITS;
 		spritetopoffset[i] = SHORT( patch->topoffset ) << FRACBITS;

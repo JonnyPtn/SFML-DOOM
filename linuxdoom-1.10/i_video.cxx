@@ -383,7 +383,7 @@ void I_ReadScreen( byte* scr )
 // Palette stuff.
 //
 
-void UploadNewPalette(byte *palette)
+void UploadNewPalette(const byte *palette)
 {
 
 	int	i;
@@ -415,7 +415,7 @@ void UploadNewPalette(byte *palette)
 //
 // I_SetPalette
 //
-void I_SetPalette( byte* palette )
+void I_SetPalette( const byte* palette )
 {
 	UploadNewPalette(palette);
 }

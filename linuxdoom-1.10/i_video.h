@@ -41,7 +41,7 @@ void I_InitGraphics (void);
 
 
 // Takes full 8 bit values.
-void I_SetPalette (byte* palette);
+void I_SetPalette (const byte* palette);
 
 void I_UpdateNoBlit (void);
 void I_FinishUpdate (void);

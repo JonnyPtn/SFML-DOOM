@@ -76,8 +76,8 @@ int	W_GetNumForName ( const std::string& name);
 int	W_LumpLength (int lump);
 void    W_ReadLump (int lump, void *dest);
 
-void*	W_CacheLumpNum (int lump);
-void*	W_CacheLumpName (const char* name);
+const void*	W_CacheLumpNum (int lump);
+const void*	W_CacheLumpName (const char* name);
 
 
 

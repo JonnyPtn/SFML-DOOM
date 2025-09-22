@@ -90,7 +90,7 @@ fixed_t			dc_iscale;
 fixed_t			dc_texturemid;
 
 // first pixel in a column (possibly virtual) 
-byte*			dc_source;		
+const byte*			dc_source;		
 
 // just for profiling 
 int			dccount;

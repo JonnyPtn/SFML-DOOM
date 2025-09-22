@@ -341,7 +341,7 @@ W_ReadLump
 //
 // W_CacheLumpNum
 //
-void*
+const void*
 W_CacheLumpNum
 ( int		lump)
 {
@@ -371,7 +371,7 @@ W_CacheLumpNum
 //
 // W_CacheLumpName
 //
-void*
+const void*
 W_CacheLumpName
 ( const char*		name)
 {
