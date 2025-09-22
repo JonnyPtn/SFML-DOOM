@@ -343,7 +343,7 @@ P_CheckSight
     strace.dy = t2->y - t1->y;
 
     // the head node is the last node output
-    return P_CrossBSPNode (numnodes-1);	
+    return P_CrossBSPNode (nodes.size()-1);	
 }
 
 

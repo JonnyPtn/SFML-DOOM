@@ -65,7 +65,6 @@ std::vector<sector_t>	sectors;
 int		numsubsectors;
 std::vector<subsector_t>	subsectors;
 
-int		numnodes;
 std::vector<node_t>		nodes;
 
 int		numlines;
@@ -259,7 +258,7 @@ void P_LoadNodes (int lump)
     mapnode_t*	mn;
     node_t*	no;
 	
-    numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
+    auto numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
 	nodes.resize( numnodes );
     const auto* data = (const byte*)W_CacheLumpNum (lump);
 	

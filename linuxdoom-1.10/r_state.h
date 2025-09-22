@@ -88,7 +88,6 @@ extern std::vector<sector_t>	sectors;
 extern int		numsubsectors;
 extern std::vector < subsector_t>	subsectors;
 
-extern int		numnodes;
 extern std::vector < node_t>		nodes;
 
 extern int		numlines;
