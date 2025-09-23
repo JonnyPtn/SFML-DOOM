@@ -17,7 +17,7 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
-target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Audio)
 set_target_properties(${PROJECT_NAME} PROPERTIES 
     DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     XCODE_GENERATE_SCHEME ON
