@@ -113,6 +113,7 @@ void P_LoadVertexes(int lump)
     numvertexes = W_LumpLength(lump) / sizeof(mapvertex_t);
 
     // Allocate zone memory for buffer.
+    vertexes.clear();
     vertexes.resize(numvertexes);
 
     // Load data into cache.
@@ -143,6 +144,7 @@ void P_LoadSegs(int lump)
     int side;
 
     numsegs = W_LumpLength(lump) / sizeof(mapseg_t);
+    segs.clear();
     segs.resize(numsegs);
     const auto *data = (const byte *)W_CacheLumpNum(lump);
 
@@ -178,6 +180,7 @@ void P_LoadSubsectors(int lump)
     subsector_t *ss;
 
     numsubsectors = W_LumpLength(lump) / sizeof(mapsubsector_t);
+    subsectors.clear();
     subsectors.resize(numsubsectors);
     const auto *data = (const byte *)W_CacheLumpNum(lump);
 
@@ -201,6 +204,7 @@ void P_LoadSectors(int lump)
     sector_t *ss;
 
     numsectors = W_LumpLength(lump) / sizeof(mapsector_t);
+    sectors.clear();
     sectors.resize(numsectors);
     const auto *data = (const byte *)W_CacheLumpNum(lump);
 
@@ -229,6 +233,7 @@ void P_LoadNodes(int lump)
     mapnode_t *mn;
 
     auto numnodes = W_LumpLength(lump) / sizeof(mapnode_t);
+    nodes.clear();
     nodes.resize(numnodes);
     const auto *data = (const byte *)W_CacheLumpNum(lump);
 
@@ -314,6 +319,7 @@ void P_LoadLineDefs(int lump)
     vertex_t *v2;
 
     numlines = W_LumpLength(lump) / sizeof(maplinedef_t);
+    lines.clear();
     lines.resize(numlines);
     const auto *data = (const byte *)W_CacheLumpNum(lump);
 
@@ -388,6 +394,7 @@ void P_LoadSideDefs(int lump)
     side_t *sd;
 
     numsides = W_LumpLength(lump) / sizeof(mapsidedef_t);
+    sides.clear();
     sides.resize(numsides);
 
     const auto *data = (const byte *)W_CacheLumpNum(lump);

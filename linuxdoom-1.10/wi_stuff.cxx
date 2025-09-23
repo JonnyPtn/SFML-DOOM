@@ -339,7 +339,7 @@ static patch_t *p[MAXPLAYERS];
 static patch_t *bp[MAXPLAYERS];
 
 // Name graphics of each level (centered)
-static patch_t **lnames;
+static std::vector<patch_t*> lnames;
 
 //
 // CODE
@@ -1436,7 +1436,7 @@ void WI_loadData(void)
     if (gamemode == commercial)
     {
         NUMCMAPS = 32;
-        lnames = (patch_t **)malloc(sizeof(patch_t *) * NUMCMAPS);
+        lnames.resize(NUMCMAPS);
         for (i = 0; i < NUMCMAPS; i++)
         {
             sprintf(name, "CWILV%2.2d", i);
@@ -1445,7 +1445,7 @@ void WI_loadData(void)
     }
     else
     {
-        lnames = (patch_t **)malloc(sizeof(patch_t *) * NUMMAPS);
+        lnames.resize(NUMMAPS);
         for (i = 0; i < NUMMAPS; i++)
         {
             sprintf(name, "WILV%d%d", wbs->epsd, i);
@@ -1580,9 +1580,6 @@ void WI_unloadData(void)
         else
         {
         }
-
-    free(lnames);
-
     //
     //
 }
