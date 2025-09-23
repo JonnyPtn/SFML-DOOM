@@ -46,3 +46,7 @@ CpackSourceConfig.cmake
 *.pdb
 *.exe
 *.ilk
+*.dll
+
+# The vcpkg files we use for dependencies
+*vcpkg*
