@@ -1,7 +1,6 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
-// $Id:$
+//
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -14,13 +13,12 @@
 // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
 // for more details.
 //
-// $Log:$
+//
 //
 // DESCRIPTION:  Heads-up displays
 //
 //-----------------------------------------------------------------------------
 
-static const char rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 
 #include <ctype.h>
 

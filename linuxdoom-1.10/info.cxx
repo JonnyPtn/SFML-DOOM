@@ -1,7 +1,6 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
-// $Id:$
+//
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -14,7 +13,7 @@
 // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
 // for more details.
 //
-// $Log:$
+//
 //
 // DESCRIPTION:
 //	Thing frame/state LUT,
@@ -24,7 +23,6 @@
 //-----------------------------------------------------------------------------
 
 #include "d_player.h"
-static const char rcsid[] = "$Id: info.c,v 1.3 1997/01/26 07:45:00 b1 Exp $";
 
 // Data.
 #include "m_fixed.h"

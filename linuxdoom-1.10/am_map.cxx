@@ -1,7 +1,6 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
-// $Id:$
+//
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -15,13 +14,12 @@
 // for more details.
 //
 //
-// $Log:$
+//
 //
 // DESCRIPTION:  the automap code
 //
 //-----------------------------------------------------------------------------
 
-static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
 
 #include <stdio.h>
 

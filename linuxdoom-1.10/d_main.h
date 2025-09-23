@@ -1,7 +1,6 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
-// $Id:$
+//
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -14,7 +13,7 @@
 // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
 // for more details.
 //
-// $Log:$
+//
 //
 // DESCRIPTION:
 //	System specific interface stuff.

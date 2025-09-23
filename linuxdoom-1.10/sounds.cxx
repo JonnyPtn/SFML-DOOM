@@ -1,7 +1,6 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
-// $Id:$
+//
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -14,7 +13,7 @@
 // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
 // for more details.
 //
-// $Log:$
+//
 //
 // DESCRIPTION:
 //	Created by a sound utility.
@@ -22,7 +21,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char rcsid[] = "$Id: sounds.c,v 1.3 1997/01/29 22:40:44 b1 Exp $";
 
 #include "sounds.h"
 #include "doomtype.h"

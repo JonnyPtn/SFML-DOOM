@@ -1,7 +1,6 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
-// $Id:$
+//
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -14,7 +13,7 @@
 // FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
 // for more details.
 //
-// $Log:$
+//
 //
 // DESCRIPTION:
 //  Sky rendering. The DOOM sky is a texture map like any
@@ -25,7 +24,6 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 // Needed for FRACUNIT.
 #include "m_fixed.h"
