@@ -150,9 +150,6 @@ void S_Init(int sfxVolume, int musicVolume)
     // no sounds are playing, and they are not mus_paused
     mus_paused = 0;
 
-    // Note that sounds have not been cached (yet).
-    for (i = 1; i < NUMSFX; i++)
-        S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
 }
 
 //
@@ -209,51 +206,26 @@ void S_Start(void)
 
 void S_StartSoundAtVolume(void *origin_p, int sfx_id, int volume)
 {
-
-    int rc;
-    int sep;
-    int pitch;
-    int priority;
-    sfxinfo_t *sfx;
-    int cnum;
-
     mobj_t *origin = (mobj_t *)origin_p;
-
-    // Debug.
-    /*fprintf( stderr,
-               "S_StartSoundAtVolume: playing sound %d (%s)\n",
-               sfx_id, S_sfx[sfx_id].name );*/
 
     // check for bogus sound #
     if (sfx_id < 1 || sfx_id > NUMSFX)
         I_Error("Bad sfx #: %d", sfx_id);
 
-    sfx = &S_sfx[sfx_id];
+    const auto& sfx = S_sfx[sfx_id];
 
     // Initialize sound parameters
-    if (sfx->link)
-    {
-        pitch = sfx->pitch;
-        priority = sfx->priority;
-        volume += sfx->volume;
 
-        if (volume < 1)
-            return;
+        auto pitch = NORM_PITCH;
+        auto priority = NORM_PRIORITY;
 
-        if (volume > snd_SfxVolume)
-            volume = snd_SfxVolume;
-    }
-    else
-    {
-        pitch = NORM_PITCH;
-        priority = NORM_PRIORITY;
-    }
 
     // Check to see if it is audible,
     //  and if not, modify the params
+        int sep;
     if (origin && origin != players[consoleplayer].mo)
     {
-        rc = S_AdjustSoundParams(players[consoleplayer].mo, origin, &volume, &sep, &pitch);
+        auto rc = S_AdjustSoundParams(players[consoleplayer].mo, origin, &volume, &sep, &pitch);
 
         if (origin->x == players[consoleplayer].mo->x && origin->y == players[consoleplayer].mo->y)
         {
@@ -291,43 +263,9 @@ void S_StartSoundAtVolume(void *origin_p, int sfx_id, int volume)
     // kill old sound
     S_StopSound(origin);
 
-    // try to find a channel
-    cnum = S_getChannel(origin, sfx);
-
-    if (cnum < 0)
-        return;
-
-    //
-    // This is supposed to handle the loading/caching.
-    // For some odd reason, the caching is done nearly
-    //  each time the sound is needed?
-    //
-
-    // get lumpnum if necessary
-    if (sfx->lumpnum < 0)
-        sfx->lumpnum = I_GetSfxLumpNum(sfx);
-
-#ifndef SNDSRV
-    // cache data if necessary
-    if (!sfx->data)
-    {
-        fprintf(stderr, "S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
-
-        // DOS remains, 8bit handling
-        // sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum);
-        // fprintf( stderr,
-        //	     "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n",
-        //       sfx_id, sfx->lumpnum, (int)sfx->data );
-    }
-#endif
-
-    // increase the usefulness
-    if (sfx->usefulness++ < 0)
-        sfx->usefulness = 1;
-
     // Assigns the handle to one of the channels in the
     //  mix/output buffer.
-    channels[cnum].handle = I_StartSound(sfx_id,
+    I_StartSound(sfx_id,
                                          /*sfx->data,*/
                                          volume, sep, pitch, priority);
 }
@@ -475,21 +413,6 @@ void S_UpdateSounds(void *listener_p)
                 pitch = NORM_PITCH;
                 sep = NORM_SEP;
 
-                if (sfx->link)
-                {
-                    pitch = sfx->pitch;
-                    volume += sfx->volume;
-                    if (volume < 1)
-                    {
-                        S_StopChannel(cnum);
-                        continue;
-                    }
-                    else if (volume > snd_SfxVolume)
-                    {
-                        volume = snd_SfxVolume;
-                    }
-                }
-
                 // check non-local sounds for distance clipping
                 //  or modify their params
                 if (c->origin && listener_p != c->origin)
@@ -623,9 +546,6 @@ void S_StopChannel(int cnum)
             }
         }
 
-        // degrade usefulness of sound data
-        c->sfxinfo->usefulness--;
-
         c->sfxinfo = 0;
     }
 }
@@ -716,10 +636,6 @@ int S_getChannel(void *origin, sfxinfo_t *sfxinfo)
     // None available
     if (cnum == numChannels)
     {
-        // Look for lower priority
-        for (cnum = 0; cnum < numChannels; cnum++)
-            if (channels[cnum].sfxinfo->priority >= sfxinfo->priority)
-                break;
 
         if (cnum == numChannels)
         {

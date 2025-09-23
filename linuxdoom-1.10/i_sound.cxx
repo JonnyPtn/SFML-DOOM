@@ -126,17 +126,6 @@ void I_SetMusicVolume(int volume)
 }
 
 //
-// Retrieve the raw data lump index
-//  for a given SFX name.
-//
-int I_GetSfxLumpNum(sfxinfo_t *sfx)
-{
-    char namebuf[9];
-    sprintf(namebuf, "ds%s", sfx->name);
-    return W_GetNumForName(namebuf);
-}
-
-//
 // Starting a sound means adding it
 //  to the current list of active sounds
 //  in the internal channels.
@@ -235,17 +224,8 @@ void I_InitSound()
 
     for (auto i = 1; i < NUMSFX; i++)
     {
-        // Alias? Example is the chaingun sound linked to pistol.
-        if (!S_sfx[i].link)
-        {
             // Load data from WAD file.
             getsfx(S_sfx[i].name);
-        }
-        else
-        {
-            // Previously loaded already?
-            S_sfx[i].data = S_sfx[i].link->data;
-        }
     }
 
     fprintf(stderr, " pre-cached all sound data\n");
