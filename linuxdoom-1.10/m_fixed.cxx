@@ -26,9 +26,6 @@
 #include "doomtype.h"
 #include "i_system.h"
 
-#ifdef __GNUG__
-#pragma implementation "m_fixed.h"
-#endif
 #include "m_fixed.h"
 
 // Fixme. __USE_C_FIXED__ or something.

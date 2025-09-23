@@ -36,9 +36,6 @@
 #include "d_net.h"
 #include "g_game.h"
 
-#ifdef __GNUG__
-#pragma implementation "i_system.h"
-#endif
 #include "i_system.h"
 
 int mb_used = 6;

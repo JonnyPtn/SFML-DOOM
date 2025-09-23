@@ -21,9 +21,6 @@
 #ifndef __I_NET__
 #define __I_NET__
 
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 // Called by D_DoomMain.
 

@@ -21,9 +21,6 @@
 //-----------------------------------------------------------------------------
 
 
-#ifdef __GNUG__
-#pragma implementation "m_swap.h"
-#endif
 #include "m_swap.h"
 
 // Not needed with big endian.

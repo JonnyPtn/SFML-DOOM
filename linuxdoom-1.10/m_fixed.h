@@ -21,9 +21,6 @@
 #ifndef __M_FIXED__
 #define __M_FIXED__
 
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 #include <cstdint>
 

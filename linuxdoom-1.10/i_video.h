@@ -25,9 +25,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 inline sf::Color colors[256];
 

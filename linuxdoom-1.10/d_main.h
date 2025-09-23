@@ -28,9 +28,6 @@
 
 #include "d_event.h"
 
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 inline std::vector<std::string> wadfiles;
 

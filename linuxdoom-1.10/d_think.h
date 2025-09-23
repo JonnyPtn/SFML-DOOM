@@ -23,9 +23,6 @@
 #ifndef __D_THINK__
 #define __D_THINK__
 
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 //
 // Experimental stuff.

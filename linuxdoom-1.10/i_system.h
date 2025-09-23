@@ -24,9 +24,6 @@
 #include "d_event.h"
 #include "d_ticcmd.h"
 
-#ifdef __GNUG__
-#pragma interface
-#endif
 
 // Called by DoomMain.
 void I_Init(void);
