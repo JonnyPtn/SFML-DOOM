@@ -137,7 +137,7 @@ int sfKeyToDoom(sf::Keyboard::Key key)
     case RAlt:
         return KEY_RALT;
     }
-    return 0;
+    return 'a' + static_cast<int>(key);
 }
 
 static int lastmousex = 0;

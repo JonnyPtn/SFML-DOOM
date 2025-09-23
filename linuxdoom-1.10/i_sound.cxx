@@ -221,8 +221,12 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
 void I_ShutdownSound(void)
 {
     // Wait for all sounds to finish
-    while (!activeSfx.empty() && activeSfx.front().getStatus() != sf::Sound::Status::Stopped)
+    while (!activeSfx.empty())
     {
+        if (activeSfx.front().getStatus() != sf::Sound::Status::Playing)
+        {
+            activeSfx.erase(activeSfx.begin());
+        }
     };
 }
 
