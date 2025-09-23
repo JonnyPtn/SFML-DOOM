@@ -31,7 +31,7 @@
 // DOOM version
 enum
 {
-    VERSION = 110
+    VERSION = 109
 };
 
 // Game mode handling - identify IWAD version

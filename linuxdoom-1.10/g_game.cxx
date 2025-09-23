@@ -1474,9 +1474,13 @@ void G_DoPlayDemo(void)
     int i, episode, map;
 
     gameaction = ga_nothing;
-    // JONNY TODO demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname);
+    auto data = (byte *)W_CacheLumpName(defdemoname);
+    auto size = W_LumpLength(W_GetNumForName(defdemoname));
+    demobuffer.resize(size);
+    std::memcpy(demobuffer.data(), data, size);
+    demo_p = demobuffer.data();
 
-    /* if ( *demo_p++ != VERSION )
+     if ( *demo_p++ != VERSION )
      {
        fprintf( stderr, "Demo is from a different game version!\n");
        gameaction = ga_nothing;
@@ -1506,7 +1510,7 @@ void G_DoPlayDemo(void)
      precache = true;
 
      usergame = false;
-     demoplayback = true; */
+     demoplayback = true; 
 }
 
 //
