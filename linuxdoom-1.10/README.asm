@@ -245,9 +245,6 @@ hdone:
 	popad
 	ret
 
-
-
-
 //====================================================
 // fpfunc.S  as of January 10th, 1997 (parts)
 
@@ -280,4 +277,3 @@ _FixedDiv2:
 	ret
 
 #endif
-

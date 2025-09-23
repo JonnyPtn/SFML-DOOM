@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -21,12 +21,11 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #ifndef __D_MAIN__
 #define __D_MAIN__
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "d_event.h"
 
@@ -34,13 +33,9 @@
 #pragma interface
 #endif
 
-
-
 inline std::vector<std::string> wadfiles;
 
-void D_AddFile (const char *file);
-
-
+void D_AddFile(const char *file);
 
 //
 // D_DoomMain()
@@ -48,19 +43,17 @@ void D_AddFile (const char *file);
 // calls all startup code, parses command line options.
 // If not overrided by user input, calls N_AdvanceDemo.
 //
-void D_DoomMain (void);
+void D_DoomMain(void);
 
 // Called by IO functions when input is detected.
-void D_PostEvent (event_t* ev);
-
-	
+void D_PostEvent(event_t *ev);
 
 //
 // BASE LEVEL
 //
-void D_PageTicker (void);
-void D_PageDrawer (void);
-void D_AdvanceDemo (void);
-void D_StartTitle (void);
+void D_PageTicker(void);
+void D_PageDrawer(void);
+void D_AdvanceDemo(void);
+void D_StartTitle(void);
 
 #endif

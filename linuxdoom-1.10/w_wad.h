@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -19,19 +19,16 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #ifndef __W_WAD__
 #define __W_WAD__
 
-#include <vector>
-#include <string>
 #include <fstream>
-
+#include <string>
+#include <vector>
 
 #ifdef __GNUG__
 #pragma interface
 #endif
-
 
 //
 // TYPES
@@ -39,19 +36,17 @@
 typedef struct
 {
     // Should be "IWAD" or "PWAD".
-    char		identification[4];		
-    int			numlumps;
-    int			infotableofs;
-    
-} wadinfo_t;
+    char identification[4];
+    int numlumps;
+    int infotableofs;
 
+} wadinfo_t;
 
 struct filelump_t
 {
-    int			filepos;
-    int			size;
-    char		name[8]{};
-    
+    int filepos;
+    int size;
+    char name[8]{};
 };
 
 //
@@ -59,28 +54,24 @@ struct filelump_t
 //
 struct lumpinfo_t
 {
-    std::string	name{};
-    std::shared_ptr<std::ifstream>		handle;
-    int		position;
-    int		size;
+    std::string name{};
+    std::shared_ptr<std::ifstream> handle;
+    int position;
+    int size;
 };
 
+inline std::vector<lumpinfo_t> lumpinfo;
 
-inline std::vector<lumpinfo_t>		lumpinfo;
+void W_InitMultipleFiles(const std::vector<std::string> &filenames);
 
-void    W_InitMultipleFiles( const std::vector<std::string>& filenames );
+int W_CheckNumForName(std::string name);
+int W_GetNumForName(const std::string &name);
 
-int	W_CheckNumForName ( std::string name);
-int	W_GetNumForName ( const std::string& name);
+int W_LumpLength(int lump);
+void W_ReadLump(int lump, void *dest);
 
-int	W_LumpLength (int lump);
-void    W_ReadLump (int lump, void *dest);
-
-const void*	W_CacheLumpNum (int lump);
-const void*	W_CacheLumpName (const char* name);
-
-
-
+const void *W_CacheLumpNum(int lump);
+const void *W_CacheLumpName(const char *name);
 
 #endif
 //-----------------------------------------------------------------------------

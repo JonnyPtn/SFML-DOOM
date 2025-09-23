@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -19,7 +19,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #ifndef __R_STATE__
 #define __R_STATE__
 
@@ -29,13 +28,9 @@
 
 #include <vector>
 
-
-
 #ifdef __GNUG__
 #pragma interface
 #endif
-
-
 
 //
 // Refresh internal data structures,
@@ -43,92 +38,84 @@
 //
 
 // needed for texture pegging
-extern std::vector<fixed_t>		textureheight;
+extern std::vector<fixed_t> textureheight;
 
 // needed for pre rendering (fracs)
-extern std::vector<fixed_t>		spritewidth;
+extern std::vector<fixed_t> spritewidth;
 
-extern std::vector<fixed_t>		spriteoffset;
-extern std::vector<fixed_t>		spritetopoffset;
+extern std::vector<fixed_t> spriteoffset;
+extern std::vector<fixed_t> spritetopoffset;
 
-extern lighttable_t*	colormaps;
+extern lighttable_t *colormaps;
 
-extern int		viewwidth;
-extern int		scaledviewwidth;
-extern int		viewheight;
+extern int viewwidth;
+extern int scaledviewwidth;
+extern int viewheight;
 
-extern int		firstflat;
+extern int firstflat;
 
 // for global animation
-extern std::vector<int>		flattranslation;	
-extern std::vector<int>		texturetranslation;	
-
+extern std::vector<int> flattranslation;
+extern std::vector<int> texturetranslation;
 
 // Sprite....
-extern int		firstspritelump;
-extern int		lastspritelump;
-
-
+extern int firstspritelump;
+extern int lastspritelump;
 
 //
 // Lookup tables for map data.
 //
-extern int		numsprites;
-extern std::vector < spritedef_t>	sprites;
+extern int numsprites;
+extern std::vector<spritedef_t> sprites;
 
-extern int		numvertexes;
-extern std::vector<vertex_t>	vertexes;
+extern int numvertexes;
+extern std::vector<vertex_t> vertexes;
 
-extern int		numsegs;
-extern std::vector < seg_t>		segs;
+extern int numsegs;
+extern std::vector<seg_t> segs;
 
-extern int		numsectors;
-extern std::vector<sector_t>	sectors;
+extern int numsectors;
+extern std::vector<sector_t> sectors;
 
-extern int		numsubsectors;
-extern std::vector < subsector_t>	subsectors;
+extern int numsubsectors;
+extern std::vector<subsector_t> subsectors;
 
-extern std::vector < node_t>		nodes;
+extern std::vector<node_t> nodes;
 
-extern int		numlines;
-extern std::vector < line_t>		lines;
+extern int numlines;
+extern std::vector<line_t> lines;
 
-extern int		numsides;
-extern std::vector < side_t>		sides;
-
+extern int numsides;
+extern std::vector<side_t> sides;
 
 //
 // POV data.
 //
-extern fixed_t		viewx;
-extern fixed_t		viewy;
-extern fixed_t		viewz;
+extern fixed_t viewx;
+extern fixed_t viewy;
+extern fixed_t viewz;
 
-extern angle_t		viewangle;
-extern player_t*	viewplayer;
-
+extern angle_t viewangle;
+extern player_t *viewplayer;
 
 // ?
-extern angle_t		clipangle;
+extern angle_t clipangle;
 
-extern int		viewangletox[FINEANGLES/2];
-extern angle_t		xtoviewangle[SCREENWIDTH+1];
-//extern fixed_t		finetangent[FINEANGLES/2];
+extern int viewangletox[FINEANGLES / 2];
+extern angle_t xtoviewangle[SCREENWIDTH + 1];
+// extern fixed_t		finetangent[FINEANGLES/2];
 
-extern fixed_t		rw_distance;
-extern angle_t		rw_normalangle;
-
-
+extern fixed_t rw_distance;
+extern angle_t rw_normalangle;
 
 // angle to line origin
-extern int		rw_angle1;
+extern int rw_angle1;
 
 // Segs count?
-extern int		sscount;
+extern int sscount;
 
-extern visplane_t*	floorplane;
-extern visplane_t*	ceilingplane;
-
+extern visplane_t *floorplane;
+extern visplane_t *ceilingplane;
 
 #endif
 //-----------------------------------------------------------------------------

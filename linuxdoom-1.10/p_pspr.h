@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -19,7 +19,6 @@
 //
 //-----------------------------------------------------------------------------
 
-
 #ifndef __P_PSPR__
 #define __P_PSPR__
 
@@ -27,7 +26,6 @@
 // Needs fixed point, and BAM angles.
 #include "m_fixed.h"
 #include "tables.h"
-
 
 //
 // Needs to include the precompiled
@@ -42,15 +40,12 @@
 #pragma interface
 #endif
 
-
 //
 // Frame flags:
 // handles maximum brightness (torches, muzzle flare, light sources)
 //
-#define FF_FULLBRIGHT	0x8000	// flag in thing->frame
-#define FF_FRAMEMASK	0x7fff
-
-
+#define FF_FULLBRIGHT 0x8000 // flag in thing->frame
+#define FF_FRAMEMASK 0x7fff
 
 //
 // Overlay psprites are scaled shapes
@@ -67,10 +62,10 @@ typedef enum
 
 typedef struct pspdef_s
 {
-    state_t*	state;	// a NULL state means not active
-    int		tics;
-    fixed_t	sx;
-    fixed_t	sy;
+    state_t *state; // a NULL state means not active
+    int tics;
+    fixed_t sx;
+    fixed_t sy;
 
 } pspdef_t;
 

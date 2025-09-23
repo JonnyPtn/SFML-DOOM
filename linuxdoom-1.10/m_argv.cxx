@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -20,17 +20,12 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: m_argv.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
-
+static const char rcsid[] = "$Id: m_argv.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 #include <string.h>
 
-int		myargc;
-char**		myargv;
-
-
-
+int myargc;
+char **myargv;
 
 //
 // M_CheckParm
@@ -41,19 +36,15 @@ char**		myargv;
 #if WIN32
 #define strcasecmp _stricmp
 #endif
-int M_CheckParm (const char *check)
+int M_CheckParm(const char *check)
 {
-    int		i;
+    int i;
 
-    for (i = 1;i<myargc;i++)
+    for (i = 1; i < myargc; i++)
     {
-	if ( !strcasecmp(check, myargv[i]) )
-	    return i;
+        if (!strcasecmp(check, myargv[i]))
+            return i;
     }
 
     return 0;
 }
-
-
-
-

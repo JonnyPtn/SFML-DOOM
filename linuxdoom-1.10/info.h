@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -1143,24 +1143,22 @@ typedef enum
     NUMSTATES
 } statenum_t;
 
-
 typedef struct
 {
-  spritenum_t	sprite;
-  long			frame;
-  long			tics;
-  // void		(*action) ();
-  actionf_t			action;
-  statenum_t			nextstate;
-  long			misc1, misc2;
+    spritenum_t sprite;
+    long frame;
+    long tics;
+    // void		(*action) ();
+    actionf_t action;
+    statenum_t nextstate;
+    long misc1, misc2;
 } state_t;
 
-extern state_t	states[NUMSTATES];
-extern const char *sprnames[NUMSPRITES+1];
+extern state_t states[NUMSTATES];
+extern const char *sprnames[NUMSPRITES + 1];
 
-
-
-typedef enum {
+typedef enum
+{
     MT_PLAYER,
     MT_POSSESSED,
     MT_SHOTGUY,
@@ -1304,29 +1302,29 @@ typedef enum {
 
 typedef struct
 {
-    int	doomednum;
-    int	spawnstate;
-    int	spawnhealth;
-    int	seestate;
-    int	seesound;
-    int	reactiontime;
-    int	attacksound;
-    int	painstate;
-    int	painchance;
-    int	painsound;
-    int	meleestate;
-    int	missilestate;
-    int	deathstate;
-    int	xdeathstate;
-    int	deathsound;
-    int	speed;
-    int	radius;
-    int	height;
-    int	mass;
-    int	damage;
-    int	activesound;
-    int	flags;
-    int	raisestate;
+    int doomednum;
+    int spawnstate;
+    int spawnhealth;
+    int seestate;
+    int seesound;
+    int reactiontime;
+    int attacksound;
+    int painstate;
+    int painchance;
+    int painsound;
+    int meleestate;
+    int missilestate;
+    int deathstate;
+    int xdeathstate;
+    int deathsound;
+    int speed;
+    int radius;
+    int height;
+    int mass;
+    int damage;
+    int activesound;
+    int flags;
+    int raisestate;
 
 } mobjinfo_t;
 
