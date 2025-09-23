@@ -136,6 +136,8 @@ int sfKeyToDoom(sf::Keyboard::Key key)
     case LAlt:
     case RAlt:
         return KEY_RALT;
+    case Space:
+        return ' ';
     }
     return 'a' + static_cast<int>(key);
 }
