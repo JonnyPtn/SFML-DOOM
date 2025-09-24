@@ -54,12 +54,12 @@ int I_GetHeapSize(void) { return mb_used * 1024 * 1024; }
 
 //
 // I_GetTime
-// returns time in 1/70th second tics
+// returns time in 1/TICRATE second tics
 //
 int I_GetTime(void)
 {
     using namespace std::chrono;
-    using tic = duration<int, std::ratio<1, 70>>;
+    using tic = duration<int, std::ratio<1, TICRATE>>;
     const auto now = steady_clock::now();
     static const auto basetime = now;
     const auto tics = duration_cast<tic>(now - basetime).count();
