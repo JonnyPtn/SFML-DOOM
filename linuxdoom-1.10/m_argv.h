@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __M_ARGV__
-#define __M_ARGV__
+#pragma once
 
 //
 // MISC
@@ -31,7 +30,7 @@ extern char **myargv;
 // in the arg list (0 if not found).
 int M_CheckParm(const char *check);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

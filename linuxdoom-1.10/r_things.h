@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __R_THINGS__
-#define __R_THINGS__
+#pragma once
 
 #ifdef __GNUG__
 #pragma interface
@@ -58,7 +57,7 @@ void R_DrawMasked(void);
 
 void R_ClipVisSprite(vissprite_t *vis, int xl, int xh);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

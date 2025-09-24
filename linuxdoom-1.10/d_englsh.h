@@ -19,8 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __D_ENGLSH__
-#define __D_ENGLSH__
+#pragma once
 
 //
 //	Printed strings for translation
@@ -671,7 +670,7 @@
 #define CC_CYBER "THE CYBERDEMON"
 #define CC_HERO "OUR HERO"
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

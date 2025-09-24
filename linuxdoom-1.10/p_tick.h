@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __P_TICK__
-#define __P_TICK__
+#pragma once
 
 #ifdef __GNUG__
 #pragma interface
@@ -30,7 +29,7 @@
 // Carries out all thinking of monsters and players.
 void P_Ticker(void);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

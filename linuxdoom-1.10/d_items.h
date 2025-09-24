@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __D_ITEMS__
-#define __D_ITEMS__
+#pragma once
 
 #include "doomdef.h"
 
@@ -38,7 +37,7 @@ typedef struct
 
 extern weaponinfo_t weaponinfo[NUMWEAPONS];
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

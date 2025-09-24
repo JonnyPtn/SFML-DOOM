@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __STLIB__
-#define __STLIB__
+#pragma once
 
 // We are referring to patches.
 #include "r_defs.h"
@@ -155,7 +154,7 @@ void STlib_initBinIcon(st_binicon_t *b, int x, int y, patch_t *i, boolean *val, 
 
 void STlib_updateBinIcon(st_binicon_t *bi, boolean refresh);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

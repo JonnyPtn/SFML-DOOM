@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __P_SETUP__
-#define __P_SETUP__
+#pragma once
 
 #ifdef __GNUG__
 #pragma interface
@@ -31,7 +30,7 @@ void P_SetupLevel(int episode, int map, int playermask, skill_t skill);
 // Called by startup code.
 void P_Init(void);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

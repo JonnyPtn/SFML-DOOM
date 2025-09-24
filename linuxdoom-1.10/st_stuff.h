@@ -20,8 +20,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __STSTUFF_H__
-#define __STSTUFF_H__
+#pragma once
 
 #include "d_event.h"
 #include "doomtype.h"
@@ -70,7 +69,7 @@ typedef enum
 
 boolean ST_Responder(event_t *ev);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

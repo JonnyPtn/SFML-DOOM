@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __I_SYSTEM__
-#define __I_SYSTEM__
+#pragma once
 
 #include "d_event.h"
 #include "d_ticcmd.h"
@@ -76,7 +75,7 @@ void I_Tactile(int on, int off, int total);
 
 void I_Error(const char *error, ...);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

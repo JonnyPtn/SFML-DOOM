@@ -21,8 +21,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __DSTRINGS__
-#define __DSTRINGS__
+#pragma once
 
 // All important printed strings.
 // Language selection (message strings).
@@ -52,7 +51,7 @@
 
 extern const char *endmsg[];
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

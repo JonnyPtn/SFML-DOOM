@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __R_DRAW__
-#define __R_DRAW__
+#pragma once
 
 #ifdef __GNUG__
 #pragma interface
@@ -89,7 +88,7 @@ void R_FillBackScreen(void);
 // If the view size is not full screen, draws a border around it.
 void R_DrawViewBorder(void);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

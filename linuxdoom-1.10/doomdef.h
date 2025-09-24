@@ -19,8 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __DOOMDEF__
-#define __DOOMDEF__
+#pragma once
 
 #include <stdio.h>
 #include <string.h>
@@ -301,7 +300,7 @@ typedef enum
 // The utility was written by Dave Taylor.
 // #include "sounds.h"
 
-#endif // __DOOMDEF__
+
        //-----------------------------------------------------------------------------
        //
        // $Log:$

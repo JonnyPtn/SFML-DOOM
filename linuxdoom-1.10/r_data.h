@@ -20,8 +20,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __R_DATA__
-#define __R_DATA__
+#pragma once
 
 #include "r_defs.h"
 #include "r_state.h"
@@ -48,7 +47,7 @@ int R_FlatNumForName(const std::string &name);
 int R_TextureNumForName(const char *name);
 int R_CheckTextureNumForName(const char *name);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

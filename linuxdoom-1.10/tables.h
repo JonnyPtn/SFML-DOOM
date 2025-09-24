@@ -31,8 +31,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __TABLES__
-#define __TABLES__
+#pragma once
 
 #ifdef LINUX
 #include <math.h>
@@ -78,7 +77,7 @@ extern angle_t tantoangle[SLOPERANGE + 1];
 //  called by R_PointToAngle.
 int SlopeDiv(unsigned num, unsigned den);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

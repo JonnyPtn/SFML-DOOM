@@ -19,8 +19,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __DOOMTYPE__
-#define __DOOMTYPE__
+#pragma once
 
 #ifndef __BYTEBOOL__
 #define __BYTEBOOL__
@@ -56,7 +55,7 @@ typedef unsigned char byte;
 #define MINLONG ((long)0x80000000)
 #endif
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

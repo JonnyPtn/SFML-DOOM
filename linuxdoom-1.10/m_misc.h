@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __M_MISC__
-#define __M_MISC__
+#pragma once
 
 #include "doomtype.h"
 //
@@ -38,7 +37,7 @@ void M_SaveDefaults(void);
 
 int M_DrawText(int x, int y, boolean direct, char *string);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

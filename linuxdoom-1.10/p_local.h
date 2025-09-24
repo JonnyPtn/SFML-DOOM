@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __P_LOCAL__
-#define __P_LOCAL__
+#pragma once
 
 #ifndef __R_LOCAL__
 #include "r_local.h"
@@ -226,7 +225,7 @@ void P_DamageMobj(mobj_t *target, mobj_t *inflictor, mobj_t *source, int damage)
 //
 #include "p_spec.h"
 
-#endif // __P_LOCAL__
+
        //-----------------------------------------------------------------------------
        //
        //

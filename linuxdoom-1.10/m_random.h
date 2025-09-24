@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __M_RANDOM__
-#define __M_RANDOM__
+#pragma once
 
 #include "doomtype.h"
 
@@ -33,7 +32,7 @@ int P_Random(void);
 // Fix randoms for demos.
 void M_ClearRandom(void);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

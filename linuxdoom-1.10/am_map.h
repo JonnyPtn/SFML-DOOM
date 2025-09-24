@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __AMMAP_H__
-#define __AMMAP_H__
+#pragma once
 
 // Used by ST StatusBar stuff.
 #define AM_MSGHEADER (('a' << 24) + ('m' << 16))
@@ -40,7 +39,7 @@ void AM_Drawer(void);
 // if the level is completed while it is up.
 void AM_Stop(void);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __D_PLAYER__
-#define __D_PLAYER__
+#pragma once
 
 // The player data structure depends on a number
 // of other structs: items (internal inventory),
@@ -198,7 +197,7 @@ typedef struct
 
 } wbstartstruct_t;
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

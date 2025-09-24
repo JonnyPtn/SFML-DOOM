@@ -20,8 +20,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __V_VIDEO__
-#define __V_VIDEO__
+#pragma once
 
 #include "doomtype.h"
 
@@ -63,7 +62,7 @@ void V_GetBlock(int x, int y, int scrn, int width, int height, byte *dest);
 
 void V_MarkRect(int x, int y, int width, int height);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

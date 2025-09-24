@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __I_VIDEO__
-#define __I_VIDEO__
+#pragma once
 
 #include "doomtype.h"
 
@@ -44,7 +43,7 @@ void I_ReadScreen(byte *scr);
 void I_BeginRead(void);
 void I_EndRead(void);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

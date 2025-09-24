@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __G_GAME__
-#define __G_GAME__
+#pragma once
 
 #include "d_event.h"
 #include "doomdef.h"
@@ -66,7 +65,7 @@ boolean G_Responder(event_t *ev);
 
 void G_ScreenShot(void);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

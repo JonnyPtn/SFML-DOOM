@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __P_SAVEG__
-#define __P_SAVEG__
+#pragma once
 
 // Persistent storage/archiving.
 // These are the load / save game routines.
@@ -34,7 +33,7 @@ void P_UnArchiveSpecials(void);
 
 extern byte *save_p;
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

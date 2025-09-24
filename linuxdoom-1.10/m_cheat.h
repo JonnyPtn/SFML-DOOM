@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __M_CHEAT__
-#define __M_CHEAT__
+#pragma once
 
 //
 // CHEAT SEQUENCE PACKAGE
@@ -39,7 +38,7 @@ int cht_CheckCheat(cheatseq_t *cht, char key);
 
 void cht_GetParam(cheatseq_t *cht, char *buffer);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

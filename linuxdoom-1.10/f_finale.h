@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __F_FINALE__
-#define __F_FINALE__
+#pragma once
 
 #include "d_event.h"
 #include "doomtype.h"
@@ -38,7 +37,7 @@ void F_Drawer(void);
 
 void F_StartFinale(void);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

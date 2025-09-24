@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __S_SOUND__
-#define __S_SOUND__
+#pragma once
 
 #ifdef __GNUG__
 #pragma interface
@@ -73,7 +72,7 @@ void S_UpdateSounds(void *listener);
 void S_SetMusicVolume(int volume);
 void S_SetSfxVolume(int volume);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

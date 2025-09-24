@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __W_WAD__
-#define __W_WAD__
+#pragma once
 
 #include <fstream>
 #include <string>
@@ -72,7 +71,7 @@ void W_ReadLump(int lump, void *dest);
 const void *W_CacheLumpNum(int lump);
 const void *W_CacheLumpName(const char *name);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //

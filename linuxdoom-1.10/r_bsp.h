@@ -18,8 +18,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef __R_BSP__
-#define __R_BSP__
+#pragma once
 
 #ifdef __GNUG__
 #pragma interface
@@ -57,7 +56,7 @@ void R_ClearDrawSegs(void);
 
 void R_RenderBSPNode(int bspnum);
 
-#endif
+
 //-----------------------------------------------------------------------------
 //
 //
