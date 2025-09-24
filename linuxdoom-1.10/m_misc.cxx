@@ -96,18 +96,14 @@ int M_DrawText(int x, int y, boolean direct, char *string)
 
 boolean M_WriteFile(char const *name, void *source, int length)
 {
-    int handle{};
-    int count{};
+    auto file = std::ofstream ( name, std::ios::trunc | std::ios::binary );
 
-    // JONNY TODO handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
-
-    if (handle == -1)
+    if (!file.good())
         return false;
 
-    // JONNY TODO count = write (handle, source, length);
-    // JONNY TODO close (handle);
+    file.write ( reinterpret_cast<char*>(source), length);
 
-    if (count < length)
+    if (!file.good())
         return false;
 
     return true;
@@ -116,26 +112,18 @@ boolean M_WriteFile(char const *name, void *source, int length)
 //
 // M_ReadFile
 //
-int M_ReadFile(char const *name, byte **buffer)
+int M_ReadFile(char const *name, std::vector<char>& buffer)
 {
-    int handle{}, count{}, length{};
-    struct stat fileinfo;
-    byte *buf;
-
-    // JONNY TODO handle = open (name, O_RDONLY | O_BINARY, 0666);
-    if (handle == -1)
+    auto file = std::ifstream(name, std::ios::binary);
+    if (!file.good())
         I_Error("Couldn't read file %s", name);
-    if (fstat(handle, &fileinfo) == -1)
-        I_Error("Couldn't read file %s", name);
-    length = fileinfo.st_size;
-    buf = (byte *)malloc(length);
-    // JONNY TODO count = read (handle, buf, length);
-    // JONNY TODO close (handle);
+    auto length = std::filesystem::file_size(name);
+    buffer.resize(length);
+    file.read (buffer.data(), length);
 
-    if (count < length)
+    if (!file.good())
         I_Error("Couldn't read file %s", name);
 
-    *buffer = buf;
     return length;
 }
 

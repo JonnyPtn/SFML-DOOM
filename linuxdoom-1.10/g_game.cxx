@@ -63,6 +63,8 @@
 
 #include "g_game.h"
 
+#include <format>
+
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24
 
@@ -128,7 +130,7 @@ wbstartstruct_t wminfo; // parms for world map / intermission
 
 short consistancy[MAXPLAYERS][BACKUPTICS];
 
-byte *savebuffer;
+std::vector<char> savebuffer;
 
 //
 // controls (have defaults)
@@ -1128,8 +1130,8 @@ void G_DoLoadGame(void)
 
     gameaction = ga_nothing;
 
-    length = M_ReadFile(savename, &savebuffer);
-    save_p = savebuffer + SAVESTRINGSIZE;
+    length = M_ReadFile(savename, savebuffer);
+    save_p = (byte*)savebuffer.data() + SAVESTRINGSIZE;
 
     // skip the description field
     memset(vcheck, 0, sizeof(vcheck));
@@ -1162,8 +1164,7 @@ void G_DoLoadGame(void)
     if (*save_p != 0x1d)
         I_Error("Bad savegame");
 
-    // done
-    free(savebuffer);
+    savebuffer.clear();
 
     if (setsizeneeded)
         R_ExecuteSetViewSize();
@@ -1186,28 +1187,23 @@ void G_SaveGame(int slot, char *description)
 
 void G_DoSaveGame(void)
 {
-    char name[100];
-    char name2[VERSIONSIZE];
-    char *description;
-    int length;
-    int i;
+    const auto name = std::format("{}{}.dsg", SAVEGAMENAME, savegameslot);
+    const auto description = savedescription;
 
-    sprintf(name, SAVEGAMENAME "%d.dsg", savegameslot);
-    description = savedescription;
+    savebuffer.resize(SAVEGAMESIZE);
 
-    save_p = savebuffer = screens[1] + 0x4000;
+    save_p = (byte *)savebuffer.data(); // JONNY WTF?    = screens[1] + 0x4000;
 
     memcpy(save_p, description, SAVESTRINGSIZE);
     save_p += SAVESTRINGSIZE;
-    memset(name2, 0, sizeof(name2));
-    sprintf(name2, "version %i", VERSION);
-    memcpy(save_p, name2, VERSIONSIZE);
+    const auto name2 = std::format("version {}", (int)VERSION);
+    memcpy(save_p, name2.data(), VERSIONSIZE);
     save_p += VERSIONSIZE;
 
     *save_p++ = gameskill;
     *save_p++ = gameepisode;
     *save_p++ = gamemap;
-    for (i = 0; i < MAXPLAYERS; i++)
+    for (auto i = 0; i < MAXPLAYERS; i++)
         *save_p++ = playeringame[i];
     *save_p++ = leveltime >> 16;
     *save_p++ = leveltime >> 8;
@@ -1220,10 +1216,10 @@ void G_DoSaveGame(void)
 
     *save_p++ = 0x1d; // consistancy marker
 
-    length = save_p - savebuffer;
+    auto length = save_p - (byte*)savebuffer.data();
     if (length > SAVEGAMESIZE)
         I_Error("Savegame buffer overrun");
-    M_WriteFile(name, savebuffer, length);
+    M_WriteFile(name.data(), savebuffer.data(), length);
     gameaction = ga_nothing;
     savedescription[0] = 0;
 

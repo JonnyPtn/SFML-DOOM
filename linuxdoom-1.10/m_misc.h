@@ -21,13 +21,14 @@
 #pragma once
 
 #include "doomtype.h"
+#include <vector>
 //
 // MISC
 //
 
 boolean M_WriteFile(char const *name, void *source, int length);
 
-int M_ReadFile(char const *name, byte **buffer);
+int M_ReadFile(char const *name, std::vector<char>& buffer);
 
 void M_ScreenShot(void);
 
