@@ -50,3 +50,6 @@ CpackSourceConfig.cmake
 
 # The vcpkg files we use for dependencies
 *vcpkg*
+
+# Doom save files
+.dsg
