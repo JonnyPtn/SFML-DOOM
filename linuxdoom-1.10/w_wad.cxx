@@ -318,7 +318,7 @@ const void *W_CacheLumpNum(int lump)
 //
 // W_CacheLumpName
 //
-const void *W_CacheLumpName(const char *name) { return W_CacheLumpNum(W_GetNumForName(name)); }
+const void *W_CacheLumpName(const std::string& name) { return W_CacheLumpNum(W_GetNumForName(name)); }
 
 //
 // W_Profile

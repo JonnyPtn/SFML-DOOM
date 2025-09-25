@@ -725,20 +725,17 @@ void R_Init(void)
 //
 subsector_t *R_PointInSubsector(fixed_t x, fixed_t y)
 {
-    node_t *node;
-    int side;
-    int nodenum;
 
     // single subsector is a special case
     if (nodes.empty())
         return subsectors.data();
 
-    nodenum = nodes.size() - 1;
+    auto nodenum = nodes.size() - 1;
 
     while (!(nodenum & NF_SUBSECTOR))
     {
-        node = &nodes[nodenum];
-        side = R_PointOnSide(x, y, node);
+        const auto node = &nodes[nodenum];
+        const auto side = R_PointOnSide(x, y, node);
         nodenum = node->children[side];
     }
 

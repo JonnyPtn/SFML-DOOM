@@ -38,6 +38,8 @@
 #include "dstrings.h"
 #include "sounds.h"
 
+#include <format>
+
 //
 // Locally used constants, shortcuts.
 //
@@ -199,22 +201,17 @@ char ForeignTranslation(unsigned char ch) { return ch < 128 ? frenchKeyMap[ch] :
 
 void HU_Init(void)
 {
-
-    int i;
-    int j;
-    char buffer[9];
-
     if (french)
         shiftxform = french_shiftxform;
     else
         shiftxform = english_shiftxform;
 
     // load the heads-up font
-    j = HU_FONTSTART;
-    for (i = 0; i < HU_FONTSIZE; i++)
+    auto j = HU_FONTSTART;
+    for (auto i = 0; i < HU_FONTSIZE; i++)
     {
-        sprintf(buffer, "STCFN%.3d", j++);
-        hu_font[i] = (patch_t *)W_CacheLumpName(buffer);
+        const auto name = std::format("STCFN{:0>3d}", j++);
+        hu_font[i] = (patch_t *)W_CacheLumpName(name);
     }
 }
 

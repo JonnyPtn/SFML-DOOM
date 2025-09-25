@@ -69,7 +69,7 @@ int W_LumpLength(int lump);
 void W_ReadLump(int lump, void *dest);
 
 const void *W_CacheLumpNum(int lump);
-const void *W_CacheLumpName(const char *name);
+const void *W_CacheLumpName(const std::string& name);
 
 
 //-----------------------------------------------------------------------------

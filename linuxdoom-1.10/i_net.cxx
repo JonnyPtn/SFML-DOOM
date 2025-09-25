@@ -70,8 +70,8 @@ int UDPsocket(void)
 
     // allocate a socket
     // JONNY TODOs = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (s < 0)
-        I_Error("can't create socket: %s", strerror(errno));
+    // JONNY TODO if (s < 0)
+    // JONNY TODO     I_Error("can't create socket: %s", strerror(errno));
 
     return s;
 }
@@ -90,8 +90,8 @@ void BindToLocalPort(int s, int port)
     // JONNY TODOaddress.sin_port = port;
 
     // JONNY TODOv = bind (s, (void *)&address, sizeof(address));
-    if (v == -1)
-        I_Error("BindToPort: bind: %s", strerror(errno));
+    // JONNY TODO  if (v == -1)
+    // JONNY TODO I_Error("BindToPort: bind: %s", strerror(errno));
 }
 
 //
@@ -135,7 +135,7 @@ void PacketGet(void)
     int i;
     int c{};
     // JONNY TODOstruct sockaddr_in	fromaddress;
-    int fromlen;
+    // JONNY TODO int fromlen;
     doomdata_t sw{};
 
     // JONNY TODOfromlen = sizeof(fromaddress);
@@ -143,8 +143,8 @@ void PacketGet(void)
     // JONNY TODO	  , (struct sockaddr *)&fromaddress, &fromlen );
     if (c == -1)
     {
-        if (errno != EWOULDBLOCK)
-            I_Error("GetPacket: %s", strerror(errno));
+        // JONNY TODO if (errno != EWOULDBLOCK)
+            // JONNY TODO I_Error("GetPacket: %s", strerror(errno));
         doomcom->remotenode = -1; // no packet
         return;
     }
@@ -191,7 +191,7 @@ void PacketGet(void)
 
 int GetLocalAddress(void)
 {
-    char hostname[1024];
+    // JONNY TODO char hostname[1024];
     struct hostent *hostentry{}; // host information entry
     int v{};
 
