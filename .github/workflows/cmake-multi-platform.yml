@@ -24,6 +24,10 @@ jobs:
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
       run: sudo apt-get install libx11-dev libxi-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
+
+    - name: Set mac arm vcpkg triplet
+      if: runner.os == 'macos'
+      run: echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> $GITHUB_ENV
       
     - name: Configure CMake
       run: cmake --preset default --fresh
