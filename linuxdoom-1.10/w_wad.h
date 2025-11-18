@@ -24,9 +24,7 @@
 #include <string>
 #include <vector>
 
-#ifdef __GNUG__
-#pragma interface
-#endif
+#include <memory>
 
 //
 // TYPES
