@@ -10,6 +10,10 @@
 *.module.json
 *.d.json
 *.json.command
+VSInheritEnvironments.txt
+
+# Ninja files
+*.ninja
 
 # vscode files
 .vscode
@@ -40,6 +44,7 @@ _deps
 CMakeUserPresets.json
 CPackConfig.cmake
 CpackSourceConfig.cmake
+.cmake
 
 # Build outputs
 *.obj
