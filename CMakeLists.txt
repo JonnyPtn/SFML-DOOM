@@ -1,11 +1,19 @@
 cmake_minimum_required(VERSION 3.31)
 
-# Download vcpkg for dependencies
-set(VCPKG_VERSION 2025.09.17)
-file(DOWNLOAD https://github.com/microsoft/vcpkg/archive/refs/tags/${VCPKG_VERSION}.zip ${CMAKE_BINARY_DIR}/vcpkg.zip)
-file(ARCHIVE_EXTRACT INPUT ${CMAKE_BINARY_DIR}/vcpkg.zip)
-execute_process(COMMAND cmd /C "${CMAKE_BINARY_DIR}/vcpkg-${VCPKG_VERSION}/bootstrap-vcpkg.bat")
-set(CMAKE_TOOLCHAIN_FILE ${CMAKE_BINARY_DIR}/vcpkg-${VCPKG_VERSION}/scripts/buildsystems/vcpkg.cmake)
+# Use vcpkg if available, if not fetchcontent
+if(DEFINED ENV{VCPKG_ROOT})
+    set(CMAKE_TOOLCHAIN_FILE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
+    set(CMAKE_FIND_REQUIRED TRUE)
+else()
+    include(FetchContent)
+    FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 3.0.2
+        GIT_SHALLOW ON
+        EXCLUDE_FROM_ALL
+        SYSTEM)
+    FetchContent_MakeAvailable(SFML)
+endif()
 
 project(SFML-DOOM)
 
@@ -14,7 +22,7 @@ file(GLOB_RECURSE SRC CONFIGURE_DEPENDS linuxdoom-1.10/*.c linuxdoom-1.10/*.cxx 
 add_executable(${PROJECT_NAME} ${SRC})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
-find_package(SFML COMPONENTS Graphics Audio CONFIG REQUIRED)
+find_package(SFML 3 COMPONENTS Graphics Audio CONFIG)
 target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Audio)
 set_target_properties(${PROJECT_NAME} PROPERTIES 
     DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
