@@ -1,15 +1,15 @@
 {
-    "version": 9,
-    "configurePresets": [
-        {
-            "name": "default",
-            "hidden": true,
-            "binaryDir": "${sourceDir}/out/build/${presetName}"
-        },
-        {
-            "name": "windows",
-            "displayName": "Windows",
-            "inherits": "default"
-        }
-    ]
+  "version": 9,
+  "configurePresets": [
+    {
+      "name": "default",
+      "binaryDir": "${sourceDir}/out/build/${presetName}"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "default",
+      "configurePreset": "default"
+    }
+  ]
 }
