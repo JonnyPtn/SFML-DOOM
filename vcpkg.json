@@ -1,0 +1,6 @@
+{
+  "dependencies": [
+    "sfml"
+  ],
+  "builtin-baseline": "dfb72f61c5a066ab75cd0bdcb2e007228bfc3270"
+}
