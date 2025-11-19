@@ -28,15 +28,6 @@
 #define BGCOLOR 7
 #define FGCOLOR 8
 
-#ifdef NORMALUNIX
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-#endif
-
 #include "doomdef.h"
 #include "doomstat.h"
 
