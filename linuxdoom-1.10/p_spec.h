@@ -243,7 +243,7 @@ void P_ActivateInStasis(int tag);
 //
 // P_DOORS
 //
-typedef enum
+enum class vldoor_e
 {
     normal,
     close30ThenOpen,
@@ -254,7 +254,7 @@ typedef enum
     blazeOpen,
     blazeClose
 
-} vldoor_e;
+};
 
 typedef struct
 {

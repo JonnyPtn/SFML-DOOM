@@ -526,7 +526,7 @@ void A_KeenDie(mobj_t *mo)
     }
 
     junk.tag = 666;
-    EV_DoDoor(&junk, open);
+    EV_DoDoor(&junk, vldoor_e::open);
 }
 
 //
@@ -1584,7 +1584,7 @@ void A_BossDeath(mobj_t *mo)
             {
             case 6:
                 junk.tag = 666;
-                EV_DoDoor(&junk, blazeOpen);
+                EV_DoDoor(&junk, vldoor_e::blazeOpen);
                 return;
                 break;
 
