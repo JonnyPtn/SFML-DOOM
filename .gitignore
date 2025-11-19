@@ -24,7 +24,9 @@ VSInheritEnvironments.txt
 *.DependencyMetadataFileList
 *.DependencyStaticMetadataFileList
 *.resp
+*.LinkFileList
 XCBuildData
+DerivedSources
 
 # Mac system files
 .DS_Store
@@ -52,6 +54,11 @@ CpackSourceConfig.cmake
 *.exe
 *.ilk
 *.dll
+*.app
+*.d
+*.o
+*.dia
+*.build
 
 # The vcpkg files we use for dependencies
 *vcpkg*
