@@ -13,6 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - uses: ConorMacBride/install-package@v1
+      with:
+        apt: libx11-dev libxi-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
+
     - name: Configure
       run: cmake --preset default
 
