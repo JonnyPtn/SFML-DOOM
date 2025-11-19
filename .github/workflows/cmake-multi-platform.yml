@@ -20,16 +20,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: lukka/run-vcpkg@v11
-    
-    - name: Install Linux Dependencies
-      if: runner.os == 'Linux'
-      run: sudo apt-get install libx11-dev libxi-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
+    - uses: ConorMacBride/install-package@v1
+      with:
+        brew: binutils
+        apt: libx11-dev libxi-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
 
     - name: Set mac arm vcpkg triplet
       if: runner.os == 'macos'
-      run: |
-        echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> $GITHUB_ENV
-        echo "CMAKE_GENERATOR=Xcode" >> $GITHUB_ENV
+      run: echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> $GITHUB_ENV
       
     - name: Configure CMake
       run: cmake --preset default --fresh
