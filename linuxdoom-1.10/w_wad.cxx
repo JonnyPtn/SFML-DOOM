@@ -20,6 +20,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <algorithm>
 #include <cassert>
 #include <cstdlib>
 #include <ctype.h>
@@ -36,9 +37,6 @@
 #include "i_system.h"
 #include "m_swap.h"
 
-#ifdef __GNUG__
-#pragma implementation "w_wad.h"
-#endif
 #include "w_wad.h"
 
 //
