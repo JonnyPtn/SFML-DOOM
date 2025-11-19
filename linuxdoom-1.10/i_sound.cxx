@@ -33,7 +33,7 @@
 
 #include "doomdef.h"
 
-#include <sfml/Audio.hpp>
+#include <SFML/Audio.hpp>
 
 constexpr auto SAMPLERATE = 11025; // Hz
 constexpr auto SAMPLECOUNT = 512;
