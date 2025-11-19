@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.31)
 # Use vcpkg if available, if not fetchcontent
 if(DEFINED ENV{VCPKG_ROOT})
     cmake_path(SET CMAKE_TOOLCHAIN_FILE NORMALIZE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
-    set(CMAKE_FIND_REQUIRED TRUE)
+    set(CMAKE_FIND_REQUIRED_SFML TRUE)
 else()
     include(FetchContent)
     FetchContent_Declare(SFML
