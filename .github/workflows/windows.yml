@@ -1,0 +1,25 @@
+name: Build for Windows
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-2025
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: lukka/run-vcpkg@v11
+    
+    - name: Configure
+      run: cmake --preset default
+
+    - name: Build Debug
+      run: cmake --build --preset default --config Debug
+
+    - name: Build Release
+      run: cmake --build --preset default --config Release
+
