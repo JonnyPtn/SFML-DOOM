@@ -5,7 +5,8 @@
       "name": "default",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_OSX_ARCHITECTURES": "arm64"
+        "CMAKE_OSX_ARCHITECTURES": "arm64",
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "14.0"
       }
     }
   ],
