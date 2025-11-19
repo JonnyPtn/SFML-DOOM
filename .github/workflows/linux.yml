@@ -19,7 +19,7 @@ jobs:
         apt: libx11-dev libxi-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
 
     - name: Configure
-      run: cmake --preset default
+      run: cmake --preset default -G"Ninja Multi-Config"
 
     - name: Build Debug
       run: cmake --build --preset default --config Debug
