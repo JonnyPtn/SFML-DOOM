@@ -1,0 +1,23 @@
+name: Build for Linux
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure
+      run: cmake --preset default
+
+    - name: Build Debug
+      run: cmake --build --preset default --config Debug
+
+    - name: Build Release
+      run: cmake --build --preset default --config Release
