@@ -25,9 +25,11 @@ jobs:
         brew: binutils
         apt: libx11-dev libxi-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
 
-    - name: Set mac arm vcpkg triplet
+    - name: Set mac env vars
       if: runner.os == 'macos'
-      run: echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> $GITHUB_ENV
+      run: |
+        echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> $GITHUB_ENV
+        echo 'export PATH="/opt/homebrew/opt/binutils/bin:$PATH"' >> /Users/runner/.bash_profile
       
     - name: Configure CMake
       run: cmake --preset default --fresh
