@@ -27,7 +27,9 @@ jobs:
 
     - name: Set mac arm vcpkg triplet
       if: runner.os == 'macos'
-      run: echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> $GITHUB_ENV
+      run: |
+        echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> $GITHUB_ENV
+        echo "CMAKE_GENERATOR=Xcode" >> $GITHUB_ENV
       
     - name: Configure CMake
       run: cmake --preset default --fresh
