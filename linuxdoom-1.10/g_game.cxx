@@ -1473,7 +1473,7 @@ void G_DoPlayDemo(void)
     auto data = (byte *)W_CacheLumpName(defdemoname);
     auto size = W_LumpLength(W_GetNumForName(defdemoname));
     demobuffer.resize(size);
-    std::memcpy(demobuffer.data(), data, size);
+    memcpy(demobuffer.data(), data, size);
     demo_p = demobuffer.data();
 
      if ( *demo_p++ != VERSION )
