@@ -19,15 +19,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: lukka/run-vcpkg@v11
     - uses: ConorMacBride/install-package@v1
       with:
         apt: libx11-dev libxi-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
-
-    - name: Set mac env vars
-      if: runner.os == 'macos'
-      run: |
-        echo "VCPKG_DEFAULT_TRIPLET=arm64-osx" >> $GITHUB_ENV
       
     - name: Configure CMake
       run: cmake --preset default --fresh
