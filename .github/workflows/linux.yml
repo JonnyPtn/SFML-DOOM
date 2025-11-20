@@ -29,3 +29,9 @@ jobs:
 
     - name: Package Release
       run: cpack --preset default
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sfml-doom
+        path: out/package/default/*.zip
