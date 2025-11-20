@@ -6,7 +6,9 @@
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
         "CMAKE_OSX_ARCHITECTURES": "arm64",
-        "CMAKE_OSX_DEPLOYMENT_TARGET": "14.0"
+        "CMAKE_OSX_DEPLOYMENT_TARGET": "14.0",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/installed/${presetName}",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
       }
     }
   ],
@@ -14,6 +16,16 @@
     {
       "name": "default",
       "configurePreset": "default"
+    }
+  ],
+  "packagePresets": [
+    {
+      "name": "default",
+      "configurePreset": "default",
+      "generators": [
+        "ZIP"
+      ],
+      "packageDirectory": "${sourceDir}/out/package/${presetName}"
     }
   ]
 }
