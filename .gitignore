@@ -59,10 +59,12 @@ CpackSourceConfig.cmake
 *.o
 *.dia
 *.build
+out/*
 
 # The vcpkg files we use for dependencies
 *vcpkg*
 !vcpkg.json
 
-# Doom save files
+# Doom specific files
 .dsg
+*.wad

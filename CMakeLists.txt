@@ -1,19 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
-# Use vcpkg if available, if not fetchcontent
-if(DEFINED ENV{VCPKG_ROOT})
-    cmake_path(SET CMAKE_TOOLCHAIN_FILE NORMALIZE $ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake)
-    set(CMAKE_FIND_REQUIRED_SFML TRUE)
-else()
-    include(FetchContent)
-    FetchContent_Declare(SFML
-        GIT_REPOSITORY https://github.com/SFML/SFML.git
-        GIT_TAG 3.0.2
-        GIT_SHALLOW ON
-        EXCLUDE_FROM_ALL
-        SYSTEM)
-    FetchContent_MakeAvailable(SFML)
-endif()
+include(cmake/dependencies.cmake)
 
 project(SFML-DOOM)
 
@@ -32,3 +19,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 set_property(DIRECTORY . PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 target_compile_options(${PROJECT_NAME} PRIVATE -w)
+
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
+install(FILES doom1.wad DESTINATION .)
+
+include(CPack)
