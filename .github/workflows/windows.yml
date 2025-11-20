@@ -23,3 +23,6 @@ jobs:
     - name: Build Release
       run: cmake --build --preset default --config Release
 
+    - name: Package Release
+      run: cpack --preset default
+
