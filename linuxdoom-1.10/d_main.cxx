@@ -63,6 +63,37 @@
 
 #include <filesystem>
 
+#ifdef __APPLE__
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
+static std::string FindResourcePath(const char* filename)
+{
+#ifdef __APPLE__
+    CFBundleRef bundle = CFBundleGetMainBundle();
+    if (bundle)
+    {
+        CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(bundle);
+        if (resourcesURL)
+        {
+            char path[PATH_MAX];
+            if (CFURLGetFileSystemRepresentation(resourcesURL, true, (UInt8*)path, PATH_MAX))
+            {
+                CFRelease(resourcesURL);
+                auto result = std::filesystem::path(path) / filename;
+                if (std::filesystem::exists(result))
+                    return result.string();
+            }
+            else
+            {
+                CFRelease(resourcesURL);
+            }
+        }
+    }
+#endif
+    return filename;
+}
+
 //
 // D-DoomLoop()
 // Not a globally visible function,
@@ -482,7 +513,7 @@ char title[128];
 //
 // D_AddFile
 //
-void D_AddFile(const char *file) { wadfiles.push_back(file); }
+void D_AddFile(const std::string& file) { wadfiles.push_back(file); }
 
 //
 // IdentifyVersion
@@ -493,25 +524,25 @@ void D_AddFile(const char *file) { wadfiles.push_back(file); }
 void IdentifyVersion(void)
 {
     // Commercial.
-    const auto doom2wad = "doom2.wad";
+    const auto doom2wad = FindResourcePath("doom2.wad");
 
     // Retail.
-    const auto doomuwad = "doomu.wad";
+    const auto doomuwad = FindResourcePath("doomu.wad");
 
     // Registered.
-    const auto doomwad = "doom.wad";
+    const auto doomwad = FindResourcePath("doom.wad");
 
     // Shareware.
-    const auto doom1wad = "doom1.wad";
+    const auto doom1wad = FindResourcePath("doom1.wad");
 
     // Plutonia.
-    const auto plutoniawad = "plutonia.wad";
+    const auto plutoniawad = FindResourcePath("plutonia.wad");
 
     // TNT.
-    const auto tntwad = "tnt.wad";
+    const auto tntwad = FindResourcePath("tnt.wad");
 
     // French stuff.
-    const auto doom2fwad = "doom2f.wad";
+    const auto doom2fwad = FindResourcePath("doom2f.wad");
 
     if (M_CheckParm("-shdev"))
     {

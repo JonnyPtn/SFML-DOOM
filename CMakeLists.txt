@@ -6,11 +6,14 @@ project(SFML-DOOM)
 
 file(GLOB_RECURSE SRC CONFIGURE_DEPENDS linuxdoom-1.10/*.c linuxdoom-1.10/*.cxx linuxdoom-1.10/*.h)
 
-add_executable(${PROJECT_NAME} ${SRC})
+set(WAD_FILE ${CMAKE_SOURCE_DIR}/doom1.wad)
+set_source_files_properties(${WAD_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+
+add_executable(${PROJECT_NAME} ${SRC} ${WAD_FILE})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 find_package(SFML 3 COMPONENTS Graphics Audio CONFIG)
-target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Audio)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Audio "$<$<PLATFORM_ID:Darwin>:-framework CoreFoundation>")
 set_target_properties(${PROJECT_NAME} PROPERTIES 
     DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     XCODE_GENERATE_SCHEME ON
@@ -23,6 +26,9 @@ target_compile_options(${PROJECT_NAME} PRIVATE -w)
 install(TARGETS ${PROJECT_NAME} 
     RUNTIME DESTINATION .
     BUNDLE DESTINATION .)
-install(FILES doom1.wad DESTINATION .)
+
+if (NOT APPLE)
+    install(FILES ${WAD_FILE} DESTINATION .)
+endif()
 
 include(CPack)
