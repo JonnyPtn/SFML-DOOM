@@ -613,7 +613,7 @@ boolean ST_Responder(event_t *ev)
             else if (cht_CheckCheat(&cheat_mypos, ev->data1))
             {
                 static char buf[ST_MSGWIDTH];
-                sprintf(buf, "ang=0x%x;x,y=(0x%x,0x%x)", players[consoleplayer].mo->angle, players[consoleplayer].mo->x, players[consoleplayer].mo->y);
+                snprintf(buf, sizeof(buf), "ang=0x%x;x,y=(0x%x,0x%x)", players[consoleplayer].mo->angle, players[consoleplayer].mo->x, players[consoleplayer].mo->y);
                 plyr->message = buf;
             }
         }
@@ -1053,10 +1053,10 @@ void ST_loadGraphics(void)
     // Load the numbers, tall and short
     for (i = 0; i < 10; i++)
     {
-        sprintf(namebuf, "STTNUM%d", i);
+        snprintf(namebuf, sizeof(namebuf), "STTNUM%d", i);
         tallnum[i] = (patch_t *)W_CacheLumpName(namebuf);
 
-        sprintf(namebuf, "STYSNUM%d", i);
+        snprintf(namebuf, sizeof(namebuf), "STYSNUM%d", i);
         shortnum[i] = (patch_t *)W_CacheLumpName(namebuf);
     }
 
@@ -1067,7 +1067,7 @@ void ST_loadGraphics(void)
     // key cards
     for (i = 0; i < NUMCARDS; i++)
     {
-        sprintf(namebuf, "STKEYS%d", i);
+        snprintf(namebuf, sizeof(namebuf), "STKEYS%d", i);
         keys[i] = (patch_t *)W_CacheLumpName(namebuf);
     }
 
@@ -1077,7 +1077,7 @@ void ST_loadGraphics(void)
     // arms ownership widgets
     for (i = 0; i < 6; i++)
     {
-        sprintf(namebuf, "STGNUM%d", i + 2);
+        snprintf(namebuf, sizeof(namebuf), "STGNUM%d", i + 2);
 
         // gray #
         arms[i][0] = (patch_t *)W_CacheLumpName(namebuf);
@@ -1087,7 +1087,7 @@ void ST_loadGraphics(void)
     }
 
     // face backgrounds for different color players
-    sprintf(namebuf, "STFB%d", consoleplayer);
+    snprintf(namebuf, sizeof(namebuf), "STFB%d", consoleplayer);
     faceback = (patch_t *)W_CacheLumpName(namebuf);
 
     // status bar background bits
@@ -1099,18 +1099,18 @@ void ST_loadGraphics(void)
     {
         for (j = 0; j < ST_NUMSTRAIGHTFACES; j++)
         {
-            sprintf(namebuf, "STFST%d%d", i, j);
+            snprintf(namebuf, sizeof(namebuf), "STFST%d%d", i, j);
             faces[facenum++] = (patch_t *)W_CacheLumpName(namebuf);
         }
-        sprintf(namebuf, "STFTR%d0", i); // turn right
+        snprintf(namebuf, sizeof(namebuf), "STFTR%d0", i); // turn right
         faces[facenum++] = (patch_t *)W_CacheLumpName(namebuf);
-        sprintf(namebuf, "STFTL%d0", i); // turn left
+        snprintf(namebuf, sizeof(namebuf), "STFTL%d0", i); // turn left
         faces[facenum++] = (patch_t *)W_CacheLumpName(namebuf);
-        sprintf(namebuf, "STFOUCH%d", i); // ouch!
+        snprintf(namebuf, sizeof(namebuf), "STFOUCH%d", i); // ouch!
         faces[facenum++] = (patch_t *)W_CacheLumpName(namebuf);
-        sprintf(namebuf, "STFEVL%d", i); // evil grin ;)
+        snprintf(namebuf, sizeof(namebuf), "STFEVL%d", i); // evil grin ;)
         faces[facenum++] = (patch_t *)W_CacheLumpName(namebuf);
-        sprintf(namebuf, "STFKILL%d", i); // pissed off
+        snprintf(namebuf, sizeof(namebuf), "STFKILL%d", i); // pissed off
         faces[facenum++] = (patch_t *)W_CacheLumpName(namebuf);
     }
     faces[facenum++] = (patch_t *)W_CacheLumpName("STFGOD0");

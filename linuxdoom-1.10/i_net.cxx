@@ -35,14 +35,6 @@
 
 #include "i_net.h"
 
-// For some odd reason...
-#define ntohl(x)                                                                                                                                               \
-    ((unsigned long int)((((unsigned long int)(x) & 0x000000ffU) << 24) | (((unsigned long int)(x) & 0x0000ff00U) << 8) |                                      \
-                         (((unsigned long int)(x) & 0x00ff0000U) >> 8) | (((unsigned long int)(x) & 0xff000000U) >> 24)))
-
-#define ntohs(x) ((unsigned short int)((((unsigned short int)(x) & 0x00ff) << 8) | (((unsigned short int)(x) & 0xff00) >> 8)))
-#define htonl(x) ntohl(x)
-#define htons(x) ntohs(x)
 
 void NetSend(void);
 boolean NetListen(void);

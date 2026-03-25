@@ -138,6 +138,8 @@ int sfKeyToDoom(sf::Keyboard::Key key)
         return KEY_RALT;
     case Space:
         return ' ';
+    default:
+        break;
     }
     return 'a' + static_cast<int>(key);
 }
@@ -178,6 +180,8 @@ void I_GetEvent(void)
                 event.data1 = 2;
             case Middle:
                 event.data1 = 4;
+            default:
+                break;
             }
             D_PostEvent(&event);
         }
@@ -193,6 +197,8 @@ void I_GetEvent(void)
                 event.data1 = 2;
             case Middle:
                 event.data1 = 4;
+            default:
+                break;
             }
             D_PostEvent(&event);
         }

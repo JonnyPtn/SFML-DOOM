@@ -1410,7 +1410,7 @@ void WI_loadData(void)
     if (gamemode == commercial)
         strcpy(name, "INTERPIC");
     else
-        sprintf(name, "WIMAP%d", wbs->epsd);
+        snprintf(name, sizeof(name), "WIMAP%d", wbs->epsd);
 
     if (gamemode == retail)
     {
@@ -1439,7 +1439,7 @@ void WI_loadData(void)
         lnames.resize(NUMCMAPS);
         for (i = 0; i < NUMCMAPS; i++)
         {
-            sprintf(name, "CWILV%2.2d", i);
+            snprintf(name, sizeof(name), "CWILV%2.2d", i);
             lnames[i] = (patch_t *)W_CacheLumpName(name);
         }
     }
@@ -1448,7 +1448,7 @@ void WI_loadData(void)
         lnames.resize(NUMMAPS);
         for (i = 0; i < NUMMAPS; i++)
         {
-            sprintf(name, "WILV%d%d", wbs->epsd, i);
+            snprintf(name, sizeof(name), "WILV%d%d", wbs->epsd, i);
             lnames[i] = (patch_t *)W_CacheLumpName(name);
         }
 
@@ -1472,7 +1472,7 @@ void WI_loadData(void)
                     if (wbs->epsd != 1 || j != 8)
                     {
                         // animations
-                        sprintf(name, "WIA%d%.2d%.2d", wbs->epsd, j, i);
+                        snprintf(name, sizeof(name), "WIA%d%.2d%.2d", wbs->epsd, j, i);
                         a->p[i] = (patch_t *)W_CacheLumpName(name);
                     }
                     else
@@ -1491,7 +1491,7 @@ void WI_loadData(void)
     for (i = 0; i < 10; i++)
     {
         // numbers 0-9
-        sprintf(name, "WINUM%d", i);
+        snprintf(name, sizeof(name), "WINUM%d", i);
         num[i] = (patch_t *)W_CacheLumpName(name);
     }
 
@@ -1558,11 +1558,11 @@ void WI_loadData(void)
     for (i = 0; i < MAXPLAYERS; i++)
     {
         // "1,2,3,4"
-        sprintf(name, "STPB%d", i);
+        snprintf(name, sizeof(name), "STPB%d", i);
         p[i] = (patch_t *)W_CacheLumpName(name);
 
         // "1,2,3,4"
-        sprintf(name, "WIBP%d", i + 1);
+        snprintf(name, sizeof(name), "WIBP%d", i + 1);
         bp[i] = (patch_t *)W_CacheLumpName(name);
     }
 }

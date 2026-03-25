@@ -477,7 +477,7 @@ void AM_loadPics(void)
 
     for (i = 0; i < 10; i++)
     {
-        sprintf(namebuf, "AMMNUM%d", i);
+        snprintf(namebuf, sizeof(namebuf), "AMMNUM%d", i);
         marknums[i] = (const patch_t *)W_CacheLumpName(namebuf);
     }
 }
@@ -650,7 +650,7 @@ boolean AM_Responder(event_t *ev)
             plr->message = grid ? AMSTR_GRIDON : AMSTR_GRIDOFF;
             break;
         case AM_MARKKEY:
-            sprintf(buffer, "%s %d", AMSTR_MARKEDSPOT, markpointnum);
+            snprintf(buffer, sizeof(buffer), "%s %d", AMSTR_MARKEDSPOT, markpointnum);
             plr->message = buffer;
             AM_addMark();
             break;

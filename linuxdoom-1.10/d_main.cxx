@@ -352,7 +352,7 @@ void D_DoomLoop(void)
     if (M_CheckParm("-debugfile"))
     {
         char filename[20];
-        sprintf(filename, "debug%i.txt", consoleplayer);
+        snprintf(filename, sizeof(filename), "debug%i.txt", consoleplayer);
         printf("debug output to: %s\n", filename);
         debugfile = fopen(filename, "w");
     }
@@ -671,28 +671,28 @@ void D_DoomMain(void)
     switch (gamemode)
     {
     case retail:
-        sprintf(title,
+        snprintf(title, sizeof(title),
                 "                         "
                 "The Ultimate DOOM Startup v%i.%i"
                 "                           ",
                 VERSION / 100, VERSION % 100);
         break;
     case shareware:
-        sprintf(title,
+        snprintf(title, sizeof(title),
                 "                            "
                 "DOOM Shareware Startup v%i.%i"
                 "                           ",
                 VERSION / 100, VERSION % 100);
         break;
     case registered:
-        sprintf(title,
+        snprintf(title, sizeof(title),
                 "                            "
                 "DOOM Registered Startup v%i.%i"
                 "                           ",
                 VERSION / 100, VERSION % 100);
         break;
     case commercial:
-        sprintf(title,
+        snprintf(title, sizeof(title),
                 "                         "
                 "DOOM 2: Hell on Earth v%i.%i"
                 "                           ",
@@ -715,7 +715,7 @@ void D_DoomMain(void)
             break;
     */
     default:
-        sprintf(title,
+        snprintf(title, sizeof(title),
                 "                     "
                 "Public DOOM - v%i.%i"
                 "                           ",
@@ -764,7 +764,7 @@ void D_DoomMain(void)
         case shareware:
         case retail:
         case registered:
-            sprintf(file, "~" DEVMAPS "E%cM%c.wad", myargv[p + 1][0], myargv[p + 2][0]);
+            snprintf(file, sizeof(file), "~" DEVMAPS "E%cM%c.wad", myargv[p + 1][0], myargv[p + 2][0]);
             printf("Warping to Episode %s, Map %s.\n", myargv[p + 1], myargv[p + 2]);
             break;
 
@@ -772,9 +772,9 @@ void D_DoomMain(void)
         default:
             p = atoi(myargv[p + 1]);
             if (p < 10)
-                sprintf(file, "~" DEVMAPS "cdata/map0%i.wad", p);
+                snprintf(file, sizeof(file), "~" DEVMAPS "cdata/map0%i.wad", p);
             else
-                sprintf(file, "~" DEVMAPS "cdata/map%i.wad", p);
+                snprintf(file, sizeof(file), "~" DEVMAPS "cdata/map%i.wad", p);
             break;
         }
         D_AddFile(file);
@@ -797,7 +797,7 @@ void D_DoomMain(void)
 
     if (p && p < myargc - 1)
     {
-        sprintf(file, "%s.lmp", myargv[p + 1]);
+        snprintf(file, sizeof(file), "%s.lmp", myargv[p + 1]);
         D_AddFile(file);
         printf("Playing demo %s.lmp.\n", myargv[p + 1]);
     }
@@ -973,9 +973,9 @@ void D_DoomMain(void)
     if (p && p < myargc - 1)
     {
         if (M_CheckParm("-cdrom"))
-            sprintf(file, "c:\\doomdata\\" SAVEGAMENAME "%c.dsg", myargv[p + 1][0]);
+            snprintf(file, sizeof(file), "c:\\doomdata\\" SAVEGAMENAME "%c.dsg", myargv[p + 1][0]);
         else
-            sprintf(file, SAVEGAMENAME "%c.dsg", myargv[p + 1][0]);
+            snprintf(file, sizeof(file), SAVEGAMENAME "%c.dsg", myargv[p + 1][0]);
         G_LoadGame(file);
     }
 

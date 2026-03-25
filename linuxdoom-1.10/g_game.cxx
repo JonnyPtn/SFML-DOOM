@@ -426,7 +426,7 @@ void G_DoLoadLevel(void)
 
     // DOOM determines the sky texture to be used
     // depending on the current episode, and the game version.
-    if ((gamemode == commercial) || (gamemode == pack_tnt) || (gamemode == pack_plut))
+    if ((gamemode == commercial) || ((int)gamemode == (int)pack_tnt) || ((int)gamemode == (int)pack_plut))
     {
         skytexture = R_TextureNumForName("SKY3");
         if (gamemap < 12)
@@ -459,8 +459,8 @@ void G_DoLoadLevel(void)
     joyxmove = joyymove = 0;
     mousex = mousey = 0;
     sendpause = sendsave = paused = false;
-    memset(mousebuttons, 0, sizeof(mousebuttons));
-    memset(joybuttons, 0, sizeof(joybuttons));
+    memset(mousebuttons, 0, sizeof(*mousebuttons) * 3);
+    memset(joybuttons, 0, sizeof(*joybuttons) * 4);
 }
 
 //
@@ -632,7 +632,7 @@ void G_Ticker(void)
             {
                 static char turbomessage[80];
                 extern const char *player_names[4];
-                sprintf(turbomessage, "%s is turbo!", player_names[i]);
+                snprintf(turbomessage, sizeof(turbomessage), "%s is turbo!", player_names[i]);
                 players[consoleplayer].message = turbomessage;
             }
 
@@ -1135,7 +1135,7 @@ void G_DoLoadGame(void)
 
     // skip the description field
     memset(vcheck, 0, sizeof(vcheck));
-    sprintf(vcheck, "version %i", VERSION);
+    snprintf(vcheck, sizeof(vcheck), "version %i", VERSION);
     if (strcmp((const char *)save_p, vcheck))
         return; // bad version
     save_p += VERSIONSIZE;
