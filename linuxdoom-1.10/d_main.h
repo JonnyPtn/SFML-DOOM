@@ -30,7 +30,7 @@
 
 inline std::vector<std::string> wadfiles;
 
-void D_AddFile(const char *file);
+void D_AddFile(const std::string& file);
 
 //
 // D_DoomMain()
